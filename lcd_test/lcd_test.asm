@@ -2,7 +2,6 @@ PORTB         .equ $6000
 PORTA         .equ $6001
 DDRB          .equ $6002
 DDRA          .equ $6003
-OUTD          .equ $ff
 
 COMMAND_MODE  .equ %00000000
 DATA_MODE     .equ %00100000
