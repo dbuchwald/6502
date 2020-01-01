@@ -23,11 +23,21 @@ bool ADDR_VAL[16];
 int operationMode = FULL_SCAN;
 int failCount = 0;
 
+/* V1 Starts here */
+/*
 word RANGE_START[]        = {0x0000, 0x4000, 0x6000, 0x8000};
 word RANGE_END[]          = {0x3fff, 0x5fff, 0x7fff, 0xffff};
+*/
+/* V1 Ends here */
+/* V2 Starts here */
+word RANGE_START[]        = {0x0000, 0x8000, 0xa000, 0xc000};
+word RANGE_END[]          = {0x7fff, 0x9fff, 0xbfff, 0xffff};
+/* V2 Ends here */
+
 int  RANGE_TESTED[]       = {0,      0,      0,      0};
 int  RANGE_PASSED[]       = {0,      0,      0,      0};
 int  RANGE_FAILED[]       = {0,      0,      0,      0};
+
 
 bool EXPECT_ROM_ENABLE[]  = {false,  false,  false,  true};
 bool EXPECT_RAM_ENABLE[]  = {true,   false,  false,  false};
