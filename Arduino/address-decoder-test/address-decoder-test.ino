@@ -12,7 +12,7 @@
 
 #define QUICK_SCAN     0
 #define FULL_SCAN      1
-#define MAX_FAIL_COUNT 1000
+#define MAX_FAIL_COUNT 10
 
 const char ADDR[] = {52, 50, 48, 46, 44, 42, 40, 38, 36, 34, 32, 30, 28, 26, 24, 22};
 
@@ -30,19 +30,27 @@ word RANGE_END[]          = {0x3fff, 0x5fff, 0x7fff, 0xffff};
 */
 /* V1 Ends here */
 /* V2 Starts here */
+/*
 word RANGE_START[]        = {0x0000, 0x8000, 0xa000, 0xc000};
 word RANGE_END[]          = {0x7fff, 0x9fff, 0xbfff, 0xffff};
+*/
 /* V2 Ends here */
 
+/* Extended Starts here */
+word RANGE_START[]        = {0x0000, 0x8800, 0x9000, 0xa000};
+word RANGE_END[]          = {0x7fff, 0x880f, 0x900f, 0xffff};
+/* Extended Ends here */
+
+/* V1 & V2 Start here */
 int  RANGE_TESTED[]       = {0,      0,      0,      0};
 int  RANGE_PASSED[]       = {0,      0,      0,      0};
 int  RANGE_FAILED[]       = {0,      0,      0,      0};
 
-
 bool EXPECT_ROM_ENABLE[]  = {false,  false,  false,  true};
 bool EXPECT_RAM_ENABLE[]  = {true,   false,  false,  false};
 bool EXPECT_VIA1_ENABLE[] = {false,  false,  true,   false};
-bool EXPECT_VIA2_ENABLE[] = {false,  false,  false,  false};
+bool EXPECT_VIA2_ENABLE[] = {false,  true,   false,  false};
+/* V1 & V2 Ends here */
 
 word currentAddress;
 bool readROMCSB, readROMOEB, readRAMCSB, readRAMOEB, readVIA1CS1, readVIA1CS2B, readVIA2CS1, readVIA2CS2B;
