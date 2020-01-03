@@ -14,22 +14,22 @@
 
 ; Enables input on VIA1 PORTB
   macro SET_VIA1_PORTB_INPUT
-  lda #%00000000
-  sta WDC65C22_VIA1_DDRB
+  stz WDC65C22_VIA1_DDRB
   endm
 
 hd44780_lcd_init:
-; Set VIA1 PORTA according to assumed HD44780 port mapping
-  lda #HD44780_PORT_DDR_MASK
+; Read current PORTA DDR
+  lda WDC65C22_VIA1_DDRA
+; Change VIA1 PORTA according to assumed HD44780 port mapping
+  ora #HD44780_PORT_DDR_MASK
   sta WDC65C22_VIA1_DDRA
 ; Set VIA1 PORTB to full output (this is where data and commands go in 8-bit mode)
   lda #%11111111
   sta WDC65C22_VIA1_DDRB
 
 ; Initialize both port outputs with '0'
-  lda #%00000000
-  sta WDC65C22_VIA1_PORTA
-  sta WDC65C22_VIA1_PORTB
+  stz WDC65C22_VIA1_PORTA
+  stz WDC65C22_VIA1_PORTB
 
 ; Initialize counter with 0
   ldx #$00
@@ -50,6 +50,8 @@ hd44780_lcd_init_end:
 
 ; Assumes command set in A register, will overwrite it!
 hd44780_write_command:
+; First wait for busy flag to clear
+  jsr hd44780_wait_for_bf_clear
 ; Set PORTB to output mode
   SET_VIA1_PORTB_OUTPUT
 ; Sends command from A register to VIA1 PORTB
@@ -65,7 +67,19 @@ hd44780_read_status:
   lda #(HD44780_MODE_COMMAND | HD44780_READ_MODE | HD44780_PULSE)
   jsr hd44780_pulse
 
+hd44780_wait_for_bf_clear:
+; Start by setting PORTB to input mode
+  SET_VIA1_PORTB_INPUT
+hd44780_wait_for_bf_clear_loop:
+  lda #(HD44780_MODE_COMMAND | HD44780_READ_MODE | HD44780_PULSE)
+  jsr hd44780_pulse
+  bit WDC65C22_VIA1_DDRA
+  bpl hd44780_wait_for_bf_clear_loop
+  rts
+
 hd44780_write_data:
+; First wait for busy flag to clear
+  jsr hd44780_wait_for_bf_clear
 ; Set PORTB to output mode
   SET_VIA1_PORTB_OUTPUT
 ; Send data to VIA1 PORTB

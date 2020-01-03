@@ -19,6 +19,7 @@
 ; This is where OS init will start
 os_init_routine:
   jsr hd44780_lcd_init
+  stp
 
 ; This is where maskable interrupts will be handled
 os_int_handler:
