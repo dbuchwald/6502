@@ -4,8 +4,8 @@
 ; Date: 03/01/2020
 ; ---------------------------------------------------------------------------------
 
-WDC65C22_VIA1_ADDRESS      equ $9000
-WDC65C22_VIA2_ADDRESS      equ $8800
+WDC65C22_VIA1_ADDRESS      equ $6000
+WDC65C22_VIA2_ADDRESS      equ $7800
 
 WDC65C22_VIA1_PORTB        equ WDC65C22_VIA1_ADDRESS + $00
 WDC65C22_VIA1_PORTA        equ WDC65C22_VIA1_ADDRESS + $01
