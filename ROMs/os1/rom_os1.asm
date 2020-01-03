@@ -26,6 +26,7 @@ os1_hello_message_loop:
   lda os1_hello_message_data,x
   beq os1_hello_message_loop_end
   jsr hd44780_write_data
+  jsr hd44780_wait_for_bf_clear
   inx
   bra os1_hello_message_loop
 os1_hello_message_loop_end:
