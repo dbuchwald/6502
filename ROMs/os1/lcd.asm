@@ -50,8 +50,6 @@ hd44780_lcd_init_end:
 
 ; Assumes command set in A register, will overwrite it!
 hd44780_write_command:
-; First wait for busy flag to clear
-  jsr hd44780_wait_for_bf_clear
 ; Set PORTB to output mode
   SET_VIA1_PORTB_OUTPUT
 ; Sends command from A register to VIA1 PORTB
@@ -72,14 +70,16 @@ hd44780_wait_for_bf_clear:
   SET_VIA1_PORTB_INPUT
 hd44780_wait_for_bf_clear_loop:
   lda #(HD44780_MODE_COMMAND | HD44780_READ_MODE | HD44780_PULSE)
-  jsr hd44780_pulse
-  bit WDC65C22_VIA1_DDRA
-  bpl hd44780_wait_for_bf_clear_loop
+  sta WDC65C22_VIA1_PORTA
+  lda WDC65C22_VIA1_PORTB
+  sta $0200
+  lda #(HD44780_MODE_COMMAND | HD44780_READ_MODE)
+  sta WDC65C22_VIA1_PORTA
+  bit $0200
+  bmi hd44780_wait_for_bf_clear_loop
   rts
 
 hd44780_write_data:
-; First wait for busy flag to clear
-  jsr hd44780_wait_for_bf_clear
 ; Set PORTB to output mode
   SET_VIA1_PORTB_OUTPUT
 ; Send data to VIA1 PORTB
