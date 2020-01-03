@@ -18,7 +18,17 @@
 
 ; This is where OS init will start
 os_init_routine:
+; Init LCD
   jsr hd44780_lcd_init
+; Display hello message
+  ldx #$00
+os1_hello_message_loop:
+  lda os1_hello_message_data,x
+  beq os1_hello_message_loop_end
+  jsr hd44780_write_data
+  inx
+  bra os1_hello_message_loop
+os1_hello_message_loop_end:
   stp
 
 ; This is where maskable interrupts will be handled
@@ -31,6 +41,9 @@ os_nmi_handler:
 
 ; Include source for LCD operation
   include "lcd.asm"
+
+os1_hello_message_data:
+  data "OS/1 version 0.01", $00
 
   org WDC65C02_NMI_VECTOR
   word os_nmi_handler
