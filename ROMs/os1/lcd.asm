@@ -3,6 +3,9 @@
 ; Author: Dawid Buchwald
 ; Date: 03/01/2020
 ; ---------------------------------------------------------------------------------
+  include "arch/lcd/HD44780.asm"
+  include "arch/WDC65C22.asm"
+  include "arch/portmap.asm"
 
 ; Enables output on VIA1 PORTB
   macro SET_VIA1_PORTB_OUTPUT 

@@ -4,6 +4,10 @@
 ; Date: 03/01/2020
 ; ---------------------------------------------------------------------------------
 
+; Prevent issue with double include
+  ifndef HD44780_CONSTANTS_DEFINED
+HD44780_CONSTANTS_DEFINED   equ 1
+
 ; HD44780 Commands list
 HD44780_CMD_CLEAR           equ %00000001
 HD44780_CMD_HOME            equ %00000010
@@ -35,3 +39,5 @@ HD44780_FS_ONE_LINE         equ %00000000
 HD44780_FS_TWO_LINE         equ %00001000
 HD44780_FS_4_BIT            equ %00000000
 HD44780_FS_8_BIT            equ %00010000
+
+  endif ; HD44780_CONSTANTS_DEFINED

@@ -4,10 +4,7 @@
 ; Date: 03/01/2020
 ; ---------------------------------------------------------------------------------
   include "arch/WDC65C02.asm"
-  include "arch/WDC65C22.asm"
   include "arch/addrmap.asm"
-  include "arch/portmap.asm"
-  include "arch/lcd/HD44780.asm"
   include "build/AT28C256.asm"
 
 ; To align with EEPROM, we need to fill first 0x2000 bytes with 0x00, as ROM is
