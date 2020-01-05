@@ -7,8 +7,8 @@
   include "arch/addrmap.asm"
   include "build/AT28C256.asm"
 
-; To align with EEPROM, we need to fill first 0x2000 bytes with 0x00, as ROM is
-; addressable with current address decoder as from 0xa000
+; To align with EEPROM, we need to fill the gap between ROM low address and addressing mode
+; ROM start with 0x00
   org AT28C256_LOW_ADDRESS
 
   org WDC65C02_ROM_START
@@ -41,7 +41,7 @@ os_nmi_handler:
   include "lcd.asm"
 
 os1_hello_message_data:
-  data "OS/1 version 0.01", $00
+  string "OS/1 version 0.01"
 
   org WDC65C02_NMI_VECTOR
   word os_nmi_handler
