@@ -1,0 +1,15 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP WDC65C02S
+F https://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf
+$ENDCMP
+#
+$CMP WDC65C22S
+F https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf
+$ENDCMP
+#
+$CMP WDC65C51N
+F https://www.westerndesigncenter.com/wdc/documentation/w65c51n.pdf
+$ENDCMP
+#
+#End Doc Library
