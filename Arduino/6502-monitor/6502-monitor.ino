@@ -3,6 +3,8 @@ const char DATA[] = {39, 41, 43, 45, 47, 49, 51, 53};
 #define CLOCK 2
 #define READ_WRITE 3
 
+int clockCycle = 0;
+
 void setup() {
   for (int n = 0; n < 16; n += 1) {
     pinMode(ADDR[n], INPUT);
@@ -20,6 +22,10 @@ void setup() {
 
 void onClock() {
   char output[15];
+
+  sprintf(output, "%06u   ", clockCycle);
+
+  Serial.print(output);
 
   unsigned int address = 0;
   for (int n = 0; n < 16; n += 1) {
@@ -39,6 +45,7 @@ void onClock() {
 
   sprintf(output, "   %04x  %c %02x", address, digitalRead(READ_WRITE) ? 'r' : 'W', data);
   Serial.println(output);  
+  clockCycle ++;
 }
 
 void loop() {
