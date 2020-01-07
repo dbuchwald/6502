@@ -868,6 +868,156 @@ Wire Wire Line
 	3650 4500 3650 4600
 Wire Wire Line
 	5950 4600 5950 4500
+$Comp
+L 6502:WDC65C51N U?
+U 1 1 5E222305
+P 9100 3250
+F 0 "U?" H 9100 4165 50  0000 C CNN
+F 1 "WDC65C51N" H 9100 4074 50  0000 C CNN
+F 2 "Package_DIP:DIP-28_W15.24mm_Socket" H 9100 3250 50  0001 C CNN
+F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c51n.pdf" H 9100 3250 50  0001 C CNN
+	1    9100 3250
+	1    0    0    -1  
+$EndComp
+Text GLabel 9750 4000 3    50   Input ~ 0
++5V
+Wire Wire Line
+	9650 3900 9750 3900
+Wire Wire Line
+	9750 3900 9750 4000
+Text GLabel 8450 2500 1    50   Input ~ 0
+GND
+Wire Wire Line
+	8450 2500 8450 2600
+Wire Wire Line
+	8450 2600 8550 2600
+NoConn ~ 8550 3200
+NoConn ~ 9650 2800
+NoConn ~ 8550 3300
+NoConn ~ 8550 3600
+NoConn ~ 8550 3000
+Wire Wire Line
+	9650 3800 9750 3800
+Wire Wire Line
+	9750 3800 9750 3900
+Connection ~ 9750 3900
+Wire Wire Line
+	9650 3700 9750 3700
+Wire Wire Line
+	9750 3700 9750 3800
+Connection ~ 9750 3800
+Text GLabel 9750 2500 1    50   Input ~ 0
+R~W
+Wire Wire Line
+	9750 2500 9750 2600
+Wire Wire Line
+	9750 2600 9650 2600
+Text GLabel 9900 2500 1    50   Input ~ 0
+CLK
+Wire Wire Line
+	9900 2500 9900 2700
+Wire Wire Line
+	9900 2700 9650 2700
+Text Label 9800 3600 2    50   ~ 0
+d0
+Text Label 9800 3500 2    50   ~ 0
+d1
+Text Label 9800 3400 2    50   ~ 0
+d2
+Text Label 9800 3300 2    50   ~ 0
+d3
+Text Label 9800 3200 2    50   ~ 0
+d4
+Text Label 9800 3100 2    50   ~ 0
+d5
+Text Label 9800 3000 2    50   ~ 0
+d6
+Text Label 9800 2900 2    50   ~ 0
+d7
+Wire Wire Line
+	9650 2900 9800 2900
+Wire Wire Line
+	9650 3000 9800 3000
+Wire Wire Line
+	9650 3100 9800 3100
+Wire Wire Line
+	9650 3200 9800 3200
+Wire Wire Line
+	9650 3300 9800 3300
+Wire Wire Line
+	9650 3400 9800 3400
+Wire Wire Line
+	9650 3500 9800 3500
+Wire Wire Line
+	9650 3600 9800 3600
+Entry Wire Line
+	9800 2900 9900 2800
+Entry Wire Line
+	9800 3000 9900 2900
+Entry Wire Line
+	9800 3100 9900 3000
+Entry Wire Line
+	9800 3200 9900 3100
+Entry Wire Line
+	9800 3300 9900 3200
+Entry Wire Line
+	9800 3400 9900 3300
+Entry Wire Line
+	9800 3500 9900 3400
+Entry Wire Line
+	9800 3600 9900 3500
+Text Label 8350 2700 0    50   ~ 0
+a10
+Text GLabel 8150 2500 1    50   Input ~ 0
+~IOCS
+Wire Wire Line
+	8150 2500 8150 2800
+Wire Wire Line
+	8150 2800 8550 2800
+Wire Wire Line
+	8550 2700 8350 2700
+Entry Wire Line
+	8250 2600 8350 2700
+Text GLabel 8000 2500 1    50   Input ~ 0
+~RES
+Wire Wire Line
+	8000 2500 8000 2900
+Wire Wire Line
+	8000 2900 8550 2900
+Text GLabel 8450 3100 0    50   Input ~ 0
+RS232CLK
+Wire Wire Line
+	8450 3100 8550 3100
+Text Label 8350 3800 0    50   ~ 0
+a0
+Text Label 8350 3900 0    50   ~ 0
+a1
+Wire Wire Line
+	8350 3900 8550 3900
+Wire Wire Line
+	8350 3800 8550 3800
+Entry Wire Line
+	8250 3900 8350 3800
+Entry Wire Line
+	8250 4000 8350 3900
+Wire Bus Line
+	8250 3900 8250 4000
+Text GLabel 8450 3400 0    50   Input ~ 0
+GND
+Wire Wire Line
+	8450 3400 8550 3400
+Text GLabel 8450 3500 0    50   Output ~ 0
+TxD
+Wire Wire Line
+	8550 3500 8450 3500
+Text GLabel 8450 3650 0    50   Input ~ 0
+RxD
+Wire Wire Line
+	8450 3650 8500 3650
+Wire Wire Line
+	8500 3650 8500 3700
+Wire Wire Line
+	8500 3700 8550 3700
 Wire Bus Line
 	3050 4200 3050 4500
 Wire Bus Line
@@ -888,6 +1038,8 @@ Wire Bus Line
 	5650 2600 5650 3300
 Wire Bus Line
 	5650 3600 5650 4300
+Wire Bus Line
+	9900 2800 9900 3500
 Wire Bus Line
 	1400 3500 1400 4600
 $EndSCHEMATC
