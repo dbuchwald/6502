@@ -4,14 +4,14 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev ""
+Title "65C02 Hobby Computer"
+Date "2020-01-07"
+Rev "v001"
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 ""
-Comment4 ""
+Comment3 "Based on Ben Eater's design"
+Comment4 "Author: Dawid Buchwald"
 $EndDescr
 $Comp
 L 6502:WDC65C02S U?
@@ -24,20 +24,16 @@ F 3 "" H 2050 4450 50  0001 C CNN
 	1    2200 3500
 	1    0    0    -1  
 $EndComp
-Text GLabel 1500 2900 0    50   Input ~ 0
+Text GLabel 1600 2500 1    50   Input ~ 0
 IRQ
 Wire Wire Line
-	1500 2900 1700 2900
-Text GLabel 2950 2900 2    50   Input ~ 0
+	1600 2500 1600 2900
+Text GLabel 3000 2500 1    50   Input ~ 0
 CLK
 Wire Wire Line
-	2950 2900 2750 2900
+	3000 2900 2750 2900
 Text GLabel 2850 4650 3    50   Input ~ 0
 GND
-Text GLabel 1500 3300 0    50   Input ~ 0
-+5V
-Wire Wire Line
-	1500 3300 1700 3300
 Text Label 1500 3400 0    50   ~ 0
 a0
 Text Label 1500 3500 0    50   ~ 0
@@ -134,10 +130,10 @@ Wire Wire Line
 	2750 3400 2950 3400
 Wire Wire Line
 	2750 3300 2950 3300
-Text GLabel 2950 3200 2    50   Input ~ 0
+Text GLabel 3150 2500 1    50   Input ~ 0
 R~W
 Wire Wire Line
-	2950 3200 2750 3200
+	3150 3200 2750 3200
 NoConn ~ 2750 3000
 NoConn ~ 2750 2800
 NoConn ~ 2750 2700
@@ -181,10 +177,10 @@ Wire Wire Line
 Connection ~ 1150 2700
 Text GLabel 1150 2500 1    50   Input ~ 0
 +5V
-Text GLabel 2950 2600 2    50   Input ~ 0
-RES
+Text GLabel 2850 2500 1    50   Input ~ 0
+~RES
 Wire Wire Line
-	2950 2600 2750 2600
+	2850 2600 2750 2600
 Wire Wire Line
 	2750 4500 2850 4500
 Wire Wire Line
@@ -241,54 +237,54 @@ NoConn ~ 1700 2600
 $Comp
 L power:+5V #PWR?
 U 1 1 5E15AAC6
-P 1150 900
-F 0 "#PWR?" H 1150 750 50  0001 C CNN
-F 1 "+5V" H 1165 1073 50  0000 C CNN
-F 2 "" H 1150 900 50  0001 C CNN
-F 3 "" H 1150 900 50  0001 C CNN
-	1    1150 900 
+P 1300 1200
+F 0 "#PWR?" H 1300 1050 50  0001 C CNN
+F 1 "+5V" H 1315 1373 50  0000 C CNN
+F 2 "" H 1300 1200 50  0001 C CNN
+F 3 "" H 1300 1200 50  0001 C CNN
+	1    1300 1200
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 5E15AF3A
-P 1150 1400
-F 0 "#PWR?" H 1150 1150 50  0001 C CNN
-F 1 "GND" H 1155 1227 50  0000 C CNN
-F 2 "" H 1150 1400 50  0001 C CNN
-F 3 "" H 1150 1400 50  0001 C CNN
-	1    1150 1400
+P 1300 1700
+F 0 "#PWR?" H 1300 1450 50  0001 C CNN
+F 1 "GND" H 1305 1527 50  0000 C CNN
+F 2 "" H 1300 1700 50  0001 C CNN
+F 3 "" H 1300 1700 50  0001 C CNN
+	1    1300 1700
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:C C?
 U 1 1 5E15B54A
-P 1150 1150
-F 0 "C?" H 1265 1196 50  0000 L CNN
-F 1 "0.1uF" H 1265 1105 50  0000 L CNN
-F 2 "" H 1188 1000 50  0001 C CNN
-F 3 "~" H 1150 1150 50  0001 C CNN
-	1    1150 1150
+P 1300 1450
+F 0 "C?" H 1415 1496 50  0000 L CNN
+F 1 "0.1uF" H 1415 1405 50  0000 L CNN
+F 2 "" H 1338 1300 50  0001 C CNN
+F 3 "~" H 1300 1450 50  0001 C CNN
+	1    1300 1450
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1150 900  1150 950 
+	1300 1200 1300 1250
 Wire Wire Line
-	1150 1300 1150 1350
-Text GLabel 1250 950  2    50   Input ~ 0
+	1300 1600 1300 1650
+Text GLabel 1400 1250 2    50   Output ~ 0
 +5V
-Text GLabel 1250 1350 2    50   Input ~ 0
+Text GLabel 1400 1650 2    50   Output ~ 0
 GND
 Wire Wire Line
-	1150 1350 1250 1350
-Connection ~ 1150 1350
+	1300 1650 1400 1650
+Connection ~ 1300 1650
 Wire Wire Line
-	1150 1350 1150 1400
+	1300 1650 1300 1700
 Wire Wire Line
-	1150 950  1250 950 
-Connection ~ 1150 950 
+	1300 1250 1400 1250
+Connection ~ 1300 1250
 Wire Wire Line
-	1150 950  1150 1000
+	1300 1250 1300 1300
 $Comp
 L Device:R R?
 U 1 1 5E169531
@@ -305,7 +301,7 @@ Text GLabel 2150 1150 0    50   Input ~ 0
 Wire Wire Line
 	2150 1150 2250 1150
 Text GLabel 3000 1150 2    50   Input ~ 0
-RES
+~RES
 Wire Wire Line
 	2550 1150 2600 1150
 $Comp
@@ -341,16 +337,16 @@ Connection ~ 2900 1150
 Wire Wire Line
 	2900 1150 3000 1150
 Wire Wire Line
-	2600 1650 2600 1800
+	2600 1650 2600 1750
 Wire Wire Line
-	2600 1800 2900 1800
+	2600 1750 2900 1750
 Wire Wire Line
-	2900 1800 2900 1600
-Text GLabel 2150 1800 0    50   Input ~ 0
+	2900 1750 2900 1600
+Text GLabel 2150 1750 0    50   Input ~ 0
 GND
 Wire Wire Line
-	2150 1800 2600 1800
-Connection ~ 2600 1800
+	2150 1750 2600 1750
+Connection ~ 2600 1750
 $Comp
 L 6502:WDC65C22S U?
 U 1 1 5E171BBD
@@ -373,16 +369,16 @@ F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf" H 6650 35
 	1    6550 3500
 	1    0    0    -1  
 $EndComp
-Text GLabel 3650 4500 0    50   Input ~ 0
+Text GLabel 3650 4600 3    50   Input ~ 0
 +5V
-Text GLabel 5850 4500 0    50   Input ~ 0
+Text GLabel 5950 4600 3    50   Input ~ 0
 +5V
 Wire Wire Line
-	5850 4500 6050 4500
+	5950 4500 6050 4500
 Text GLabel 4900 2500 1    50   Input ~ 0
-RES
+~RES
 Text GLabel 7200 2500 1    50   Input ~ 0
-RES
+~RES
 Wire Wire Line
 	4800 3200 4900 3200
 Wire Wire Line
@@ -809,6 +805,69 @@ Wire Wire Line
 	5050 4100 5050 2500
 Wire Wire Line
 	4800 4100 5050 4100
+Wire Wire Line
+	1150 3300 1150 3100
+Wire Wire Line
+	1150 3300 1700 3300
+Connection ~ 1150 3100
+Wire Wire Line
+	1600 2900 1700 2900
+Wire Wire Line
+	3150 3200 3150 2500
+Wire Wire Line
+	3000 2900 3000 2500
+Wire Wire Line
+	2850 2600 2850 2500
+$Comp
+L Oscillator:ACO-xxxMHz X?
+U 1 1 5E1CCFB4
+P 3750 1450
+F 0 "X?" H 3500 1500 50  0000 R CNN
+F 1 "8MHz" H 3500 1400 50  0000 R CNN
+F 2 "Oscillator:Oscillator_DIP-14" H 4200 1100 50  0001 C CNN
+F 3 "http://www.conwin.com/datasheets/cx/cx030.pdf" H 3650 1450 50  0001 C CNN
+	1    3750 1450
+	1    0    0    -1  
+$EndComp
+Text GLabel 3750 1850 3    50   Input ~ 0
+GND
+Text GLabel 3750 1050 1    50   Input ~ 0
++5V
+Wire Wire Line
+	3750 1750 3750 1850
+Wire Wire Line
+	3750 1150 3750 1050
+Text GLabel 4150 1450 2    50   Output ~ 0
+CLK
+Wire Wire Line
+	4050 1450 4150 1450
+$Comp
+L Oscillator:ACO-xxxMHz X?
+U 1 1 5E1E750E
+P 5100 1450
+F 0 "X?" H 4850 1500 50  0000 R CNN
+F 1 "1.8432MHz" H 4850 1400 50  0000 R CNN
+F 2 "Oscillator:Oscillator_DIP-14" H 5550 1100 50  0001 C CNN
+F 3 "http://www.conwin.com/datasheets/cx/cx030.pdf" H 5000 1450 50  0001 C CNN
+	1    5100 1450
+	1    0    0    -1  
+$EndComp
+Text GLabel 5100 1050 1    50   Input ~ 0
++5V
+Text GLabel 5100 1850 3    50   Input ~ 0
+GND
+Wire Wire Line
+	5100 1850 5100 1750
+Wire Wire Line
+	5100 1050 5100 1150
+Text GLabel 5500 1450 2    50   Output ~ 0
+RS232CLK
+Wire Wire Line
+	5400 1450 5500 1450
+Wire Wire Line
+	3650 4500 3650 4600
+Wire Wire Line
+	5950 4600 5950 4500
 Wire Bus Line
 	3050 4200 3050 4500
 Wire Bus Line
