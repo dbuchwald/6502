@@ -1,14 +1,22 @@
 EESchema-DOCLIB  Version 2.0
 #
-$CMP WDC65C02S
+$CMP 28C256
+F http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf
+$ENDCMP
+#
+$CMP 62256
+F https://www.alliancememory.com/wp-content/uploads/pdf/AS6C62256.pdf
+$ENDCMP
+#
+$CMP 65C02S
 F https://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf
 $ENDCMP
 #
-$CMP WDC65C22S
+$CMP 65C22S
 F https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf
 $ENDCMP
 #
-$CMP WDC65C51N
+$CMP 65C51N
 F https://www.westerndesigncenter.com/wdc/documentation/w65c51n.pdf
 $ENDCMP
 #
