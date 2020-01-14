@@ -123,7 +123,6 @@ Text GLabel 3100 2500 1    50   Input ~ 0
 R~W
 Wire Wire Line
 	3100 3200 2700 3200
-NoConn ~ 2700 3000
 NoConn ~ 2700 2800
 NoConn ~ 2700 2700
 NoConn ~ 1700 3200
@@ -1538,32 +1537,21 @@ Wire Wire Line
 	7950 800  7950 700 
 Wire Wire Line
 	7950 700  8100 700 
-$Comp
-L 74xx:74LS04 U?
-U 1 1 5E4F36D6
-P 9700 1200
-F 0 "U?" H 9700 1517 50  0000 C CNN
-F 1 "74LS04" H 9700 1426 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 9700 1200 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 9700 1200 50  0001 C CNN
-	1    9700 1200
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	9200 1200 9400 1200
-Text GLabel 10200 1200 2    50   Output ~ 0
+Text GLabel 10300 1200 2    50   Output ~ 0
 ~RES
 Wire Wire Line
-	10000 1200 10100 1200
+	10100 1200 10200 1200
 $Comp
 L Device:R R?
 U 1 1 5E552FBE
-P 10100 950
-F 0 "R?" V 10000 950 50  0000 C CNN
-F 1 "1K" V 10100 950 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 10030 950 50  0001 C CNN
-F 3 "~" H 10100 950 50  0001 C CNN
-	1    10100 950 
+P 10200 950
+F 0 "R?" V 10100 950 50  0000 C CNN
+F 1 "1K" V 10200 950 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 10130 950 50  0001 C CNN
+F 3 "~" H 10200 950 50  0001 C CNN
+	1    10200 950 
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -1580,15 +1568,15 @@ Wire Wire Line
 Connection ~ 8100 700 
 Connection ~ 8700 700 
 Wire Wire Line
-	10100 800  10100 700 
+	10200 800  10200 700 
 Wire Wire Line
-	10100 700  9300 700 
+	10200 700  9300 700 
 Connection ~ 9300 700 
 Wire Wire Line
-	10100 1100 10100 1200
-Connection ~ 10100 1200
+	10200 1100 10200 1200
+Connection ~ 10200 1200
 Wire Wire Line
-	10100 1200 10200 1200
+	10200 1200 10300 1200
 Wire Wire Line
 	8700 1000 8700 700 
 Text GLabel 7300 700  0    50   Input ~ 0
@@ -1619,6 +1607,35 @@ Wire Wire Line
 	7400 2100 7800 2100
 Wire Wire Line
 	7400 1250 7400 700 
+Connection ~ 7400 700 
+Wire Wire Line
+	7400 700  7950 700 
+Text GLabel 3250 2500 1    50   Input ~ 0
++5V
+Wire Wire Line
+	2700 3000 3250 3000
+Wire Wire Line
+	3250 3000 3250 2500
+$Comp
+L 74xx:74HC00 U?
+U 4 1 5E218D59
+P 9800 1200
+F 0 "U?" H 9800 1525 50  0000 C CNN
+F 1 "74HC00" H 9800 1434 50  0000 C CNN
+F 2 "" H 9800 1200 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74hc00" H 9800 1200 50  0001 C CNN
+	4    9800 1200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9500 1100 9400 1100
+Wire Wire Line
+	9400 1100 9400 1200
+Wire Wire Line
+	9400 1300 9500 1300
+Connection ~ 9400 1200
+Wire Wire Line
+	9400 1200 9400 1300
 Wire Bus Line
 	3500 6750 3500 6950
 Wire Bus Line
@@ -1661,7 +1678,4 @@ Wire Bus Line
 	1450 5550 1450 6450
 Wire Bus Line
 	1400 3500 1400 4600
-Connection ~ 7400 700 
-Wire Wire Line
-	7400 700  7950 700 
 $EndSCHEMATC
