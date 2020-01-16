@@ -850,15 +850,11 @@ Connection ~ 4800 1100
 Wire Wire Line
 	4800 1100 4800 1000
 Text Label 4600 1700 0    50   ~ 0
-a13
-Text Label 4600 1900 0    50   ~ 0
 a14
-Text Label 4600 2000 0    50   ~ 0
+Text Label 4600 1900 0    50   ~ 0
 a13
 Wire Wire Line
-	5700 2000 4600 2000
-Wire Wire Line
-	4900 1900 4600 1900
+	4900 1900 4800 1900
 Wire Wire Line
 	4900 1700 4600 1700
 Wire Wire Line
@@ -871,8 +867,6 @@ Entry Wire Line
 	4500 1800 4600 1700
 Entry Wire Line
 	4500 2000 4600 1900
-Entry Wire Line
-	4500 2100 4600 2000
 Entry Wire Line
 	4500 1200 4600 1100
 Text GLabel 6400 1900 2    50   Output ~ 0
@@ -907,13 +901,13 @@ Wire Bus Line
 	7600 4100 7600 4000
 $Comp
 L 74xx:74HC02 U?
-U 4 1 5E1744DD
+U 2 1 5E1744DD
 P 5200 1800
 F 0 "U?" H 5200 2125 50  0000 C CNN
 F 1 "74HC02" H 5200 2034 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 5200 1800 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74hc02" H 5200 1800 50  0001 C CNN
-	4    5200 1800
+	2    5200 1800
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1636,18 +1630,22 @@ Wire Wire Line
 Connection ~ 9400 1200
 Wire Wire Line
 	9400 1200 9400 1300
+Wire Wire Line
+	4800 1900 4800 2000
+Wire Wire Line
+	4800 2000 5700 2000
 Wire Bus Line
 	3500 6750 3500 6950
 Wire Bus Line
 	1450 6750 1450 6950
+Wire Bus Line
+	4500 1200 4500 2000
 Wire Bus Line
 	3000 4200 3000 4500
 Wire Bus Line
 	5300 2700 5300 3000
 Wire Bus Line
 	7600 2700 7600 3000
-Wire Bus Line
-	4500 1200 4500 2100
 Wire Bus Line
 	5400 5950 5400 6450
 Wire Bus Line
@@ -1678,4 +1676,7 @@ Wire Bus Line
 	1450 5550 1450 6450
 Wire Bus Line
 	1400 3500 1400 4600
+Connection ~ 4800 1900
+Wire Wire Line
+	4800 1900 4600 1900
 $EndSCHEMATC
