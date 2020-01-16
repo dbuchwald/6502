@@ -19,11 +19,11 @@ ROM_OS1_BINARY=$(BUILD_DIR)/rom_os1.bin
 
 DEPS=$(INCLUDE_DIR)/arch/WDC65C02.asm \
      $(INCLUDE_DIR)/arch/WDC65C22.asm \
-		 $(INCLUDE_DIR)/arch/addrmap.asm \
-		 $(INCLUDE_DIR)/arch/portmap.asm \
-		 $(INCLUDE_DIR)/arch/lcd/HD44780.asm \
-		 $(INCLUDE_DIR)/build/AT28C256.asm \
-		 lcd.asm
+     $(INCLUDE_DIR)/arch/addrmap.asm \
+     $(INCLUDE_DIR)/arch/portmap.asm \
+     $(INCLUDE_DIR)/arch/lcd/HD44780.asm \
+     $(INCLUDE_DIR)/build/AT28C256.asm \
+     lcd.asm
 
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)
