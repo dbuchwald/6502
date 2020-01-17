@@ -1,5 +1,6 @@
 EESchema Schematic File Version 4
-EELAYER 30 0
+LIBS:65C02_Computer-cache
+EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -14,7 +15,7 @@ Comment3 "Based on Ben Eater's design"
 Comment4 "Author: Dawid Buchwald"
 $EndDescr
 Text GLabel 1600 2500 1    50   Input ~ 0
-IRQ
+~IRQ
 Wire Wire Line
 	1600 2500 1600 2900
 Text GLabel 2950 2500 1    50   Input ~ 0
@@ -123,7 +124,6 @@ Text GLabel 3100 2500 1    50   Input ~ 0
 R~W
 Wire Wire Line
 	3100 3200 2700 3200
-NoConn ~ 2700 2800
 NoConn ~ 2700 2700
 NoConn ~ 1700 3200
 NoConn ~ 1700 3000
@@ -614,9 +614,9 @@ Entry Wire Line
 	5650 4200 5750 4100
 Entry Wire Line
 	5650 4300 5750 4200
-Text GLabel 4850 4600 3    50   Input ~ 0
+Text GLabel 4850 4600 3    50   Output ~ 0
 ~V1IRQ
-Text GLabel 7150 4600 3    50   Input ~ 0
+Text GLabel 7150 4600 3    50   Output ~ 0
 ~V2IRQ
 Wire Wire Line
 	4750 4500 4850 4500
@@ -708,7 +708,6 @@ Wire Wire Line
 Wire Wire Line
 	8400 3000 8500 3000
 NoConn ~ 8500 3600
-NoConn ~ 9500 3200
 NoConn ~ 8500 3700
 NoConn ~ 8500 4000
 NoConn ~ 8500 3400
@@ -734,54 +733,54 @@ Wire Wire Line
 	9750 2900 9750 3100
 Wire Wire Line
 	9750 3100 9500 3100
-Text Label 9650 4000 2    50   ~ 0
+Text Label 10050 4000 2    50   ~ 0
 d0
-Text Label 9650 3900 2    50   ~ 0
+Text Label 10050 3900 2    50   ~ 0
 d1
-Text Label 9650 3800 2    50   ~ 0
+Text Label 10050 3800 2    50   ~ 0
 d2
-Text Label 9650 3700 2    50   ~ 0
+Text Label 10050 3700 2    50   ~ 0
 d3
-Text Label 9650 3600 2    50   ~ 0
+Text Label 10050 3600 2    50   ~ 0
 d4
-Text Label 9650 3500 2    50   ~ 0
+Text Label 10050 3500 2    50   ~ 0
 d5
-Text Label 9650 3400 2    50   ~ 0
+Text Label 10050 3400 2    50   ~ 0
 d6
-Text Label 9650 3300 2    50   ~ 0
+Text Label 10050 3300 2    50   ~ 0
 d7
 Wire Wire Line
-	9500 3300 9650 3300
+	9500 3300 10050 3300
 Wire Wire Line
-	9500 3400 9650 3400
+	9500 3400 10050 3400
 Wire Wire Line
-	9500 3500 9650 3500
+	9500 3500 10050 3500
 Wire Wire Line
-	9500 3600 9650 3600
+	9500 3600 10050 3600
 Wire Wire Line
-	9500 3700 9650 3700
+	9500 3700 10050 3700
 Wire Wire Line
-	9500 3800 9650 3800
+	9500 3800 10050 3800
 Wire Wire Line
-	9500 3900 9650 3900
+	9500 3900 10050 3900
 Wire Wire Line
-	9500 4000 9650 4000
+	9500 4000 10050 4000
 Entry Wire Line
-	9650 3300 9750 3200
+	10050 3300 10150 3200
 Entry Wire Line
-	9650 3400 9750 3300
+	10050 3400 10150 3300
 Entry Wire Line
-	9650 3500 9750 3400
+	10050 3500 10150 3400
 Entry Wire Line
-	9650 3600 9750 3500
+	10050 3600 10150 3500
 Entry Wire Line
-	9650 3700 9750 3600
+	10050 3700 10150 3600
 Entry Wire Line
-	9650 3800 9750 3700
+	10050 3800 10150 3700
 Entry Wire Line
-	9650 3900 9750 3800
+	10050 3900 10150 3800
 Entry Wire Line
-	9650 4000 9750 3900
+	10050 4000 10150 3900
 Text Label 8350 3100 0    50   ~ 0
 a10
 Text GLabel 8100 2900 1    50   Input ~ 0
@@ -1609,7 +1608,7 @@ Text GLabel 3250 2500 1    50   Input ~ 0
 Wire Wire Line
 	2700 3000 3250 3000
 Wire Wire Line
-	3250 3000 3250 2500
+	3250 3000 3250 2800
 $Comp
 L 74xx:74HC00 U?
 U 4 1 5E218D59
@@ -1634,6 +1633,56 @@ Wire Wire Line
 	4800 1900 4800 2000
 Wire Wire Line
 	4800 2000 5700 2000
+Connection ~ 4800 1900
+Wire Wire Line
+	4800 1900 4600 1900
+$Comp
+L 74xx:74LS21 U?
+U 1 1 5E23A6D1
+P 6650 6100
+F 0 "U?" H 6650 6475 50  0000 C CNN
+F 1 "74LS21" H 6650 6384 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 6650 6100 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 6650 6100 50  0001 C CNN
+	1    6650 6100
+	1    0    0    -1  
+$EndComp
+Text GLabel 9900 2900 1    50   Output ~ 0
+~AIRQ
+Wire Wire Line
+	9500 3200 9900 3200
+Wire Wire Line
+	9900 3200 9900 2900
+Text GLabel 6250 5850 1    50   Input ~ 0
+~V1IRQ
+Text GLabel 6100 5850 1    50   Input ~ 0
+~V2IRQ
+Text GLabel 5950 5850 1    50   Input ~ 0
+~AIRQ
+Text GLabel 5800 5850 1    50   Input ~ 0
++5V
+Wire Wire Line
+	6250 5850 6250 5950
+Wire Wire Line
+	6250 5950 6350 5950
+Wire Wire Line
+	6100 5850 6100 6050
+Wire Wire Line
+	6100 6050 6350 6050
+Wire Wire Line
+	5950 5850 5950 6150
+Wire Wire Line
+	5950 6150 6350 6150
+Wire Wire Line
+	5800 5850 5800 6250
+Wire Wire Line
+	5800 6250 6350 6250
+Text GLabel 7050 6100 2    50   Output ~ 0
+~IRQ
+Wire Wire Line
+	6950 6100 7050 6100
+Wire Wire Line
+	2700 2800 3250 2800
 Wire Bus Line
 	3500 6750 3500 6950
 Wire Bus Line
@@ -1669,14 +1718,14 @@ Wire Bus Line
 Wire Bus Line
 	5650 3600 5650 4300
 Wire Bus Line
-	9750 3200 9750 3900
+	10150 3200 10150 3900
 Wire Bus Line
 	3500 5550 3500 6450
 Wire Bus Line
 	1450 5550 1450 6450
 Wire Bus Line
 	1400 3500 1400 4600
-Connection ~ 4800 1900
+Connection ~ 3250 2800
 Wire Wire Line
-	4800 1900 4600 1900
+	3250 2800 3250 2500
 $EndSCHEMATC
