@@ -848,8 +848,6 @@ a14
 Text Label 3650 1900 0    50   ~ 0
 a13
 Wire Wire Line
-	3950 1900 3850 1900
-Wire Wire Line
 	3950 1700 3650 1700
 Wire Wire Line
 	4550 1100 4650 1100
@@ -1624,13 +1622,6 @@ Wire Wire Line
 Connection ~ 8200 1200
 Wire Wire Line
 	8200 1200 8200 1300
-Wire Wire Line
-	3850 1900 3850 2000
-Wire Wire Line
-	3850 2000 4750 2000
-Connection ~ 3850 1900
-Wire Wire Line
-	3850 1900 3650 1900
 $Comp
 L 74xx:74LS21 U?
 U 1 1 5E23A6D1
@@ -1874,18 +1865,26 @@ Connection ~ 5100 5250
 Wire Wire Line
 	5100 5650 5100 5700
 Connection ~ 5100 5650
+Text Notes 6600 5750 0    50   ~ 0
+Bypass capacitors, one per IC
+Entry Wire Line
+	3550 2100 3650 2000
+Wire Wire Line
+	3650 1900 3950 1900
+Wire Wire Line
+	3650 2000 4750 2000
 Wire Bus Line
 	2750 6550 2750 6750
 Wire Bus Line
 	700  6550 700  6750
-Wire Bus Line
-	3550 1200 3550 2000
 Wire Bus Line
 	2550 4200 2550 4500
 Wire Bus Line
 	4850 2700 4850 3000
 Wire Bus Line
 	7150 2700 7150 3000
+Wire Bus Line
+	3550 1200 3550 2100
 Wire Bus Line
 	4650 5750 4650 6250
 Wire Bus Line
@@ -1916,6 +1915,6 @@ Wire Bus Line
 	700  5350 700  6250
 Wire Bus Line
 	950  3500 950  4600
-Text Notes 6600 5750 0    50   ~ 0
-Bypass capacitors, one per IC
+Text Label 3650 2000 0    50   ~ 0
+a15
 $EndSCHEMATC
