@@ -43,6 +43,9 @@ os_nmi_handler:
 os1_hello_message_data:
   string "OS/1 version 0.01"
 
+os1_git_commit_data:
+  include "include/version/version.asm"
+
   org WDC65C02_NMI_VECTOR
   word os_nmi_handler
   org WDC65C02_RESET_VECTOR
