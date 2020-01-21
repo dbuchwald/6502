@@ -4,8 +4,9 @@
 ; Date: 03/01/2020
 ; ---------------------------------------------------------------------------------
   include "arch/WDC65C02.asm"
-  include "arch/addrmap.asm"
+  include "arch/addrmap.asm"  
   include "build/AT28C256.asm"
+  include "os1_memmap.asm"
 
 ; To align with EEPROM, we need to fill the gap between ROM low address and addressing mode
 ; ROM start with 0x00
@@ -36,6 +37,9 @@ os_int_handler:
 ; Default non-maskable interrupt handler
 os_nmi_handler:
   rti
+
+; Include source for OS/1 Init routines
+  include "include/os1_init_routines.asm"
 
 ; Include source for LCD operation
   include "lcd.asm"

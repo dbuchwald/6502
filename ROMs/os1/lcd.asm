@@ -20,6 +20,14 @@
   stz WDC65C22_VIA1_DDRB
   endm
 
+; Macro (not a subroutine anymore)
+; Assumes ACC contains HD44780 control bits, modifies them!
+  macro HD44780_SEND_PULSE
+  sta WDC65C22_VIA1_PORTA
+  and #HD44780_PULSE_DISABLE_MASK
+  sta WDC65C22_VIA1_PORTA
+  endm
+
 hd44780_lcd_init:
 ; Read current PORTA DDR
   lda WDC65C22_VIA1_DDRA
@@ -58,15 +66,8 @@ hd44780_write_command:
 ; Sends command from A register to VIA1 PORTB
   sta WDC65C22_VIA1_PORTB
   lda #(HD44780_MODE_COMMAND | HD44780_WRITE_MODE | HD44780_PULSE)
-  jsr hd44780_pulse
+  HD44780_SEND_PULSE
   rts
-
-; Stores current status in A register
-hd44780_read_status:
-; Set PORTB to input mode
-  SET_VIA1_PORTB_INPUT
-  lda #(HD44780_MODE_COMMAND | HD44780_READ_MODE | HD44780_PULSE)
-  jsr hd44780_pulse
 
 hd44780_wait_for_bf_clear:
 ; Start by setting PORTB to input mode
@@ -88,14 +89,7 @@ hd44780_write_data:
 ; Send data to VIA1 PORTB
   sta WDC65C22_VIA1_PORTB
   lda #(HD44780_MODE_DATA | HD44780_WRITE_MODE | HD44780_PULSE)
-  jsr hd44780_pulse
-  rts
-
-; Assumes A contains HD44780 control bits, modifies them!
-hd44780_pulse:
-  sta WDC65C22_VIA1_PORTA
-  and #HD44780_PULSE_DISABLE_MASK
-  sta WDC65C22_VIA1_PORTA
+  HD44780_SEND_PULSE
   rts
 
 hd44780_init_sequence_data:

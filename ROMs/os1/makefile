@@ -24,6 +24,7 @@ DEPS=$(INCLUDE_DIR)/version/version.asm \
      $(INCLUDE_DIR)/arch/portmap.asm \
      $(INCLUDE_DIR)/arch/lcd/HD44780.asm \
      $(INCLUDE_DIR)/build/AT28C256.asm \
+     $(INCLUDE_DIR)/os1_memmap.asm \
      lcd.asm
 
 $(BUILD_DIR):
