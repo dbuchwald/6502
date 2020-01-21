@@ -67,6 +67,9 @@ hd44780_write_command:
   sta WDC65C22_VIA1_PORTB
   lda #(HD44780_MODE_COMMAND | HD44780_WRITE_MODE | HD44780_PULSE)
   HD44780_SEND_PULSE
+  inx
+  lda hd44780_init_sequence_data,x
+  jsr os1_function_delay
   rts
 
 hd44780_wait_for_bf_clear:
@@ -94,7 +97,11 @@ hd44780_write_data:
 
 hd44780_init_sequence_data:
   byte HD44780_CMD_FUNCTION_SET | HD44780_FS_FONT5x7 | HD44780_FS_TWO_LINE | HD44780_FS_8_BIT
+  byte 50
   byte HD44780_CMD_DISPLAY_MODE | HD44780_DM_DISPLAY_ON | HD44780_DM_CURSOR_OFF | HD44780_DM_CURSOR_NOBLINK
+  byte 5
   byte HD44780_CMD_ENTRY_MODE | HD44780_EM_SHIFT_CURSOR | HD44780_EM_INCREMENT
+  byte 5
   byte HD44780_CMD_CLEAR
+  byte 5
   byte $00

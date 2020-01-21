@@ -16,6 +16,8 @@
 
 ; This is where OS init will start
 os_init_routine:
+; Include source for OS/1 Init routines
+  include "include/os1_init_routines.asm"
 ; Init LCD
   jsr hd44780_lcd_init
 ; Display hello message
@@ -38,8 +40,8 @@ os_int_handler:
 os_nmi_handler:
   rti
 
-; Include source for OS/1 Init routines
-  include "include/os1_init_routines.asm"
+; Include source for OS/1 Utilities
+  include "include/os1_utilities.asm"
 
 ; Include source for LCD operation
   include "lcd.asm"
