@@ -30,7 +30,28 @@ os1_hello_message_loop:
   inx
   bra os1_hello_message_loop
 os1_hello_message_loop_end:
-  stp
+  
+; Initialize ACIA
+  jsr serial_port_init
+
+; Initialize index
+  ldx #$00
+; Write hello to serial interface
+os1_serial_hello_loop:
+  lda os1_serial_hello_message_data,x
+  beq os1_serial_hello_loop_end
+  jsr serial_port_write_data
+  inx 
+  bra os1_serial_hello_loop
+os1_serial_hello_loop_end:
+; read one character
+  jsr serial_port_read_data
+; print the char to the screen
+  jsr hd44780_write_data
+  jsr hd44780_wait_for_bf_clear
+; rinse and repeat
+  ldx #$00
+  bra os1_serial_hello_loop
 
 ; This is where maskable interrupts will be handled
 os_int_handler:
@@ -46,8 +67,14 @@ os_nmi_handler:
 ; Include source for LCD operation
   include "lcd.asm"
 
+; Include source for serial operation
+  include "serial.asm"
+
 os1_hello_message_data:
   string "OS/1 version 0.01"
+
+os1_serial_hello_message_data:
+  string "OS/1 Serial Port ready>"
 
 os1_git_commit_data:
   include "include/version/version.asm"
