@@ -1,0 +1,1001 @@
+F00:0001       ; ---------------------------------------------------------------------------------
+F00:0002       ; Main ROM file, containing all the directives needed for data alignment for EEPROM
+F00:0003       ; Author: Dawid Buchwald
+F00:0004       ; Date: 03/01/2020
+F00:0005       ; ---------------------------------------------------------------------------------
+F00:0006         include "arch/WDC65C02.asm"
+F01:0001       ; ---------------------------------------------------------------------------------
+F01:0002       ; Include file for WDC65C02 operational constants
+F01:0003       ; Author: Dawid Buchwald
+F01:0004       ; Date: 03/01/2020
+F01:0005       ; ---------------------------------------------------------------------------------
+F01:0006       
+F01:0007       ; Prevent issue with double include
+F01:0008         ifndef WDC65C02_CONSTANTS_DEFINED
+F01:0009       WDC65C02_CONSTANTS_DEFINED equ 1
+F01:0010       
+F01:0011       WDC65C02_RESET_VECTOR      equ $fffc
+F01:0012       WDC65C02_INT_VECTOR        equ $fffe
+F01:0013       WDC65C02_NMI_VECTOR        equ $fffa
+F01:0014       
+F01:0015         endif ; WDC65C02_CONSTANTS_DEFINED
+F00:0007         include "arch/addrmap.asm"  
+F02:0001       ; ---------------------------------------------------------------------------------
+F02:0002       ; Include file for Address Mapping constants
+F02:0003       ; Author: Dawid Buchwald
+F02:0004       ; Date: 03/01/2020
+F02:0005       ; ---------------------------------------------------------------------------------
+F02:0006       
+F02:0007       ; Prevent issue with double include
+F02:0008         ifndef ADDRMAP_CONSTANTS_DEFINED
+F02:0009       ADDRMAP_CONSTANTS_DEFINED   equ 1
+F02:0010       
+F02:0011       WDC65C02_RAM_ZEROPAGE_OS   equ $0000
+F02:0012       WDC65C02_RAM_ZEROPAGE_USER equ $0080
+F02:0013       WDC65C02_RAM_STACKPAGE     equ $0100
+F02:0014       WDC65C02_RAM_OS_PAGE       equ $0200
+F02:0015       WDC65C02_RAM_USER_AREAL    equ $0400
+F02:0016       
+F02:0017         ifdef WDC65C02_ADDRESS_BASIC
+F02:0018       
+F02:0019       WDC65C02_RAM_USER_AREAH    equ $3fff
+F02:0020       WDC65C02_ROM_START         equ $8000
+F02:0021       
+F02:0022         endif ; WDC65C02_ADDRESS_BASIC
+F02:0023         ifdef WDC65C02_ADDRESS_BASIC_V2
+F02:0024       
+F02:0025       WDC65C02_RAM_USER_AREAH    equ $7fff
+F02:0026       WDC65C02_ROM_START         equ $c000
+F02:0027       
+F02:0028         endif ; WDC65C02_ADDRESS_BASIC_V2
+F02:0029         ifdef WDC65C02_ADDRESS_EXTENDED
+F02:0030       
+F02:0031       WDC65C02_RAM_USER_AREAH    equ $7fff
+F02:0032       WDC65C02_ROM_START         equ $a000
+F02:0033       
+F02:0034         endif ; WDC65C02_ADDRESS_EXTENDED
+F02:0035       
+F02:0036         ifndef WDC65C02_ROM_START
+F02:0037       
+F02:0038           fail "Set addressing mode using one of the symbols: WDC65C02_ADDRESS_BASIC, WDC65C02_ADDRESS_BASIC_V2, WDC65C02_ADDR
+F02:0039       
+F02:0040         endif ; WDC65C02_ROM_START
+F02:0041       
+F02:0042         endif ; ADDRMAP_CONSTANTS_DEFINED
+F00:0008         include "build/AT28C256.asm"
+F03:0001       ; ---------------------------------------------------------------------------------
+F03:0002       ; Include file for AT28C256 constants
+F03:0003       ; Author: Dawid Buchwald
+F03:0004       ; Date: 03/01/2020
+F03:0005       ; ---------------------------------------------------------------------------------
+F03:0006       
+F03:0007       ; Prevent issue with double include
+F03:0008         ifndef AT28C256_CONSTANTS_DEFINED
+F03:0009       AT28C256_CONSTANTS_DEFINED equ 1
+F03:0010       
+F03:0011       AT28C256_LOW_ADDRESS equ $8000
+F03:0012       
+F03:0013         endif ; AT28C256_CONSTANTS_DEFINED
+F00:0009       
+F00:0010       ; To align with EEPROM, we need to fill the gap between ROM low address and addressing mode
+F00:0011       ; ROM start with 0x00
+F00:0012         org AT28C256_LOW_ADDRESS
+F00:0013       
+F00:0014         org WDC65C02_ROM_START
+F00:0015       
+F00:0016       init_routine:
+F00:0017       ; Init LCD
+F00:0018         lda #100
+               S02:FFFFFFFFFFFFA000:  A9 64
+F00:0019         jsr ms_delay
+               S02:FFFFFFFFFFFFA002:  20 55 A0
+F00:0020         jsr hd44780_lcd_init
+               S02:FFFFFFFFFFFFA005:  20 93 A0
+F00:0021       ; Display hello message
+F00:0022         ldx #$00
+               S02:FFFFFFFFFFFFA008:  A2 00
+F00:0023       hello_message_loop:
+F00:0024         lda hello_message_data,x
+               S02:FFFFFFFFFFFFA00A:  BD 28 A1
+F00:0025         beq hello_message_loop_end
+               S02:FFFFFFFFFFFFA00D:  F0 09
+F00:0026         jsr hd44780_write_data
+               S02:FFFFFFFFFFFFA00F:  20 E9 A0
+F00:0027         jsr hd44780_wait_for_bf_clear
+               S02:FFFFFFFFFFFFA012:  20 D0 A0
+F00:0028         inx
+               S02:FFFFFFFFFFFFA015:  E8
+F00:0029         bra hello_message_loop
+               S02:FFFFFFFFFFFFA016:  80 F2
+F00:0030       hello_message_loop_end:
+F00:0031       
+F00:0032       ; wait two seconds and clear screen
+F00:0033         lda #$02
+               S02:FFFFFFFFFFFFA018:  A9 02
+F00:0034         jsr sec_delay
+               S02:FFFFFFFFFFFFA01A:  20 75 A0
+F00:0035         lda #%11111111
+               S02:FFFFFFFFFFFFA01D:  A9 FF
+F00:0036         sta WDC65C22_VIA1_DDRB
+               S02:FFFFFFFFFFFFA01F:  8D 02 90
+F00:0037         lda #HD44780_CMD_CLEAR
+               S02:FFFFFFFFFFFFA022:  A9 01
+F00:0038         sta WDC65C22_VIA1_PORTB
+               S02:FFFFFFFFFFFFA024:  8D 00 90
+F00:0039         lda #(HD44780_MODE_COMMAND | HD44780_WRITE_MODE | HD44780_PULSE)
+               S02:FFFFFFFFFFFFA027:  A9 80
+F00:0040         sta WDC65C22_VIA1_PORTA
+               S02:FFFFFFFFFFFFA029:  8D 01 90
+F00:0041         and #HD44780_PULSE_DISABLE_MASK
+               S02:FFFFFFFFFFFFA02C:  29 7F
+F00:0042         sta WDC65C22_VIA1_PORTA
+               S02:FFFFFFFFFFFFA02E:  8D 01 90
+F00:0043         lda #50
+               S02:FFFFFFFFFFFFA031:  A9 32
+F00:0044         jsr ms_delay
+               S02:FFFFFFFFFFFFA033:  20 55 A0
+F00:0045       
+F00:0046       ; Initialize ACIA
+F00:0047         jsr serial_port_init
+               S02:FFFFFFFFFFFFA036:  20 07 A1
+F00:0048       
+F00:0049       ; Initialize index
+F00:0050         ldx #$00
+               S02:FFFFFFFFFFFFA039:  A2 00
+F00:0051       ; Write hello to serial interface
+F00:0052       serial_hello_loop:
+F00:0053         lda serial_hello_message_data,x
+               S02:FFFFFFFFFFFFA03B:  BD 2F A1
+F00:0054         beq serial_hello_loop_end
+               S02:FFFFFFFFFFFFA03E:  F0 06
+F00:0055         jsr serial_port_write_data
+               S02:FFFFFFFFFFFFA040:  20 12 A1
+F00:0056         inx 
+               S02:FFFFFFFFFFFFA043:  E8
+F00:0057         bra serial_hello_loop
+               S02:FFFFFFFFFFFFA044:  80 F5
+F00:0058       serial_hello_loop_end:
+F00:0059       ; read one character
+F00:0060         jsr serial_port_read_data
+               S02:FFFFFFFFFFFFA046:  20 1D A1
+F00:0061       ; print the char to the screen
+F00:0062         jsr hd44780_write_data
+               S02:FFFFFFFFFFFFA049:  20 E9 A0
+F00:0063         jsr hd44780_wait_for_bf_clear
+               S02:FFFFFFFFFFFFA04C:  20 D0 A0
+F00:0064       ; rinse and repeat
+F00:0065         ldx #$00
+               S02:FFFFFFFFFFFFA04F:  A2 00
+F00:0066         bra serial_hello_loop
+               S02:FFFFFFFFFFFFA051:  80 E8
+F00:0067       
+F00:0068       ; This is where maskable interrupts will be handled
+F00:0069       int_handler:
+F00:0070         rti
+               S02:FFFFFFFFFFFFA053:  40
+F00:0071       
+F00:0072       ; Default non-maskable interrupt handler
+F00:0073       nmi_handler:
+F00:0074         rti
+               S02:FFFFFFFFFFFFA054:  40
+F00:0075       
+F00:0076       ; Include source for OS/1 Utilities
+F00:0077         include "include/utilities.asm"
+F04:0001       ; ---------------------------------------------------------------------------------
+F04:0002       ; Include file for OS/1 Utility routines
+F04:0003       ; Author: Dawid Buchwald
+F04:0004       ; Date: 21/01/2020
+F04:0005       ; ---------------------------------------------------------------------------------
+F04:0006       
+F04:0007         include "memmap.asm"
+F05:0001       ; ---------------------------------------------------------------------------------
+F05:0002       ; Include file for Memory Mapping constants
+F05:0003       ; Author: Dawid Buchwald
+F05:0004       ; Date: 21/01/2020
+F05:0005       ; ---------------------------------------------------------------------------------
+F05:0006       
+F05:0007       ; Prevent issue with double include
+F05:0008         ifndef MEMMAP_CONSTANTS_DEFINED
+F05:0009       _MEMMAP_CONSTANTS_DEFINED   equ 1
+F05:0010       
+F05:0011       ; Various addresses
+F05:0012       USER_RAM_AREA_START    equ WDC65C02_RAM_ZEROPAGE_OS + $00
+F05:0013       USER_RAM_AREA_END      equ WDC65C02_RAM_ZEROPAGE_OS + $02
+F05:0014       USER_ZP_START          equ WDC65C02_RAM_ZEROPAGE_OS + $04
+F05:0015       
+F05:0016       TEMP_BYTE1             equ WDC65C02_RAM_ZEROPAGE_OS + $10
+F05:0017       TEMP_BYTE2             equ WDC65C02_RAM_ZEROPAGE_OS + $11
+F05:0018       
+F05:0019         endif ; MEMMAP_CONSTANTS_DEFINED
+F04:0008       
+F04:0009       ; Prevent issue with double include
+F04:0010         ifndef UTILITIES_DEFINED
+F04:0011       UTILITIES_DEFINED equ 1
+F04:0012       
+F04:0013       ; Simple delay loop, hardcoded for 1MHz clock
+F04:0014       ; Written by Dirk Grappendoff (https://github.com/grappendorf/homecomputer-6502/blob/master/firmware/utils.s65)
+F04:0015       ms_delay:
+F04:0016         sta TEMP_BYTE1
+               S02:FFFFFFFFFFFFA055:  85 10
+F04:0017         txa
+               S02:FFFFFFFFFFFFA057:  8A
+F04:0018         pha
+               S02:FFFFFFFFFFFFA058:  48
+F04:0019         tya
+               S02:FFFFFFFFFFFFA059:  98
+F04:0020         pha
+               S02:FFFFFFFFFFFFA05A:  48
+F04:0021         ldx TEMP_BYTE1
+               S02:FFFFFFFFFFFFA05B:  A6 10
+F04:0022       
+F04:0023         ldy #190
+               S02:FFFFFFFFFFFFA05D:  A0 BE
+F04:0024       ms_delay_loop1:
+F04:0025         dey
+               S02:FFFFFFFFFFFFA05F:  88
+F04:0026         bne ms_delay_loop1
+               S02:FFFFFFFFFFFFA060:  D0 FD
+F04:0027       
+F04:0028       ms_delay_loop2:
+F04:0029         dex
+               S02:FFFFFFFFFFFFA062:  CA
+F04:0030         beq ms_delay_return
+               S02:FFFFFFFFFFFFA063:  F0 09
+F04:0031       
+F04:0032         nop
+               S02:FFFFFFFFFFFFA065:  EA
+F04:0033         ldy #198
+               S02:FFFFFFFFFFFFA066:  A0 C6
+F04:0034       ms_delay_loop3:
+F04:0035         dey
+               S02:FFFFFFFFFFFFA068:  88
+F04:0036         bne ms_delay_loop3
+               S02:FFFFFFFFFFFFA069:  D0 FD
+F04:0037       
+F04:0038         jmp ms_delay_loop2
+               S02:FFFFFFFFFFFFA06B:  4C 62 A0
+F04:0039       
+F04:0040       ms_delay_return:
+F04:0041         pla
+               S02:FFFFFFFFFFFFA06E:  68
+F04:0042         tay
+               S02:FFFFFFFFFFFFA06F:  A8
+F04:0043         pla
+               S02:FFFFFFFFFFFFA070:  68
+F04:0044         tax
+               S02:FFFFFFFFFFFFA071:  AA
+F04:0045         lda TEMP_BYTE1
+               S02:FFFFFFFFFFFFA072:  A5 10
+F04:0046         rts
+               S02:FFFFFFFFFFFFA074:  60
+F04:0047       
+F04:0048       sec_delay:
+F04:0049         sta TEMP_BYTE2
+               S02:FFFFFFFFFFFFA075:  85 11
+F04:0050         txa
+               S02:FFFFFFFFFFFFA077:  8A
+F04:0051         pha
+               S02:FFFFFFFFFFFFA078:  48
+F04:0052         tya
+               S02:FFFFFFFFFFFFA079:  98
+F04:0053         pha
+               S02:FFFFFFFFFFFFA07A:  48
+F04:0054         ldx TEMP_BYTE2
+               S02:FFFFFFFFFFFFA07B:  A6 11
+F04:0055       
+F04:0056       sec_delay_loop1:
+F04:0057         ldy #4
+               S02:FFFFFFFFFFFFA07D:  A0 04
+F04:0058       sec_delay_loop2:
+F04:0059         dey 
+               S02:FFFFFFFFFFFFA07F:  88
+F04:0060         beq sec_delay_loop1_end
+               S02:FFFFFFFFFFFFA080:  F0 07
+F04:0061         lda #250
+               S02:FFFFFFFFFFFFA082:  A9 FA
+F04:0062         jsr ms_delay
+               S02:FFFFFFFFFFFFA084:  20 55 A0
+F04:0063         bra sec_delay_loop2
+               S02:FFFFFFFFFFFFA087:  80 F6
+F04:0064       sec_delay_loop1_end:
+F04:0065         dex
+               S02:FFFFFFFFFFFFA089:  CA
+F04:0066         bne sec_delay_loop1
+               S02:FFFFFFFFFFFFA08A:  D0 F1
+F04:0067         pla
+               S02:FFFFFFFFFFFFA08C:  68
+F04:0068         tay
+               S02:FFFFFFFFFFFFA08D:  A8
+F04:0069         pla
+               S02:FFFFFFFFFFFFA08E:  68
+F04:0070         tax
+               S02:FFFFFFFFFFFFA08F:  AA
+F04:0071         lda TEMP_BYTE2
+               S02:FFFFFFFFFFFFA090:  A5 11
+F04:0072         rts
+               S02:FFFFFFFFFFFFA092:  60
+F04:0073       
+F04:0074         endif ; UTILITIES_DEFINED
+F00:0078       
+F00:0079       ; Include source for LCD operation
+F00:0080         include "lcd.asm"
+F06:0001       ; ---------------------------------------------------------------------------------
+F06:0002       ; Source file containing LCD control routines
+F06:0003       ; Author: Dawid Buchwald
+F06:0004       ; Date: 03/01/2020
+F06:0005       ; ---------------------------------------------------------------------------------
+F06:0006         include "arch/lcd/HD44780.asm"
+F07:0001       ; ---------------------------------------------------------------------------------
+F07:0002       ; Include file for HD44780 LCD driver constants
+F07:0003       ; Author: Dawid Buchwald
+F07:0004       ; Date: 03/01/2020
+F07:0005       ; ---------------------------------------------------------------------------------
+F07:0006       
+F07:0007       ; Prevent issue with double include
+F07:0008         ifndef HD44780_CONSTANTS_DEFINED
+F07:0009       HD44780_CONSTANTS_DEFINED   equ 1
+F07:0010       
+F07:0011       ; HD44780 Commands list
+F07:0012       HD44780_CMD_CLEAR           equ %00000001
+F07:0013       HD44780_CMD_HOME            equ %00000010
+F07:0014       HD44780_CMD_ENTRY_MODE      equ %00000100
+F07:0015       HD44780_CMD_DISPLAY_MODE    equ %00001000
+F07:0016       HD44780_CMD_CURSOR_SHIFT    equ %00010000
+F07:0017       HD44780_CMD_FUNCTION_SET    equ %00100000
+F07:0018       HD44780_CMD_CGRAM_SET       equ %01000000
+F07:0019       HD44780_CMD_DDRAM_SET       equ %10000000
+F07:0020       
+F07:0021       ; Entry mode command parameters
+F07:0022       HD44780_EM_SHIFT_CURSOR     equ %00000000
+F07:0023       HD44780_EM_SHIFT_DISPLAY    equ %00000001
+F07:0024       HD44780_EM_DECREMENT        equ %00000000
+F07:0025       HD44780_EM_INCREMENT        equ %00000010
+F07:0026       
+F07:0027       ; Display mode command parameters
+F07:0028       HD44780_DM_CURSOR_NOBLINK   equ %00000000
+F07:0029       HD44780_DM_CURSOR_BLINK     equ %00000001
+F07:0030       HD44780_DM_CURSOR_OFF       equ %00000000
+F07:0031       HD44780_DM_CURSOR_ON        equ %00000010
+F07:0032       HD44780_DM_DISPLAY_OFF      equ %00000000
+F07:0033       HD44780_DM_DISPLAY_ON       equ %00000100
+F07:0034       
+F07:0035       ; Function set command parameters
+F07:0036       HD44780_FS_FONT5x7          equ %00000000
+F07:0037       HD44780_FS_FONT5x10         equ %00000100
+F07:0038       HD44780_FS_ONE_LINE         equ %00000000
+F07:0039       HD44780_FS_TWO_LINE         equ %00001000
+F07:0040       HD44780_FS_4_BIT            equ %00000000
+F07:0041       HD44780_FS_8_BIT            equ %00010000
+F07:0042       
+F07:0043         endif ; HD44780_CONSTANTS_DEFINED
+F06:0007         include "arch/WDC65C22.asm"
+F08:0001       ; ---------------------------------------------------------------------------------
+F08:0002       ; Include file for WDC65C22 constants 
+F08:0003       ; Author: Dawid Buchwald
+F08:0004       ; Date: 03/01/2020
+F08:0005       ; ---------------------------------------------------------------------------------
+F08:0006       
+F08:0007       ; Prevent issue with double include
+F08:0008         ifndef WDC65C22_CONSTANTS_DEFINED
+F08:0009       WDC65C22_CONSTANTS_DEFINED equ 1
+F08:0010       
+F08:0011         ifdef WDC65C02_ADDRESS_BASIC
+F08:0012       
+F08:0013       WDC65C22_VIA1_ADDRESS      equ $6000
+F08:0014       WDC65C22_VIA2_ADDRESS      equ $5000
+F08:0015       
+F08:0016         endif ; WDC65C02_ADDRESS_BASIC
+F08:0017         ifdef WDC65C02_ADDRESS_BASIC_V2
+F08:0018       
+F08:0019       WDC65C22_VIA1_ADDRESS      equ $a000
+F08:0020       WDC65C22_VIA2_ADDRESS      equ $9000
+F08:0021       
+F08:0022         endif ; WDC65C02_ADDRESS_BASIC_V2
+F08:0023         ifdef WDC65C02_ADDRESS_EXTENDED
+F08:0024       
+F08:0025       WDC65C22_VIA1_ADDRESS      equ $9000
+F08:0026       WDC65C22_VIA2_ADDRESS      equ $8800
+F08:0027       
+F08:0028         endif ; WDC65C02_ADDRESS_EXTENDED
+F08:0029         
+F08:0030         ifndef WDC65C22_VIA1_ADDRESS
+F08:0031       
+F08:0032           fail "Set addressing mode using one of the symbols: WDC65C02_ADDRESS_BASIC, WDC65C02_ADDRESS_BASIC_V2, WDC65C02_ADDR
+F08:0033       
+F08:0034         endif ; WDC65C22_VIA1_ADDRESS
+F08:0035       
+F08:0036       WDC65C22_VIA1_PORTB        equ WDC65C22_VIA1_ADDRESS + $00
+F08:0037       WDC65C22_VIA1_PORTA        equ WDC65C22_VIA1_ADDRESS + $01
+F08:0038       WDC65C22_VIA1_DDRB         equ WDC65C22_VIA1_ADDRESS + $02
+F08:0039       WDC65C22_VIA1_DDRA         equ WDC65C22_VIA1_ADDRESS + $03
+F08:0040       WDC65C22_VIA1_T1CL         equ WDC65C22_VIA1_ADDRESS + $04
+F08:0041       WDC65C22_VIA1_T1CH         equ WDC65C22_VIA1_ADDRESS + $05
+F08:0042       WDC65C22_VIA1_T1LL         equ WDC65C22_VIA1_ADDRESS + $06
+F08:0043       WDC65C22_VIA1_T1LH         equ WDC65C22_VIA1_ADDRESS + $07
+F08:0044       WDC65C22_VIA1_T2CL         equ WDC65C22_VIA1_ADDRESS + $08
+F08:0045       WDC65C22_VIA1_T2CH         equ WDC65C22_VIA1_ADDRESS + $09
+F08:0046       WDC65C22_VIA1_SR           equ WDC65C22_VIA1_ADDRESS + $0a
+F08:0047       WDC65C22_VIA1_ACR          equ WDC65C22_VIA1_ADDRESS + $0b
+F08:0048       WDC65C22_VIA1_PCR          equ WDC65C22_VIA1_ADDRESS + $0c
+F08:0049       WDC65C22_VIA1_IFR          equ WDC65C22_VIA1_ADDRESS + $0d
+F08:0050       WDC65C22_VIA1_IER          equ WDC65C22_VIA1_ADDRESS + $0e
+F08:0051       WDC65C22_VIA1_PORTA_NOHS   equ WDC65C22_VIA1_ADDRESS + $0f
+F08:0052       
+F08:0053       WDC65C22_VIA2_PORTB        equ WDC65C22_VIA2_ADDRESS + $00
+F08:0054       WDC65C22_VIA2_PORTA        equ WDC65C22_VIA2_ADDRESS + $01
+F08:0055       WDC65C22_VIA2_DDRB         equ WDC65C22_VIA2_ADDRESS + $02
+F08:0056       WDC65C22_VIA2_DDRA         equ WDC65C22_VIA2_ADDRESS + $03
+F08:0057       WDC65C22_VIA2_T1CL         equ WDC65C22_VIA2_ADDRESS + $04
+F08:0058       WDC65C22_VIA2_T1CH         equ WDC65C22_VIA2_ADDRESS + $05
+F08:0059       WDC65C22_VIA2_T1LL         equ WDC65C22_VIA2_ADDRESS + $06
+F08:0060       WDC65C22_VIA2_T1LH         equ WDC65C22_VIA2_ADDRESS + $07
+F08:0061       WDC65C22_VIA2_T2CL         equ WDC65C22_VIA2_ADDRESS + $08
+F08:0062       WDC65C22_VIA2_T2CH         equ WDC65C22_VIA2_ADDRESS + $09
+F08:0063       WDC65C22_VIA2_SR           equ WDC65C22_VIA2_ADDRESS + $0a
+F08:0064       WDC65C22_VIA2_ACR          equ WDC65C22_VIA2_ADDRESS + $0b
+F08:0065       WDC65C22_VIA2_PCR          equ WDC65C22_VIA2_ADDRESS + $0c
+F08:0066       WDC65C22_VIA2_IFR          equ WDC65C22_VIA2_ADDRESS + $0d
+F08:0067       WDC65C22_VIA2_IER          equ WDC65C22_VIA2_ADDRESS + $0e
+F08:0068       WDC65C22_VIA2_PORTA_NOHS   equ WDC65C22_VIA2_ADDRESS + $0f
+F08:0069       
+F08:0070         endif ; WDC65C22_CONSTANTS_DEFINED
+F06:0008         include "arch/portmap.asm"
+F09:0001       ; ---------------------------------------------------------------------------------
+F09:0002       ; Include file for Port Mapping constants
+F09:0003       ; Author: Dawid Buchwald
+F09:0004       ; Date: 03/01/2020
+F09:0005       ; ---------------------------------------------------------------------------------
+F09:0006       
+F09:0007       ; Prevent issue with double include
+F09:0008         ifndef PORTMAP_CONSTANTS_DEFINED
+F09:0009       PORTMAP_CONSTANTS_DEFINED   equ 1
+F09:0010       
+F09:0011       ; It is assumed that HD44780 control lines are connected to pins 6, 7 & 8 of VIA port
+F09:0012       HD44780_PORT_DDR_MASK       equ %11100000
+F09:0013       HD44780_MODE_COMMAND        equ %00000000
+F09:0014       HD44780_MODE_DATA           equ %00100000
+F09:0015       HD44780_WRITE_MODE          equ %00000000
+F09:0016       HD44780_READ_MODE           equ %01000000
+F09:0017       HD44780_PULSE               equ %10000000
+F09:0018       HD44780_PULSE_DISABLE_MASK  equ %01111111
+F09:0019       
+F09:0020         endif ; PORTMAP_CONSTANTS_DEFINED
+F06:0009       
+F06:0010       ; Enables output on VIA1 PORTB
+F06:0011         macro SET_VIA1_PORTB_OUTPUT 
+F06:0016       
+F06:0017       
+F06:0018       ; Enables input on VIA1 PORTB
+F06:0019         macro SET_VIA1_PORTB_INPUT
+F06:0021       
+F06:0022       
+F06:0023       ; Macro (not a subroutine anymore)
+F06:0024       ; Assumes ACC contains HD44780 control bits, modifies them!
+F06:0025         macro HD44780_SEND_PULSE
+F06:0029       
+F06:0030       
+F06:0031       hd44780_lcd_init:
+F06:0032       ; Read current PORTA DDR
+F06:0033         lda WDC65C22_VIA1_DDRA
+               S02:FFFFFFFFFFFFA093:  AD 03 90
+F06:0034       ; Change VIA1 PORTA according to assumed HD44780 port mapping
+F06:0035         ora #HD44780_PORT_DDR_MASK
+               S02:FFFFFFFFFFFFA096:  09 E0
+F06:0036         sta WDC65C22_VIA1_DDRA
+               S02:FFFFFFFFFFFFA098:  8D 03 90
+F06:0037       ; Set VIA1 PORTB to full output (this is where data and commands go in 8-bit mode)
+F06:0038         lda #%11111111
+               S02:FFFFFFFFFFFFA09B:  A9 FF
+F06:0039         sta WDC65C22_VIA1_DDRB
+               S02:FFFFFFFFFFFFA09D:  8D 02 90
+F06:0040       
+F06:0041       ; Initialize both port outputs with '0'
+F06:0042         stz WDC65C22_VIA1_PORTA
+               S02:FFFFFFFFFFFFA0A0:  9C 01 90
+F06:0043         stz WDC65C22_VIA1_PORTB
+               S02:FFFFFFFFFFFFA0A3:  9C 00 90
+F06:0044       
+F06:0045       ; Initialize counter with 0
+F06:0046         ldx #$00
+               S02:FFFFFFFFFFFFA0A6:  A2 00
+F06:0047       
+F06:0048       hd44780_lcd_init_loop:
+F06:0049       ; Read next byte of init sequence data
+F06:0050         lda hd44780_init_sequence_data,x
+               S02:FFFFFFFFFFFFA0A8:  BD FE A0
+F06:0051       ; Exit loop if $00 read
+F06:0052         beq hd44780_lcd_init_end
+               S02:FFFFFFFFFFFFA0AB:  F0 06
+F06:0053       ; Write command to LCD controller
+F06:0054         jsr hd44780_write_command
+               S02:FFFFFFFFFFFFA0AD:  20 B4 A0
+F06:0055       ; Increase index
+F06:0056         inx
+               S02:FFFFFFFFFFFFA0B0:  E8
+F06:0057       ; Keep looping
+F06:0058         bra hd44780_lcd_init_loop
+               S02:FFFFFFFFFFFFA0B1:  80 F5
+F06:0059       hd44780_lcd_init_end:
+F06:0060         rts
+               S02:FFFFFFFFFFFFA0B3:  60
+F06:0061       
+F06:0062       ; Assumes command set in A register, will overwrite it!
+F06:0063       hd44780_write_command:
+F06:0064       ; Set PORTB to output mode
+F06:0065         SET_VIA1_PORTB_OUTPUT
+F10:0001         pha
+               S02:FFFFFFFFFFFFA0B4:  48
+F10:0002         lda #%11111111
+               S02:FFFFFFFFFFFFA0B5:  A9 FF
+F10:0003         sta WDC65C22_VIA1_DDRB
+               S02:FFFFFFFFFFFFA0B7:  8D 02 90
+F10:0004         pla
+               S02:FFFFFFFFFFFFA0BA:  68
+F06:0066       ; Sends command from A register to VIA1 PORTB
+F06:0067         sta WDC65C22_VIA1_PORTB
+               S02:FFFFFFFFFFFFA0BB:  8D 00 90
+F06:0068         lda #(HD44780_MODE_COMMAND | HD44780_WRITE_MODE | HD44780_PULSE)
+               S02:FFFFFFFFFFFFA0BE:  A9 80
+F06:0069         HD44780_SEND_PULSE
+F11:0001         sta WDC65C22_VIA1_PORTA
+               S02:FFFFFFFFFFFFA0C0:  8D 01 90
+F11:0002         and #HD44780_PULSE_DISABLE_MASK
+               S02:FFFFFFFFFFFFA0C3:  29 7F
+F11:0003         sta WDC65C22_VIA1_PORTA
+               S02:FFFFFFFFFFFFA0C5:  8D 01 90
+F06:0070         inx
+               S02:FFFFFFFFFFFFA0C8:  E8
+F06:0071         lda hd44780_init_sequence_data,x
+               S02:FFFFFFFFFFFFA0C9:  BD FE A0
+F06:0072         jsr ms_delay
+               S02:FFFFFFFFFFFFA0CC:  20 55 A0
+F06:0073         rts
+               S02:FFFFFFFFFFFFA0CF:  60
+F06:0074       
+F06:0075       hd44780_wait_for_bf_clear:
+F06:0076       ; Start by setting PORTB to input mode
+F06:0077         SET_VIA1_PORTB_INPUT
+F12:0001         stz WDC65C22_VIA1_DDRB
+               S02:FFFFFFFFFFFFA0D0:  9C 02 90
+F06:0078       hd44780_wait_for_bf_clear_loop:
+F06:0079         lda #(HD44780_MODE_COMMAND | HD44780_READ_MODE | HD44780_PULSE)
+               S02:FFFFFFFFFFFFA0D3:  A9 C0
+F06:0080         sta WDC65C22_VIA1_PORTA
+               S02:FFFFFFFFFFFFA0D5:  8D 01 90
+F06:0081         lda WDC65C22_VIA1_PORTB
+               S02:FFFFFFFFFFFFA0D8:  AD 00 90
+F06:0082         sta $0200
+               S02:FFFFFFFFFFFFA0DB:  8D 00 02
+F06:0083         lda #(HD44780_MODE_COMMAND | HD44780_READ_MODE)
+               S02:FFFFFFFFFFFFA0DE:  A9 40
+F06:0084         sta WDC65C22_VIA1_PORTA
+               S02:FFFFFFFFFFFFA0E0:  8D 01 90
+F06:0085         bit $0200
+               S02:FFFFFFFFFFFFA0E3:  2C 00 02
+F06:0086         bmi hd44780_wait_for_bf_clear_loop
+               S02:FFFFFFFFFFFFA0E6:  30 EB
+F06:0087         rts
+               S02:FFFFFFFFFFFFA0E8:  60
+F06:0088       
+F06:0089       hd44780_write_data:
+F06:0090       ; Set PORTB to output mode
+F06:0091         SET_VIA1_PORTB_OUTPUT
+F13:0001         pha
+               S02:FFFFFFFFFFFFA0E9:  48
+F13:0002         lda #%11111111
+               S02:FFFFFFFFFFFFA0EA:  A9 FF
+F13:0003         sta WDC65C22_VIA1_DDRB
+               S02:FFFFFFFFFFFFA0EC:  8D 02 90
+F13:0004         pla
+               S02:FFFFFFFFFFFFA0EF:  68
+F06:0092       ; Send data to VIA1 PORTB
+F06:0093         sta WDC65C22_VIA1_PORTB
+               S02:FFFFFFFFFFFFA0F0:  8D 00 90
+F06:0094         lda #(HD44780_MODE_DATA | HD44780_WRITE_MODE | HD44780_PULSE)
+               S02:FFFFFFFFFFFFA0F3:  A9 A0
+F06:0095         HD44780_SEND_PULSE
+F14:0001         sta WDC65C22_VIA1_PORTA
+               S02:FFFFFFFFFFFFA0F5:  8D 01 90
+F14:0002         and #HD44780_PULSE_DISABLE_MASK
+               S02:FFFFFFFFFFFFA0F8:  29 7F
+F14:0003         sta WDC65C22_VIA1_PORTA
+               S02:FFFFFFFFFFFFA0FA:  8D 01 90
+F06:0096         rts
+               S02:FFFFFFFFFFFFA0FD:  60
+F06:0097       
+F06:0098       hd44780_init_sequence_data:
+F06:0099         byte HD44780_CMD_FUNCTION_SET | HD44780_FS_FONT5x7 | HD44780_FS_TWO_LINE | HD44780_FS_8_BIT
+               S02:FFFFFFFFFFFFA0FE:  38
+F06:0100         byte 40
+               S02:FFFFFFFFFFFFA0FF:  28
+F06:0101         byte HD44780_CMD_DISPLAY_MODE | HD44780_DM_DISPLAY_ON | HD44780_DM_CURSOR_OFF | HD44780_DM_CURSOR_NOBLINK
+               S02:FFFFFFFFFFFFA100:  0C
+F06:0102         byte 5
+               S02:FFFFFFFFFFFFA101:  05
+F06:0103         byte HD44780_CMD_ENTRY_MODE | HD44780_EM_SHIFT_CURSOR | HD44780_EM_INCREMENT
+               S02:FFFFFFFFFFFFA102:  06
+F06:0104         byte 5
+               S02:FFFFFFFFFFFFA103:  05
+F06:0105         byte HD44780_CMD_CLEAR
+               S02:FFFFFFFFFFFFA104:  01
+F06:0106         byte 5
+               S02:FFFFFFFFFFFFA105:  05
+F06:0107         byte $00
+               S02:FFFFFFFFFFFFA106:  00
+F00:0081       
+F00:0082       ; Include source for serial operation
+F00:0083         include "serial.asm"
+F15:0001       ; ---------------------------------------------------------------------------------
+F15:0002       ; Source file containing serial control routines
+F15:0003       ; Author: Dawid Buchwald
+F15:0004       ; Date: 22/01/2020
+F15:0005       ; ---------------------------------------------------------------------------------
+F15:0006         include "arch/WDC65C51.asm"
+F16:0001       ; ---------------------------------------------------------------------------------
+F16:0002       ; Include file for WDC65C51 constants 
+F16:0003       ; Author: Dawid Buchwald
+F16:0004       ; Date: 22/01/2020
+F16:0005       ; ---------------------------------------------------------------------------------
+F16:0006       
+F16:0007       ; Prevent issue with double include
+F16:0008         ifndef WDC65C51_CONSTANTS_DEFINED
+F16:0009       WDC65C51_CONSTANTS_DEFINED equ 1
+F16:0010       
+F16:0011         ifdef WDC65C02_ADDRESS_BASIC
+F16:0012       
+F16:0013       WDC65C51_ACIA_ADDRESS      equ $4800
+F16:0014       
+F16:0015         endif ; WDC65C02_ADDRESS_BASIC
+F16:0016         ifdef WDC65C02_ADDRESS_BASIC_V2
+F16:0017       
+F16:0018       WDC65C51_ACIA_ADDRESS      equ $8800
+F16:0019       
+F16:0020         endif ; WDC65C02_ADDRESS_BASIC_V2
+F16:0021         ifdef WDC65C02_ADDRESS_EXTENDED
+F16:0022       
+F16:0023       WDC65C51_ACIA_ADDRESS      equ $8400
+F16:0024       
+F16:0025         endif ; WDC65C02_ADDRESS_EXTENDED
+F16:0026         
+F16:0027         ifndef WDC65C51_ACIA_ADDRESS
+F16:0028       
+F16:0029           fail "Set addressing mode using one of the symbols: WDC65C02_ADDRESS_BASIC, WDC65C02_ADDRESS_BASIC_V2, WDC65C02_ADDR
+F16:0030       
+F16:0031         endif ; WDC65C51_ACIA_ADDRESS
+F16:0032       
+F16:0033       WDC65C51_ACIA_DATA          equ WDC65C51_ACIA_ADDRESS + $00
+F16:0034       WDC65C51_ACIA_STATUS        equ WDC65C51_ACIA_ADDRESS + $01
+F16:0035       WDC65C51_ACIA_COMMAND       equ WDC65C51_ACIA_ADDRESS + $02
+F16:0036       WDC65C51_ACIA_CONTROL       equ WDC65C51_ACIA_ADDRESS + $03
+F16:0037       
+F16:0038       WDC65C51_CMD_ODD_PARITY     equ %00000000
+F16:0039       WDC65C51_CMD_EVEN_PARITY    equ %01000000
+F16:0040       WDC65C51_CMD_MARK_PARITY    equ %10000000
+F16:0041       WDC65C51_CMD_SPACE_PARITY   equ %11000000
+F16:0042       
+F16:0043       WDC65C51_CMD_PARITY_ENABLE  equ %00100000
+F16:0044       WDC65C51_CMD_PARITY_DISABLE equ %00000000
+F16:0045       
+F16:0046       WDC65C51_CMD_ECHO_ENABLE    equ %00010000
+F16:0047       WDC65C51_CMD_ECHO_DISABLE   equ %00000000
+F16:0048       
+F16:0049       WDC65C51_CMD_RTS_DISABLE    equ %00000000
+F16:0050       WDC65C51_CMD_RTS_IRQ        equ %00000100
+F16:0051       WDC65C51_CMD_RTS_NOIRQ      equ %00001000
+F16:0052       WDC65C51_CMD_RTS_NOIRQ_BRK  equ %00001100
+F16:0053       
+F16:0054       WDC65C51_CMD_RECV_IRQ       equ %00000000
+F16:0055       WDC65C51_CMD_RECV_NOIRQ     equ %00000010
+F16:0056       
+F16:0057       WDC65C51_CMD_DTR_DISABLE    equ %00000000
+F16:0058       WDC65C51_CMD_DTR_ENABLE     equ %00000001
+F16:0059       
+F16:0060       WDC65C51_CTRL_1STOP         equ %00000000
+F16:0061       WDC65C51_CTRL_2STOP         equ %10000000
+F16:0062       
+F16:0063       WDC65C51_CTRL_8BITWORD      equ %00000000
+F16:0064       WDC65C51_CTRL_7BITWORD      equ %00100000
+F16:0065       WDC65C51_CTRL_6BITWORD      equ %01000000
+F16:0066       WDC65C51_CTRL_5BITWORD      equ %01100000
+F16:0067       
+F16:0068       WDC65C51_CTRL_CLK_EXTRN     equ %00000000
+F16:0069       WDC65C51_CTRL_CLK_BAUDR     equ %00010000
+F16:0070       
+F16:0071       WDC65C51_CTRL_BAUD_16x      equ %00000000
+F16:0072       WDC65C51_CTRL_BAUD_50       equ %00000001
+F16:0073       WDC65C51_CTRL_BAUD_75       equ %00000010
+F16:0074       WDC65C51_CTRL_BAUD_10992    equ %00000011
+F16:0075       WDC65C51_CTRL_BAUD_13458    equ %00000100
+F16:0076       WDC65C51_CTRL_BAUD_150      equ %00000101
+F16:0077       WDC65C51_CTRL_BAUD_300      equ %00000110
+F16:0078       WDC65C51_CTRL_BAUD_600      equ %00000111
+F16:0079       WDC65C51_CTRL_BAUD_1200     equ %00001000
+F16:0080       WDC65C51_CTRL_BAUD_1800     equ %00001001
+F16:0081       WDC65C51_CTRL_BAUD_2400     equ %00001010
+F16:0082       WDC65C51_CTRL_BAUD_3600     equ %00001011
+F16:0083       WDC65C51_CTRL_BAUD_4800     equ %00001100
+F16:0084       WDC65C51_CTRL_BAUD_7200     equ %00001101
+F16:0085       WDC65C51_CTRL_BAUD_9600     equ %00001110
+F16:0086       WDC65C51_CTRL_BAUD_19200    equ %00001111
+F16:0087       
+F16:0088       WDC65C51_STATUS_IRQ         equ %10000000
+F16:0089       WDC65C51_STATUS_DSR_HIGH    equ %01000000
+F16:0090       WDC65C51_STATUS_DCD_HIGH    equ %00100000
+F16:0091       WDC65C51_STATUS_TDR_EMPTY   equ %00010000
+F16:0092       WDC65C51_STATUS_RDR_FULL    equ %00001000
+F16:0093       WDC65C51_STATUS_OVERRUN     equ %00000100
+F16:0094       WDC65C51_STATUS_FRAMERR     equ %00000010
+F16:0095       WDC65C51_STATUS_PARITY_ERR  equ %00000001
+F16:0096       
+F16:0097         endif ; WDC65C51_CONSTANTS_DEFINED
+F15:0007       
+F15:0008       serial_port_init:
+F15:0009         lda #(WDC65C51_CMD_ODD_PARITY | WDC65C51_CMD_PARITY_DISABLE | WDC65C51_CMD_ECHO_DISABLE | WDC65C51_CMD_RTS_NOIRQ | WDC
+               S02:FFFFFFFFFFFFA107:  A9 0B
+F15:0010       
+F15:0011         sta WDC65C51_ACIA_COMMAND
+               S02:FFFFFFFFFFFFA109:  8D 02 84
+F15:0012       
+F15:0013         lda #(WDC65C51_CTRL_1STOP | WDC65C51_CTRL_8BITWORD | WDC65C51_CTRL_CLK_BAUDR | WDC65C51_CTRL_BAUD_19200)
+               S02:FFFFFFFFFFFFA10C:  A9 1F
+F15:0014       
+F15:0015         sta WDC65C51_ACIA_CONTROL
+               S02:FFFFFFFFFFFFA10E:  8D 03 84
+F15:0016         rts
+               S02:FFFFFFFFFFFFA111:  60
+F15:0017       
+F15:0018       serial_port_write_data:
+F15:0019         lda WDC65C51_ACIA_STATUS
+               S02:FFFFFFFFFFFFA112:  AD 01 84
+F15:0020         and #WDC65C51_STATUS_TDR_EMPTY
+               S02:FFFFFFFFFFFFA115:  29 10
+F15:0021         beq serial_port_write_data
+               S02:FFFFFFFFFFFFA117:  F0 F9
+F15:0022         sta WDC65C51_ACIA_DATA
+               S02:FFFFFFFFFFFFA119:  8D 00 84
+F15:0023       ;  lda #$01
+F15:0024       ;  jsr os1_function_delay
+F15:0025         rts
+               S02:FFFFFFFFFFFFA11C:  60
+F15:0026       
+F15:0027       serial_port_read_data:
+F15:0028         lda WDC65C51_ACIA_STATUS
+               S02:FFFFFFFFFFFFA11D:  AD 01 84
+F15:0029         and #WDC65C51_STATUS_RDR_FULL
+               S02:FFFFFFFFFFFFA120:  29 08
+F15:0030         beq serial_port_read_data
+               S02:FFFFFFFFFFFFA122:  F0 F9
+F15:0031         lda WDC65C51_ACIA_DATA
+               S02:FFFFFFFFFFFFA124:  AD 00 84
+F15:0032         rts
+               S02:FFFFFFFFFFFFA127:  60
+F15:0033       
+F00:0084       
+F00:0085       hello_message_data:
+F00:0086         string "Hello!"
+               S02:FFFFFFFFFFFFA128:  48 65 6C 6C 6F 21
+F00:0087       
+F00:0088       serial_hello_message_data:
+F00:0089         byte "Port ready", $0d, $0a, $00
+               S02:FFFFFFFFFFFFA12F:  50 6F 72 74 20 72 65 61 64 79
+               S02:FFFFFFFFFFFFA139:  0D
+               S02:FFFFFFFFFFFFA13A:  0A
+               S02:FFFFFFFFFFFFA13B:  00
+F00:0090       
+F00:0091         org WDC65C02_NMI_VECTOR
+F00:0092         word nmi_handler
+               S03:FFFFFFFFFFFFFFFA:  54 A0
+F00:0093         org WDC65C02_RESET_VECTOR
+F00:0094         word init_routine
+               S04:FFFFFFFFFFFFFFFC:  00 A0
+F00:0095         org WDC65C02_INT_VECTOR
+F00:0096         word int_handler
+               S05:FFFFFFFFFFFFFFFE:  53 A0
+
+
+Sections:
+S01  seg8000
+S02  sega000
+S03  segfffa
+S04  segfffc
+S05  segfffe
+
+
+Sources:
+F00  main.asm
+F01  arch/WDC65C02.asm
+F02  arch/addrmap.asm
+F03  build/AT28C256.asm
+F04  include/utilities.asm
+F05  memmap.asm
+F06  lcd.asm
+F07  arch/lcd/HD44780.asm
+F08  arch/WDC65C22.asm
+F09  arch/portmap.asm
+F10  SET_VIA1_PORTB_OUTPUT
+F11  HD44780_SEND_PULSE
+F12  SET_VIA1_PORTB_INPUT
+F13  SET_VIA1_PORTB_OUTPUT
+F14  HD44780_SEND_PULSE
+F15  serial.asm
+F16  arch/WDC65C51.asm
+
+
+Symbols:
+WDC65C51_STATUS_PARITY_ERR EXPR(1=0x1) UNUSED EQU 
+WDC65C51_STATUS_FRAMERR EXPR(2=0x2) UNUSED EQU 
+WDC65C51_STATUS_OVERRUN EXPR(4=0x4) UNUSED EQU 
+WDC65C51_STATUS_RDR_FULL EXPR(8=0x8) EQU 
+WDC65C51_STATUS_TDR_EMPTY EXPR(16=0x10) EQU 
+WDC65C51_STATUS_DCD_HIGH EXPR(32=0x20) UNUSED EQU 
+WDC65C51_STATUS_DSR_HIGH EXPR(64=0x40) UNUSED EQU 
+WDC65C51_STATUS_IRQ EXPR(128=0x80) UNUSED EQU 
+WDC65C51_CTRL_BAUD_19200 EXPR(15=0xf) EQU 
+WDC65C51_CTRL_BAUD_9600 EXPR(14=0xe) UNUSED EQU 
+WDC65C51_CTRL_BAUD_7200 EXPR(13=0xd) UNUSED EQU 
+WDC65C51_CTRL_BAUD_4800 EXPR(12=0xc) UNUSED EQU 
+WDC65C51_CTRL_BAUD_3600 EXPR(11=0xb) UNUSED EQU 
+WDC65C51_CTRL_BAUD_2400 EXPR(10=0xa) UNUSED EQU 
+WDC65C51_CTRL_BAUD_1800 EXPR(9=0x9) UNUSED EQU 
+WDC65C51_CTRL_BAUD_1200 EXPR(8=0x8) UNUSED EQU 
+WDC65C51_CTRL_BAUD_600 EXPR(7=0x7) UNUSED EQU 
+WDC65C51_CTRL_BAUD_300 EXPR(6=0x6) UNUSED EQU 
+WDC65C51_CTRL_BAUD_150 EXPR(5=0x5) UNUSED EQU 
+WDC65C51_CTRL_BAUD_13458 EXPR(4=0x4) UNUSED EQU 
+WDC65C51_CTRL_BAUD_10992 EXPR(3=0x3) UNUSED EQU 
+WDC65C51_CTRL_BAUD_75 EXPR(2=0x2) UNUSED EQU 
+WDC65C51_CTRL_BAUD_50 EXPR(1=0x1) UNUSED EQU 
+WDC65C51_CTRL_BAUD_16x EXPR(0=0x0) UNUSED EQU 
+WDC65C51_CTRL_CLK_BAUDR EXPR(16=0x10) EQU 
+WDC65C51_CTRL_CLK_EXTRN EXPR(0=0x0) UNUSED EQU 
+WDC65C51_CTRL_5BITWORD EXPR(96=0x60) UNUSED EQU 
+WDC65C51_CTRL_6BITWORD EXPR(64=0x40) UNUSED EQU 
+WDC65C51_CTRL_7BITWORD EXPR(32=0x20) UNUSED EQU 
+WDC65C51_CTRL_8BITWORD EXPR(0=0x0) EQU 
+WDC65C51_CTRL_2STOP EXPR(128=0x80) UNUSED EQU 
+WDC65C51_CTRL_1STOP EXPR(0=0x0) EQU 
+WDC65C51_CMD_DTR_ENABLE EXPR(1=0x1) EQU 
+WDC65C51_CMD_DTR_DISABLE EXPR(0=0x0) UNUSED EQU 
+WDC65C51_CMD_RECV_NOIRQ EXPR(2=0x2) EQU 
+WDC65C51_CMD_RECV_IRQ EXPR(0=0x0) UNUSED EQU 
+WDC65C51_CMD_RTS_NOIRQ_BRK EXPR(12=0xc) UNUSED EQU 
+WDC65C51_CMD_RTS_NOIRQ EXPR(8=0x8) EQU 
+WDC65C51_CMD_RTS_IRQ EXPR(4=0x4) UNUSED EQU 
+WDC65C51_CMD_RTS_DISABLE EXPR(0=0x0) UNUSED EQU 
+WDC65C51_CMD_ECHO_DISABLE EXPR(0=0x0) EQU 
+WDC65C51_CMD_ECHO_ENABLE EXPR(16=0x10) UNUSED EQU 
+WDC65C51_CMD_PARITY_DISABLE EXPR(0=0x0) EQU 
+WDC65C51_CMD_PARITY_ENABLE EXPR(32=0x20) UNUSED EQU 
+WDC65C51_CMD_SPACE_PARITY EXPR(192=0xc0) UNUSED EQU 
+WDC65C51_CMD_MARK_PARITY EXPR(128=0x80) UNUSED EQU 
+WDC65C51_CMD_EVEN_PARITY EXPR(64=0x40) UNUSED EQU 
+WDC65C51_CMD_ODD_PARITY EXPR(0=0x0) EQU 
+WDC65C51_ACIA_CONTROL EXPR(-31741=0x8403) EQU 
+WDC65C51_ACIA_COMMAND EXPR(-31742=0x8402) EQU 
+WDC65C51_ACIA_STATUS EXPR(-31743=0x8401) EQU 
+WDC65C51_ACIA_DATA EXPR(-31744=0x8400) EQU 
+WDC65C51_ACIA_ADDRESS EXPR(-31744=0x8400) EQU 
+WDC65C51_CONSTANTS_DEFINED EXPR(1=0x1) UNUSED EQU 
+hd44780_wait_for_bf_clear_loop EXPR(-24365=0xa0d3) ABS 
+hd44780_write_command EXPR(-24396=0xa0b4) ABS 
+hd44780_lcd_init_end EXPR(-24397=0xa0b3) ABS 
+hd44780_init_sequence_data EXPR(-24322=0xa0fe) ABS 
+hd44780_lcd_init_loop EXPR(-24408=0xa0a8) ABS 
+HD44780_READ_MODE EXPR(64=0x40) EQU 
+HD44780_MODE_DATA EXPR(32=0x20) EQU 
+HD44780_PORT_DDR_MASK EXPR(224=0xe0) EQU 
+PORTMAP_CONSTANTS_DEFINED EXPR(1=0x1) UNUSED EQU 
+WDC65C22_VIA2_PORTA_NOHS EXPR(-30705=0x880f) UNUSED EQU 
+WDC65C22_VIA2_IER EXPR(-30706=0x880e) UNUSED EQU 
+WDC65C22_VIA2_IFR EXPR(-30707=0x880d) UNUSED EQU 
+WDC65C22_VIA2_PCR EXPR(-30708=0x880c) UNUSED EQU 
+WDC65C22_VIA2_ACR EXPR(-30709=0x880b) UNUSED EQU 
+WDC65C22_VIA2_SR EXPR(-30710=0x880a) UNUSED EQU 
+WDC65C22_VIA2_T2CH EXPR(-30711=0x8809) UNUSED EQU 
+WDC65C22_VIA2_T2CL EXPR(-30712=0x8808) UNUSED EQU 
+WDC65C22_VIA2_T1LH EXPR(-30713=0x8807) UNUSED EQU 
+WDC65C22_VIA2_T1LL EXPR(-30714=0x8806) UNUSED EQU 
+WDC65C22_VIA2_T1CH EXPR(-30715=0x8805) UNUSED EQU 
+WDC65C22_VIA2_T1CL EXPR(-30716=0x8804) UNUSED EQU 
+WDC65C22_VIA2_DDRA EXPR(-30717=0x8803) UNUSED EQU 
+WDC65C22_VIA2_DDRB EXPR(-30718=0x8802) UNUSED EQU 
+WDC65C22_VIA2_PORTA EXPR(-30719=0x8801) UNUSED EQU 
+WDC65C22_VIA2_PORTB EXPR(-30720=0x8800) UNUSED EQU 
+WDC65C22_VIA1_PORTA_NOHS EXPR(-28657=0x900f) UNUSED EQU 
+WDC65C22_VIA1_IER EXPR(-28658=0x900e) UNUSED EQU 
+WDC65C22_VIA1_IFR EXPR(-28659=0x900d) UNUSED EQU 
+WDC65C22_VIA1_PCR EXPR(-28660=0x900c) UNUSED EQU 
+WDC65C22_VIA1_ACR EXPR(-28661=0x900b) UNUSED EQU 
+WDC65C22_VIA1_SR EXPR(-28662=0x900a) UNUSED EQU 
+WDC65C22_VIA1_T2CH EXPR(-28663=0x9009) UNUSED EQU 
+WDC65C22_VIA1_T2CL EXPR(-28664=0x9008) UNUSED EQU 
+WDC65C22_VIA1_T1LH EXPR(-28665=0x9007) UNUSED EQU 
+WDC65C22_VIA1_T1LL EXPR(-28666=0x9006) UNUSED EQU 
+WDC65C22_VIA1_T1CH EXPR(-28667=0x9005) UNUSED EQU 
+WDC65C22_VIA1_T1CL EXPR(-28668=0x9004) UNUSED EQU 
+WDC65C22_VIA1_DDRA EXPR(-28669=0x9003) EQU 
+WDC65C22_VIA2_ADDRESS EXPR(-30720=0x8800) EQU 
+WDC65C22_VIA1_ADDRESS EXPR(-28672=0x9000) EQU 
+WDC65C22_CONSTANTS_DEFINED EXPR(1=0x1) UNUSED EQU 
+HD44780_FS_8_BIT EXPR(16=0x10) EQU 
+HD44780_FS_4_BIT EXPR(0=0x0) UNUSED EQU 
+HD44780_FS_TWO_LINE EXPR(8=0x8) EQU 
+HD44780_FS_ONE_LINE EXPR(0=0x0) UNUSED EQU 
+HD44780_FS_FONT5x10 EXPR(4=0x4) UNUSED EQU 
+HD44780_FS_FONT5x7 EXPR(0=0x0) EQU 
+HD44780_DM_DISPLAY_ON EXPR(4=0x4) EQU 
+HD44780_DM_DISPLAY_OFF EXPR(0=0x0) UNUSED EQU 
+HD44780_DM_CURSOR_ON EXPR(2=0x2) UNUSED EQU 
+HD44780_DM_CURSOR_OFF EXPR(0=0x0) EQU 
+HD44780_DM_CURSOR_BLINK EXPR(1=0x1) UNUSED EQU 
+HD44780_DM_CURSOR_NOBLINK EXPR(0=0x0) EQU 
+HD44780_EM_INCREMENT EXPR(2=0x2) EQU 
+HD44780_EM_DECREMENT EXPR(0=0x0) UNUSED EQU 
+HD44780_EM_SHIFT_DISPLAY EXPR(1=0x1) UNUSED EQU 
+HD44780_EM_SHIFT_CURSOR EXPR(0=0x0) EQU 
+HD44780_CMD_DDRAM_SET EXPR(128=0x80) UNUSED EQU 
+HD44780_CMD_CGRAM_SET EXPR(64=0x40) UNUSED EQU 
+HD44780_CMD_FUNCTION_SET EXPR(32=0x20) EQU 
+HD44780_CMD_CURSOR_SHIFT EXPR(16=0x10) UNUSED EQU 
+HD44780_CMD_DISPLAY_MODE EXPR(8=0x8) EQU 
+HD44780_CMD_ENTRY_MODE EXPR(4=0x4) EQU 
+HD44780_CMD_HOME EXPR(2=0x2) UNUSED EQU 
+HD44780_CONSTANTS_DEFINED EXPR(1=0x1) UNUSED EQU 
+sec_delay_loop1_end EXPR(-24439=0xa089) ABS 
+sec_delay_loop2 EXPR(-24449=0xa07f) ABS 
+sec_delay_loop1 EXPR(-24451=0xa07d) ABS 
+ms_delay_loop3 EXPR(-24472=0xa068) ABS 
+ms_delay_return EXPR(-24466=0xa06e) ABS 
+ms_delay_loop2 EXPR(-24478=0xa062) ABS 
+ms_delay_loop1 EXPR(-24481=0xa05f) ABS 
+UTILITIES_DEFINED EXPR(1=0x1) UNUSED EQU 
+TEMP_BYTE2 EXPR(17=0x11) EQU 
+TEMP_BYTE1 EXPR(16=0x10) EQU 
+USER_ZP_START EXPR(4=0x4) UNUSED EQU 
+USER_RAM_AREA_END EXPR(2=0x2) UNUSED EQU 
+USER_RAM_AREA_START EXPR(0=0x0) UNUSED EQU 
+_MEMMAP_CONSTANTS_DEFINED EXPR(1=0x1) UNUSED EQU 
+nmi_handler EXPR(-24492=0xa054) ABS 
+int_handler EXPR(-24493=0xa053) ABS 
+serial_port_read_data EXPR(-24291=0xa11d) ABS 
+serial_port_write_data EXPR(-24302=0xa112) ABS 
+serial_hello_loop_end EXPR(-24506=0xa046) ABS 
+serial_hello_message_data EXPR(-24273=0xa12f) ABS 
+serial_hello_loop EXPR(-24517=0xa03b) ABS 
+serial_port_init EXPR(-24313=0xa107) ABS 
+HD44780_PULSE_DISABLE_MASK EXPR(127=0x7f) EQU 
+WDC65C22_VIA1_PORTA EXPR(-28671=0x9001) EQU 
+HD44780_PULSE EXPR(128=0x80) EQU 
+HD44780_WRITE_MODE EXPR(0=0x0) EQU 
+HD44780_MODE_COMMAND EXPR(0=0x0) EQU 
+WDC65C22_VIA1_PORTB EXPR(-28672=0x9000) EQU 
+HD44780_CMD_CLEAR EXPR(1=0x1) EQU 
+WDC65C22_VIA1_DDRB EXPR(-28670=0x9002) EQU 
+sec_delay EXPR(-24459=0xa075) ABS 
+hd44780_wait_for_bf_clear EXPR(-24368=0xa0d0) ABS 
+hd44780_write_data EXPR(-24343=0xa0e9) ABS 
+hello_message_loop_end EXPR(-24552=0xa018) ABS 
+hello_message_data EXPR(-24280=0xa128) ABS 
+hello_message_loop EXPR(-24566=0xa00a) ABS 
+hd44780_lcd_init EXPR(-24429=0xa093) ABS 
+ms_delay EXPR(-24491=0xa055) ABS 
+init_routine EXPR(-24576=0xa000) ABS 
+AT28C256_LOW_ADDRESS EXPR(-32768=0x8000) EQU 
+AT28C256_CONSTANTS_DEFINED EXPR(1=0x1) UNUSED EQU 
+WDC65C02_ROM_START EXPR(-24576=0xa000) EQU 
+WDC65C02_RAM_USER_AREAH EXPR(32767=0x7fff) UNUSED EQU 
+WDC65C02_RAM_USER_AREAL EXPR(1024=0x400) UNUSED EQU 
+WDC65C02_RAM_OS_PAGE EXPR(512=0x200) UNUSED EQU 
+WDC65C02_RAM_STACKPAGE EXPR(256=0x100) UNUSED EQU 
+WDC65C02_RAM_ZEROPAGE_USER EXPR(128=0x80) UNUSED EQU 
+WDC65C02_RAM_ZEROPAGE_OS EXPR(0=0x0) EQU 
+ADDRMAP_CONSTANTS_DEFINED EXPR(1=0x1) UNUSED EQU 
+WDC65C02_NMI_VECTOR EXPR(-6=0xfffa) EQU 
+WDC65C02_INT_VECTOR EXPR(-2=0xfffe) EQU 
+WDC65C02_RESET_VECTOR EXPR(-4=0xfffc) EQU 
+WDC65C02_CONSTANTS_DEFINED EXPR(1=0x1) UNUSED EQU 
+__RPTCNT EXPR(-1=0xffff) INTERNAL 
+__VASM EXPR(0=0x0) INTERNAL 
+WDC65C02_ADDRESS_EXTENDED EXPR(1=0x1) UNUSED 
+
+There have been no errors.
