@@ -36,7 +36,7 @@ $(BUILD_FOLDER):
 	$(MKDIR_BINARY) $(BUILD_FOLDER)
 
 # Compile assembler sources
-$(BUILD_FOLDER)/%.o: %.s $(BUILD_FOLDER) $(FIRMWARE_CFG)
+$(BUILD_FOLDER)/%.o: %.s $(BUILD_FOLDER) $(FIRMWARE_CFG) 
 	$(CA65_BINARY) -o $@ -l $(@:.o=.lst) $<
 
 # Standard build
