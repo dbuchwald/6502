@@ -1,1 +1,4 @@
-rom.bin
+build/*.bin
+build/*.lst
+build/*.o
+
