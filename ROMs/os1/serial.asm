@@ -16,9 +16,12 @@ serial_port_init:
   rts
 
 serial_port_write_data:
+  lda WDC65C51_ACIA_STATUS
+  and #WDC65C51_STATUS_TDR_EMPTY
+  beq serial_port_write_data
   sta WDC65C51_ACIA_DATA
-  lda #$01
-  jsr os1_function_delay
+;  lda #$01
+;  jsr os1_function_delay
   rts
 
 serial_port_read_data:
