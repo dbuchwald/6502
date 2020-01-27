@@ -1,0 +1,72 @@
+      .setcpu "65C02"
+      .include "via.inc"
+
+COMMAND_MODE  = %00000000
+DATA_MODE     = %00100000
+WRITE_MODE    = %00000000
+READ_MODE     = %01000000
+PULSE         = %10000000
+
+NPULSE        = %01111111
+MEM_BUFFER    = $2000
+
+      .segment "VECTORS"
+
+      .word   $0000
+      .word   init
+      .word   $0000
+
+      .code
+
+init:
+      lda #%11100000           ; PA5, PA6 and PA7 are outputs
+      sta VIA1_DDRA 
+      lda #%11111111           ; PORTB is all output
+      sta VIA1_DDRB
+      lda #%00000000           ; Initialize port outputs with $00
+      sta VIA1_PORTA
+      sta VIA1_PORTB
+      ldx #$00                 ; Initialize counter (register X)
+copymem:
+      lda data,x               ; Copy data to RAM 
+      sta MEM_BUFFER,x
+      beq lcd_init             ; Exit after $00 copied
+      inx                      ; Increase copy counter
+      jmp copymem              ; Loop
+lcd_init:
+      ldx #$00                 ; Initialize counter (register X)
+loop_init_seq:
+      lda lcd_init_sequence,x  ; Fetch data from address lcd_init_sequence + x
+      beq data_display         ; If fetched $00 (end of stream), move to data transmission
+      sta VIA1_PORTB                ; Send data to PORTB
+      lda #(COMMAND_MODE | WRITE_MODE | PULSE) ; Set write command mode with active pulse
+      sta VIA1_PORTA
+      and #NPULSE              ; Disable pulse bit (E) and send to LCD
+      sta VIA1_PORTA
+      inx                      ; Increase counter
+      jmp loop_init_seq        ; Keep looping over init sequence
+
+data_display:
+      ldx #$00                 ; Initialize counter
+loop_data:
+      lda data,x               ; Load data bytes from address data + x
+      beq end_prog             ; On end of stream move to end of program
+      sta VIA1_PORTB
+      lda #(DATA_MODE | WRITE_MODE | PULSE) ; Set write data mode with active pulse
+      sta VIA1_PORTA
+      and #NPULSE              ; Disable pulse bit (E) 
+      sta VIA1_PORTA
+      inx                      ; Increase counter
+      jmp loop_data
+end_prog:
+      jmp end_prog
+
+lcd_init_sequence:
+      .byte %00111100
+      .byte %00001100
+      .byte %00000110
+      .byte %00000001
+      .byte %00000000
+ 
+data:
+      .byte "Merry Christmas!",$00
