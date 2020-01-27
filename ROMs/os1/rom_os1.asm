@@ -50,8 +50,7 @@ os1_serial_hello_loop_end:
   jsr hd44780_write_data
   jsr hd44780_wait_for_bf_clear
 ; rinse and repeat
-  ldx #$00
-  bra os1_serial_hello_loop
+  bra os1_serial_hello_loop_end
 
 ; This is where maskable interrupts will be handled
 os_int_handler:
@@ -74,7 +73,7 @@ os1_hello_message_data:
   string "OS/1 version 0.01"
 
 os1_serial_hello_message_data:
-  string "OS/1 Serial Port ready>"
+  byte "OS/1 Serial Port ready>", $0d, $0a, $00
 
 os1_git_commit_data:
   include "include/version/version.asm"
