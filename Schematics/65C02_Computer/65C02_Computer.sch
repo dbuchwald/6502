@@ -706,16 +706,6 @@ NoConn ~ 8050 3600
 NoConn ~ 8050 3700
 NoConn ~ 8050 4000
 NoConn ~ 8050 3400
-Wire Wire Line
-	9050 4200 9150 4200
-Wire Wire Line
-	9150 4200 9150 4300
-Connection ~ 9150 4300
-Wire Wire Line
-	9050 4100 9150 4100
-Wire Wire Line
-	9150 4100 9150 4200
-Connection ~ 9150 4200
 Text GLabel 9150 2900 1    50   Input ~ 0
 R~W
 Wire Wire Line
@@ -1873,6 +1863,18 @@ Wire Wire Line
 	3650 1900 3950 1900
 Wire Wire Line
 	3650 2000 4750 2000
+Text Label 3650 2000 0    50   ~ 0
+a15
+Text GLabel 9300 4400 3    50   Input ~ 0
+GND
+Wire Wire Line
+	9050 4200 9300 4200
+Wire Wire Line
+	9300 4200 9300 4400
+Wire Wire Line
+	9050 4100 9300 4100
+Wire Wire Line
+	9300 4100 9300 4200
 Wire Bus Line
 	2750 6550 2750 6750
 Wire Bus Line
@@ -1915,6 +1917,5 @@ Wire Bus Line
 	700  5350 700  6250
 Wire Bus Line
 	950  3500 950  4600
-Text Label 3650 2000 0    50   ~ 0
-a15
+Connection ~ 9300 4200
 $EndSCHEMATC
