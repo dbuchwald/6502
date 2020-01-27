@@ -1,2 +1,4 @@
-rom.bin
-rom_backup.bin
+build/*.bin
+build/*.lst
+build/*.o
+
