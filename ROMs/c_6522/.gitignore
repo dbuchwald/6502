@@ -1,0 +1,6 @@
+build/*.bin
+build/*.lst
+build/*.s
+build/*.o
+build/*.map
+
