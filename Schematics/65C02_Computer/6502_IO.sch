@@ -673,18 +673,18 @@ Wire Wire Line
 	5300 750  5700 750 
 Wire Wire Line
 	5700 750  5700 1050
-Text GLabel 9400 1150 1    50   Input ~ 0
+Text GLabel 9550 1050 1    50   Input ~ 0
 +5V
-Text GLabel 9400 1950 3    50   Input ~ 0
+Text GLabel 9550 1850 3    50   Input ~ 0
 GND
 Wire Wire Line
-	9400 1950 9400 1850
+	9550 1850 9550 1750
 Wire Wire Line
-	9400 1150 9400 1250
-Text GLabel 9800 1550 2    50   Output ~ 0
+	9550 1050 9550 1150
+Text GLabel 9950 1450 2    50   Output ~ 0
 RS232CLK
 Wire Wire Line
-	9700 1550 9800 1550
+	9850 1450 9950 1450
 Wire Wire Line
 	2350 1950 2500 1950
 Connection ~ 2350 1950
@@ -699,12 +699,12 @@ Wire Wire Line
 $Comp
 L Connector:Mini-DIN-6 J?
 U 1 1 5F701D58
-P 9400 3250
-F 0 "J?" H 9400 3617 50  0000 C CNN
-F 1 "Mini-DIN-6" H 9400 3526 50  0000 C CNN
-F 2 "65C02_Computer:mini_din-6" H 9400 3250 50  0001 C CNN
-F 3 "http://service.powerdynamics.com/ec/Catalog17/Section%2011.pdf" H 9400 3250 50  0001 C CNN
-	1    9400 3250
+P 9550 2650
+F 0 "J?" H 9550 3017 50  0000 C CNN
+F 1 "Mini-DIN-6" H 9550 2926 50  0000 C CNN
+F 2 "65C02_Computer:mini_din-6" H 9550 2650 50  0001 C CNN
+F 3 "http://service.powerdynamics.com/ec/Catalog17/Section%2011.pdf" H 9550 2650 50  0001 C CNN
+	1    9550 2650
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -732,14 +732,14 @@ $EndComp
 $Comp
 L Oscillator:ACO-xxxMHz X?
 U 1 1 5F4F8D3E
-P 9400 1550
+P 9550 1450
 AR Path="/5F4F8D3E" Ref="X?"  Part="1" 
 AR Path="/5F14295C/5F4F8D3E" Ref="X?"  Part="1" 
-F 0 "X?" H 9150 1600 50  0000 R CNN
-F 1 "1.8432MHz" H 9150 1500 50  0000 R CNN
-F 2 "Oscillator:Oscillator_DIP-14" H 9850 1200 50  0001 C CNN
-F 3 "http://www.conwin.com/datasheets/cx/cx030.pdf" H 9300 1550 50  0001 C CNN
-	1    9400 1550
+F 0 "X?" H 9300 1500 50  0000 R CNN
+F 1 "1.8432MHz" H 9300 1400 50  0000 R CNN
+F 2 "Oscillator:Oscillator_DIP-14" H 10000 1100 50  0001 C CNN
+F 3 "http://www.conwin.com/datasheets/cx/cx030.pdf" H 9450 1450 50  0001 C CNN
+	1    9550 1450
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1343,6 +1343,126 @@ Entry Wire Line
 	7550 5350 7650 5450
 Entry Wire Line
 	7550 5450 7650 5550
+Text GLabel 9950 2550 2    50   Output ~ 0
+KBCLK
+Text GLabel 9950 2750 2    50   Output ~ 0
+KBDAT
+Text GLabel 9950 2650 2    50   Input ~ 0
+GND
+Text GLabel 9150 2650 0    50   Input ~ 0
++5V
+Wire Wire Line
+	9150 2650 9250 2650
+Wire Wire Line
+	9850 2650 9950 2650
+Wire Wire Line
+	9850 2550 9950 2550
+Wire Wire Line
+	9850 2750 9950 2750
+NoConn ~ 9250 2550
+NoConn ~ 9250 2750
+Text GLabel 9550 3300 1    50   Input ~ 0
++5V
+Text GLabel 9550 5700 3    50   Input ~ 0
+GND
+Text GLabel 8850 3700 0    50   Input ~ 0
+~RES
+Text Label 10450 3700 2    50   ~ 0
+v1pa0
+Text Label 10450 3800 2    50   ~ 0
+v1pa1
+Text Label 10450 3900 2    50   ~ 0
+v1pa2
+Text Label 10450 4000 2    50   ~ 0
+v1pa3
+Text Label 10450 4100 2    50   ~ 0
+v1pa4
+Text Label 10450 4200 2    50   ~ 0
+v1pa5
+Text Label 10450 4300 2    50   ~ 0
+v1pa6
+Text Label 10450 4400 2    50   ~ 0
+v1pa7
+Entry Wire Line
+	10450 3700 10550 3600
+Entry Wire Line
+	10450 3800 10550 3700
+Entry Wire Line
+	10450 3900 10550 3800
+Entry Wire Line
+	10450 4000 10550 3900
+Entry Wire Line
+	10450 4100 10550 4000
+Entry Wire Line
+	10450 4200 10550 4100
+Entry Wire Line
+	10450 4300 10550 4200
+Entry Wire Line
+	10450 4400 10550 4300
+Wire Wire Line
+	10150 3700 10450 3700
+Wire Wire Line
+	10150 3800 10450 3800
+Wire Wire Line
+	10150 3900 10450 3900
+Wire Wire Line
+	10150 4000 10450 4000
+Wire Wire Line
+	10150 4100 10450 4100
+Wire Wire Line
+	10150 4200 10450 4200
+Wire Wire Line
+	10150 4300 10450 4300
+Wire Wire Line
+	10150 4400 10450 4400
+Text GLabel 10350 5300 3    50   Input ~ 0
+KBDAT
+$Comp
+L MCU_Microchip_ATtiny:ATtiny4313-PU U?
+U 1 1 5E5D2E2B
+P 9550 4500
+F 0 "U?" H 9550 4400 50  0000 C CNN
+F 1 "ATtiny4313-PU" H 9550 4500 50  0000 C CNN
+F 2 "Package_DIP:DIP-20_W7.62mm" H 9550 4500 50  0001 C CIN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/doc8246.pdf" H 9550 4500 50  0001 C CNN
+	1    9550 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8850 3700 8950 3700
+Wire Wire Line
+	10150 4800 10250 4800
+Text GLabel 10250 5300 3    50   Input ~ 0
+KBCLK
+NoConn ~ 8950 3900
+NoConn ~ 8950 4100
+Text Label 10600 4700 2    50   ~ 0
+v1pa8
+Text Label 10600 4900 2    50   ~ 0
+v1pa9
+Wire Wire Line
+	10250 5300 10250 4800
+Wire Wire Line
+	10350 5300 10350 4600
+Wire Wire Line
+	10150 4600 10350 4600
+Wire Wire Line
+	10150 4700 10600 4700
+Wire Wire Line
+	10150 4900 10600 4900
+Wire Wire Line
+	9550 5700 9550 5600
+Wire Wire Line
+	9550 3300 9550 3400
+Entry Wire Line
+	10600 4700 10700 4800
+Entry Wire Line
+	10600 4900 10700 5000
+Wire Bus Line
+	10700 5000 10700 4800
+NoConn ~ 10150 5000
+NoConn ~ 10150 5100
+NoConn ~ 10150 5200
 Wire Bus Line
 	5500 3000 5500 3400
 Wire Bus Line
@@ -1362,13 +1482,15 @@ Wire Bus Line
 Wire Bus Line
 	5950 3850 5950 4650
 Wire Bus Line
+	10550 3600 10550 4300
+Wire Bus Line
+	7550 4550 7550 5450
+Wire Bus Line
+	7550 3150 7550 4050
+Wire Bus Line
 	3450 4400 3450 5300
 Wire Bus Line
 	3450 3000 3450 4100
 Wire Bus Line
 	1050 3000 1050 4100
-Wire Bus Line
-	7550 3150 7550 4050
-Wire Bus Line
-	7550 4550 7550 5450
 $EndSCHEMATC
