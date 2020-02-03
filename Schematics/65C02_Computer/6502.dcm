@@ -20,4 +20,8 @@ $CMP 65C51N
 F https://www.westerndesigncenter.com/wdc/documentation/w65c51n.pdf
 $ENDCMP
 #
+$CMP FT230XS
+F https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT230X.pdf
+$ENDCMP
+#
 #End Doc Library
