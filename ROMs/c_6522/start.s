@@ -15,7 +15,6 @@
       .import _main
 
       .segment "STARTUP"
-      ;.code
 
 init:
       cld
