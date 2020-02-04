@@ -1,12 +1,7 @@
-        .segment "ACIA"
-ACIA_DATA:
-        .byte $00
-ACIA_STATUS:
-        .byte $00
-ACIA_COMMAND:
-        .byte $00
-ACIA_CONTROL:
-        .byte $00
+        .import ACIA_DATA
+        .import ACIA_STATUS
+        .import ACIA_COMMAND
+        .import ACIA_CONTROL
 
 ACIA_STOP_BITS_1 = %00000000
 ACIA_STOP_BITS_2 = %10000000

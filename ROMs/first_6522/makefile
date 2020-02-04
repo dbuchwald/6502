@@ -18,7 +18,7 @@ MKDIR_BINARY=mkdir
 BUILD_FOLDER=build
 
 # Source files to be compiled
-SOURCES = main.s
+SOURCES = main.s via.s
 # Object files to be generated
 OBJECTS = $(SOURCES:%.s=$(BUILD_FOLDER)/%.o)
 
