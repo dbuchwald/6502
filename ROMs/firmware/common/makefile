@@ -79,7 +79,7 @@ $(COMMON_BUILD_FOLDER)/%.o: $(COMMON_SOURCE_FOLDER)/%.s $(COMMON_BUILD_FOLDER) $
 # Compile common C sources
 $(COMMON_BUILD_FOLDER)/%.o: $(COMMON_SOURCE_FOLDER)/%.c $(COMMON_BUILD_FOLDER) $(FIRMWARE_CFG) 
 	$(CC65_BINARY) $(CC65_FLAGS) -I $(COMMON_INCLUDE_FOLDER) -o $(@:.o=.s) $<
-	$(CA65_BINARY) $(CA65_FLAGS) -o $@ -l $(@:.o=.lst) $(BUILD_FOLDER)/$(<:.c=.s)
+	$(CA65_BINARY) $(CA65_FLAGS) -o $@ -l $(@:.o=.lst) $(@:.o=.s)
 
 # Standard build
 all: $(FIRMWARE_BINARY)
