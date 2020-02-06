@@ -1,8 +1,1 @@
-build/*.bin
-build/*.lst
-build/*.o
-build/*.map
-build/*.s
-build/common/*.lst
-build/common/*.s
-build/common/*.o
+build

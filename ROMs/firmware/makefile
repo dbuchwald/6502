@@ -6,7 +6,17 @@ ROM_FOLDER=$(BUILD_FOLDER)/rom
 
 ADDRESS_MODE=ext
 
-FIRMWARE_PROJECTS = 01_nop_fill 02_nop_fffc 03_first_code 04_blink_s 05_knight_rider 06_lcd_test 07_mem_test 08_stack_test 09_serial_test 10_blink_c
+FIRMWARE_PROJECTS = 01_nop_fill \
+                    02_nop_fffc \
+                    03_first_code \
+                    04_blink_s \
+                    05_knight_rider \
+                    06_lcd_test \
+                    07_mem_test \
+                    08_stack_test \
+                    09_serial_test \
+                    10_blink_c \
+                    11_int_test
 
 FIRMWARE_BINARIES=$(FIRMWARE_PROJECTS:%=$(ROM_FOLDER)/%.$(ADDRESS_MODE).bin)
 
