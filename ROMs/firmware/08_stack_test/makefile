@@ -1,6 +1,6 @@
-PROJECT_NAME=stack_test
+PROJECT_NAME=08_stack_test
 
-ASM_SOURCES=$(PROJECT_NAME).s
+ASM_SOURCES=stack_test.s
 C_SOURCES=
 COMMON_DEPS=via.o
 

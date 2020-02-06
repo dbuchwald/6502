@@ -1,6 +1,6 @@
-PROJECT_NAME=nop_fffc
+PROJECT_NAME=02_nop_fffc
 
-ASM_SOURCES=$(PROJECT_NAME).s
+ASM_SOURCES=nop_fffc.s
 C_SOURCES=
 
 include ../common/makefile

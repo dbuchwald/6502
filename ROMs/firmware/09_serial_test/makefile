@@ -1,6 +1,6 @@
-PROJECT_NAME=serial_test
+PROJECT_NAME=09_serial_test
 
-ASM_SOURCES=$(PROJECT_NAME).s
+ASM_SOURCES=serial_test.s
 C_SOURCES=
 COMMON_DEPS=acia.o
 

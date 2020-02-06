@@ -1,6 +1,6 @@
-PROJECT_NAME=lcd_test
+PROJECT_NAME=06_lcd_test
 
-ASM_SOURCES=$(PROJECT_NAME).s
+ASM_SOURCES=lcd_test.s
 C_SOURCES=
 COMMON_DEPS=via.o
 
