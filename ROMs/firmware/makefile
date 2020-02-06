@@ -16,7 +16,8 @@ FIRMWARE_PROJECTS = 01_nop_fill \
                     08_stack_test \
                     09_serial_test \
                     10_blink_c \
-                    11_int_test
+                    11_int_test \
+                    12_handshake_test
 
 FIRMWARE_BINARIES=$(FIRMWARE_PROJECTS:%=$(ROM_FOLDER)/%.$(ADDRESS_MODE).bin)
 
