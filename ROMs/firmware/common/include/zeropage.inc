@@ -9,3 +9,4 @@
 .globalzp ptr2
 .globalzp ptr3
 .globalzp ptr4
+.globalzp lcd_out_ptr

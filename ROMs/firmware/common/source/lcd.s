@@ -1,5 +1,7 @@
       .include "via.inc"
+      .include "zeropage.inc"
       .export _lcd_init
+      .export _lcd_print
 
 ; LCD Commands list
 LCD_CMD_CLEAR           = %00000001
@@ -83,6 +85,55 @@ lcd_init_loop:
       bra lcd_init_loop
 lcd_init_end:
       plx
+      pla
+      rts
+
+_lcd_print:
+      ; store registers A and Y
+      pha
+      phy
+      ; VIA1 PORTB - all output
+      lda #%11111111
+      sta VIA1_DDRB
+      ; clear output (all zeros)
+      stz VIA1_PORTB
+      ; initialize index
+      ldy #$00
+lcd_print_loop:
+      ; Read next byte of init sequence data
+      lda (lcd_out_ptr),y
+      ; Exit loop if $00 read
+      beq lcd_print_end
+      ; Store current value, we will need it for another 4bits
+      pha
+      ; Most significant bits first
+      ror
+      ror
+      ror
+      ror
+      ; Apply mask
+      and #%00001111
+      ; Set write data flags
+      ora #%01010000
+      ; Send first 4 bits
+      sta VIA1_PORTB
+      ; Toggle pulse
+      eor #%01000000
+      sta VIA1_PORTB
+      ; Follow the same process with least significant bits
+      pla
+      and #%00001111
+      ; Set write data flags
+      ora #%01010000
+      ; Send first 4 bits
+      sta VIA1_PORTB
+      ; Toggle pulse
+      eor #%01000000
+      sta VIA1_PORTB
+      iny
+      bra lcd_print_loop
+lcd_print_end:
+      ply
       pla
       rts
 
