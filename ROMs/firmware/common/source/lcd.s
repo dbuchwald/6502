@@ -1,5 +1,6 @@
       .include "via.inc"
       .include "zeropage.inc"
+      .include "utils.inc"
       .export _lcd_init
       .export _lcd_print
 
@@ -56,31 +57,32 @@ lcd_init_loop:
       ; Store current value, we will need it for another 4bits
       pha
       ; Most significant bits first
-      ror
-      ror
-      ror
-      ror
       ; Apply mask
-      and #%00001111
+      and #%11110000
       ; Set write command flags
-      ora #%01000000
+      ora #%00001000
       ; Send first 4 bits
       sta VIA1_PORTB
       ; Toggle pulse
-      eor #%01000000
+      eor #%00001000
       sta VIA1_PORTB
       ; Follow the same process with least significant bits
       pla
       and #%00001111
+      rol
+      rol
+      rol
+      rol
       ; Set write command flags
-      ora #%01000000
+      ora #%00001000
       ; Send first 4 bits
       sta VIA1_PORTB
       ; Toggle pulse
-      eor #%01000000
+      eor #%00001000
       sta VIA1_PORTB
       inx
       lda lcd_init_sequence_data,x
+      jsr _delay_ms
       inx
       bra lcd_init_loop
 lcd_init_end:
@@ -107,30 +109,32 @@ lcd_print_loop:
       ; Store current value, we will need it for another 4bits
       pha
       ; Most significant bits first
-      ror
-      ror
-      ror
-      ror
       ; Apply mask
-      and #%00001111
+      and #%11110000
       ; Set write data flags
-      ora #%01010000
+      ora #%00001010
       ; Send first 4 bits
       sta VIA1_PORTB
       ; Toggle pulse
-      eor #%01000000
+      eor #%00001000
       sta VIA1_PORTB
       ; Follow the same process with least significant bits
       pla
       and #%00001111
+      rol
+      rol
+      rol
+      rol
       ; Set write data flags
-      ora #%01010000
+      ora #%00001010
       ; Send first 4 bits
       sta VIA1_PORTB
       ; Toggle pulse
-      eor #%01000000
+      eor #%00001000
       sta VIA1_PORTB
       iny
+      lda #01
+      jsr _delay_ms
       bra lcd_print_loop
 lcd_print_end:
       ply
