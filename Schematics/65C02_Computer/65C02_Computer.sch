@@ -1392,12 +1392,10 @@ Entry Wire Line
 	6350 4950 6450 4850
 Entry Wire Line
 	6350 5050 6450 4950
-Text GLabel 6350 5150 2    50   Input ~ 0
+Text GLabel 6550 5050 1    50   Input ~ 0
 CLK
-Text GLabel 6350 5300 2    50   Input ~ 0
+Text GLabel 6700 5050 1    50   Input ~ 0
 R~W
-Text GLabel 6350 5450 2    50   Input ~ 0
-~IRQ
 Text GLabel 6350 5850 2    50   Input ~ 0
 +5V
 Text GLabel 6350 5750 2    50   Input ~ 0
@@ -1407,19 +1405,25 @@ Wire Wire Line
 Wire Wire Line
 	6150 5750 6350 5750
 Wire Wire Line
-	6150 5150 6350 5150
+	6550 5050 6550 5150
 Wire Wire Line
-	6150 5250 6250 5250
+	6550 5150 6150 5150
+Text GLabel 7000 5050 1    50   Input ~ 0
+~RES
+Text GLabel 6850 5050 1    50   Input ~ 0
+~IOCS
 Wire Wire Line
-	6250 5250 6250 5300
+	6700 5050 6700 5250
 Wire Wire Line
-	6250 5300 6350 5300
+	6700 5250 6150 5250
 Wire Wire Line
-	6150 5350 6250 5350
+	6850 5050 6850 5350
 Wire Wire Line
-	6250 5350 6250 5450
+	6850 5350 6150 5350
 Wire Wire Line
-	6250 5450 6350 5450
+	7000 5050 7000 5450
+Wire Wire Line
+	7000 5450 6150 5450
 Wire Bus Line
 	3100 5450 3100 5650
 Wire Bus Line
