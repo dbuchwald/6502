@@ -235,7 +235,7 @@ Wire Wire Line
 Wire Wire Line
 	3400 3000 3400 2900
 Text GLabel 3800 3300 2    50   Output ~ 0
-CLK
+CLKOUT
 Wire Wire Line
 	3700 3300 3800 3300
 Wire Wire Line
@@ -390,7 +390,7 @@ L Device:R R?
 U 1 1 5E14ABB7
 P 1000 1600
 F 0 "R?" V 900 1600 50  0000 C CNN
-F 1 "1K" V 1000 1600 50  0000 C CNN
+F 1 "3K3" V 1000 1600 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 930 1600 50  0001 C CNN
 F 3 "~" H 1000 1600 50  0001 C CNN
 	1    1000 1600
@@ -401,7 +401,7 @@ L Device:R R?
 U 1 1 5E14A45B
 P 1000 1200
 F 0 "R?" V 900 1200 50  0000 C CNN
-F 1 "1K" V 1000 1200 50  0000 C CNN
+F 1 "3K3" V 1000 1200 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 930 1200 50  0001 C CNN
 F 3 "~" H 1000 1200 50  0001 C CNN
 	1    1000 1200
@@ -985,42 +985,40 @@ Wire Wire Line
 $Comp
 L 74xx:74LS21 U?
 U 1 1 5E23A6D1
-P 5050 3350
-F 0 "U?" H 5050 3725 50  0000 C CNN
-F 1 "74HC21" H 5050 3634 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 5050 3350 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 5050 3350 50  0001 C CNN
-	1    5050 3350
+P 8450 5300
+F 0 "U?" H 8450 5675 50  0000 C CNN
+F 1 "74HC21" H 8450 5584 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 8450 5300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 8450 5300 50  0001 C CNN
+	1    8450 5300
 	1    0    0    -1  
 $EndComp
-Text GLabel 4650 3100 1    50   Input ~ 0
+Text GLabel 8050 5050 1    50   Input ~ 0
 ~V1IRQ
-Text GLabel 4500 3100 1    50   Input ~ 0
+Text GLabel 7900 5050 1    50   Input ~ 0
 ~V2IRQ
-Text GLabel 4350 3100 1    50   Input ~ 0
+Text GLabel 7750 5050 1    50   Input ~ 0
 ~AIRQ
-Text GLabel 4200 3100 1    50   Input ~ 0
-+5V
 Wire Wire Line
-	4650 3100 4650 3200
+	8050 5050 8050 5150
 Wire Wire Line
-	4650 3200 4750 3200
+	8050 5150 8150 5150
 Wire Wire Line
-	4500 3100 4500 3300
+	7900 5050 7900 5250
 Wire Wire Line
-	4500 3300 4750 3300
+	7900 5250 8150 5250
 Wire Wire Line
-	4350 3100 4350 3400
+	7750 5050 7750 5350
 Wire Wire Line
-	4350 3400 4750 3400
+	7750 5350 8150 5350
 Wire Wire Line
-	4200 3100 4200 3500
+	7600 5050 7600 5450
 Wire Wire Line
-	4200 3500 4750 3500
-Text GLabel 5450 3350 2    50   Output ~ 0
+	7600 5450 8150 5450
+Text GLabel 8850 5300 2    50   Output ~ 0
 ~IRQ
 Wire Wire Line
-	5350 3350 5450 3350
+	8750 5300 8850 5300
 Wire Wire Line
 	2300 1300 2850 1300
 Connection ~ 2850 1300
@@ -1424,6 +1422,51 @@ Wire Wire Line
 	7000 5050 7000 5450
 Wire Wire Line
 	7000 5450 6150 5450
+Text GLabel 7150 5050 1    50   Output ~ 0
+~IRQX
+Wire Wire Line
+	6150 5550 7150 5550
+Wire Wire Line
+	7150 5550 7150 5050
+Text GLabel 7600 5050 1    50   Input ~ 0
+~IRQX
+Text GLabel 7450 5050 1    50   Input ~ 0
++5V
+$Comp
+L Device:R R?
+U 1 1 5E451554
+P 7450 5300
+F 0 "R?" V 7350 5300 50  0000 C CNN
+F 1 "3K3" V 7450 5300 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 7380 5300 50  0001 C CNN
+F 3 "~" H 7450 5300 50  0001 C CNN
+	1    7450 5300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7450 5050 7450 5150
+Wire Wire Line
+	7450 5450 7600 5450
+Connection ~ 7600 5450
+$Comp
+L Connector:Conn_01x02_Male J?
+U 1 1 5E49655D
+P 4400 2750
+F 0 "J?" H 4372 2632 50  0000 R CNN
+F 1 "CLK Jumper" H 4372 2723 50  0000 R CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4400 2750 50  0001 C CNN
+F 3 "~" H 4400 2750 50  0001 C CNN
+	1    4400 2750
+	-1   0    0    1   
+$EndComp
+Text GLabel 4100 2650 0    50   Input ~ 0
+CLKOUT
+Text GLabel 4100 2750 0    50   Output ~ 0
+CLK
+Wire Wire Line
+	4100 2650 4200 2650
+Wire Wire Line
+	4100 2750 4200 2750
 Wire Bus Line
 	3100 5450 3100 5650
 Wire Bus Line
