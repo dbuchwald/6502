@@ -1,6 +1,7 @@
       .setcpu "65C02"
       .include "via.inc"
       .include "lcd.inc"
+      .include "acia.inc"
       .import __RAM_START__
 
 WRITE_INDEX   = __RAM_START__
@@ -15,6 +16,14 @@ MEM_BUFFER    = __RAM_START__+1
       .code
 
 init:
+      ldx #$ff
+      txs
+
+      lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_DISABLE | ACIA_DTR_LOW)
+      sta ACIA_COMMAND
+      lda #(ACIA_STOP_BITS_1 | ACIA_DATA_BITS_8 | ACIA_CLOCK_INT | ACIA_BAUD_19200)
+      sta ACIA_CONTROL
+
       jsr _lcd_init
 
 handshake_init:
