@@ -18,13 +18,13 @@ init:
       jsr _lcd_init
 
 handshake_init:
-      stz VIA2_DDRA            ; VIA2 PORTA is all input
+      stz VIA1_DDRA            ; VIA2 PORTA is all input
                                ; define read handshake on VIA2 CA1/CA2
       lda #(VIA_PCR_CA1_INTERRUPT_NEGATIVE | VIA_PCR_CA2_OUTPUT_PULSE | VIA_PCR_CB1_INTERRUPT_NEGATIVE | VIA_PCR_CB2_OUTPUT_HIGH)
-      sta VIA2_PCR
+      sta VIA1_PCR
                                ; enable interrupt from VIA2 on CA1 (Data ready)
       lda #(VIA_IER_SET_FLAGS | VIA_IER_CA1_FLAG)
-      sta VIA2_IER
+      sta VIA1_IER
       cli                      ; enable interrupt processing
 
       ldx #00                  ; set display index to 0
@@ -41,7 +41,7 @@ program_loop:
 
 read_data:
       pha
-      lda VIA2_PORTA           ; should trigger data taken signal
+      lda VIA1_PORTA           ; should trigger data taken signal
       sta MEM_BUFFER,y
       iny
       sty WRITE_INDEX
