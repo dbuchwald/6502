@@ -36,35 +36,49 @@ LCD_FS_TWO_LINE         = %00001000
 LCD_FS_4_BIT            = %00000000
 LCD_FS_8_BIT            = %00010000
 
+; Control bits for the LCD
+LCD_COMMAND_MODE        = %00000000
+LCD_DATA_MODE           = %00000010
+LCD_WRITE_MODE          = %00000000
+LCD_READ_MODE           = %00000100
+LCD_ENABLE_FLAG         = %00001000
+
       .code
 
 _lcd_init:
       ; store registers A and X
       pha
       phx
-      ; VIA1 PORTB - all output
-      lda #%11111111
+      ; VIA1 PORTB - toggle output on 7 last bits
+      lda VIA1_DDRB
+      ora #%11111110
       sta VIA1_DDRB
-      ; clear output (all zeros)
-      stz VIA1_PORTB
+      ; clear output for 7 last bits
+      lda VIA1_PORTB
+      and #%00000001
+      sta VIA1_PORTB
       ; initialize index
       ldx #$00
-lcd_init_loop:
+@lcd_init_loop:
+      ; Delay before commands
+      lda lcd_init_sequence_data,x
+      jsr _delay_ms
+      inx
       ; Read next byte of init sequence data
       lda lcd_init_sequence_data,x
       ; Exit loop if $00 read
-      beq lcd_init_end
+      beq @lcd_init_end
       ; Store current value, we will need it for another 4bits
       pha
       ; Most significant bits first
       ; Apply mask
       and #%11110000
       ; Set write command flags
-      ora #%00001000
+      ora #(LCD_COMMAND_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
       ; Send first 4 bits
       sta VIA1_PORTB
       ; Toggle pulse
-      eor #%00001000
+      eor #LCD_ENABLE_FLAG
       sta VIA1_PORTB
       ; Follow the same process with least significant bits
       pla
@@ -74,18 +88,15 @@ lcd_init_loop:
       rol
       rol
       ; Set write command flags
-      ora #%00001000
+      ora #(LCD_COMMAND_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
       ; Send first 4 bits
       sta VIA1_PORTB
       ; Toggle pulse
-      eor #%00001000
+      eor #LCD_ENABLE_FLAG
       sta VIA1_PORTB
       inx
-      lda lcd_init_sequence_data,x
-      jsr _delay_ms
-      inx
-      bra lcd_init_loop
-lcd_init_end:
+      bra @lcd_init_loop
+@lcd_init_end:
       plx
       pla
       rts
@@ -94,49 +105,91 @@ _lcd_print:
       ; store registers A and Y
       pha
       phy
-      ; VIA1 PORTB - all output
-      lda #%11111111
+      ; VIA1 PORTB - toggle output on 7 last bits
+      lda VIA1_DDRB
+      ora #%11111110
       sta VIA1_DDRB
-      ; clear output (all zeros)
-      stz VIA1_PORTB
+      ; clear output for 7 last bits
+      lda VIA1_PORTB
+      and #%00000001
+      sta VIA1_PORTB
       ; initialize index
       ldy #$00
-lcd_print_loop:
+@lcd_print_loop:
       ; Read next byte of init sequence data
       lda (lcd_out_ptr),y
       ; Exit loop if $00 read
-      beq lcd_print_end
+      beq @lcd_print_end
       ; Store current value, we will need it for another 4bits
       pha
       ; Most significant bits first
       ; Apply mask
       and #%11110000
       ; Set write data flags
-      ora #%00001010
+      ora #(LCD_DATA_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
       ; Send first 4 bits
       sta VIA1_PORTB
       ; Toggle pulse
-      eor #%00001000
+      eor #LCD_ENABLE_FLAG
       sta VIA1_PORTB
       ; Follow the same process with least significant bits
       pla
       and #%00001111
+      clc
       rol
       rol
       rol
       rol
       ; Set write data flags
-      ora #%00001010
+      ora #(LCD_DATA_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
       ; Send first 4 bits
       sta VIA1_PORTB
       ; Toggle pulse
-      eor #%00001000
+      eor #LCD_ENABLE_FLAG
       sta VIA1_PORTB
       iny
-      lda #01
-      jsr _delay_ms
-      bra lcd_print_loop
-lcd_print_end:
+
+      ;lda #01
+      ;jsr _delay_ms
+
+      lda VIA1_DDRB
+      and #%00001110
+      sta VIA1_DDRB
+@lcd_print_busy_flag_poll:
+      lda #(LCD_COMMAND_MODE | LCD_READ_MODE | LCD_ENABLE_FLAG)
+      sta VIA1_PORTB
+      ; Read and construct result
+      nop
+      lda VIA1_PORTB
+      and #%11110000
+      sta tmp1
+;      eor #LCD_ENABLE_FLAG
+      lda #(LCD_COMMAND_MODE | LCD_READ_MODE)
+      sta VIA1_PORTB
+      lda #(LCD_COMMAND_MODE | LCD_READ_MODE | LCD_ENABLE_FLAG)
+      sta VIA1_PORTB
+      ; Read and construct result
+      lda VIA1_PORTB
+      sta tmp2
+      eor #LCD_ENABLE_FLAG
+      sta VIA1_PORTB
+      lda tmp2
+      and #%11110000
+      clc
+      ror
+      ror
+      ror
+      ror
+      ora tmp1
+      sta tmp1
+      bmi @lcd_print_busy_flag_poll
+      ; VIA1 PORTB - toggle output on 7 last bits
+      lda VIA1_DDRB
+      ora #%11111110
+      sta VIA1_DDRB
+
+      bra @lcd_print_loop
+@lcd_print_end:
       ply
       pla
       rts
@@ -144,6 +197,7 @@ lcd_print_end:
       .SEGMENT "RODATA"
 
 lcd_init_sequence_data:
+      .byte 50
       .byte LCD_CMD_FUNCTION_SET | LCD_FS_FONT5x7 | LCD_FS_TWO_LINE | LCD_FS_4_BIT
       .byte 50
       .byte LCD_CMD_DISPLAY_MODE | LCD_DM_DISPLAY_ON | LCD_DM_CURSOR_OFF | LCD_DM_CURSOR_NOBLINK
