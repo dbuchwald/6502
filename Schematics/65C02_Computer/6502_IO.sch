@@ -686,21 +686,14 @@ RS232CLK
 Wire Wire Line
 	9850 1450 9950 1450
 Wire Wire Line
-	2350 1950 2500 1950
-Connection ~ 2350 1950
-Wire Wire Line
-	2800 1950 2950 1950
-Wire Wire Line
 	2950 1950 2950 1550
 Wire Wire Line
 	2950 1250 2950 1150
-Wire Wire Line
-	2950 1150 2350 1150
 $Comp
-L Connector:Mini-DIN-6 J?
+L Connector:Mini-DIN-6 J7
 U 1 1 5F701D58
 P 9550 2650
-F 0 "J?" H 9550 3017 50  0000 C CNN
+F 0 "J7" H 9550 3017 50  0000 C CNN
 F 1 "Mini-DIN-6" H 9550 2926 50  0000 C CNN
 F 2 "65C02_Computer:mini_din-6" H 9550 2650 50  0001 C CNN
 F 3 "http://service.powerdynamics.com/ec/Catalog17/Section%2011.pdf" H 9550 2650 50  0001 C CNN
@@ -708,23 +701,23 @@ F 3 "http://service.powerdynamics.com/ec/Catalog17/Section%2011.pdf" H 9550 2650
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
+L Device:R R9
 U 1 1 5F6AC848
-P 2650 1950
-F 0 "R?" V 2750 1950 50  0000 C CNN
-F 1 "270" V 2650 1950 50  0000 C CNN
-F 2 "" V 2580 1950 50  0001 C CNN
-F 3 "~" H 2650 1950 50  0001 C CNN
-	1    2650 1950
+P 2650 1150
+F 0 "R9" V 2750 1150 50  0000 C CNN
+F 1 "270" V 2650 1150 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2580 1150 50  0001 C CNN
+F 3 "~" H 2650 1150 50  0001 C CNN
+	1    2650 1150
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:LED D?
+L Device:LED D1
 U 1 1 5F6AC13D
 P 2950 1400
-F 0 "D?" V 2989 1282 50  0000 R CNN
+F 0 "D1" V 2989 1282 50  0000 R CNN
 F 1 "PWR" V 2898 1282 50  0000 R CNN
-F 2 "" H 2950 1400 50  0001 C CNN
+F 2 "LED_THT:LED_D5.0mm_Clear" H 2950 1400 50  0001 C CNN
 F 3 "~" H 2950 1400 50  0001 C CNN
 	1    2950 1400
 	0    -1   -1   0   
@@ -734,8 +727,8 @@ L Oscillator:ACO-xxxMHz X?
 U 1 1 5F4F8D3E
 P 9550 1450
 AR Path="/5F4F8D3E" Ref="X?"  Part="1" 
-AR Path="/5F14295C/5F4F8D3E" Ref="X?"  Part="1" 
-F 0 "X?" H 9300 1500 50  0000 R CNN
+AR Path="/5F14295C/5F4F8D3E" Ref="X2"  Part="1" 
+F 0 "X2" H 9300 1500 50  0000 R CNN
 F 1 "1.8432MHz" H 9300 1400 50  0000 R CNN
 F 2 "Oscillator:Oscillator_DIP-14" H 10000 1100 50  0001 C CNN
 F 3 "http://www.conwin.com/datasheets/cx/cx030.pdf" H 9450 1450 50  0001 C CNN
@@ -743,45 +736,45 @@ F 3 "http://www.conwin.com/datasheets/cx/cx030.pdf" H 9450 1450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
+L Device:R R10
 U 1 1 5F4BFCC3
 P 5150 750
-F 0 "R?" V 5250 750 50  0000 C CNN
+F 0 "R10" V 5250 750 50  0000 C CNN
 F 1 "270" V 5150 750 50  0000 C CNN
-F 2 "" V 5080 750 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 5080 750 50  0001 C CNN
 F 3 "~" H 5150 750 50  0001 C CNN
 	1    5150 750 
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:R R?
+L Device:R R11
 U 1 1 5F4B3669
 P 5150 950
-F 0 "R?" V 5250 950 50  0000 C CNN
+F 0 "R11" V 5250 950 50  0000 C CNN
 F 1 "270" V 5150 950 50  0000 C CNN
-F 2 "" V 5080 950 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 5080 950 50  0001 C CNN
 F 3 "~" H 5150 950 50  0001 C CNN
 	1    5150 950 
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:LED D?
+L Device:LED D3
 U 1 1 5F4A0458
 P 5700 1200
-F 0 "D?" V 5739 1083 50  0000 R CNN
+F 0 "D3" V 5739 1083 50  0000 R CNN
 F 1 "RX" V 5648 1083 50  0000 R CNN
-F 2 "" H 5700 1200 50  0001 C CNN
+F 2 "LED_THT:LED_D5.0mm_Clear" H 5700 1200 50  0001 C CNN
 F 3 "~" H 5700 1200 50  0001 C CNN
 	1    5700 1200
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:LED D?
+L Device:LED D2
 U 1 1 5F49EFBE
 P 5400 1200
-F 0 "D?" V 5439 1082 50  0000 R CNN
+F 0 "D2" V 5439 1082 50  0000 R CNN
 F 1 "TX" V 5348 1082 50  0000 R CNN
-F 2 "" H 5400 1200 50  0001 C CNN
+F 2 "LED_THT:LED_D5.0mm_Clear" H 5400 1200 50  0001 C CNN
 F 3 "~" H 5400 1200 50  0001 C CNN
 	1    5400 1200
 	0    -1   -1   0   
@@ -791,8 +784,8 @@ L 6502:65C22S U?
 U 1 1 5F285E91
 P 1950 4300
 AR Path="/5F285E91" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F285E91" Ref="U?"  Part="1" 
-F 0 "U?" H 1950 5450 50  0000 C CNN
+AR Path="/5F14295C/5F285E91" Ref="U8"  Part="1" 
+F 0 "U8" H 1950 5450 50  0000 C CNN
 F 1 "65C22S" H 1950 5350 50  0000 C CNN
 F 2 "Package_DIP:DIP-40_W15.24mm_Socket" H 2050 4300 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf" H 2050 4300 50  0001 C CNN
@@ -804,8 +797,8 @@ L 6502:65C22S U?
 U 1 1 5F285E8B
 P 4350 4300
 AR Path="/5F285E8B" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F285E8B" Ref="U?"  Part="1" 
-F 0 "U?" H 4350 5450 50  0000 C CNN
+AR Path="/5F14295C/5F285E8B" Ref="U9"  Part="1" 
+F 0 "U9" H 4350 5450 50  0000 C CNN
 F 1 "65C22S" H 4350 5350 50  0000 C CNN
 F 2 "Package_DIP:DIP-40_W15.24mm_Socket" H 4450 4300 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf" H 4450 4300 50  0001 C CNN
@@ -817,10 +810,10 @@ L Device:C C?
 U 1 1 5F26EF26
 P 2350 1700
 AR Path="/5F26EF26" Ref="C?"  Part="1" 
-AR Path="/5F14295C/5F26EF26" Ref="C?"  Part="1" 
-F 0 "C?" H 2465 1746 50  0000 L CNN
+AR Path="/5F14295C/5F26EF26" Ref="C16"  Part="1" 
+F 0 "C16" H 2465 1746 50  0000 L CNN
 F 1 "10nF" H 2465 1655 50  0000 L CNN
-F 2 "" H 2388 1550 50  0001 C CNN
+F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 2388 1550 50  0001 C CNN
 F 3 "~" H 2350 1700 50  0001 C CNN
 	1    2350 1700
 	1    0    0    -1  
@@ -830,10 +823,10 @@ L Device:C C?
 U 1 1 5F26EF13
 P 1950 1700
 AR Path="/5F26EF13" Ref="C?"  Part="1" 
-AR Path="/5F14295C/5F26EF13" Ref="C?"  Part="1" 
-F 0 "C?" H 2065 1746 50  0000 L CNN
+AR Path="/5F14295C/5F26EF13" Ref="C15"  Part="1" 
+F 0 "C15" H 2065 1746 50  0000 L CNN
 F 1 "47pF" H 2065 1655 50  0000 L CNN
-F 2 "" H 1988 1550 50  0001 C CNN
+F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 1988 1550 50  0001 C CNN
 F 3 "~" H 1950 1700 50  0001 C CNN
 	1    1950 1700
 	1    0    0    -1  
@@ -843,10 +836,10 @@ L Device:C C?
 U 1 1 5F26EF0D
 P 1550 1700
 AR Path="/5F26EF0D" Ref="C?"  Part="1" 
-AR Path="/5F14295C/5F26EF0D" Ref="C?"  Part="1" 
-F 0 "C?" H 1665 1746 50  0000 L CNN
+AR Path="/5F14295C/5F26EF0D" Ref="C14"  Part="1" 
+F 0 "C14" H 1665 1746 50  0000 L CNN
 F 1 "47pF" H 1665 1655 50  0000 L CNN
-F 2 "" H 1588 1550 50  0001 C CNN
+F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 1588 1550 50  0001 C CNN
 F 3 "~" H 1550 1700 50  0001 C CNN
 	1    1550 1700
 	1    0    0    -1  
@@ -856,8 +849,8 @@ L power:+5V #PWR?
 U 1 1 5F26EEFF
 P 2350 1100
 AR Path="/5F26EEFF" Ref="#PWR?"  Part="1" 
-AR Path="/5F14295C/5F26EEFF" Ref="#PWR0103"  Part="1" 
-F 0 "#PWR0103" H 2350 950 50  0001 C CNN
+AR Path="/5F14295C/5F26EEFF" Ref="#PWR04"  Part="1" 
+F 0 "#PWR04" H 2350 950 50  0001 C CNN
 F 1 "+5V" H 2365 1273 50  0000 C CNN
 F 2 "" H 2350 1100 50  0001 C CNN
 F 3 "" H 2350 1100 50  0001 C CNN
@@ -869,8 +862,8 @@ L power:GND #PWR?
 U 1 1 5F26EEF9
 P 1150 2050
 AR Path="/5F26EEF9" Ref="#PWR?"  Part="1" 
-AR Path="/5F14295C/5F26EEF9" Ref="#PWR0104"  Part="1" 
-F 0 "#PWR0104" H 1150 1800 50  0001 C CNN
+AR Path="/5F14295C/5F26EEF9" Ref="#PWR03"  Part="1" 
+F 0 "#PWR03" H 1150 1800 50  0001 C CNN
 F 1 "GND" H 1155 1877 50  0000 C CNN
 F 2 "" H 1150 2050 50  0001 C CNN
 F 3 "" H 1150 2050 50  0001 C CNN
@@ -882,10 +875,10 @@ L Connector:USB_B_Micro J?
 U 1 1 5F26EEF2
 P 1150 1350
 AR Path="/5F26EEF2" Ref="J?"  Part="1" 
-AR Path="/5F14295C/5F26EEF2" Ref="J?"  Part="1" 
-F 0 "J?" H 1207 1817 50  0000 C CNN
+AR Path="/5F14295C/5F26EEF2" Ref="J3"  Part="1" 
+F 0 "J3" H 1207 1817 50  0000 C CNN
 F 1 "USB_B_Micro" H 1207 1726 50  0000 C CNN
-F 2 "" H 1300 1300 50  0001 C CNN
+F 2 "Connector_USB:USB_Micro-B_Molex-105017-0001" H 1300 1300 50  0001 C CNN
 F 3 "~" H 1300 1300 50  0001 C CNN
 	1    1150 1350
 	1    0    0    -1  
@@ -895,10 +888,10 @@ L Device:R R?
 U 1 1 5F203CE6
 P 2150 1450
 AR Path="/5F203CE6" Ref="R?"  Part="1" 
-AR Path="/5F14295C/5F203CE6" Ref="R?"  Part="1" 
-F 0 "R?" V 2250 1450 50  0000 C CNN
+AR Path="/5F14295C/5F203CE6" Ref="R8"  Part="1" 
+F 0 "R8" V 2250 1450 50  0000 C CNN
 F 1 "27" V 2150 1450 50  0000 C CNN
-F 2 "" V 2080 1450 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2080 1450 50  0001 C CNN
 F 3 "~" H 2150 1450 50  0001 C CNN
 	1    2150 1450
 	0    1    1    0   
@@ -908,10 +901,10 @@ L Device:R R?
 U 1 1 5F203CE0
 P 2150 1350
 AR Path="/5F203CE0" Ref="R?"  Part="1" 
-AR Path="/5F14295C/5F203CE0" Ref="R?"  Part="1" 
-F 0 "R?" V 2050 1350 50  0000 C CNN
+AR Path="/5F14295C/5F203CE0" Ref="R7"  Part="1" 
+F 0 "R7" V 2050 1350 50  0000 C CNN
 F 1 "27" V 2150 1350 50  0000 C CNN
-F 2 "" V 2080 1350 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2080 1350 50  0001 C CNN
 F 3 "~" H 2150 1350 50  0001 C CNN
 	1    2150 1350
 	0    1    1    0   
@@ -921,8 +914,8 @@ L 6502:FT230XS U?
 U 1 1 5F203CBA
 P 4650 1750
 AR Path="/5F203CBA" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F203CBA" Ref="U?"  Part="1" 
-F 0 "U?" H 4650 2365 50  0000 C CNN
+AR Path="/5F14295C/5F203CBA" Ref="U10"  Part="1" 
+F 0 "U10" H 4650 2365 50  0000 C CNN
 F 1 "FT230XS" H 4650 2274 50  0000 C CNN
 F 2 "Package_SO:SSOP-16_5.3x6.2mm_P0.65mm" H 4650 2250 50  0001 C CNN
 F 3 "https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT230X.pdf" H 4650 1750 50  0001 C CNN
@@ -934,8 +927,8 @@ L 6502:65C51N U?
 U 1 1 5F1AD73D
 P 7350 1750
 AR Path="/5F1AD73D" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F1AD73D" Ref="U?"  Part="1" 
-F 0 "U?" H 7350 2650 50  0000 C CNN
+AR Path="/5F14295C/5F1AD73D" Ref="U11"  Part="1" 
+F 0 "U11" H 7350 2650 50  0000 C CNN
 F 1 "65C51N" H 7350 2550 50  0000 C CNN
 F 2 "Package_DIP:DIP-28_W15.24mm_Socket" H 7350 1750 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c51n.pdf" H 7350 1750 50  0001 C CNN
@@ -1067,12 +1060,12 @@ Wire Bus Line
 Wire Bus Line
 	1050 3000 3100 3000
 $Comp
-L Connector:Conn_01x16_Female J?
+L Connector:Conn_01x16_Female J4
 U 1 1 5FB15958
 P 6650 4150
-F 0 "J?" H 6678 4126 50  0000 L CNN
+F 0 "J4" H 6678 4126 50  0000 L CNN
 F 1 "LCD Connector" H 6678 4035 50  0000 L CNN
-F 2 "" H 6650 4150 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x16_P2.54mm_Vertical" H 6650 4150 50  0001 C CNN
 F 3 "~" H 6650 4150 50  0001 C CNN
 	1    6650 4150
 	1    0    0    -1  
@@ -1159,12 +1152,12 @@ Entry Wire Line
 Entry Wire Line
 	5950 4050 6050 3950
 $Comp
-L Device:R_POT RV?
+L Device:R_POT RV1
 U 1 1 5FD119EF
 P 6250 3250
-F 0 "RV?" V 6150 3250 50  0000 C CNN
+F 0 "RV1" V 6150 3250 50  0000 C CNN
 F 1 "10K" V 6250 3250 50  0000 C CNN
-F 2 "" H 6250 3250 50  0001 C CNN
+F 2 "Potentiometer_THT:Potentiometer_Runtron_RM-065_Vertical" H 6250 3250 50  0001 C CNN
 F 3 "~" H 6250 3250 50  0001 C CNN
 	1    6250 3250
 	0    1    1    0   
@@ -1204,15 +1197,15 @@ v2pa8
 Text Label 7650 4150 0    50   ~ 0
 v2pa9
 $Comp
-L Connector:Conn_01x12_Female J?
+L Connector:Conn_01x12_Male J5
 U 1 1 5FD88768
 P 8150 3750
-F 0 "J?" H 8178 3726 50  0000 L CNN
-F 1 "VIA2PA" H 8178 3635 50  0000 L CNN
+F 0 "J5" V 8100 3800 50  0000 L CNN
+F 1 "VIA2PA" V 8100 3500 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x12_P2.54mm_Vertical" H 8150 3750 50  0001 C CNN
 F 3 "~" H 8150 3750 50  0001 C CNN
 	1    8150 3750
-	1    0    0    -1  
+	-1   0    0    -1  
 $EndComp
 Text GLabel 7650 4350 0    50   Input ~ 0
 +5V
@@ -1261,15 +1254,15 @@ Entry Wire Line
 Entry Wire Line
 	7550 4050 7650 4150
 $Comp
-L Connector:Conn_01x12_Female J?
+L Connector:Conn_01x12_Male J6
 U 1 1 5FEAF969
 P 8150 5150
-F 0 "J?" H 8178 5126 50  0000 L CNN
-F 1 "VIA2PB" H 8178 5035 50  0000 L CNN
+F 0 "J6" V 8100 5200 50  0000 L CNN
+F 1 "VIA2PB" V 8100 4900 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x12_P2.54mm_Vertical" H 8150 5150 50  0001 C CNN
 F 3 "~" H 8150 5150 50  0001 C CNN
 	1    8150 5150
-	1    0    0    -1  
+	-1   0    0    -1  
 $EndComp
 Wire Wire Line
 	7650 4250 7950 4250
@@ -1418,12 +1411,12 @@ Wire Wire Line
 Text GLabel 10350 5300 3    50   Input ~ 0
 KBDAT
 $Comp
-L MCU_Microchip_ATtiny:ATtiny4313-PU U?
+L MCU_Microchip_ATtiny:ATtiny4313-PU U12
 U 1 1 5E5D2E2B
 P 9550 4500
-F 0 "U?" H 9550 4400 50  0000 C CNN
+F 0 "U12" H 9550 4400 50  0000 C CNN
 F 1 "ATtiny4313-PU" H 9550 4500 50  0000 C CNN
-F 2 "Package_DIP:DIP-20_W7.62mm" H 9550 4500 50  0001 C CIN
+F 2 "Package_DIP:DIP-20_W7.62mm_Socket" H 9550 4500 50  0001 C CIN
 F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/doc8246.pdf" H 9550 4500 50  0001 C CNN
 	1    9550 4500
 	1    0    0    -1  
@@ -1463,6 +1456,153 @@ Wire Bus Line
 NoConn ~ 10150 5000
 NoConn ~ 10150 5100
 NoConn ~ 10150 5200
+Text GLabel 850  7400 2    50   Input ~ 0
+a[0..15]
+Text Label 850  5750 0    50   ~ 0
+a0
+Text Label 850  5850 0    50   ~ 0
+a1
+Text Label 850  5950 0    50   ~ 0
+a2
+Text Label 850  6050 0    50   ~ 0
+a3
+Text Label 850  6150 0    50   ~ 0
+a4
+Text Label 850  6250 0    50   ~ 0
+a5
+Text Label 850  6350 0    50   ~ 0
+a6
+Text Label 850  6450 0    50   ~ 0
+a7
+Text Label 850  6550 0    50   ~ 0
+a8
+Text Label 850  6650 0    50   ~ 0
+a9
+Text Label 850  6750 0    50   ~ 0
+a10
+Text Label 850  6850 0    50   ~ 0
+a11
+Entry Wire Line
+	750  5850 850  5750
+Entry Wire Line
+	750  5950 850  5850
+Entry Wire Line
+	750  6050 850  5950
+Entry Wire Line
+	750  6150 850  6050
+Entry Wire Line
+	750  6250 850  6150
+Entry Wire Line
+	750  6350 850  6250
+Entry Wire Line
+	750  6450 850  6350
+Entry Wire Line
+	750  6550 850  6450
+Entry Wire Line
+	750  6650 850  6550
+Entry Wire Line
+	750  6750 850  6650
+Entry Wire Line
+	750  6850 850  6750
+Entry Wire Line
+	750  6950 850  6850
+Text Label 850  6950 0    50   ~ 0
+a12
+Text Label 850  7050 0    50   ~ 0
+a13
+Text Label 850  7150 0    50   ~ 0
+a14
+Text Label 850  7250 0    50   ~ 0
+a15
+Entry Wire Line
+	750  7050 850  6950
+Entry Wire Line
+	750  7150 850  7050
+Entry Wire Line
+	750  7250 850  7150
+Entry Wire Line
+	750  7350 850  7250
+Wire Bus Line
+	750  7400 850  7400
+Text Label 1450 6700 0    50   ~ 0
+d7
+Text Label 1450 6600 0    50   ~ 0
+d6
+Text Label 1450 6500 0    50   ~ 0
+d5
+Text Label 1450 6400 0    50   ~ 0
+d4
+Text Label 1450 6300 0    50   ~ 0
+d3
+Text Label 1450 6200 0    50   ~ 0
+d2
+Text Label 1450 6100 0    50   ~ 0
+d1
+Text Label 1450 6000 0    50   ~ 0
+d0
+Entry Wire Line
+	1450 6000 1350 6100
+Entry Wire Line
+	1450 6100 1350 6200
+Entry Wire Line
+	1450 6200 1350 6300
+Entry Wire Line
+	1450 6300 1350 6400
+Entry Wire Line
+	1450 6400 1350 6500
+Entry Wire Line
+	1450 6500 1350 6600
+Entry Wire Line
+	1450 6600 1350 6700
+Entry Wire Line
+	1450 6700 1350 6800
+Text GLabel 1450 6850 2    50   Input ~ 0
+d[0..7]
+Wire Bus Line
+	1350 6850 1450 6850
+$Comp
+L Device:LED D4
+U 1 1 5E6EE4AE
+P 6700 5650
+F 0 "D4" H 6739 5532 50  0000 R CNN
+F 1 "BLINK" H 6648 5532 50  0000 R CNN
+F 2 "LED_THT:LED_D5.0mm_Clear" H 6700 5650 50  0001 C CNN
+F 3 "~" H 6700 5650 50  0001 C CNN
+	1    6700 5650
+	-1   0    0    1   
+$EndComp
+Text Label 5800 5650 0    50   ~ 0
+v1pb0
+Entry Wire Line
+	5700 5550 5800 5650
+Wire Bus Line
+	5700 5550 5700 5450
+Text GLabel 6950 5650 2    50   Input ~ 0
+GND
+$Comp
+L Device:R R12
+U 1 1 5E7595AF
+P 6300 5650
+F 0 "R12" V 6400 5650 50  0000 C CNN
+F 1 "270" V 6300 5650 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 6230 5650 50  0001 C CNN
+F 3 "~" H 6300 5650 50  0001 C CNN
+	1    6300 5650
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2350 1150 2500 1150
+Wire Wire Line
+	2800 1150 2950 1150
+Wire Wire Line
+	2950 1950 2350 1950
+Connection ~ 2350 1950
+Wire Wire Line
+	5800 5650 6150 5650
+Wire Wire Line
+	6450 5650 6550 5650
+Wire Wire Line
+	6850 5650 6950 5650
 Wire Bus Line
 	5500 3000 5500 3400
 Wire Bus Line
@@ -1484,6 +1624,8 @@ Wire Bus Line
 Wire Bus Line
 	10550 3600 10550 4300
 Wire Bus Line
+	1350 6100 1350 6850
+Wire Bus Line
 	7550 4550 7550 5450
 Wire Bus Line
 	7550 3150 7550 4050
@@ -1493,4 +1635,6 @@ Wire Bus Line
 	3450 3000 3450 4100
 Wire Bus Line
 	1050 3000 1050 4100
+Wire Bus Line
+	750  5850 750  7400
 $EndSCHEMATC
