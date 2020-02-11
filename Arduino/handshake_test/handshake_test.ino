@@ -14,6 +14,7 @@ void setup() {
   
   pinMode(HS_DATA_TAKEN, INPUT);
   pinMode(HS_DATA_READY, OUTPUT);
+  digitalWrite(HS_DATA_READY, HIGH);
 
   attachInterrupt(digitalPinToInterrupt(HS_DATA_TAKEN), onDataTaken, FALLING);
 
@@ -25,25 +26,31 @@ void loop() {
 
 void onDataTaken() {
   char msg[64];
+  char bitbuffer[9];
+  bitbuffer[8]=0;
   Serial.println("Interrupt invoked");
-
-  digitalWrite(HS_DATA_READY, HIGH);
 
   if (idx<strlen(MESSAGE)) {
 
+    digitalWrite(HS_DATA_READY, HIGH);
+  
     int mask = 1;
     for (int i=0; i<8; i++) {
       int bit = MESSAGE[idx] & mask;
+      if (bit) {
+        bitbuffer[i]='1';
+      } else {
+        bitbuffer[i]='0';
+      }
       digitalWrite(DATA[i], bit ? HIGH : LOW);
-      mask << 1;
+      mask = mask << 1;
     }
 
-    sprintf(msg, "Writing %c to data bus...", MESSAGE[idx]);
+    sprintf(msg, "Writing %c (%s) to data bus...", MESSAGE[idx], bitbuffer);
     Serial.print(msg);
 
-    delay(1000);
-  
     digitalWrite(HS_DATA_READY, LOW);
+    digitalWrite(HS_DATA_READY, HIGH);
     Serial.println("done.");
   
     idx++;
