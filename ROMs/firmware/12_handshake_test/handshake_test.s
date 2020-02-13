@@ -19,13 +19,6 @@ init:
       ldx #$ff
       txs
 
-      lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_DISABLE | ACIA_DTR_LOW)
-      sta ACIA_COMMAND
-      lda #(ACIA_STOP_BITS_1 | ACIA_DATA_BITS_8 | ACIA_CLOCK_INT | ACIA_BAUD_19200)
-      sta ACIA_CONTROL
-
-      jsr _lcd_init
-
 handshake_init:
       stz VIA1_DDRA            ; VIA2 PORTA is all input
                                ; define read handshake on VIA2 CA1/CA2
@@ -34,11 +27,22 @@ handshake_init:
                                ; enable interrupt from VIA2 on CA1 (Data ready)
       lda #(VIA_IER_SET_FLAGS | VIA_IER_CA1_FLAG)
       sta VIA1_IER
-      cli                      ; enable interrupt processing
+
+      lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_DISABLE | ACIA_DTR_LOW)
+      sta ACIA_COMMAND
+      lda #(ACIA_STOP_BITS_1 | ACIA_DATA_BITS_8 | ACIA_CLOCK_INT | ACIA_BAUD_19200)
+      sta ACIA_CONTROL
 
       ldx #00                  ; set display index to 0
       stz WRITE_INDEX          ; set buffer index to 0
       ldy #00                  ; set internal buffer pointer to 0
+
+      jsr _lcd_init
+
+      cli                      ; enable interrupt processing
+
+      lda #('?')
+      jsr _lcd_print_char
 
 program_loop:
       cpx WRITE_INDEX

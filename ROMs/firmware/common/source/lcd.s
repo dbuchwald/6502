@@ -60,6 +60,13 @@ _lcd_init:
       sta VIA1_PORTB
       ; initialize index
       ldx #$00
+      ; first, send 4-bits to initialize 4-bit mode
+      lda #50
+      jsr _delay_ms
+      lda #(LCD_CMD_FUNCTION_SET | LCD_FS_4_BIT | LCD_COMMAND_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
+      sta VIA1_PORTB
+      eor #LCD_ENABLE_FLAG
+      sta VIA1_PORTB
 @lcd_init_loop:
       ; Delay before commands
       lda lcd_init_sequence_data,x
