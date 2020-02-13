@@ -1,4 +1,5 @@
       .setcpu "65C02"
+      .include "utils.inc"
       .include "via.inc"
       .include "lcd.inc"
       .include "acia.inc"
@@ -21,6 +22,7 @@ init:
 
 handshake_init:
       stz VIA1_DDRA            ; VIA2 PORTA is all input
+      stz VIA1_PORTA
                                ; define read handshake on VIA2 CA1/CA2
       lda #(VIA_PCR_CA1_INTERRUPT_NEGATIVE | VIA_PCR_CA2_OUTPUT_PULSE | VIA_PCR_CB1_INTERRUPT_NEGATIVE | VIA_PCR_CB2_OUTPUT_HIGH)
       sta VIA1_PCR
@@ -38,6 +40,9 @@ handshake_init:
       ldy #00                  ; set internal buffer pointer to 0
 
       jsr _lcd_init
+
+      lda #$ff
+      jsr _delay_ms
 
       cli                      ; enable interrupt processing
 
