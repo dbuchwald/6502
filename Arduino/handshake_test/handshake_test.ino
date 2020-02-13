@@ -19,40 +19,44 @@ void setup() {
 
   attachInterrupt(digitalPinToInterrupt(HS_DATA_TAKEN), onDataTaken, FALLING);
 
-  Serial.begin(9600);
+  Serial.begin(57600);
 }
 
 void loop() {
 }
 
-void onDataTaken() {
+void sendChar(char c) {
   char msg[64];
   char bitbuffer[9];
   bitbuffer[8]=0;
+  
+  digitalWrite(HS_DATA_READY, HIGH);
+
+  int mask = 1;
+  for (int i=0; i<8; i++) {
+    int bit = c & mask;
+    if (bit) {
+      bitbuffer[7-i]='1';
+    } else {
+      bitbuffer[7-i]='0';
+    }
+    digitalWrite(DATA[i], bit ? HIGH : LOW);
+    mask = mask << 1;
+  }
+
+  sprintf(msg, "Writing %c (%s) to data bus...", c, bitbuffer);
+  Serial.print(msg);
+  digitalWrite(HS_DATA_READY, LOW);
+  digitalWrite(HS_DATA_READY, HIGH);
+  Serial.println("done.");
+}
+
+void onDataTaken() {
   Serial.println("Interrupt invoked");
 
   if (idx<strlen(MESSAGE)) {
 
-    digitalWrite(HS_DATA_READY, HIGH);
-  
-    int mask = 1;
-    for (int i=0; i<8; i++) {
-      int bit = MESSAGE[idx] & mask;
-      if (bit) {
-        bitbuffer[7-i]='1';
-      } else {
-        bitbuffer[7-i]='0';
-      }
-      digitalWrite(DATA[i], bit ? HIGH : LOW);
-      mask = mask << 1;
-    }
-
-    sprintf(msg, "Writing %c (%s) to data bus...", MESSAGE[idx], bitbuffer);
-    Serial.print(msg);
-    digitalWrite(HS_DATA_READY, LOW);
-    digitalWrite(HS_DATA_READY, HIGH);
-    Serial.println("done.");
-  
+    sendChar(MESSAGE[idx]);
     idx++;
   }
 }

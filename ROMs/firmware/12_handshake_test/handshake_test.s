@@ -43,26 +43,31 @@ handshake_init:
 
       lda #$ff
       jsr _delay_ms
+      lda VIA1_IFR
+      lda VIA1_PORTA
 
       cli                      ; enable interrupt processing
 
       lda #('?')
       jsr _lcd_print_char
+      lda #(' ')
+      jsr _lcd_print_char
 
 program_loop:
-      cpx WRITE_INDEX
-      beq program_loop
-      inx
-      lda MEM_BUFFER,x         ; Load data bytes from address data + x
-      jsr _lcd_print_char
       jmp program_loop
+      ; cpx WRITE_INDEX
+      ; beq program_loop
+      ; inx
+      ; lda MEM_BUFFER,x         ; Load data bytes from address data + x
+      ; jsr _lcd_print_char
 
 read_data:
       pha
       lda VIA1_PORTA           ; should trigger data taken signal
-      sta MEM_BUFFER,y
-      iny
-      sty WRITE_INDEX
+      ; sta MEM_BUFFER,y
+      ; iny
+      ; sty WRITE_INDEX
+      jsr _lcd_print_char
 read_data_end:
       pla
       rti
