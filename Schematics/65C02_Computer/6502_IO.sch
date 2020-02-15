@@ -701,10 +701,10 @@ F 3 "http://service.powerdynamics.com/ec/Catalog17/Section%2011.pdf" H 9550 2650
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R9
+L Device:R R12
 U 1 1 5F6AC848
 P 2650 1150
-F 0 "R9" V 2750 1150 50  0000 C CNN
+F 0 "R12" V 2750 1150 50  0000 C CNN
 F 1 "270" V 2650 1150 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2580 1150 50  0001 C CNN
 F 3 "~" H 2650 1150 50  0001 C CNN
@@ -784,8 +784,8 @@ L 6502:65C22S U?
 U 1 1 5F285E91
 P 1950 4300
 AR Path="/5F285E91" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F285E91" Ref="U8"  Part="1" 
-F 0 "U8" H 1950 5450 50  0000 C CNN
+AR Path="/5F14295C/5F285E91" Ref="U12"  Part="1" 
+F 0 "U12" H 1950 5450 50  0000 C CNN
 F 1 "65C22S" H 1950 5350 50  0000 C CNN
 F 2 "Package_DIP:DIP-40_W15.24mm_Socket" H 2050 4300 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf" H 2050 4300 50  0001 C CNN
@@ -797,8 +797,8 @@ L 6502:65C22S U?
 U 1 1 5F285E8B
 P 4350 4300
 AR Path="/5F285E8B" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F285E8B" Ref="U9"  Part="1" 
-F 0 "U9" H 4350 5450 50  0000 C CNN
+AR Path="/5F14295C/5F285E8B" Ref="U11"  Part="1" 
+F 0 "U11" H 4350 5450 50  0000 C CNN
 F 1 "65C22S" H 4350 5350 50  0000 C CNN
 F 2 "Package_DIP:DIP-40_W15.24mm_Socket" H 4450 4300 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf" H 4450 4300 50  0001 C CNN
@@ -810,8 +810,8 @@ L Device:C C?
 U 1 1 5F26EF26
 P 2350 1700
 AR Path="/5F26EF26" Ref="C?"  Part="1" 
-AR Path="/5F14295C/5F26EF26" Ref="C16"  Part="1" 
-F 0 "C16" H 2465 1746 50  0000 L CNN
+AR Path="/5F14295C/5F26EF26" Ref="C8"  Part="1" 
+F 0 "C8" H 2465 1746 50  0000 L CNN
 F 1 "10nF" H 2465 1655 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 2388 1550 50  0001 C CNN
 F 3 "~" H 2350 1700 50  0001 C CNN
@@ -823,8 +823,8 @@ L Device:C C?
 U 1 1 5F26EF13
 P 1950 1700
 AR Path="/5F26EF13" Ref="C?"  Part="1" 
-AR Path="/5F14295C/5F26EF13" Ref="C15"  Part="1" 
-F 0 "C15" H 2065 1746 50  0000 L CNN
+AR Path="/5F14295C/5F26EF13" Ref="C9"  Part="1" 
+F 0 "C9" H 2065 1746 50  0000 L CNN
 F 1 "47pF" H 2065 1655 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 1988 1550 50  0001 C CNN
 F 3 "~" H 1950 1700 50  0001 C CNN
@@ -836,8 +836,8 @@ L Device:C C?
 U 1 1 5F26EF0D
 P 1550 1700
 AR Path="/5F26EF0D" Ref="C?"  Part="1" 
-AR Path="/5F14295C/5F26EF0D" Ref="C14"  Part="1" 
-F 0 "C14" H 1665 1746 50  0000 L CNN
+AR Path="/5F14295C/5F26EF0D" Ref="C10"  Part="1" 
+F 0 "C10" H 1665 1746 50  0000 L CNN
 F 1 "47pF" H 1665 1655 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 1588 1550 50  0001 C CNN
 F 3 "~" H 1550 1700 50  0001 C CNN
@@ -888,8 +888,8 @@ L Device:R R?
 U 1 1 5F203CE6
 P 2150 1450
 AR Path="/5F203CE6" Ref="R?"  Part="1" 
-AR Path="/5F14295C/5F203CE6" Ref="R8"  Part="1" 
-F 0 "R8" V 2250 1450 50  0000 C CNN
+AR Path="/5F14295C/5F203CE6" Ref="R4"  Part="1" 
+F 0 "R4" V 2250 1450 50  0000 C CNN
 F 1 "27" V 2150 1450 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2080 1450 50  0001 C CNN
 F 3 "~" H 2150 1450 50  0001 C CNN
@@ -901,8 +901,8 @@ L Device:R R?
 U 1 1 5F203CE0
 P 2150 1350
 AR Path="/5F203CE0" Ref="R?"  Part="1" 
-AR Path="/5F14295C/5F203CE0" Ref="R7"  Part="1" 
-F 0 "R7" V 2050 1350 50  0000 C CNN
+AR Path="/5F14295C/5F203CE0" Ref="R5"  Part="1" 
+F 0 "R5" V 2050 1350 50  0000 C CNN
 F 1 "27" V 2150 1350 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2080 1350 50  0001 C CNN
 F 3 "~" H 2150 1350 50  0001 C CNN
@@ -914,8 +914,8 @@ L 6502:FT230XS U?
 U 1 1 5F203CBA
 P 4650 1750
 AR Path="/5F203CBA" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F203CBA" Ref="U10"  Part="1" 
-F 0 "U10" H 4650 2365 50  0000 C CNN
+AR Path="/5F14295C/5F203CBA" Ref="U6"  Part="1" 
+F 0 "U6" H 4650 2365 50  0000 C CNN
 F 1 "FT230XS" H 4650 2274 50  0000 C CNN
 F 2 "Package_SO:SSOP-16_4.4x5.2mm_P0.65mm" H 4650 2250 50  0001 C CNN
 F 3 "https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT230X.pdf" H 4650 1750 50  0001 C CNN
@@ -927,8 +927,8 @@ L 6502:65C51N U?
 U 1 1 5F1AD73D
 P 7350 1750
 AR Path="/5F1AD73D" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F1AD73D" Ref="U11"  Part="1" 
-F 0 "U11" H 7350 2650 50  0000 C CNN
+AR Path="/5F14295C/5F1AD73D" Ref="U5"  Part="1" 
+F 0 "U5" H 7350 2650 50  0000 C CNN
 F 1 "65C51N" H 7350 2550 50  0000 C CNN
 F 2 "Package_DIP:DIP-28_W15.24mm_Socket" H 7350 1750 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c51n.pdf" H 7350 1750 50  0001 C CNN
@@ -1411,10 +1411,10 @@ Wire Wire Line
 Text GLabel 10350 5300 3    50   Input ~ 0
 KBDAT
 $Comp
-L MCU_Microchip_ATtiny:ATtiny4313-PU U12
+L MCU_Microchip_ATtiny:ATtiny4313-PU U10
 U 1 1 5E5D2E2B
 P 9550 4500
-F 0 "U12" H 9550 4400 50  0000 C CNN
+F 0 "U10" H 9550 4400 50  0000 C CNN
 F 1 "ATtiny4313-PU" H 9550 4500 50  0000 C CNN
 F 2 "Package_DIP:DIP-20_W7.62mm_Socket" H 9550 4500 50  0001 C CIN
 F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/doc8246.pdf" H 9550 4500 50  0001 C CNN
@@ -1580,10 +1580,10 @@ Wire Bus Line
 Text GLabel 6950 5650 2    50   Input ~ 0
 GND
 $Comp
-L Device:R R12
+L Device:R R9
 U 1 1 5E7595AF
 P 6300 5650
-F 0 "R12" V 6400 5650 50  0000 C CNN
+F 0 "R9" V 6400 5650 50  0000 C CNN
 F 1 "270" V 6300 5650 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 6230 5650 50  0001 C CNN
 F 3 "~" H 6300 5650 50  0001 C CNN
