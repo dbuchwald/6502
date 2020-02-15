@@ -917,7 +917,7 @@ AR Path="/5F203CBA" Ref="U?"  Part="1"
 AR Path="/5F14295C/5F203CBA" Ref="U10"  Part="1" 
 F 0 "U10" H 4650 2365 50  0000 C CNN
 F 1 "FT230XS" H 4650 2274 50  0000 C CNN
-F 2 "Package_SO:SSOP-16_5.3x6.2mm_P0.65mm" H 4650 2250 50  0001 C CNN
+F 2 "Package_SO:SSOP-16_4.4x5.2mm_P0.65mm" H 4650 2250 50  0001 C CNN
 F 3 "https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT230X.pdf" H 4650 1750 50  0001 C CNN
 	1    4650 1750
 	1    0    0    -1  
