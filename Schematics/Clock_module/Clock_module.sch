@@ -797,7 +797,7 @@ Wire Wire Line
 Text GLabel 1650 6550 0    50   Input ~ 0
 HLT
 Wire Wire Line
-	1650 6550 1850 6550
+	1650 6550 1750 6550
 $Comp
 L Device:R R11
 U 1 1 5E197100
@@ -1001,14 +1001,14 @@ Wire Wire Line
 Wire Wire Line
 	5900 1500 6600 1500
 Text GLabel 8150 3550 0    50   Input ~ 0
-BRK
+~BRK
 Wire Wire Line
 	8150 3550 8550 3550
 Connection ~ 8550 3550
 Wire Wire Line
 	8550 3550 8550 2950
 Text GLabel 6100 2000 3    50   Output ~ 0
-BRK
+~BRK
 Wire Wire Line
 	6100 2000 6100 1600
 Wire Wire Line
@@ -1161,4 +1161,34 @@ Wire Wire Line
 	3150 1250 3500 1250
 Wire Wire Line
 	2400 2400 2400 2700
+$Comp
+L Device:R R15
+U 1 1 5E537F1F
+P 1750 6800
+F 0 "R15" H 1820 6846 50  0000 L CNN
+F 1 "1K" H 1820 6755 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1680 6800 50  0001 C CNN
+F 3 "~" H 1750 6800 50  0001 C CNN
+F 4 "100K" H 1750 6800 50  0001 C CNN "Value"
+	1    1750 6800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 6550 1750 6650
+Connection ~ 1750 6550
+Wire Wire Line
+	1750 6550 1850 6550
+$Comp
+L power:GND #PWR019
+U 1 1 5E54227B
+P 1750 7050
+F 0 "#PWR019" H 1750 6800 50  0001 C CNN
+F 1 "GND" H 1755 6877 50  0000 C CNN
+F 2 "" H 1750 7050 50  0001 C CNN
+F 3 "" H 1750 7050 50  0001 C CNN
+	1    1750 7050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 7050 1750 6950
 $EndSCHEMATC
