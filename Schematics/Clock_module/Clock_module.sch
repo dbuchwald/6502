@@ -1131,7 +1131,7 @@ Wire Wire Line
 Wire Wire Line
 	7900 5150 7900 5050
 $Comp
-L Connector:Barrel_Jack_MountingPin J2
+L Connector:Barrel_Jack J2
 U 1 1 5E4C3442
 P 2700 1400
 F 0 "J2" H 2470 1272 50  0000 R CNN
@@ -1141,7 +1141,6 @@ F 3 "~" H 2750 1360 50  0001 C CNN
 	1    2700 1400
 	1    0    0    -1  
 $EndComp
-NoConn ~ 2700 1700
 Wire Wire Line
 	3000 1300 3000 1250
 Wire Wire Line

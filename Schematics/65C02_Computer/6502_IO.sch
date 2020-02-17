@@ -224,14 +224,12 @@ Wire Wire Line
 	3750 1050 3750 1600
 Wire Wire Line
 	3750 1600 4100 1600
-Text GLabel 4000 2200 3    50   BiDi ~ 0
+Text GLabel 4000 2600 3    50   BiDi ~ 0
 USBD+
-Text GLabel 5300 2200 3    50   BiDi ~ 0
+Text GLabel 5300 2600 3    50   BiDi ~ 0
 USBD-
 Wire Wire Line
 	3750 1050 4800 1050
-Wire Wire Line
-	4000 2100 4000 2200
 Wire Wire Line
 	4000 2100 4100 2100
 NoConn ~ 1050 1750
@@ -628,20 +626,10 @@ Wire Bus Line
 Connection ~ 1950 1950
 Wire Wire Line
 	1950 1950 1550 1950
-Wire Wire Line
-	2000 1350 1950 1350
 Connection ~ 1950 1350
-Wire Wire Line
-	2300 1350 2450 1350
-Wire Wire Line
-	2300 1450 2450 1450
-Wire Wire Line
-	2000 1450 1550 1450
 Connection ~ 1550 1450
 Wire Wire Line
 	5200 2100 5300 2100
-Wire Wire Line
-	5300 2100 5300 2200
 NoConn ~ 4100 2000
 Wire Wire Line
 	5200 1500 5400 1500
@@ -886,28 +874,28 @@ $EndComp
 $Comp
 L Device:R R?
 U 1 1 5F203CE6
-P 2150 1450
+P 5300 2400
 AR Path="/5F203CE6" Ref="R?"  Part="1" 
 AR Path="/5F14295C/5F203CE6" Ref="R4"  Part="1" 
-F 0 "R4" V 2250 1450 50  0000 C CNN
-F 1 "27" V 2150 1450 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2080 1450 50  0001 C CNN
-F 3 "~" H 2150 1450 50  0001 C CNN
-	1    2150 1450
-	0    1    1    0   
+F 0 "R4" V 5400 2400 50  0000 C CNN
+F 1 "27" V 5300 2400 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 5230 2400 50  0001 C CNN
+F 3 "~" H 5300 2400 50  0001 C CNN
+	1    5300 2400
+	-1   0    0    1   
 $EndComp
 $Comp
 L Device:R R?
 U 1 1 5F203CE0
-P 2150 1350
+P 4000 2400
 AR Path="/5F203CE0" Ref="R?"  Part="1" 
 AR Path="/5F14295C/5F203CE0" Ref="R5"  Part="1" 
-F 0 "R5" V 2050 1350 50  0000 C CNN
-F 1 "27" V 2150 1350 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2080 1350 50  0001 C CNN
-F 3 "~" H 2150 1350 50  0001 C CNN
-	1    2150 1350
-	0    1    1    0   
+F 0 "R5" V 3900 2400 50  0000 C CNN
+F 1 "27" V 4000 2400 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 3930 2400 50  0001 C CNN
+F 3 "~" H 4000 2400 50  0001 C CNN
+	1    4000 2400
+	-1   0    0    1   
 $EndComp
 $Comp
 L 6502:FT230XS U?
@@ -1603,6 +1591,100 @@ Wire Wire Line
 	6450 5650 6550 5650
 Wire Wire Line
 	6850 5650 6950 5650
+$Comp
+L Connector:Conn_01x06_Female J8
+U 1 1 5E4D0B3D
+P 2850 6100
+F 0 "J8" H 2878 6076 50  0000 L CNN
+F 1 "Optional UART Port" H 2878 5985 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical" H 2850 6100 50  0001 C CNN
+F 3 "~" H 2850 6100 50  0001 C CNN
+	1    2850 6100
+	1    0    0    -1  
+$EndComp
+Text GLabel 2550 6000 0    50   Output ~ 0
+RxD
+Text GLabel 2550 5900 0    50   Input ~ 0
+TxD
+Text GLabel 2350 6100 0    50   BiDi ~ 0
+~RTS
+Text GLabel 2550 6200 0    50   BiDi ~ 0
+~CTS
+Text GLabel 2550 6400 0    50   Input ~ 0
++5V
+Text GLabel 2350 6300 0    50   Input ~ 0
+GND
+Wire Wire Line
+	2550 5900 2650 5900
+Wire Wire Line
+	2550 6000 2650 6000
+Wire Wire Line
+	2350 6100 2650 6100
+Wire Wire Line
+	2550 6200 2650 6200
+Wire Wire Line
+	2350 6300 2650 6300
+Wire Wire Line
+	2550 6400 2650 6400
+$Comp
+L Connector:Barrel_Jack J9
+U 1 1 5E59BEED
+P 2550 6900
+F 0 "J9" H 2607 7225 50  0000 C CNN
+F 1 "Power Connector" H 2607 7134 50  0000 C CNN
+F 2 "Connector_BarrelJack:BarrelJack_Horizontal" H 2600 6860 50  0001 C CNN
+F 3 "~" H 2600 6860 50  0001 C CNN
+	1    2550 6900
+	1    0    0    -1  
+$EndComp
+Text GLabel 2950 6800 2    50   Input ~ 0
++5V
+Text GLabel 2950 7000 2    50   Input ~ 0
+GND
+Wire Wire Line
+	2950 7000 2850 7000
+Wire Wire Line
+	2950 6800 2850 6800
+$Comp
+L Connector:USB_B J10
+U 1 1 5E5D8CF6
+P 3950 6800
+F 0 "J10" H 4007 7267 50  0000 C CNN
+F 1 "USB_B" H 4007 7176 50  0000 C CNN
+F 2 "Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal" H 4100 6750 50  0001 C CNN
+F 3 " ~" H 4100 6750 50  0001 C CNN
+	1    3950 6800
+	1    0    0    -1  
+$EndComp
+Text GLabel 3950 7300 3    50   Input ~ 0
+GND
+Text GLabel 4350 6600 2    50   Input ~ 0
++5V
+Text GLabel 4350 6800 2    50   BiDi ~ 0
+USBD+
+Text GLabel 4350 6900 2    50   BiDi ~ 0
+USBD-
+NoConn ~ 3850 7200
+Wire Wire Line
+	3950 7300 3950 7200
+Wire Wire Line
+	4250 6900 4350 6900
+Wire Wire Line
+	4250 6800 4350 6800
+Wire Wire Line
+	4250 6600 4350 6600
+Wire Wire Line
+	1950 1350 2450 1350
+Wire Wire Line
+	1550 1450 2450 1450
+Wire Wire Line
+	4000 2600 4000 2550
+Wire Wire Line
+	4000 2100 4000 2250
+Wire Wire Line
+	5300 2100 5300 2250
+Wire Wire Line
+	5300 2550 5300 2600
 Wire Bus Line
 	5500 3000 5500 3400
 Wire Bus Line
