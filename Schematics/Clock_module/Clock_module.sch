@@ -5,13 +5,13 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Clock module for Ben Eater breadboard computer"
-Date "2019-12-21"
-Rev "v01"
+Date "2020-02-17"
+Rev "v001"
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 ""
-Comment4 ""
+Comment3 "Based on Ben Eater's design"
+Comment4 "Author: Dawid Buchwald"
 $EndDescr
 $Comp
 L Timer:NE555 U2

@@ -5,7 +5,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 2
 Title "65C02 Hobby Computer"
-Date "2020-02-03"
+Date "2020-02-17"
 Rev "v001"
 Comp ""
 Comment1 ""
@@ -1236,8 +1236,8 @@ L Connector_Generic:Conn_02x16_Odd_Even J?
 U 1 1 6003736A
 P 5850 5050
 AR Path="/5F14295C/6003736A" Ref="J?"  Part="1" 
-AR Path="/6003736A" Ref="J2"  Part="1" 
-F 0 "J2" H 5900 5967 50  0000 C CNN
+AR Path="/6003736A" Ref="J7"  Part="1" 
+F 0 "J7" H 5900 5967 50  0000 C CNN
 F 1 "Expansion port" H 5900 5876 50  0000 C CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_2x16_P2.54mm_Vertical" H 5850 5050 50  0001 C CNN
 F 3 "~" H 5850 5050 50  0001 C CNN

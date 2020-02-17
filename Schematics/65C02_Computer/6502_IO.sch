@@ -5,7 +5,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 2 2
 Title "65C02 Hobby Computer"
-Date "2020-02-03"
+Date "2020-02-17"
 Rev "v001"
 Comp ""
 Comment1 ""
@@ -224,42 +224,28 @@ Wire Wire Line
 	3750 1050 3750 1600
 Wire Wire Line
 	3750 1600 4100 1600
-Text GLabel 4000 2600 3    50   BiDi ~ 0
+Text GLabel 4000 2200 3    50   BiDi ~ 0
 USBD+
-Text GLabel 5300 2600 3    50   BiDi ~ 0
+Text GLabel 5300 2200 3    50   BiDi ~ 0
 USBD-
 Wire Wire Line
 	3750 1050 4800 1050
 Wire Wire Line
 	4000 2100 4100 2100
-NoConn ~ 1050 1750
-Wire Wire Line
-	1450 1150 2350 1150
 Wire Wire Line
 	2350 1150 2350 1100
-Wire Wire Line
-	1150 1750 1150 1950
-NoConn ~ 1450 1550
 Text GLabel 2450 1350 2    50   BiDi ~ 0
 USBD+
 Text GLabel 2450 1450 2    50   BiDi ~ 0
 USBD-
 Wire Wire Line
-	1450 1350 1950 1350
-Wire Wire Line
 	1450 1450 1550 1450
 Wire Wire Line
 	1550 1850 1550 1950
 Wire Wire Line
-	1550 1950 1150 1950
-Connection ~ 1150 1950
-Wire Wire Line
-	1150 1950 1150 2050
-Wire Wire Line
 	1950 1850 1950 1950
 Wire Wire Line
 	1950 1950 2350 1950
-Connection ~ 1550 1950
 Wire Wire Line
 	1550 1550 1550 1450
 Wire Wire Line
@@ -626,8 +612,6 @@ Wire Bus Line
 Connection ~ 1950 1950
 Wire Wire Line
 	1950 1950 1550 1950
-Connection ~ 1950 1350
-Connection ~ 1550 1450
 Wire Wire Line
 	5200 2100 5300 2100
 NoConn ~ 4100 2000
@@ -678,10 +662,10 @@ Wire Wire Line
 Wire Wire Line
 	2950 1250 2950 1150
 $Comp
-L Connector:Mini-DIN-6 J7
+L Connector:Mini-DIN-6 J6
 U 1 1 5F701D58
 P 9550 2650
-F 0 "J7" H 9550 3017 50  0000 C CNN
+F 0 "J6" H 9550 3017 50  0000 C CNN
 F 1 "Mini-DIN-6" H 9550 2926 50  0000 C CNN
 F 2 "65C02_Computer:mini_din-6" H 9550 2650 50  0001 C CNN
 F 3 "http://service.powerdynamics.com/ec/Catalog17/Section%2011.pdf" H 9550 2650 50  0001 C CNN
@@ -848,54 +832,54 @@ $EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 5F26EEF9
-P 1150 2050
+P 2350 2050
 AR Path="/5F26EEF9" Ref="#PWR?"  Part="1" 
 AR Path="/5F14295C/5F26EEF9" Ref="#PWR03"  Part="1" 
-F 0 "#PWR03" H 1150 1800 50  0001 C CNN
-F 1 "GND" H 1155 1877 50  0000 C CNN
-F 2 "" H 1150 2050 50  0001 C CNN
-F 3 "" H 1150 2050 50  0001 C CNN
-	1    1150 2050
+F 0 "#PWR03" H 2350 1800 50  0001 C CNN
+F 1 "GND" H 2355 1877 50  0000 C CNN
+F 2 "" H 2350 2050 50  0001 C CNN
+F 3 "" H 2350 2050 50  0001 C CNN
+	1    2350 2050
 	1    0    0    -1  
 $EndComp
 $Comp
 L Connector:USB_B_Micro J?
 U 1 1 5F26EEF2
-P 1150 1350
+P 5300 6800
 AR Path="/5F26EEF2" Ref="J?"  Part="1" 
 AR Path="/5F14295C/5F26EEF2" Ref="J3"  Part="1" 
-F 0 "J3" H 1207 1817 50  0000 C CNN
-F 1 "USB_B_Micro" H 1207 1726 50  0000 C CNN
-F 2 "Connector_USB:USB_Micro-B_Molex-105017-0001" H 1300 1300 50  0001 C CNN
-F 3 "~" H 1300 1300 50  0001 C CNN
-	1    1150 1350
+F 0 "J3" H 5357 7267 50  0000 C CNN
+F 1 "USB_B_Micro" H 5357 7176 50  0000 C CNN
+F 2 "Connector_USB:USB_Micro-B_Molex-105017-0001" H 5450 6750 50  0001 C CNN
+F 3 "~" H 5450 6750 50  0001 C CNN
+	1    5300 6800
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:R R?
 U 1 1 5F203CE6
-P 5300 2400
+P 2150 1450
 AR Path="/5F203CE6" Ref="R?"  Part="1" 
 AR Path="/5F14295C/5F203CE6" Ref="R4"  Part="1" 
-F 0 "R4" V 5400 2400 50  0000 C CNN
-F 1 "27" V 5300 2400 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 5230 2400 50  0001 C CNN
-F 3 "~" H 5300 2400 50  0001 C CNN
-	1    5300 2400
-	-1   0    0    1   
+F 0 "R4" V 2250 1450 50  0000 C CNN
+F 1 "27" V 2150 1450 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2080 1450 50  0001 C CNN
+F 3 "~" H 2150 1450 50  0001 C CNN
+	1    2150 1450
+	0    1    1    0   
 $EndComp
 $Comp
 L Device:R R?
 U 1 1 5F203CE0
-P 4000 2400
+P 2150 1350
 AR Path="/5F203CE0" Ref="R?"  Part="1" 
 AR Path="/5F14295C/5F203CE0" Ref="R5"  Part="1" 
-F 0 "R5" V 3900 2400 50  0000 C CNN
-F 1 "27" V 4000 2400 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 3930 2400 50  0001 C CNN
-F 3 "~" H 4000 2400 50  0001 C CNN
-	1    4000 2400
-	-1   0    0    1   
+F 0 "R5" V 2050 1350 50  0000 C CNN
+F 1 "27" V 2150 1350 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2080 1350 50  0001 C CNN
+F 3 "~" H 2150 1350 50  0001 C CNN
+	1    2150 1350
+	0    1    1    0   
 $EndComp
 $Comp
 L 6502:FT230XS U?
@@ -1048,10 +1032,10 @@ Wire Bus Line
 Wire Bus Line
 	1050 3000 3100 3000
 $Comp
-L Connector:Conn_01x16_Female J4
+L Connector:Conn_01x16_Female J10
 U 1 1 5FB15958
 P 6650 4150
-F 0 "J4" H 6678 4126 50  0000 L CNN
+F 0 "J10" H 6678 4126 50  0000 L CNN
 F 1 "LCD Connector" H 6678 4035 50  0000 L CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x16_P2.54mm_Vertical" H 6650 4150 50  0001 C CNN
 F 3 "~" H 6650 4150 50  0001 C CNN
@@ -1185,10 +1169,10 @@ v2pa8
 Text Label 7650 4150 0    50   ~ 0
 v2pa9
 $Comp
-L Connector:Conn_01x12_Male J5
+L Connector:Conn_01x12_Male J8
 U 1 1 5FD88768
 P 8150 3750
-F 0 "J5" V 8100 3800 50  0000 L CNN
+F 0 "J8" H 8200 4400 50  0000 L CNN
 F 1 "VIA2PA" V 8100 3500 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x12_P2.54mm_Vertical" H 8150 3750 50  0001 C CNN
 F 3 "~" H 8150 3750 50  0001 C CNN
@@ -1242,10 +1226,10 @@ Entry Wire Line
 Entry Wire Line
 	7550 4050 7650 4150
 $Comp
-L Connector:Conn_01x12_Male J6
+L Connector:Conn_01x12_Male J9
 U 1 1 5FEAF969
 P 8150 5150
-F 0 "J6" V 8100 5200 50  0000 L CNN
+F 0 "J9" H 8200 5800 50  0000 L CNN
 F 1 "VIA2PB" V 8100 4900 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x12_P2.54mm_Vertical" H 8150 5150 50  0001 C CNN
 F 3 "~" H 8150 5150 50  0001 C CNN
@@ -1592,10 +1576,10 @@ Wire Wire Line
 Wire Wire Line
 	6850 5650 6950 5650
 $Comp
-L Connector:Conn_01x06_Female J8
+L Connector:Conn_01x06_Female J2
 U 1 1 5E4D0B3D
 P 2850 6100
-F 0 "J8" H 2878 6076 50  0000 L CNN
+F 0 "J2" H 2878 6076 50  0000 L CNN
 F 1 "Optional UART Port" H 2878 5985 50  0000 L CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical" H 2850 6100 50  0001 C CNN
 F 3 "~" H 2850 6100 50  0001 C CNN
@@ -1627,10 +1611,10 @@ Wire Wire Line
 Wire Wire Line
 	2550 6400 2650 6400
 $Comp
-L Connector:Barrel_Jack J9
+L Connector:Barrel_Jack J5
 U 1 1 5E59BEED
 P 2550 6900
-F 0 "J9" H 2607 7225 50  0000 C CNN
+F 0 "J5" H 2607 7225 50  0000 C CNN
 F 1 "Power Connector" H 2607 7134 50  0000 C CNN
 F 2 "Connector_BarrelJack:BarrelJack_Horizontal" H 2600 6860 50  0001 C CNN
 F 3 "~" H 2600 6860 50  0001 C CNN
@@ -1646,10 +1630,10 @@ Wire Wire Line
 Wire Wire Line
 	2950 6800 2850 6800
 $Comp
-L Connector:USB_B J10
+L Connector:USB_B J4
 U 1 1 5E5D8CF6
 P 3950 6800
-F 0 "J10" H 4007 7267 50  0000 C CNN
+F 0 "J4" H 4007 7267 50  0000 C CNN
 F 1 "USB_B" H 4007 7176 50  0000 C CNN
 F 2 "Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal" H 4100 6750 50  0001 C CNN
 F 3 " ~" H 4100 6750 50  0001 C CNN
@@ -1661,9 +1645,9 @@ GND
 Text GLabel 4350 6600 2    50   Input ~ 0
 +5V
 Text GLabel 4350 6800 2    50   BiDi ~ 0
-USBD+
+PUSBD+
 Text GLabel 4350 6900 2    50   BiDi ~ 0
-USBD-
+PUSBD-
 NoConn ~ 3850 7200
 Wire Wire Line
 	3950 7300 3950 7200
@@ -1674,17 +1658,45 @@ Wire Wire Line
 Wire Wire Line
 	4250 6600 4350 6600
 Wire Wire Line
-	1950 1350 2450 1350
+	4000 2100 4000 2200
 Wire Wire Line
-	1550 1450 2450 1450
+	5300 2100 5300 2200
 Wire Wire Line
-	4000 2600 4000 2550
+	1450 1350 1950 1350
+Connection ~ 1950 1350
 Wire Wire Line
-	4000 2100 4000 2250
+	1950 1350 2000 1350
 Wire Wire Line
-	5300 2100 5300 2250
+	2300 1350 2450 1350
 Wire Wire Line
-	5300 2550 5300 2600
+	2450 1450 2300 1450
+Wire Wire Line
+	2000 1450 1550 1450
+Connection ~ 1550 1450
+Text GLabel 5700 6600 2    50   Input ~ 0
++5V
+Text GLabel 5300 7300 3    50   Input ~ 0
+GND
+NoConn ~ 5200 7200
+Wire Wire Line
+	5700 6600 5600 6600
+Wire Wire Line
+	5300 7300 5300 7200
+NoConn ~ 5600 7000
+Text GLabel 5700 6800 2    50   BiDi ~ 0
+PUSBD+
+Text GLabel 5700 6900 2    50   BiDi ~ 0
+PUSBD-
+Wire Wire Line
+	5700 6900 5600 6900
+Wire Wire Line
+	5600 6800 5700 6800
+Wire Wire Line
+	2350 2050 2350 1950
+Text GLabel 1450 1350 0    50   BiDi ~ 0
+PUSBD+
+Text GLabel 1450 1450 0    50   BiDi ~ 0
+PUSBD-
 Wire Bus Line
 	5500 3000 5500 3400
 Wire Bus Line
