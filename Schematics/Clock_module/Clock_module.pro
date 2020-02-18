@@ -1,4 +1,4 @@
-update=17.02.2020 11:52:10
+update=17.02.2020 14:40:11
 version=1
 last_client=kicad
 [general]
@@ -15,7 +15,7 @@ LibDir=
 [pcbnew]
 version=1
 PageLayoutDescrFile=
-LastNetListRead=65C02_Computer.net
+LastNetListRead=Clock_module.net
 CopperLayerCount=2
 BoardThickness=1.6
 AllowMicroVias=0
@@ -237,7 +237,7 @@ dPairWidth=0.2
 dPairGap=0.25
 dPairViaGap=0.25
 [pcbnew/Netclasses/1]
-Name=PWR
+Name=Power
 Clearance=0.1524
 TrackWidth=0.2286
 ViaDiameter=0.8
