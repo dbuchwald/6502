@@ -1,14 +1,10 @@
       .setcpu "65C02"
+      .include "utils.inc"
       .include "via.inc"
+      .include "lcd.inc"
+      .include "acia.inc"
       .import __RAM_START__
 
-COMMAND_MODE  = %00000000
-DATA_MODE     = %00100000
-WRITE_MODE    = %00000000
-READ_MODE     = %01000000
-PULSE         = %10000000
-
-NPULSE        = %01111111
 WRITE_INDEX   = __RAM_START__
 MEM_BUFFER    = __RAM_START__+1
 
@@ -21,64 +17,57 @@ MEM_BUFFER    = __RAM_START__+1
       .code
 
 init:
-      lda #%11100000           ; PA5, PA6 and PA7 are outputs
-      sta VIA1_DDRA
-      lda #%11111111           ; PORTB is all output
-      sta VIA1_DDRB
-      lda #%00000000           ; Initialize port outputs with $00
-      sta VIA1_PORTA
-      sta VIA1_PORTB
+      ldx #$ff
+      txs
 
 handshake_init:
-      stz VIA2_DDRA            ; VIA2 PORTA is all input
+      stz VIA1_DDRA            ; VIA2 PORTA is all input
+      stz VIA1_PORTA
                                ; define read handshake on VIA2 CA1/CA2
-      lda #(VIA_PCR_CA1_INTERRUPT_NEGATIVE | VIA_PCR_CA2_OUTPUT_HANDSHAKE | VIA_PCR_CB1_INTERRUPT_NEGATIVE | VIA_PCR_CB2_OUTPUT_HIGH)
-      sta VIA2_PCR
+      lda #(VIA_PCR_CA1_INTERRUPT_NEGATIVE | VIA_PCR_CA2_OUTPUT_PULSE | VIA_PCR_CB1_INTERRUPT_NEGATIVE | VIA_PCR_CB2_OUTPUT_HIGH)
+      sta VIA1_PCR
                                ; enable interrupt from VIA2 on CA1 (Data ready)
       lda #(VIA_IER_SET_FLAGS | VIA_IER_CA1_FLAG)
-      sta VIA2_IER
-      cli                      ; enable interrupt processing
+      sta VIA1_IER
 
-lcd_init:
-      ldx #$00                 ; Initialize counter (register X)
-loop_init_seq:
-      lda lcd_init_sequence,x  ; Fetch data from address lcd_init_sequence + x
-      beq program_loop         ; If fetched $00 (end of stream), move to main loop
-      sta VIA1_PORTB                ; Send data to PORTB
-      lda #(COMMAND_MODE | WRITE_MODE | PULSE) ; Set write command mode with active pulse
-      sta VIA1_PORTA
-      and #NPULSE              ; Disable pulse bit (E) and send to LCD
-      sta VIA1_PORTA
-      inx                      ; Increase counter
-      jmp loop_init_seq        ; Keep looping over init sequence
+      lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_DISABLE | ACIA_DTR_LOW)
+      sta ACIA_COMMAND
+      lda #(ACIA_STOP_BITS_1 | ACIA_DATA_BITS_8 | ACIA_CLOCK_INT | ACIA_BAUD_19200)
+      sta ACIA_CONTROL
 
       ldx #00                  ; set display index to 0
       stz WRITE_INDEX          ; set buffer index to 0
       ldy #00                  ; set internal buffer pointer to 0
 
+      jsr _lcd_init
+
+      lda #$ff
+      jsr _delay_ms
+      lda VIA1_IFR
+      lda VIA1_PORTA
+
+      cli                      ; enable interrupt processing
+
+      lda #('?')
+      jsr _lcd_print_char
+      lda #(' ')
+      jsr _lcd_print_char
+
 program_loop:
-      cpx WRITE_INDEX
-      beq program_loop
-      inx
-      lda MEM_BUFFER,x         ; Load data bytes from address data + x
-      sta VIA1_PORTB
-      lda #(DATA_MODE | WRITE_MODE | PULSE) ; Set write data mode with active pulse
-      sta VIA1_PORTA
-      and #NPULSE              ; Disable pulse bit (E)
-      sta VIA1_PORTA
       jmp program_loop
+      ; cpx WRITE_INDEX
+      ; beq program_loop
+      ; inx
+      ; lda MEM_BUFFER,x         ; Load data bytes from address data + x
+      ; jsr _lcd_print_char
 
 read_data:
-      lda VIA2_PORTA           ; should trigger data taken signal
-      sta MEM_BUFFER,y
-      iny
-      sty WRITE_INDEX
+      pha
+      lda VIA1_PORTA           ; should trigger data taken signal
+      ; sta MEM_BUFFER,y
+      ; iny
+      ; sty WRITE_INDEX
+      jsr _lcd_print_char
+read_data_end:
+      pla
       rti
-
-lcd_init_sequence:
-      .byte %00111100
-      .byte %00001100
-      .byte %00000110
-      .byte %00000001
-      .byte %00000000
-
