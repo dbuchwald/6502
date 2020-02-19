@@ -1630,33 +1630,31 @@ Wire Wire Line
 Wire Wire Line
 	2950 6800 2850 6800
 $Comp
-L Connector:USB_B J4
+L 6502:USB_B J4
 U 1 1 5E5D8CF6
-P 3950 6800
-F 0 "J4" H 4007 7267 50  0000 C CNN
-F 1 "USB_B" H 4007 7176 50  0000 C CNN
-F 2 "Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal" H 4100 6750 50  0001 C CNN
-F 3 " ~" H 4100 6750 50  0001 C CNN
-	1    3950 6800
+P 4200 6800
+F 0 "J4" H 4257 7267 50  0000 C CNN
+F 1 "USB_B" H 4257 7176 50  0000 C CNN
+F 2 "Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal" H 4350 6750 50  0001 C CNN
+F 3 " ~" H 4350 6750 50  0001 C CNN
+	1    4200 6800
 	1    0    0    -1  
 $EndComp
-Text GLabel 3950 7300 3    50   Input ~ 0
+Text GLabel 4200 7300 3    50   Input ~ 0
 GND
-Text GLabel 4350 6600 2    50   Input ~ 0
-+5V
-Text GLabel 4350 6800 2    50   BiDi ~ 0
+Text GLabel 4600 6800 2    50   BiDi ~ 0
 PUSBD+
-Text GLabel 4350 6900 2    50   BiDi ~ 0
+Text GLabel 4600 6900 2    50   BiDi ~ 0
 PUSBD-
-NoConn ~ 3850 7200
+NoConn ~ 4100 7200
 Wire Wire Line
-	3950 7300 3950 7200
+	4200 7300 4200 7200
 Wire Wire Line
-	4250 6900 4350 6900
+	4500 6900 4600 6900
 Wire Wire Line
-	4250 6800 4350 6800
+	4500 6800 4600 6800
 Wire Wire Line
-	4250 6600 4350 6600
+	4500 6600 4600 6600
 Wire Wire Line
 	4000 2100 4000 2200
 Wire Wire Line
@@ -1673,7 +1671,7 @@ Wire Wire Line
 Wire Wire Line
 	2000 1450 1550 1450
 Connection ~ 1550 1450
-Text GLabel 5700 6600 2    50   Input ~ 0
+Text GLabel 6550 6600 2    50   Input ~ 0
 +5V
 Text GLabel 5300 7300 3    50   Input ~ 0
 GND
@@ -1697,6 +1695,28 @@ Text GLabel 1450 1350 0    50   BiDi ~ 0
 PUSBD+
 Text GLabel 1450 1450 0    50   BiDi ~ 0
 PUSBD-
+$Comp
+L Device:Ferrite_Bead_Small FB1
+U 1 1 5E6E4D6F
+P 6100 6600
+F 0 "FB1" V 5863 6600 50  0000 C CNN
+F 1 "Ferrite_Bead_Small" V 5954 6600 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 6030 6600 50  0001 C CNN
+F 3 "~" H 6100 6600 50  0001 C CNN
+	1    6100 6600
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6200 6600 6400 6600
+Wire Wire Line
+	4600 6600 4600 6250
+Wire Wire Line
+	4600 6250 5700 6250
+Wire Wire Line
+	5700 6250 5700 6600
+Wire Wire Line
+	5700 6600 6000 6600
+Connection ~ 5700 6600
 Wire Bus Line
 	5500 3000 5500 3400
 Wire Bus Line
@@ -1731,4 +1751,18 @@ Wire Bus Line
 	1050 3000 1050 4100
 Wire Bus Line
 	750  5850 750  7400
+$Comp
+L power:PWR_FLAG #FLG0101
+U 1 1 5E78C1CB
+P 6400 6600
+F 0 "#FLG0101" H 6400 6675 50  0001 C CNN
+F 1 "PWR_FLAG" H 6400 6773 50  0000 C CNN
+F 2 "" H 6400 6600 50  0001 C CNN
+F 3 "~" H 6400 6600 50  0001 C CNN
+	1    6400 6600
+	-1   0    0    1   
+$EndComp
+Connection ~ 6400 6600
+Wire Wire Line
+	6400 6600 6550 6600
 $EndSCHEMATC

@@ -24,4 +24,10 @@ $CMP FT230XS
 F https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT230X.pdf
 $ENDCMP
 #
+$CMP USB_B
+D USB Type B connector
+K connector USB
+F  ~
+$ENDCMP
+#
 #End Doc Library
