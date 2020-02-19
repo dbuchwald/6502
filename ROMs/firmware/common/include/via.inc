@@ -1,0 +1,104 @@
+      .import VIA1_PORTB
+      .import VIA1_PORTA
+      .import VIA1_DDRB
+      .import VIA1_DDRA
+      .import VIA1_T1CL
+      .import VIA1_T1CH
+      .import VIA1_T1LL
+      .import VIA1_T1LH
+      .import VIA1_T2CL
+      .import VIA1_T2CH
+      .import VIA1_SR
+      .import VIA1_ACR
+      .import VIA1_PCR
+      .import VIA1_IFR
+      .import VIA1_IER
+      .import VIA1_PANH
+
+      .import VIA2_PORTB
+      .import VIA2_PORTA
+      .import VIA2_DDRB
+      .import VIA2_DDRA
+      .import VIA2_T1CL
+      .import VIA2_T1CH
+      .import VIA2_T1LL
+      .import VIA2_T1LH
+      .import VIA2_T2CL
+      .import VIA2_T2CH
+      .import VIA2_SR
+      .import VIA2_ACR
+      .import VIA2_PCR
+      .import VIA2_IFR
+      .import VIA2_IER
+      .import VIA2_PANH
+
+; Auxillary Control Register flags
+VIA_ACR_T1_SINGLE_NO_PB7           = %00000000
+VIA_ACR_T1_CONT_NO_PB7             = %01000000
+VIA_ACR_T1_SINGLE_ONE_SHOT_PB7     = %10000000
+VIA_ACR_T1_CONT_SQUARE_PB7         = %11000000
+
+VIA_ACR_T2_TIMED                   = %00000000
+VIA_ACR_T2_COUNT_PB6               = %00100000
+
+VIA_ACR_SR_DISABLED                = %00000000
+VIA_ACR_SR_SHIFT_IN_T2             = %00000100
+VIA_ACR_SR_SHIFT_IN_PHI2           = %00001000
+VIA_ACR_SR_SHIFT_IN_EXT            = %00001100
+VIA_ACR_SR_SHIFT_OUT_FREE          = %00010000
+VIA_ACR_SR_SHIFT_OUT_T2            = %00010100
+VIA_ACR_SR_SHIFT_OUT_PHI2          = %00011000
+VIA_ACR_SR_SHIFT_OUT_EXT           = %00011100
+
+VIA_ACR_PB_LATCH_DISABLE           = %00000000
+VIA_ACR_PB_LATCH_ENABLE            = %00000010
+
+VIA_ACR_PA_LATCH_DISABLE           = %00000000
+VIA_ACR_PA_LATCH_ENABLE            = %00000001
+
+; Peripheral Control Register flags
+VIA_PCR_CA1_INTERRUPT_NEGATIVE     = %00000000
+VIA_PCR_CA1_INTERRUPT_POSITIVE     = %00000001
+
+VIA_PCR_CA2_INPUT_NEG_ACT_EDGE     = %00000000
+VIA_PCR_CA2_IND_INPUT_NEG_ACT_EDGE = %00000010
+VIA_PCR_CA2_INPUT_POS_ACT_EDGE     = %00000100
+VIA_PCR_CA2_IND_INPUT_POS_ACT_EDGE = %00000110
+VIA_PCR_CA2_OUTPUT_HANDSHAKE       = %00001000
+VIA_PCR_CA2_OUTPUT_PULSE           = %00001010
+VIA_PCR_CA2_OUTPUT_LOW             = %00001100
+VIA_PCR_CA2_OUTPUT_HIGH            = %00001110
+
+VIA_PCR_CB1_INTERRUPT_NEGATIVE     = %00000000
+VIA_PCR_CB1_INTERRUPT_POSITIVE     = %00010000
+
+VIA_PCR_CB2_INPUT_NEG_ACT_EDGE     = %00000000
+VIA_PCR_CB2_IND_INPUT_NEG_ACT_EDGE = %00100000
+VIA_PCR_CB2_INPUT_POS_ACT_EDGE     = %01000000
+VIA_PCR_CB2_IND_INPUT_POS_ACT_EDGE = %01100000
+VIA_PCR_CB2_OUTPUT_HANDSHAKE       = %10000000
+VIA_PCR_CB2_OUTPUT_PULSE           = %10100000
+VIA_PCR_CB2_OUTPUT_LOW             = %11000000
+VIA_PCR_CB2_OUTPUT_HIGH            = %11100000
+
+; Interrupt Flag Register flags
+VIA_IFR_CA2_ACTIVE_EDGE            = %00000001
+VIA_IFR_CA1_ACTIVE_EDGE            = %00000010
+VIA_IFR_SHIFT_8_BITS               = %00000100
+VIA_IFR_CB2_ACTIVE_EDGE            = %00001000
+VIA_IFR_CB1_ACTIVE_EDGE            = %00010000
+VIA_IFR_TIME_OUT_T2                = %00100000
+VIA_IFR_TIME_OUT_T1                = %01000000
+VIA_IFR_INTERRUPT                  = %10000000
+
+; Interrupt Enable Register flags
+VIA_IER_CLEAR_FLAGS                = %00000000
+VIA_IER_SET_FLAGS                  = %10000000
+VIA_IER_TIMER1_FLAG                = %01000000
+VIA_IER_TIMER2_FLAG                = %00100000
+VIA_IER_CB1_FLAG                   = %00010000
+VIA_IER_CB2_FLAG                   = %00001000
+VIA_IER_SHIFT_REGISTER_FLAG        = %00000100
+VIA_IER_CA1_FLAG                   = %00000010
+VIA_IER_CA2_FLAG                   = %00000001
+
