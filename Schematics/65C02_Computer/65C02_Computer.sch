@@ -299,13 +299,13 @@ Wire Wire Line
 	4400 1300 4500 1300
 $Comp
 L 74xx:74HC02 U3
-U 2 1 5E1744DD
+U 1 1 5E1744DD
 P 4000 2000
 F 0 "U3" H 4000 2325 50  0000 C CNN
 F 1 "74HC02" H 4000 2234 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 4000 2000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74hc02" H 4000 2000 50  0001 C CNN
-	2    4000 2000
+	1    4000 2000
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1599,13 +1599,13 @@ Wire Wire Line
 NoConn ~ 5700 7200
 $Comp
 L 74xx:74HC02 U3
-U 1 1 5E5B0B9B
+U 2 1 5E5B0B9B
 P 4200 6550
 F 0 "U3" H 4200 6875 50  0000 C CNN
 F 1 "74HC02" H 4200 6784 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 4200 6550 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74hc02" H 4200 6550 50  0001 C CNN
-	1    4200 6550
+	2    4200 6550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
