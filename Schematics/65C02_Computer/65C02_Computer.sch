@@ -1023,10 +1023,10 @@ Connection ~ 2850 1300
 Wire Wire Line
 	2850 1300 2850 1000
 $Comp
-L Device:C C16
+L Device:C C17
 U 1 1 5E3E0FFB
 P 9700 3350
-F 0 "C16" H 9815 3396 50  0000 L CNN
+F 0 "C17" H 9815 3396 50  0000 L CNN
 F 1 "0.1uF" H 9815 3305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 9738 3200 50  0001 C CNN
 F 3 "~" H 9700 3350 50  0001 C CNN
@@ -1034,10 +1034,10 @@ F 3 "~" H 9700 3350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C15
+L Device:C C16
 U 1 1 5E3E14F5
 P 9250 3350
-F 0 "C15" H 9365 3396 50  0000 L CNN
+F 0 "C16" H 9365 3396 50  0000 L CNN
 F 1 "0.1uF" H 9365 3305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 9288 3200 50  0001 C CNN
 F 3 "~" H 9250 3350 50  0001 C CNN
@@ -1067,10 +1067,10 @@ F 3 "~" H 8350 3350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C14
+L Device:C C15
 U 1 1 5E3E1DA8
 P 7900 3350
-F 0 "C14" H 8015 3396 50  0000 L CNN
+F 0 "C15" H 8015 3396 50  0000 L CNN
 F 1 "0.1uF" H 8015 3305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 7938 3200 50  0001 C CNN
 F 3 "~" H 7900 3350 50  0001 C CNN
@@ -1089,10 +1089,10 @@ F 3 "~" H 7450 3350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C13
+L Device:C C14
 U 1 1 5E3E2489
 P 7000 3350
-F 0 "C13" H 7115 3396 50  0000 L CNN
+F 0 "C14" H 7115 3396 50  0000 L CNN
 F 1 "0.1uF" H 7115 3305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 7038 3200 50  0001 C CNN
 F 3 "~" H 7000 3350 50  0001 C CNN
@@ -1170,10 +1170,10 @@ Wire Wire Line
 Connection ~ 7000 3550
 Connection ~ 7000 3150
 $Comp
-L Device:C C12
+L Device:C C13
 U 1 1 5E6FCC42
 P 6550 3350
-F 0 "C12" H 6665 3396 50  0000 L CNN
+F 0 "C13" H 6665 3396 50  0000 L CNN
 F 1 "0.1uF" H 6665 3305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 6588 3200 50  0001 C CNN
 F 3 "~" H 6550 3350 50  0001 C CNN
@@ -1181,10 +1181,10 @@ F 3 "~" H 6550 3350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C11
+L Device:C C12
 U 1 1 5E6FCFF5
 P 6100 3350
-F 0 "C11" H 6215 3396 50  0000 L CNN
+F 0 "C12" H 6215 3396 50  0000 L CNN
 F 1 "0.1uF" H 6215 3305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 6138 3200 50  0001 C CNN
 F 3 "~" H 6100 3350 50  0001 C CNN
@@ -1562,6 +1562,135 @@ Text GLabel 4100 2850 0    50   Input ~ 0
 GND
 Wire Wire Line
 	4100 2850 4200 2850
+$Comp
+L 74xx:74LS21 U1
+U 2 1 5E539F2D
+P 5400 7200
+F 0 "U1" H 5400 7575 50  0000 C CNN
+F 1 "74HC21" H 5400 7484 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 5400 7200 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 5400 7200 50  0001 C CNN
+	2    5400 7200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 7050 5000 7050
+Wire Wire Line
+	5000 7050 5000 7150
+Wire Wire Line
+	5000 7350 5100 7350
+Wire Wire Line
+	5100 7250 5000 7250
+Connection ~ 5000 7250
+Wire Wire Line
+	5000 7250 5000 7350
+Wire Wire Line
+	5100 7150 5000 7150
+Connection ~ 5000 7150
+Wire Wire Line
+	5000 7150 5000 7200
+Text GLabel 4900 7200 0    50   Input ~ 0
+GND
+Wire Wire Line
+	4900 7200 5000 7200
+Connection ~ 5000 7200
+Wire Wire Line
+	5000 7200 5000 7250
+NoConn ~ 5700 7200
+$Comp
+L 74xx:74HC02 U3
+U 1 1 5E5B0B9B
+P 4200 6550
+F 0 "U3" H 4200 6875 50  0000 C CNN
+F 1 "74HC02" H 4200 6784 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 4200 6550 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74hc02" H 4200 6550 50  0001 C CNN
+	1    4200 6550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 6450 3800 6450
+Wire Wire Line
+	3800 6450 3800 6550
+Wire Wire Line
+	3800 6650 3900 6650
+Text GLabel 3700 6550 0    50   Input ~ 0
+GND
+Wire Wire Line
+	3700 6550 3800 6550
+Connection ~ 3800 6550
+Wire Wire Line
+	3800 6550 3800 6650
+NoConn ~ 4500 6550
+$Comp
+L 74xx:74HC02 U3
+U 3 1 5E6332AB
+P 4200 7200
+F 0 "U3" H 4200 7525 50  0000 C CNN
+F 1 "74HC02" H 4200 7434 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 4200 7200 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74hc02" H 4200 7200 50  0001 C CNN
+	3    4200 7200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 7100 3800 7100
+Wire Wire Line
+	3800 7100 3800 7200
+Wire Wire Line
+	3800 7300 3900 7300
+Text GLabel 3700 7200 0    50   Input ~ 0
+GND
+Wire Wire Line
+	3700 7200 3800 7200
+Connection ~ 3800 7200
+Wire Wire Line
+	3800 7200 3800 7300
+NoConn ~ 4500 7200
+$Comp
+L 74xx:74HC02 U3
+U 4 1 5E6500FC
+P 5400 6550
+F 0 "U3" H 5400 6875 50  0000 C CNN
+F 1 "74HC02" H 5400 6784 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 5400 6550 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74hc02" H 5400 6550 50  0001 C CNN
+	4    5400 6550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 6450 5000 6450
+Wire Wire Line
+	5000 6450 5000 6550
+Wire Wire Line
+	5000 6650 5100 6650
+Text GLabel 4900 6550 0    50   Input ~ 0
+GND
+Wire Wire Line
+	4900 6550 5000 6550
+Connection ~ 5000 6550
+Wire Wire Line
+	5000 6550 5000 6650
+NoConn ~ 5700 6550
+$Comp
+L Device:CP C11
+U 1 1 5E543526
+P 5550 3350
+F 0 "C11" H 5668 3396 50  0000 L CNN
+F 1 "1000uF" H 5668 3305 50  0000 L CNN
+F 2 "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm" H 5588 3200 50  0001 C CNN
+F 3 "~" H 5550 3350 50  0001 C CNN
+	1    5550 3350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5550 3200 5550 3150
+Wire Wire Line
+	5550 3150 6100 3150
+Wire Wire Line
+	5550 3500 5550 3550
+Wire Wire Line
+	5550 3550 6100 3550
 Wire Bus Line
 	3100 5450 3100 5650
 Wire Bus Line
