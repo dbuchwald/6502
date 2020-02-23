@@ -1129,7 +1129,7 @@ U 1 1 5FD119EF
 P 5600 3250
 F 0 "RV1" V 5500 3250 50  0000 C CNN
 F 1 "10K" V 5600 3250 50  0000 C CNN
-F 2 "Potentiometer_THT:Potentiometer_Runtron_RM-065_Vertical" H 5600 3250 50  0001 C CNN
+F 2 "Potentiometer_THT:Potentiometer_Piher_PT-10-V10_Vertical" H 5600 3250 50  0001 C CNN
 F 3 "~" H 5600 3250 50  0001 C CNN
 	1    5600 3250
 	0    1    1    0   

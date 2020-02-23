@@ -431,8 +431,8 @@ L Device:R_POT RV1
 U 1 1 5E04F43C
 P 3700 3750
 F 0 "RV1" H 3631 3796 50  0000 R CNN
-F 1 "Freq" H 3631 3705 50  0000 R CNN
-F 2 "Potentiometer_THT:Potentiometer_Runtron_RM-065_Vertical" H 3700 3750 50  0001 C CNN
+F 1 "1M" H 3631 3705 50  0000 R CNN
+F 2 "Potentiometer_THT:Potentiometer_Piher_PT-10-V10_Vertical" H 3700 3750 50  0001 C CNN
 F 3 "~" H 3700 3750 50  0001 C CNN
 	1    3700 3750
 	1    0    0    -1  
