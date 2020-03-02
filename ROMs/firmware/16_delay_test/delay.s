@@ -2,6 +2,7 @@
       .include "utils.inc"
       .include "lcd.inc"
       .include "zeropage.inc"
+      .include "via.inc"
 
       .segment "VECTORS"
 
@@ -12,6 +13,10 @@
       .code
 
 init:
+      lda #$01
+      sta VIA1_DDRB
+      lda #$01
+      sta VIA1_PORTB
       jsr _lcd_init
       lda #<hello_msg
       sta lcd_out_ptr

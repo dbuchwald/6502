@@ -385,10 +385,10 @@ lcd_read_status:
       ; Store result from LCD data lines
       sta tmp1
       ; Toggle enable
+      lda VIA1_PORTB
       eor #LCD_ENABLE_FLAG
       sta VIA1_PORTB
       ; Get next four bits
-      lda VIA1_PORTB
       and #%00000001
       ora #(LCD_COMMAND_MODE | LCD_READ_MODE | LCD_ENABLE_FLAG)
       sta VIA1_PORTB
