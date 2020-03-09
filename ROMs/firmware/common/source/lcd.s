@@ -79,33 +79,8 @@ _lcd_init:
       lda lcd_init_sequence_data,x
       ; Exit loop if $00 read
       beq @lcd_init_end
-      ; Store current value, we will need it for another 4bits
-      ; pha
-      ; ; Most significant bits first
-      ; ; Apply mask
-      ; and #%11110000
-      ; ; Set write command flags
-      ; ora #(LCD_COMMAND_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
-      ; ; Send first 4 bits
-      ; sta VIA1_PORTB
-      ; ; Toggle pulse
-      ; eor #LCD_ENABLE_FLAG
-      ; sta VIA1_PORTB
-      ; ; Follow the same process with least significant bits
-      ; pla
-      ; and #%00001111
-      ; rol
-      ; rol
-      ; rol
-      ; rol
-      ; ; Set write command flags
-      ; ora #(LCD_COMMAND_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
-      ; ; Send first 4 bits
-      ; sta VIA1_PORTB
-      ; ; Toggle pulse
-      ; eor #LCD_ENABLE_FLAG
-      ; sta VIA1_PORTB
-      clc ; Clear carry for command operation
+      ; Clear carry for command operation
+      clc 
       jsr lcd_write_byte
       inx
       bra @lcd_init_loop
@@ -118,14 +93,14 @@ _lcd_print:
       ; store registers A and Y
       pha
       phy
-      ; VIA1 PORTB - toggle output on 7 last bits
-      lda VIA1_DDRB
-      ora #%11111110
-      sta VIA1_DDRB
-      ; clear output for 7 last bits
-      lda VIA1_PORTB
-      and #%00000001
-      sta VIA1_PORTB
+      ; ; VIA1 PORTB - toggle output on 7 last bits
+      ; lda VIA1_DDRB
+      ; ora #%11111110
+      ; sta VIA1_DDRB
+      ; ; clear output for 7 last bits
+      ; lda VIA1_PORTB
+      ; and #%00000001
+      ; sta VIA1_PORTB
       ; initialize index
       ldy #$00
 @lcd_print_loop:
@@ -133,79 +108,18 @@ _lcd_print:
       lda (lcd_out_ptr),y
       ; Exit loop if $00 read
       beq @lcd_print_end
-      ; Store current value, we will need it for another 4bits
-      pha
-      ; Most significant bits first
-      ; Apply mask
-      and #%11110000
-      ; Set write data flags
-      ora #(LCD_DATA_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
-      ; Send first 4 bits
-      sta VIA1_PORTB
-      ; Toggle pulse
-      eor #LCD_ENABLE_FLAG
-      sta VIA1_PORTB
-      ; Follow the same process with least significant bits
-      pla
-      and #%00001111
-      clc
-      rol
-      rol
-      rol
-      rol
-      ; Set write data flags
-      ora #(LCD_DATA_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
-      ; Send first 4 bits
-      sta VIA1_PORTB
-      ; Toggle pulse
-      eor #LCD_ENABLE_FLAG
-      sta VIA1_PORTB
-      ; sec
-      ; jsr lcd_write_byte
+      ; Set carry for data operation
+      sec
+      jsr lcd_write_byte
       iny
 
-      ;lda #01
-      ;jsr _delay_ms
-
-      lda VIA1_DDRB
-      and #%00001111
-      sta VIA1_DDRB
 @lcd_print_busy_flag_poll:
-      lda #(LCD_COMMAND_MODE | LCD_READ_MODE | LCD_ENABLE_FLAG)
-      sta VIA1_PORTB
-      ; Read and construct result
-      nop
-      lda VIA1_PORTB
-      and #%11110000
-      sta tmp1
-      ;; eor #LCD_ENABLE_FLAG
-      ;lda #(LCD_COMMAND_MODE | LCD_READ_MODE)
-      lda VIA1_PORTB
-      eor #LCD_ENABLE_FLAG
-      sta VIA1_PORTB
-      lda #(LCD_COMMAND_MODE | LCD_READ_MODE | LCD_ENABLE_FLAG)
-      sta VIA1_PORTB
-      ; Read and construct result
-      lda VIA1_PORTB
-      sta tmp2
-      eor #LCD_ENABLE_FLAG
-      sta VIA1_PORTB
-      lda tmp2
-      and #%11110000
-      clc
-      ror
-      ror
-      ror
-      ror
-      ora tmp1
-      sta tmp1
-      ; jsr lcd_read_status
+      ; Read status
+      jsr lcd_read_status
+      ; Repeat for as long as the LCD is busy
       bmi @lcd_print_busy_flag_poll
-      ; VIA1 PORTB - toggle output on 7 last bits
-      lda VIA1_DDRB
-      ora #%11111110
-      sta VIA1_DDRB
 
+      ; Next character
       bra @lcd_print_loop
 @lcd_print_end:
       ply
@@ -215,80 +129,13 @@ _lcd_print:
 _lcd_print_char:
       ; store register A
       pha
-      sta tmp1
-      ; VIA1 PORTB - toggle output on 7 last bits
-      lda VIA1_DDRB
-      ora #%11111110
-      sta VIA1_DDRB
-      ; clear output for 7 last bits
-      lda VIA1_PORTB
-      and #%00000001
-      sta VIA1_PORTB
-      ; Most significant bits first
-      ; Apply mask
-      lda tmp1
-      and #%11110000
-      ; Set write data flags
-      ora #(LCD_DATA_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
-      ; Send first 4 bits
-      sta VIA1_PORTB
-      ; Toggle pulse
-      eor #LCD_ENABLE_FLAG
-      sta VIA1_PORTB
-      ; Follow the same process with least significant bits
-      lda tmp1
-      and #%00001111
-      clc
-      rol
-      rol
-      rol
-      rol
-      ; Set write data flags
-      ora #(LCD_DATA_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
-      ; Send first 4 bits
-      sta VIA1_PORTB
-      ; Toggle pulse
-      eor #LCD_ENABLE_FLAG
-      sta VIA1_PORTB
+      ; Set carry for data operation
+      sec
+      jsr lcd_write_byte
 
-      ; ;lda #01
-      ; ;jsr _delay_ms
-      ; sec
-      ; jsr lcd_write_byte
-
-      lda VIA1_DDRB
-      and #%00001110
-      sta VIA1_DDRB
 @lcd_print_char_busy_flag_poll:
-      lda #(LCD_COMMAND_MODE | LCD_READ_MODE | LCD_ENABLE_FLAG)
-      sta VIA1_PORTB
-      ; Read and construct result
-      nop
-      lda VIA1_PORTB
-      and #%11110000
-      sta tmp1
-      ;; eor #LCD_ENABLE_FLAG
-      ;lda #(LCD_COMMAND_MODE | LCD_READ_MODE)
-      lda VIA1_PORTB
-      eor #LCD_ENABLE_FLAG
-      sta VIA1_PORTB
-      lda #(LCD_COMMAND_MODE | LCD_READ_MODE | LCD_ENABLE_FLAG)
-      sta VIA1_PORTB
-      ; Read and construct result
-      lda VIA1_PORTB
-      sta tmp2
-      eor #LCD_ENABLE_FLAG
-      sta VIA1_PORTB
-      lda tmp2
-      and #%11110000
-      clc
-      ror
-      ror
-      ror
-      ror
-      ora tmp1
-      sta tmp1
-      ; jsr lcd_read_status
+      ; Read status for busy operation
+      jsr lcd_read_status
       bmi @lcd_print_char_busy_flag_poll
 
 @lcd_print_char_end:
@@ -329,19 +176,25 @@ lcd_write_byte:
       ; Concatenate with current buffer and store it there
       ora tmp1
       sta tmp1
+      ; Set port direction (output)
+      lda VIA1_DDRB
+      ora #%11111110
+      sta VIA1_DDRB
       ; Process actual data
       lda tmp2
       ; Most significant bits first
       ; Apply mask
       and #%11110000
-      ; Set enable flag
-      ora #(LCD_ENABLE_FLAG)
       ; Fetch current status from tmp1
       ora tmp1
       ; Send first 4 bits
       sta VIA1_PORTB
+      ; Set enable flag
+      ora #(LCD_ENABLE_FLAG)
+      ; send command
+      sta VIA1_PORTB
       ; Toggle pulse
-      eor #LCD_ENABLE_FLAG
+      eor #(LCD_ENABLE_FLAG)
       sta VIA1_PORTB
       ; Follow the same process with least significant bits
       lda tmp2
@@ -350,14 +203,16 @@ lcd_write_byte:
       asl
       asl
       asl
-      ; Set write command flags
-      ora #(LCD_ENABLE_FLAG)
       ; Get current status
       ora tmp1
       ; Send first 4 bits
       sta VIA1_PORTB
+      ; Set write command flags
+      ora #(LCD_ENABLE_FLAG)
+      ; Send command
+      sta VIA1_PORTB
       ; Toggle pulse
-      eor #LCD_ENABLE_FLAG
+      eor #(LCD_ENABLE_FLAG)
       sta VIA1_PORTB
       rts
 
@@ -371,18 +226,17 @@ lcd_read_status:
       ; Preserve direction of last four bits of DDRB
       ; but toggle LCD data lines to input
       lda VIA1_DDRB
-      and #%00001111
+      and #%00000001
+      ora #%00001110
       sta VIA1_DDRB
       ; Preserve status of blink led
       lda VIA1_PORTB
       and #%00000001
-      ora #(LCD_COMMAND_MODE | LCD_READ_MODE | LCD_ENABLE_FLAG)
+      ora #(LCD_READ_MODE | LCD_COMMAND_MODE)
       sta VIA1_PORTB
       ; Give it a while
-      nop
-      nop
-      nop
-      nop
+      ora #(LCD_ENABLE_FLAG)
+      sta VIA1_PORTB
       ; Read result
       lda VIA1_PORTB
       and #%11110000
@@ -390,22 +244,20 @@ lcd_read_status:
       sta tmp1
       ; Toggle enable
       lda VIA1_PORTB
-      eor #LCD_ENABLE_FLAG
+      eor #(LCD_ENABLE_FLAG)
       sta VIA1_PORTB
       ; Get next four bits
       and #%00000001
-      ora #(LCD_COMMAND_MODE | LCD_READ_MODE | LCD_ENABLE_FLAG)
+      ora #(LCD_READ_MODE | LCD_COMMAND_MODE)
       sta VIA1_PORTB
       ; Give it a while
-      nop
-      nop
-      nop
-      nop
+      ora #(LCD_ENABLE_FLAG)
+      sta VIA1_PORTB
       ; Read and construct result
       lda VIA1_PORTB
       sta tmp2
       ; Toggle enable flag
-      eor #LCD_ENABLE_FLAG
+      eor #(LCD_ENABLE_FLAG)
       sta VIA1_PORTB
       ; Combine results
       lda tmp2
