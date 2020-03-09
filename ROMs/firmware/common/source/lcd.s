@@ -51,37 +51,48 @@ _lcd_init:
       ; store registers A and X
       pha
       phx
-      ; VIA1 PORTB - toggle output on 7 last bits
+      ; Initialize DDRB
       lda VIA1_DDRB
       ora #%11111110
       sta VIA1_DDRB
-      ; clear output for 7 last bits
-      lda VIA1_PORTB
-      and #%00000001
-      sta VIA1_PORTB
-      ; initialize index
+      ; Initialization by instruction
       ldx #$00
-      ; first, send 4-bits to initialize 4-bit mode
-      lda #50
-      jsr _delay_ms
-      ; Preserve blink mode
-      lda VIA1_PORTB
-      ora #(LCD_CMD_FUNCTION_SET | LCD_FS_4_BIT | LCD_COMMAND_MODE | LCD_WRITE_MODE | LCD_ENABLE_FLAG)
-      sta VIA1_PORTB
-      eor #LCD_ENABLE_FLAG
-      sta VIA1_PORTB
-@lcd_init_loop:
-      ; Delay before commands
-      lda lcd_init_sequence_data,x
+@lcd_force_reset_loop:
+      lda lcd_force_reset_sequence,x
       jsr _delay_ms
       inx
-      ; Read next byte of init sequence data
-      lda lcd_init_sequence_data,x
+      ; Read next byte of force reset sequence data
+      lda lcd_force_reset_sequence,x
       ; Exit loop if $00 read
+      beq @lcd_force_reset_end
+
+      lda VIA1_PORTB
+      and #%00000001
+      ora lcd_force_reset_sequence, x
+      sta VIA1_PORTB
+      ora #(LCD_ENABLE_FLAG)
+      sta VIA1_PORTB
+      eor #(LCD_ENABLE_FLAG)
+      sta VIA1_PORTB
+
+      inx 
+      bra @lcd_force_reset_loop
+
+@lcd_force_reset_end:
+      ; initialize index
+      ldx #$00
+
+@lcd_init_loop:
+      ; Perform actual init operation
+      lda lcd_init_sequence_data,x
       beq @lcd_init_end
       ; Clear carry for command operation
       clc 
       jsr lcd_write_byte
+@lcd_init_busy_flag_poll:
+      ; Read status for busy operation
+      jsr lcd_read_status
+      bmi @lcd_init_busy_flag_poll
       inx
       bra @lcd_init_loop
 @lcd_init_end:
@@ -93,15 +104,6 @@ _lcd_print:
       ; store registers A and Y
       pha
       phy
-      ; ; VIA1 PORTB - toggle output on 7 last bits
-      ; lda VIA1_DDRB
-      ; ora #%11111110
-      ; sta VIA1_DDRB
-      ; ; clear output for 7 last bits
-      ; lda VIA1_PORTB
-      ; and #%00000001
-      ; sta VIA1_PORTB
-      ; initialize index
       ldy #$00
 @lcd_print_loop:
       ; Read next byte of init sequence data
@@ -271,17 +273,26 @@ lcd_read_status:
 
       .SEGMENT "RODATA"
 
-lcd_init_sequence_data:
-      .byte 50
-      .byte LCD_CMD_FUNCTION_SET | LCD_FS_FONT5x7 | LCD_FS_TWO_LINE | LCD_FS_4_BIT
-      .byte 50
-      .byte LCD_CMD_DISPLAY_MODE | LCD_DM_DISPLAY_ON | LCD_DM_CURSOR_OFF | LCD_DM_CURSOR_NOBLINK
+lcd_force_reset_sequence:
+      .byte 100
+      .byte LCD_CMD_FUNCTION_SET | LCD_FS_8_BIT | LCD_COMMAND_MODE | LCD_WRITE_MODE
       .byte 5
-      .byte LCD_CMD_ENTRY_MODE | LCD_EM_SHIFT_CURSOR | LCD_EM_INCREMENT
-      .byte 5
-      .byte LCD_CMD_CLEAR
-      .byte 5
+      .byte LCD_CMD_FUNCTION_SET | LCD_FS_8_BIT | LCD_COMMAND_MODE | LCD_WRITE_MODE
+      .byte 1
+      .byte LCD_CMD_FUNCTION_SET | LCD_FS_8_BIT | LCD_COMMAND_MODE | LCD_WRITE_MODE
+      .byte 1
+      .byte LCD_CMD_FUNCTION_SET | LCD_FS_4_BIT | LCD_COMMAND_MODE | LCD_WRITE_MODE
+      .byte 1
       .byte $00
+
+lcd_init_sequence_data:
+      .byte LCD_CMD_FUNCTION_SET | LCD_FS_FONT5x7 | LCD_FS_TWO_LINE | LCD_FS_4_BIT
+      .byte LCD_CMD_DISPLAY_MODE | LCD_DM_DISPLAY_OFF | LCD_DM_CURSOR_OFF | LCD_DM_CURSOR_NOBLINK
+      .byte LCD_CMD_CLEAR
+      .byte LCD_CMD_ENTRY_MODE | LCD_EM_SHIFT_CURSOR | LCD_EM_INCREMENT
+      .byte LCD_CMD_DISPLAY_MODE | LCD_DM_DISPLAY_ON | LCD_DM_CURSOR_OFF | LCD_DM_CURSOR_NOBLINK
+      .byte $00
+
 lcd_mapping_coordinates:
       .byte 00
       .byte 40

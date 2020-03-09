@@ -43,6 +43,6 @@ end_loop:
       .segment "RODATA"
 
 hello_msg:
-      .byte "Hello 4-bit!", $00
+      .byte "Hello 4-bit! Long text kept here for testing purposes of the LCD implementation", $00
 chars_msg:
       .byte "Single chars!",$00
