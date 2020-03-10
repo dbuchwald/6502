@@ -23,12 +23,15 @@ init:
       lda #>hello_msg
       sta lcd_out_ptr+1
       jsr _lcd_print
-      lda #$05
+      lda #$03
       jsr _delay_sec
       ldx #$00
       jsr _lcd_clear
-      lda #$03
+      lda #$02
       jsr _delay_sec
+      ldx #05
+      ldy #02
+      jsr _lcd_set_position
 char_loop:
       lda chars_msg,x
       beq end_loop

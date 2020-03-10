@@ -5,6 +5,7 @@
       .export _lcd_print
       .export _lcd_print_char
       .export _lcd_clear
+      .export _lcd_set_position
 
 ; LCD Commands list
 LCD_CMD_CLEAR           = %00000001
@@ -89,10 +90,9 @@ _lcd_init:
       ; Clear carry for command operation
       clc 
       jsr lcd_write_byte
-@lcd_init_busy_flag_poll:
-      ; Read status for busy operation
-      jsr lcd_read_status
-      bmi @lcd_init_busy_flag_poll
+      ; Wait for busy flag clear
+      jsr lcd_wait_bf_clear
+
       inx
       bra @lcd_init_loop
 @lcd_init_end:
@@ -115,11 +115,10 @@ _lcd_print:
       jsr lcd_write_byte
       iny
 
-@lcd_print_busy_flag_poll:
-      ; Read status
-      jsr lcd_read_status
-      ; Repeat for as long as the LCD is busy
-      bmi @lcd_print_busy_flag_poll
+      ; Wait for BF clear
+      jsr lcd_wait_bf_clear
+      ; Wrap the line if needed
+      jsr lcd_wrap_line
 
       ; Next character
       bra @lcd_print_loop
@@ -135,10 +134,10 @@ _lcd_print_char:
       sec
       jsr lcd_write_byte
 
-@lcd_print_char_busy_flag_poll:
-      ; Read status for busy operation
-      jsr lcd_read_status
-      bmi @lcd_print_char_busy_flag_poll
+      ; Wait for BF clear
+      jsr lcd_wait_bf_clear
+      ; Wrap the line if needed
+      jsr lcd_wrap_line
 
 @lcd_print_char_end:
       pla
@@ -149,9 +148,30 @@ _lcd_print_char:
 ; internal variables
 ; none
 _lcd_clear:
+      pha
       lda #(LCD_CMD_CLEAR)
       clc
       jsr lcd_write_byte
+      jsr lcd_wait_bf_clear
+      pla
+      rts 
+
+; _lcd_set_position - moves cursor to position on a screen
+; Assumes position in X,Y registers
+; Internal variables - none
+; Return value - none
+_lcd_set_position:
+      pha
+      txa
+      clc
+      adc lcd_mapping_coordinates,y
+      clc
+      ora #(LCD_CMD_DDRAM_SET)
+      clc
+      jsr lcd_write_byte
+      jsr lcd_wait_bf_clear
+      pla
+      rts
 
 ; lcd_write_byte - send one byte to LCD
 ; byte in A
@@ -218,13 +238,25 @@ lcd_write_byte:
       sta VIA1_PORTB
       rts
 
-; lcd_read_status - read one byte of status from LCD
-; parameters
-;   none
-; return value - register A
-; temporary variables
-; tmp1, tmp2
-lcd_read_status:
+; lcd_read_byte - read one byte from LCD
+; result in A
+; carry clear - command
+; carry set - data
+; internal variables
+; tmp1 - buffer for data MSB
+; tmp2 - buffer for data LSB
+; tmp3 - buffer for operation mode
+lcd_read_byte:
+      bcs @lcd_read_data
+      ; Set flags
+      lda #(LCD_READ_MODE | LCD_COMMAND_MODE)
+      sta tmp3
+      bra @lcd_read_mode_set
+@lcd_read_data:
+      ; Set flags
+      lda #(LCD_READ_MODE | LCD_DATA_MODE)
+      sta tmp3
+@lcd_read_mode_set:
       ; Preserve direction of last four bits of DDRB
       ; but toggle LCD data lines to input
       lda VIA1_DDRB
@@ -234,7 +266,7 @@ lcd_read_status:
       ; Preserve status of blink led
       lda VIA1_PORTB
       and #%00000001
-      ora #(LCD_READ_MODE | LCD_COMMAND_MODE)
+      ora tmp3
       sta VIA1_PORTB
       ; Give it a while
       ora #(LCD_ENABLE_FLAG)
@@ -250,7 +282,7 @@ lcd_read_status:
       sta VIA1_PORTB
       ; Get next four bits
       and #%00000001
-      ora #(LCD_READ_MODE | LCD_COMMAND_MODE)
+      ora tmp3
       sta VIA1_PORTB
       ; Give it a while
       ora #(LCD_ENABLE_FLAG)
@@ -270,6 +302,41 @@ lcd_read_status:
       lsr
       ora tmp1
       rts
+
+; lcd_wait_bf_clear - wait for busy flag clear from LCD, return status
+; parameters
+;   none
+; return value - register A
+lcd_wait_bf_clear:
+      clc
+      jsr lcd_read_byte
+      ; Repeat read if BF is still set
+      bmi lcd_wait_bf_clear
+      rts
+
+; Checks if line break occured after last data write
+; Assumes result of last write in A
+lcd_wrap_line:
+      pha
+      phx
+      ldx #$00
+@lcd_wrap_loop:
+      cmp lcd_wordwrap_sources,x
+      beq @lcd_wrap_found
+      inx
+      cpx #$04
+      beq @lcd_wrap_not_found
+      bra @lcd_wrap_loop
+@lcd_wrap_found:
+      lda lcd_wordwrap_targets,x
+      ora #(LCD_CMD_DDRAM_SET)
+      clc
+      jsr lcd_write_byte
+      jsr lcd_wait_bf_clear
+@lcd_wrap_not_found:
+      plx
+      pla
+      rts      
 
       .SEGMENT "RODATA"
 
@@ -298,3 +365,15 @@ lcd_mapping_coordinates:
       .byte 40
       .byte 20
       .byte 60
+
+lcd_wordwrap_sources:
+      .byte 20
+      .byte 60
+      .byte 40
+      .byte 80
+
+lcd_wordwrap_targets:
+      .byte 40
+      .byte 20
+      .byte 60
+      .byte 00
