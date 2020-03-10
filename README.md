@@ -124,5 +124,5 @@ The following components are required for building Clock Module
 |U2|IC|NE555|Add socket|
 |U3|IC|NE555|Add socket|
 |U4|IC|74LS04|Add socket|
-|U4|IC|74LS32|Add socket|
-|U4|IC|74LS08|Add socket|
+|U5|IC|74LS32|Add socket|
+|U6|IC|74LS08|Add socket|
