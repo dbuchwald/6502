@@ -104,6 +104,7 @@ _lcd_print:
       ; store registers A and Y
       pha
       phy
+      phx
       ldy #$00
 @lcd_print_loop:
       ; Read next byte of init sequence data
@@ -119,10 +120,13 @@ _lcd_print:
       jsr lcd_wait_bf_clear
       ; Wrap the line if needed
       jsr lcd_wrap_line
+      lda #100
+      jsr _delay_ms
 
       ; Next character
       bra @lcd_print_loop
 @lcd_print_end:
+      plx
       ply
       pla
       rts
@@ -329,6 +333,10 @@ lcd_wrap_line:
       bra @lcd_wrap_loop
 @lcd_wrap_found:
       lda lcd_wordwrap_targets,x
+      bne @lcd_wrap_screen_not_full
+      jsr _lcd_clear
+      lda #00
+@lcd_wrap_screen_not_full:
       ora #(LCD_CMD_DDRAM_SET)
       clc
       jsr lcd_write_byte
@@ -362,18 +370,18 @@ lcd_init_sequence_data:
 
 lcd_mapping_coordinates:
       .byte 00
-      .byte 40
+      .byte 64
       .byte 20
-      .byte 60
+      .byte 84
 
 lcd_wordwrap_sources:
       .byte 20
-      .byte 60
-      .byte 40
-      .byte 80
+      .byte 84
+      .byte 64
+      .byte 00
 
 lcd_wordwrap_targets:
-      .byte 40
+      .byte 64
       .byte 20
-      .byte 60
+      .byte 84
       .byte 00

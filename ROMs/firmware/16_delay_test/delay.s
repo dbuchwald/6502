@@ -30,8 +30,9 @@ init:
       lda #$02
       jsr _delay_sec
       ldx #05
-      ldy #02
+      ldy #01
       jsr _lcd_set_position
+      ldx #$00
 char_loop:
       lda chars_msg,x
       beq end_loop
@@ -46,6 +47,6 @@ end_loop:
       .segment "RODATA"
 
 hello_msg:
-      .byte "Hello 4-bit! Long text kept here for testing purposes of the LCD implementation", $00
+      .byte "Hello 4-bit! Long text kept here for testing purposes of the LCD implementation including full word wrap", $00
 chars_msg:
       .byte "Single chars!",$00
