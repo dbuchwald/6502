@@ -6,6 +6,16 @@
       .export _lcd_print_char
       .export _lcd_clear
       .export _lcd_set_position
+      .export _lcd_display_mode
+      .export _lcd_scroll_up
+      .export _lcd_scroll_down
+
+      .export LCD_DM_CURSOR_NOBLINK
+      .export LCD_DM_CURSOR_BLINK
+      .export LCD_DM_CURSOR_OFF
+      .export LCD_DM_CURSOR_ON
+      .export LCD_DM_DISPLAY_OFF
+      .export LCD_DM_DISPLAY_ON
 
 ; LCD Commands list
 LCD_CMD_CLEAR           = %00000001
@@ -45,6 +55,9 @@ LCD_DATA_MODE           = %00000010
 LCD_WRITE_MODE          = %00000000
 LCD_READ_MODE           = %00000100
 LCD_ENABLE_FLAG         = %00001000
+
+LCD_COLUMNS             = 20
+LCD_ROWS                = 4
 
       .code
 
@@ -90,9 +103,6 @@ _lcd_init:
       ; Clear carry for command operation
       clc 
       jsr lcd_write_byte
-      ; Wait for busy flag clear
-      jsr lcd_wait_bf_clear
-
       inx
       bra @lcd_init_loop
 @lcd_init_end:
@@ -115,9 +125,6 @@ _lcd_print:
       sec
       jsr lcd_write_byte
       iny
-
-      ; Wait for BF clear
-      jsr lcd_wait_bf_clear
       ; Wrap the line if needed
       jsr lcd_wrap_line
       lda #100
@@ -137,9 +144,6 @@ _lcd_print_char:
       ; Set carry for data operation
       sec
       jsr lcd_write_byte
-
-      ; Wait for BF clear
-      jsr lcd_wait_bf_clear
       ; Wrap the line if needed
       jsr lcd_wrap_line
 
@@ -156,7 +160,6 @@ _lcd_clear:
       lda #(LCD_CMD_CLEAR)
       clc
       jsr lcd_write_byte
-      jsr lcd_wait_bf_clear
       pla
       rts 
 
@@ -173,8 +176,71 @@ _lcd_set_position:
       ora #(LCD_CMD_DDRAM_SET)
       clc
       jsr lcd_write_byte
-      jsr lcd_wait_bf_clear
       pla
+      rts
+
+; _lcd_display_mode - set the display mode
+; Assumes mode passed in A register
+; Internal variables - none
+_lcd_display_mode:
+      pha
+      ora #(LCD_CMD_DISPLAY_MODE)
+      clc
+      jsr lcd_write_byte
+      pla
+      rts
+
+; _lcd_scroll_up - scroll LCD contents up
+; No input/output params
+; Internal variables - only local
+_lcd_scroll_up:
+      phy
+      ; start with source line 1
+      ldy #01
+@line_loop_up:
+      ; copy line contents to buffer
+      jsr lcd_copy_line_to_buffer
+      ; set target position (-1 line)
+      dey
+      ; paste contents from buffer
+      jsr lcd_paste_line_from_buffer
+      ; move to next line
+      ; we need to add 2 because of the decrease before paste
+      iny
+      iny
+      ; repeat until last line copied
+      cpy #(LCD_ROWS)
+      bne @line_loop_up
+      ; clear last row
+      dey
+      jsr lcd_clear_line
+      ply
+      rts
+
+; _lcd_scroll_down - scroll LCD contents down
+; No input/output params
+; Internal variables - only local
+_lcd_scroll_down:
+      phy
+      ; start with source line (last - 1)
+      ldy #(LCD_ROWS-2)
+@line_loop_down:
+      ; copy line contents to buffer
+      jsr lcd_copy_line_to_buffer
+      ; set target position (+1 line)
+      iny
+      ; paste contents from buffer
+      jsr lcd_paste_line_from_buffer
+      ; move to next line
+      ; we need to dec 2 because of the increase before paste
+      dec
+      dec
+      ; repeat until last line copied
+      bpl @line_loop_down
+      ; clear first row
+      iny
+      jsr lcd_clear_line
+      ply
       rts
 
 ; lcd_write_byte - send one byte to LCD
@@ -240,6 +306,12 @@ lcd_write_byte:
       ; Toggle pulse
       eor #(LCD_ENABLE_FLAG)
       sta VIA1_PORTB
+      ; wait for BF clear
+@lcd_wait_bf_clear:
+      clc
+      jsr lcd_read_byte
+      ; Repeat read if BF is still set
+      bmi @lcd_wait_bf_clear
       rts
 
 ; lcd_read_byte - read one byte from LCD
@@ -307,17 +379,6 @@ lcd_read_byte:
       ora tmp1
       rts
 
-; lcd_wait_bf_clear - wait for busy flag clear from LCD, return status
-; parameters
-;   none
-; return value - register A
-lcd_wait_bf_clear:
-      clc
-      jsr lcd_read_byte
-      ; Repeat read if BF is still set
-      bmi lcd_wait_bf_clear
-      rts
-
 ; Checks if line break occured after last data write
 ; Assumes result of last write in A
 lcd_wrap_line:
@@ -325,26 +386,101 @@ lcd_wrap_line:
       phx
       ldx #$00
 @lcd_wrap_loop:
+      ; read margin values and compare against current position
       cmp lcd_wordwrap_sources,x
       beq @lcd_wrap_found
+      ; try next one
       inx
-      cpx #$04
+      cpx #(LCD_ROWS)
       beq @lcd_wrap_not_found
+      ; repeat
       bra @lcd_wrap_loop
 @lcd_wrap_found:
-      lda lcd_wordwrap_targets,x
+      ; if found, check if this is last row (means we got to the end of the screen)
+      cpx #(LCD_ROWS-1)
       bne @lcd_wrap_screen_not_full
-      jsr _lcd_clear
-      lda #00
+      ; it is last row - scroll the screen up
+      jsr _lcd_scroll_up
+      ; X contains line number, move cursor to the beginning of this line
+      lda lcd_mapping_coordinates,x
+      bra @lcd_wrap_send_new_position
 @lcd_wrap_screen_not_full:
+      ; use targets mapping to find byte to move to
+      lda lcd_wordwrap_targets,x
+@lcd_wrap_send_new_position:
+      ; send cursor position operation
       ora #(LCD_CMD_DDRAM_SET)
       clc
       jsr lcd_write_byte
-      jsr lcd_wait_bf_clear
 @lcd_wrap_not_found:
       plx
       pla
-      rts      
+      rts
+
+; lcd_copy_line_to_buffer - copies single LCD line to buffer
+; Assumes line number in Y
+lcd_copy_line_to_buffer:
+      pha
+      phx
+      ; set position to start of the line
+      ldx #00
+      jsr _lcd_set_position
+      ; read byte from LCD DDRAM
+@char_read_loop:
+      sec
+      jsr lcd_read_byte
+      ; store in temporary memory area
+      sta lcd_line_buffer,x
+      inx 
+      ; repeat for all columns
+      cpx #(LCD_COLUMNS)
+      bne @char_read_loop
+      plx
+      pla
+      rts
+
+; lcd_paste_line_from_buffer - pastes buffer contents to LCD
+; Assumes line number in Y
+lcd_paste_line_from_buffer:
+      pha
+      phx
+      ldx #$00
+      jsr _lcd_set_position
+@char_write_loop:
+      lda lcd_line_buffer,x
+      sec
+      jsr lcd_write_byte
+      inx
+      ; repeat for all columns
+      cpx #(LCD_COLUMNS)
+      bne @char_write_loop
+      plx
+      pla
+      rts
+
+; lcd_clear_line - fills given line with spaces
+; Assumes line number in Y
+lcd_clear_line:
+      pha
+      phx
+      ldx #00
+      jsr _lcd_set_position
+@erase_loop:
+      lda #(' ')
+      sec
+      jsr lcd_write_byte
+      inx
+      ; repeat for all columns 
+      cpx #(LCD_COLUMNS)
+      bne @erase_loop
+      plx
+      pla
+      rts
+
+      .SEGMENT "BSS"
+
+lcd_line_buffer:
+      .res LCD_COLUMNS
 
       .SEGMENT "RODATA"
 
@@ -371,17 +507,17 @@ lcd_init_sequence_data:
 lcd_mapping_coordinates:
       .byte 00
       .byte 64
-      .byte 20
-      .byte 84
+      .byte LCD_COLUMNS
+      .byte 64 + LCD_COLUMNS
 
 lcd_wordwrap_sources:
-      .byte 20
-      .byte 84
+      .byte LCD_COLUMNS
+      .byte 64 + LCD_COLUMNS
       .byte 64
       .byte 00
 
 lcd_wordwrap_targets:
       .byte 64
-      .byte 20
-      .byte 84
+      .byte LCD_COLUMNS
+      .byte 64 + LCD_COLUMNS
       .byte 00
