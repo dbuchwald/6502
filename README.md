@@ -92,7 +92,7 @@ The following components are required for building Clock Module
 |C4|Unpolarized capacitor|100 nF|2.5mm raster|
 |C5|Unpolarized capacitor|100 nF|2.5mm raster|
 |C6|Unpolarized capacitor|100 nF|2.5mm raster|
-|C6|Unpolarized capacitor|330 nF|2.5mm raster|
+|C7|Unpolarized capacitor|100 nF|2.5mm raster|
 |C8|Unpolarized capacitor|100 nF|2.5mm raster|
 |C9|Polarized capacitor|1 uF|2.5mm raster, 5mm diameter|
 |D1|LED|Yellow|5mm diameter (Automatic tick)|
