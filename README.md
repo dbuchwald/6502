@@ -69,12 +69,12 @@ The following components are required for building 65C02 Computer
 |U4|IC|NE555|Add socket|
 |U5|IC|6551|Add socket; ACIA chip, see notes below|
 |U6|IC|FT230XS||
-|U7|IC|62C02S|Add socket|
+|U7|IC|65C02S|Add socket|
 |U8|IC|28C256|Add socket|
 |U9|IC|62256|Add socket|
 |U10|IC|ATtiny4313-PU|Add socket|
-|U11|IC|62C22S|Add socket|
-|U12|IC|62C22S|Add socket|
+|U11|IC|65C22S|Add socket|
+|U12|IC|65C22S|Add socket|
 |X1|Crystal Oscillator|1MHz||
 |X2|Crystal Oscillator|1.8432MHz||
 
