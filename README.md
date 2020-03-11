@@ -117,7 +117,7 @@ The following components are required for building Clock Module
 |R13|Resistor|220||
 |R14|Resistor|220||
 |R15|Resistor|1K||
-|RV1|Potentiometer|10K|Piher PT10-LV10-103|
+|RV1|Potentiometer|10K|Piher PT10-LV10-105|
 |SW1|Pushbutton||Standard 6mm THT pushbutton|
 |SW2|Pushbutton||Standard 6mm THT pushbutton|
 |U1|IC|NE555|Add socket|
