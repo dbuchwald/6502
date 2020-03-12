@@ -1,4 +1,4 @@
-(kicad_pcb (version 20171130) (host pcbnew "(5.1.5-0-10_14)")
+(kicad_pcb (version 20171130) (host pcbnew "(5.1.5)-3")
 
   (general
     (thickness 1.6)
@@ -2922,7 +2922,7 @@
     (fp_text reference C7 (at 1.25 -2.25) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value 330nF (at 1.25 2.25) (layer F.Fab)
+    (fp_text value 0.1uF (at 1.25 2.25) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -0.25 -1) (end -0.25 1) (layer F.Fab) (width 0.1))
