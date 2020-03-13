@@ -10,3 +10,7 @@
 .globalzp ptr3
 .globalzp ptr4
 .globalzp lcd_out_ptr
+.globalzp acia_rx_rptr
+.globalzp acia_rx_wptr
+.globalzp acia_tx_rptr
+.globalzp acia_tx_wptr

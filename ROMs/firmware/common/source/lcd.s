@@ -127,8 +127,8 @@ _lcd_print:
       iny
       ; Wrap the line if needed
       jsr lcd_wrap_line
-      lda #100
-      jsr _delay_ms
+      ; lda #100
+      ; jsr _delay_ms
 
       ; Next character
       bra @lcd_print_loop
@@ -400,6 +400,8 @@ lcd_wrap_line:
       cpx #(LCD_ROWS-1)
       bne @lcd_wrap_screen_not_full
       ; it is last row - scroll the screen up
+      lda #01
+      jsr _delay_sec
       jsr _lcd_scroll_up
       ; X contains line number, move cursor to the beginning of this line
       lda lcd_mapping_coordinates,x
