@@ -111,6 +111,8 @@ _handle_acia_irq:
         and #%11110011
         ora #%00001000
         sta ACIA_COMMAND
+        ; Restore value of accumulator (rolled ACIA STATUS)
+        pla
         bra tx_empty_exit
 tx_send_character:
         ; Otherwise, send new character
@@ -127,9 +129,9 @@ tx_send_character:
 tx_send_complete:
         ; Update buffer read pointer
         stx acia_tx_rptr
-tx_empty_exit:
         ; Restore value of accumulator (rolled ACIA STATUS)
         pla
+tx_empty_exit:
         ; Test the RX bit now
         asl
         ; Receive buffer full

@@ -19,9 +19,6 @@ init:
       ; Set up stack
       ldx #$ff
       txs
-      ; Delay to allow for USB connection - to be removed later
-      lda #5
-      jsr _delay_sec
       ; Run setup routine
       jsr _init_system
       ldx #00
