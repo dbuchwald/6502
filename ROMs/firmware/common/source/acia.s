@@ -75,7 +75,7 @@ ACIA_STATUS_FRAME_ERR  = 1 << 1
 ACIA_STATUS_PARITY_ERR = 1 << 0
 
 _acia_init:
-        lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_ENABLE_RTS_LOW | ACIA_RX_INT_ENABLE | ACIA_DTR_LOW)
+        lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_ENABLE | ACIA_DTR_LOW)
         sta ACIA_COMMAND
         lda #(ACIA_STOP_BITS_1 | ACIA_DATA_BITS_8 | ACIA_CLOCK_INT | ACIA_BAUD_19200)
         sta ACIA_CONTROL
@@ -92,11 +92,11 @@ _handle_acia_irq:
         ; Load current ACIA status
         lda ACIA_STATUS
         ; Ignore IRQ bit, we already know
-        rol
+        asl
         ; ignore DSR
-        rol
+        asl
         ; ignore DCD
-        rol
+        asl
         ; TX buffer empty
         bpl tx_empty_exit
         ; Preserve accumulator
@@ -104,8 +104,15 @@ _handle_acia_irq:
         ; Compare TX write and read buffer pointers
         ldx acia_tx_rptr
         cpx acia_tx_wptr
+        bne tx_send_character
         ; Both equal - nothing to send in buffer
-        beq tx_nothing_to_send
+        lda ACIA_COMMAND
+        ; Disable TX interrupt now until new data sent
+        and #%11110011
+        ora #%00001000
+        sta ACIA_COMMAND
+        bra tx_empty_exit
+tx_send_character:
         ; Otherwise, send new character
         lda acia_tx_buffer,x
         sta ACIA_DATA
@@ -120,12 +127,11 @@ _handle_acia_irq:
 tx_send_complete:
         ; Update buffer read pointer
         stx acia_tx_rptr
-tx_nothing_to_send:
+tx_empty_exit:
         ; Restore value of accumulator (rolled ACIA STATUS)
         pla
-tx_empty_exit:
         ; Test the RX bit now
-        rol
+        asl
         ; Receive buffer full
         bpl rx_full_exit
         ; Preserve accumulator again
@@ -157,11 +163,20 @@ rx_full_exit:
 
 ; Check if there is anything to receive
 ; 0 - data not available
-; nonzero - data available
+; 1 - data available
 _acia_is_data_available:
-        clc
+        ; clc
+        ; clv
+        ; lda acia_rx_wptr
+        ; sbc acia_rx_rptr
+        ; rts
         lda acia_rx_wptr
-        sbc acia_rx_rptr
+        cmp acia_rx_rptr
+        beq @no_data_found
+        lda #01
+        rts
+@no_data_found:
+        lda #00
         rts
 
 ; Return one byte from RX buffer
@@ -189,14 +204,34 @@ _acia_write_byte:
         ; Preserve x register
         phx
         ; Load write pointer
+;         ldx acia_tx_wptr
+;         ; Compare against read buffer
+;         cpx acia_tx_rptr
+;         ; Only store new data in buffer
+;         bne store_data_in_buffer
+;         ; Since read and write pointers are equal - send immediately        
+;         sta ACIA_DATA
+;         ; Enable interrupt after tx buffer is empty
+;         pha
+;         lda ACIA_COMMAND
+;         and #%11110011
+;         ora #%00000100
+;         sta ACIA_COMMAND
+;         pla
+; store_data_in_buffer:
+;         sta acia_tx_buffer,x
+;         ; Increase pointer
+;         inx 
+;         ; Check if we are overrunning the buffer
+;         cpx #(ACIA_TX_BUFFER_SIZE)
+;         ; We are not yet
+;         bne send_complete
+;         ; Yes, we are, start from beginning
+;         ldx #00
+; send_complete:
+;         ; Update buffer read pointer
+;         stx acia_tx_wptr
         ldx acia_tx_wptr
-        ; Compare against read buffer
-        cpx acia_tx_rptr
-        ; Only store new data in buffer
-        bne store_data_in_buffer
-        ; Since read and write pointers are equal - send immediately        
-        sta ACIA_DATA
-store_data_in_buffer:
         sta acia_tx_buffer,x
         ; Increase pointer
         inx 
@@ -209,6 +244,14 @@ store_data_in_buffer:
 send_complete:
         ; Update buffer read pointer
         stx acia_tx_wptr
+        ; Enable interrupt after tx buffer is empty
+        pha
+        lda ACIA_COMMAND
+        and #%11110011
+        ora #%00000100
+        sta ACIA_COMMAND
+        pla
+
         plx
         rts
 

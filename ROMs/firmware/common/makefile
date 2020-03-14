@@ -5,9 +5,10 @@ CL65_BINARY=cl65
 
 CPU_FLAG=--cpu 65C02
 ARCH_FLAG=-t none
+CLOCK_FLAG=-Dfastclock=$(FASTCLOCK)
 
-CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) -O
-CA65_FLAGS=$(CPU_FLAG)
+CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) -O
+CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG)
 CL65_FLAGS=$(ARCH_FLAG)
 
 # MiniPro will be used to upload the ROM
@@ -52,6 +53,9 @@ OBJECTS = $(ASM_SOURCES:%.s=$(BUILD_FOLDER)/%.o) $(C_SOURCES:%.c=$(BUILD_FOLDER)
 
 # Default address mode (basic/ext/.. )
 ADDRESS_MODE=ext
+
+# Default clock mode (slow/fast)
+FASTCLOCK=1
 
 # Choose configuration file for firmware (determines addressing mode)
 FIRMWARE_CFG=../common/firmware.$(ADDRESS_MODE).cfg

@@ -9,15 +9,11 @@
       .export _interrupt_handler
 
 ; Main system initialization routine
-; Setting up stack pointer to top
 ; LCD initialization
 ; ACIA initialization
 ; Disable BCD mode
 ; Enable interrupt handling
 _init_system:
-      ; Set up stack
-      ldx #$ff
-      txs
       ; Initialize BLINK LED
       jsr _init_blink_led
       ; Short BLINK LED strobe

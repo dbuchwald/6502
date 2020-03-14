@@ -4,6 +4,10 @@
       .export _delay_sec
 
 _delay_ms:
+      ; Skip the routine when 1MHz clock is disabled
+      .if fastclock=0
+      rts
+      .endif
       sta tmp1
       txa
       pha
@@ -37,6 +41,10 @@ return:
       rts
 
 _delay_sec:
+      ; Skip the routine when 1MHz clock is disabled
+      .if fastclock=0
+      rts
+      .endif
 ; store original value in A register
       pha
 ; multiply by 4

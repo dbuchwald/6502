@@ -16,12 +16,23 @@
       .code
 
 init:
+      ; Set up stack
+      ldx #$ff
+      txs
+      ; Delay to allow for USB connection - to be removed later
+      lda #5
+      jsr _delay_sec
+      ; Run setup routine
       jsr _init_system
       ldx #00
 prompt_loop:
       lda prompt,x
       beq main_loop
       jsr _acia_write_byte
+      ; Duplicate output to LCD - to be removed
+      lda prompt,x
+      jsr _lcd_print_char
+      ; End of debug code
       inx
       bra prompt_loop
 
