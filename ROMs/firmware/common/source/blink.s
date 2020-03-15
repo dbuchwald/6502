@@ -37,10 +37,10 @@ _blink_led:
 _strobe_led:
       sec
       jsr _blink_led
-      lda #250
+      lda #150
       jsr _delay_ms
       clc
       jsr _blink_led
-      lda #250
+      lda #150
       jsr _delay_ms
       rts

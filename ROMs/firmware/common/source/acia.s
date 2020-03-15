@@ -91,6 +91,9 @@ _handle_acia_irq:
         phx
         ; Load current ACIA status
         lda ACIA_STATUS
+        ; Stop processing if only CTS is high
+        cmp #$80
+        beq cts_high
         ; Ignore IRQ bit, we already know
         asl
         ; ignore DSR
@@ -129,7 +132,16 @@ tx_send_character:
 tx_send_complete:
         ; Update buffer read pointer
         stx acia_tx_rptr
+        cpx acia_tx_wptr
+        bne tx_data_left_to_send
+        ; Both equal - nothing to send in buffer
+        lda ACIA_COMMAND
+        ; Disable TX interrupt now until new data sent
+        and #%11110011
+        ora #%00001000
+        sta ACIA_COMMAND
         ; Restore value of accumulator (rolled ACIA STATUS)
+tx_data_left_to_send:
         pla
 tx_empty_exit:
         ; Test the RX bit now
@@ -159,6 +171,7 @@ rx_full_exit:
         ; Ignore overrun
         ; Ignore framing error
         ; Ignore parity error
+cts_high:
         plx
         pla
         rts

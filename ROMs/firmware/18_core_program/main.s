@@ -21,6 +21,10 @@ init:
       txs
       ; Run setup routine
       jsr _init_system
+wait_for_acia_input:
+      jsr _acia_is_data_available
+      cmp #00
+      beq wait_for_acia_input
       ldx #00
 prompt_loop:
       lda prompt,x
