@@ -1,0 +1,8 @@
+PROJECT_NAME=19_keyboard_test
+
+ASM_SOURCES=keyboard_test.s
+C_SOURCES=
+COMMON_DEPS=acia.o via.o lcd.o utils.o zeropage.o
+
+include ../common/makefile
+
