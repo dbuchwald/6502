@@ -16,8 +16,8 @@ ACIA_STATUS  = __ACIA_START__ + $01
 ACIA_COMMAND = __ACIA_START__ + $02
 ACIA_CONTROL = __ACIA_START__ + $03
 
-ACIA_RX_BUFFER_SIZE = 255
-ACIA_TX_BUFFER_SIZE = 255
+ACIA_RX_BUFFER_SIZE = 256
+ACIA_TX_BUFFER_SIZE = 256
 
 ACIA_STOP_BITS_1 = %00000000
 ACIA_STOP_BITS_2 = %10000000
@@ -122,17 +122,10 @@ tx_send_character:
         lda acia_tx_buffer,x
         sta ACIA_DATA
         ; Increase read buffer pointer
-        inx
-        ; Check if we are overrunning the buffer
-        cpx #(ACIA_TX_BUFFER_SIZE)
-        ; We are not yet
-        bne tx_send_complete
-        ; Yes, we are, start from beginning
-        ldx #00
-tx_send_complete:
-        ; Update buffer read pointer
-        stx acia_tx_rptr
-        cpx acia_tx_wptr
+        inc acia_tx_rptr
+        ; Compare pointers - is there any data
+        lda acia_tx_rptr
+        cmp acia_tx_wptr
         bne tx_data_left_to_send
         ; Both equal - nothing to send in buffer
         lda ACIA_COMMAND
@@ -156,16 +149,7 @@ tx_empty_exit:
         ; Store in rx buffer
         sta acia_rx_buffer,x
         ; Increase write buffer pointer
-        inx
-        ; Check for overrun again
-        cpx #(ACIA_RX_BUFFER_SIZE)
-        ; Not yet
-        bne rx_recv_complete
-        ; Yes, we are, start from beginning
-        ldx #00
-rx_recv_complete:
-        ; Update buffer write pointer
-        stx acia_rx_wptr
+        inc acia_rx_wptr
         pla
 rx_full_exit:
         ; Ignore overrun
@@ -180,11 +164,6 @@ cts_high:
 ; 0 - data not available
 ; 1 - data available
 _acia_is_data_available:
-        ; clc
-        ; clv
-        ; lda acia_rx_wptr
-        ; sbc acia_rx_rptr
-        ; rts
         pha
         lda acia_rx_wptr
         cmp acia_rx_rptr
@@ -203,16 +182,7 @@ _acia_read_byte:
         ldx acia_rx_rptr
         lda acia_rx_buffer,x
         ; Increase read buffer pointer
-        inx
-        ; Check for overrun
-        cpx #(ACIA_RX_BUFFER_SIZE)
-        ; Not yet
-        bne read_complete
-        ; Yes, we are, start from beginning
-        ldx #00
-read_complete:
-        ; Update buffer write pointer
-        stx acia_rx_rptr
+        inc acia_rx_rptr
         plx
         rts
 
@@ -221,47 +191,11 @@ read_complete:
 _acia_write_byte:
         ; Preserve x register
         phx
-        ; Load write pointer
-;         ldx acia_tx_wptr
-;         ; Compare against read buffer
-;         cpx acia_tx_rptr
-;         ; Only store new data in buffer
-;         bne store_data_in_buffer
-;         ; Since read and write pointers are equal - send immediately        
-;         sta ACIA_DATA
-;         ; Enable interrupt after tx buffer is empty
-;         pha
-;         lda ACIA_COMMAND
-;         and #%11110011
-;         ora #%00000100
-;         sta ACIA_COMMAND
-;         pla
-; store_data_in_buffer:
-;         sta acia_tx_buffer,x
-;         ; Increase pointer
-;         inx 
-;         ; Check if we are overrunning the buffer
-;         cpx #(ACIA_TX_BUFFER_SIZE)
-;         ; We are not yet
-;         bne send_complete
-;         ; Yes, we are, start from beginning
-;         ldx #00
-; send_complete:
-;         ; Update buffer read pointer
-;         stx acia_tx_wptr
+        ; Load data from the TX buffer
         ldx acia_tx_wptr
         sta acia_tx_buffer,x
         ; Increase pointer
-        inx 
-        ; Check if we are overrunning the buffer
-        cpx #(ACIA_TX_BUFFER_SIZE)
-        ; We are not yet
-        bne send_complete
-        ; Yes, we are, start from beginning
-        ldx #00
-send_complete:
-        ; Update buffer read pointer
-        stx acia_tx_wptr
+        inc acia_tx_wptr
         ; Enable interrupt after tx buffer is empty
         pha
         lda ACIA_COMMAND
