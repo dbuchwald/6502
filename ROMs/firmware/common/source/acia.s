@@ -112,7 +112,7 @@ _handle_acia_irq:
         lda ACIA_COMMAND
         ; Disable TX interrupt now until new data sent
         and #%11110011
-        ora #%00001000
+        ora #(ACIA_TX_INT_DISABLE_RTS_LOW)
         sta ACIA_COMMAND
         ; Restore value of accumulator (rolled ACIA STATUS)
         pla
@@ -131,7 +131,7 @@ tx_send_character:
         lda ACIA_COMMAND
         ; Disable TX interrupt now until new data sent
         and #%11110011
-        ora #%00001000
+        ora #(ACIA_TX_INT_DISABLE_RTS_LOW)
         sta ACIA_COMMAND
         ; Restore value of accumulator (rolled ACIA STATUS)
 tx_data_left_to_send:
@@ -150,6 +150,19 @@ tx_empty_exit:
         sta acia_rx_buffer,x
         ; Increase write buffer pointer
         inc acia_rx_wptr
+        ; Check for receive buffer overflow condition
+        lda acia_rx_wptr
+        sec
+        sbc acia_rx_rptr
+        ; We have more than 128 characters to service in queue - overflow
+        cmp #$80
+        bcc no_rx_overflow
+        ; Raise RTS line to stop inflow
+        lda ACIA_COMMAND
+        and #%11110011
+        ; ora #%00000001
+        sta ACIA_COMMAND
+no_rx_overflow:
         pla
 rx_full_exit:
         ; Ignore overrun
@@ -183,6 +196,26 @@ _acia_read_byte:
         lda acia_rx_buffer,x
         ; Increase read buffer pointer
         inc acia_rx_rptr
+        ; Store result in X for a while now
+        tax
+        ; Check how many characters are to be serviced
+        lda acia_rx_wptr
+        sec
+        sbc acia_rx_rptr
+        ; More than 64 - still overflow
+        cmp #$40
+        bcs still_rx_overflow
+        ; Otherwise accept more characters
+        lda ACIA_COMMAND
+        and #%11110011
+        ; We might enable the TX empty interrupt without any data to write
+        ; but there is no way of checking it, and the interrupt will 
+        ; correct the setting if it should not be enabled
+        ora #(ACIA_TX_INT_ENABLE_RTS_LOW)
+        sta ACIA_COMMAND
+still_rx_overflow:
+        ; Transfer result back to A
+        txa
         plx
         rts
 
@@ -200,7 +233,7 @@ _acia_write_byte:
         pha
         lda ACIA_COMMAND
         and #%11110011
-        ora #%00000100
+        ora #(ACIA_TX_INT_ENABLE_RTS_LOW)
         sta ACIA_COMMAND
         pla
 
