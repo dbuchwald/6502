@@ -426,14 +426,100 @@ void setup() {
 
   delay(1000);
   keyboard.begin(DATA_PIN_4313, IRQ_PIN_4313);
+  if (testConnection()) {
+    sendChar(0xff);
+  } else {
+    sendChar(0xfe);
+  }
+
 }
 
 void loop() {
+  static uint32_t lastSignalTimestamp = millis();
+  static bool lastStatus;
+  uint32_t currentTimestamp;
+
+  currentTimestamp = millis();
+
   if (keyboard.available()) {
+    lastSignalTimestamp = currentTimestamp;
     
     // read the next key
     char c = keyboard.read();
     sendChar(c);
+  } else {
+    if (currentTimestamp - lastSignalTimestamp > 5000) {
+      lastSignalTimestamp = currentTimestamp;
+      bool currentStatus=testConnection();
+      if (currentStatus != lastStatus) {
+        lastStatus=currentStatus;
+        if (currentStatus) {
+          sendChar(0xff);
+        } else {
+          sendChar(0xfe);
+        }
+      }
+    }
+  }
+}
+
+bool testConnection() {
+  sendToKeyboard(0xee);
+  uint32_t start = millis();
+  uint32_t current;
+  do {
+    uint8_t c = get_scan_code();
+    if (c == 0xee) {
+      return true;
+    } else if (c != 0) {
+      return false;
+    }
+    current = millis();
+  } while (current - start < 20);
+  return false;
+}
+
+bool commandBuffer[11];
+int cbufIndex=0;
+
+void sendToKeyboard(uint8_t command) {
+  commandBuffer[0] = false;
+  int parity=0;
+  for (int i=1; i<9; i++) {
+    commandBuffer[i] = (command & 1);
+    if (commandBuffer[i]) {
+      parity ++;
+    }
+    command=command >> 1;
+  }
+  commandBuffer[9]=!(parity & 1);
+  commandBuffer[10]=true;
+  detachInterrupt(digitalPinToInterrupt(IRQ_PIN_4313));
+  pinMode(IRQ_PIN_4313, OUTPUT);
+  digitalWrite(IRQ_PIN_4313, LOW);
+  delay(1);
+  pinMode(DATA_PIN_4313, OUTPUT);
+  digitalWrite(DATA_PIN_4313, LOW);
+  pinMode(IRQ_PIN_4313, INPUT_PULLUP);
+  cbufIndex=0;
+  attachInterrupt(digitalPinToInterrupt(IRQ_PIN_4313), onCommandClock, FALLING);
+  // Reset IRQ after 25ms (in case keyboard doesn't respond)
+  delay(25);
+  detachInterrupt(digitalPinToInterrupt(IRQ_PIN_4313));
+  pinMode(DATA_PIN_4313, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(IRQ_PIN_4313), ps2interrupt, FALLING);
+}
+
+void onCommandClock(void) {
+  if (cbufIndex<10) {
+    digitalWrite(DATA_PIN_4313, commandBuffer[cbufIndex++] ? HIGH : LOW);  
+  } else if (cbufIndex==10) {
+    // ACK
+    cbufIndex++;
+  } else {
+    detachInterrupt(digitalPinToInterrupt(IRQ_PIN_4313));
+    pinMode(DATA_PIN_4313, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(IRQ_PIN_4313), ps2interrupt, FALLING);
   }
 }
 
@@ -447,8 +533,8 @@ void sendChar(char c)
     digitalWrite(DATA[i], bit ? HIGH : LOW);
     mask = mask << 1;
   }
-  delay(100);
+  delay(1);
   digitalWrite(HS_DATA_READY, LOW);
-  delay(20);
+  delay(2);
   digitalWrite(HS_DATA_READY, HIGH);
 }

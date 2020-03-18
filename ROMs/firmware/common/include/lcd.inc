@@ -14,3 +14,13 @@ LCD_DM_CURSOR_OFF       = %00000000
 LCD_DM_CURSOR_ON        = %00000010
 LCD_DM_DISPLAY_OFF      = %00000000
 LCD_DM_DISPLAY_ON       = %00000100  
+
+      .macro write_lcd string_address
+      pha
+      lda #<string_address
+      sta lcd_out_ptr
+      lda #>string_address
+      sta lcd_out_ptr+1
+      jsr _lcd_print
+      pla
+      .endmacro

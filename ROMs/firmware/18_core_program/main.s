@@ -21,10 +21,10 @@ init:
       txs
       ; Run setup routine
       jsr _init_system
-wait_for_acia_input:
-      jsr _acia_is_data_available
-      cmp #00
-      beq wait_for_acia_input
+; wait_for_acia_input:
+;       jsr _acia_is_data_available
+;       cmp #00
+;       beq wait_for_acia_input
       ldx #00
 prompt_loop:
       lda prompt,x
@@ -38,12 +38,34 @@ prompt_loop:
       bra prompt_loop
 
 main_loop:
+
+      ldx #00
+      ldy #01
+      jsr _lcd_set_position      
+      lda acia_tx_rptr
+      clc
+      clv
+      adc #('a')
+      jsr _lcd_print_char
+
+      ldx #02
+      ldy #01
+      jsr _lcd_set_position      
+      lda acia_tx_wptr
+      clc
+      clv
+      adc #('a')
+      jsr _lcd_print_char
+
       jsr _acia_is_data_available
       cmp #00
       beq main_loop
       jsr _acia_read_byte
+      ldx #08
+      ldy #00
+      jsr _lcd_set_position      
       jsr _lcd_print_char
       bra main_loop
 
 prompt:
-      .asciiz "OS/1 >>"
+      .byte "OS/1 >>", $0a, $0d, $00

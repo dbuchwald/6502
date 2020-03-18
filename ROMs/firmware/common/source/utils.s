@@ -2,6 +2,7 @@
 
       .export _delay_ms
       .export _delay_sec
+      .export _convert_to_hex
 
 _delay_ms:
       ; Skip the routine when 1MHz clock is disabled
@@ -71,4 +72,33 @@ exit_delay_sec:
 ; return
       rts
 
+; Destroys X and Y registers - output values there
+; Y - lsb char
+; X - msb char
+_convert_to_hex:
+      ; not an error, preserving input
+      pha
+      pha
+      ; lsb first
+      and #$0f
+      ; use x index to load to output register (Y)
+      tax
+      ldy hex_chars,x
+      ; msb now
+      pla
+      lsr
+      lsr
+      lsr
+      lsr
+      ; get character here
+      tax
+      lda hex_chars,x
+      ; transfer result to output (X)
+      tax
+      ; restoring input
+      pla
+      rts
 
+      .segment "RODATA"
+hex_chars:
+      .byte "0123456789abcdef"

@@ -5,8 +5,8 @@ const char DATA[] = {39, 41, 43, 45, 47, 49, 51, 53};
 #define HS_DATA_TAKEN 2
 #define HS_DATA_READY 4
 
-const int DataPin = 8;
-const int IRQpin =  3;
+const int DataPin = 3;
+const int IRQpin =  2;
 
 PS2Keyboard keyboard;
 
@@ -22,9 +22,9 @@ void setup() {
   digitalWrite(HS_DATA_READY, HIGH);
 
   //attachInterrupt(digitalPinToInterrupt(HS_DATA_TAKEN), onDataTaken, FALLING);
-  detachInterrupt(digitalPinToInterrupt(HS_DATA_TAKEN));
+  //detachInterrupt(digitalPinToInterrupt(HS_DATA_TAKEN));
   
-  delay(1000);
+  //delay(1000);
   keyboard.begin(DataPin, IRQpin);
   Serial.begin(57600);
   Serial.println("Keyboard Test:");
@@ -62,7 +62,7 @@ void loop() {
       Serial.print(c);
     }
     Serial.println();
-    sendChar(c);
+    //sendChar(c);
   }
 }
 
