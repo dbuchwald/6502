@@ -16,8 +16,8 @@ ACIA_STATUS  = __ACIA_START__ + $01
 ACIA_COMMAND = __ACIA_START__ + $02
 ACIA_CONTROL = __ACIA_START__ + $03
 
-ACIA_RX_BUFFER_SIZE = 64
-ACIA_TX_BUFFER_SIZE = 64
+ACIA_RX_BUFFER_SIZE = 255
+ACIA_TX_BUFFER_SIZE = 255
 
 ACIA_STOP_BITS_1 = %00000000
 ACIA_STOP_BITS_2 = %10000000
@@ -176,7 +176,7 @@ cts_high:
         pla
         rts
 
-; Check if there is anything to receive
+; Check if there is anything to receive and return in Carry flag
 ; 0 - data not available
 ; 1 - data available
 _acia_is_data_available:
@@ -185,13 +185,16 @@ _acia_is_data_available:
         ; lda acia_rx_wptr
         ; sbc acia_rx_rptr
         ; rts
+        pha
         lda acia_rx_wptr
         cmp acia_rx_rptr
         beq @no_data_found
-        lda #01
+        sec
+        pla
         rts
 @no_data_found:
-        lda #00
+        clc
+        pla
         rts
 
 ; Return one byte from RX buffer
