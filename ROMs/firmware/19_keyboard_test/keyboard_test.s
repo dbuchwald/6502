@@ -3,35 +3,27 @@
       .include "via.inc"
       .include "lcd.inc"
       .include "zeropage.inc"
+      .include "keyboard.inc"
       .segment "VECTORS"
 
       .word   $0000
       .word   init
-      .word   read_data
+      .word   handle_irq
 
       .code
 
 init:
+      ; Init stack
       ldx #$ff
       txs
-
-handshake_init:
-      stz VIA1_DDRA            ; VIA2 PORTA is all input
-      stz VIA1_PORTA
-                               ; define read handshake on VIA2 CA1/CA2
-      lda #(VIA_PCR_CA1_INTERRUPT_NEGATIVE | VIA_PCR_CA2_OUTPUT_PULSE | VIA_PCR_CB1_INTERRUPT_NEGATIVE | VIA_PCR_CB2_OUTPUT_HIGH)
-      sta VIA1_PCR
-                               ; enable interrupt from VIA2 on CA1 (Data ready)
-      lda #(VIA_IER_SET_FLAGS | VIA_IER_CA1_FLAG)
-      sta VIA1_IER
-
+      ; Init LCD
       jsr _lcd_init
-
+      ; Wait a moment
       lda #$ff
       jsr _delay_ms
-      lda VIA1_IFR
-      lda VIA1_PORTA
-
+      ; Initialize keyboard
+      jsr _init_keyboard
+      ; Say hello
       write_lcd hello_msg
       lda #01
       jsr _delay_sec
@@ -44,32 +36,58 @@ handshake_init:
       lda #01
       jsr _delay_sec
 
-      cli                      ; enable interrupt processing
+      ; Unknown status first
+      lda $ff
+      sta last_keyboard_status
+
+      ; Enable interrupt processing
+      cli
 
 program_loop:
+      ; Check current status of keyboard connection
+      lda keyboard_conn
+      cmp last_keyboard_status
+      beq @no_change_to_keyboard_status
+      ; If it has changed
+      ; Save new status
+      sta last_keyboard_status
+      cmp #$80
+      beq @keyboard_connected
+      cmp #$00
+      beq @keyboard_disconnected
       jmp program_loop
-
-read_data:
-      pha
-      lda VIA1_PORTA           ; should trigger data taken signal
-      cmp #$ff
-      beq keyboard_connected
-      cmp #$fe
-      beq keyboard_disconnected
+      ; Display keyboard connection message
+@keyboard_connected:
       jsr _lcd_clear
+      write_lcd conn_msg
+      jmp program_loop
+      ; Display keyboard disconnection message
+@keyboard_disconnected:
+      jsr _lcd_clear
+      write_lcd disconn_msg
+      jmp program_loop
+@no_change_to_keyboard_status:
+      ; Is there new data to be read
+      jsr _keyboard_is_data_available
+      ; Nope
+      bcc program_loop
+      ; There is something new here
+      jsr _lcd_clear
+      jsr _keyboard_read_char
+      ; New key is in the A now
       write_lcd key_msg
       ldx #$00
-special_keys_loop:
+@special_keys_loop:
       cmp special_keys,x
-      beq print_special_key
+      beq @print_special_key
       inx
       inx
       inx
       ldy special_keys,x
       cpy #$00
-      bne special_keys_loop
-      bra regular_char
-print_special_key:
+      bne @special_keys_loop
+      bra @regular_char
+@print_special_key:
       inx
       lda special_keys,x
       sta lcd_out_ptr
@@ -77,8 +95,8 @@ print_special_key:
       lda special_keys,x
       sta lcd_out_ptr+1
       jsr _lcd_print
-      bra read_data_end
-regular_char:
+      bra program_loop
+@regular_char:
       jsr _lcd_print_char
       write_lcd key_part_two
       jsr _convert_to_hex
@@ -87,21 +105,35 @@ regular_char:
       tya
       jsr _lcd_print_char
       write_lcd key_part_three
-      bra read_data_end
+      jmp program_loop
 
-keyboard_connected:
-      jsr _lcd_clear
-      write_lcd conn_msg
-      bra read_data_end
-
-keyboard_disconnected:
-      jsr _lcd_clear
-      write_lcd disconn_msg
-      bra read_data_end
-
-read_data_end:
+handle_irq:
+      ; Preserve A register
+      pha
+      ; Load interrupt flag register
+      lda VIA1_IFR
+      ; Not a VIA1 interrupt
+      bpl @not_via1
+      ; Preserve X register
+      phx
+      ; Prerve A in X for testing
+      tax
+      ; Check for keyboard interrupt
+      and #(VIA_IFR_CA1_ACTIVE_EDGE)
+      beq @not_keyboard
+      jsr _handle_keyboard_irq
+@not_keyboard:
+      ; Restore X
+      plx
+@not_via1:
+      ; Restore A
       pla
+      ; Done
       rti
+
+      .segment "BSS"
+last_keyboard_status:
+      .byte $00
 
       .segment "RODATA"
 hello_msg:
@@ -123,18 +155,21 @@ special_keys:
       .byte code, <string_addr, >string_addr
       .endmacro
 
-      special_char_def $0d, special_enter
-      special_char_def $1b, special_esc
-      special_char_def $7f, special_back
-      special_char_def $0b, special_up
-      special_char_def $0a, special_down
-      special_char_def $15, special_right
-      special_char_def $08, special_left
-      special_char_def $09, special_tab
-      special_char_def $19, special_pgup
-      special_char_def $1a, special_pgdown
+      special_char_def KEY_SPACE, special_space
+      special_char_def KEY_ENTER, special_enter
+      special_char_def KEY_ESCAPE, special_esc
+      special_char_def KEY_BACKSPACE, special_back
+      special_char_def KEY_ARROW_UP, special_up
+      special_char_def KEY_ARROW_DOWN, special_down
+      special_char_def KEY_ARROW_RIGHT, special_right
+      special_char_def KEY_ARROW_LEFT, special_left
+      special_char_def KEY_TAB, special_tab
+      special_char_def KEY_PAGE_UP, special_pgup
+      special_char_def KEY_PAGE_DOWN, special_pgdown
       special_char_def $00, $0000
 
+special_space:
+      .byte "[SPACE]",$00
 special_enter:
       .byte "[ENTER]",$00
 special_back:
