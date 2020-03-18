@@ -412,6 +412,7 @@ const char DATA[] = {9, 10, 11, 12, 13, 14, 15, 16};
 #define HS_DATA_READY 1
 
 PS2Keyboard keyboard;
+bool lastStatus;
 
 void setup() {
 
@@ -426,7 +427,7 @@ void setup() {
 
   delay(1000);
   keyboard.begin(DATA_PIN_4313, IRQ_PIN_4313);
-  if (testConnection()) {
+  if (lastStatus=testConnection()) {
     sendChar(0xff);
   } else {
     sendChar(0xfe);
@@ -436,7 +437,6 @@ void setup() {
 
 void loop() {
   static uint32_t lastSignalTimestamp = millis();
-  static bool lastStatus;
   uint32_t currentTimestamp;
 
   currentTimestamp = millis();
