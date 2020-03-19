@@ -30,6 +30,10 @@ RM_BINARY=rm
 MKDIR_BINARY=mkdir
 MKDIR_FLAGS=-p
 
+# Picocom settings
+PICOCOM_BINARY=picocom
+PICOCOM_FLAGS=-b 19200 -fh --send-cmd 'sz -X'
+
 # Build folder
 BUILD_ROOT=../build
 BUILD_FOLDER=$(BUILD_ROOT)/$(PROJECT_NAME)
@@ -105,6 +109,9 @@ install: $(FIRMWARE_BINARY)
 # Emulate code
 emu: $(FIRMWARE_BINARY)
 	$(X6502_BINARY) $<
+
+terminal:
+	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) /dev/tty.usbserial-DN4QHYAP
 
 # Clean generated files
 clean:
