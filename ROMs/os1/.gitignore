@@ -1,4 +1,0 @@
-build/*.bin
-build/*.lst
-coverage
-DS_Store
