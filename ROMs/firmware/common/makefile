@@ -35,13 +35,14 @@ PICOCOM_BINARY=picocom
 PICOCOM_FLAGS=-b 19200 -fh --send-cmd 'sz -X'
 
 # Build folder
-BUILD_ROOT=../build
-BUILD_FOLDER=$(BUILD_ROOT)/$(PROJECT_NAME)
-ROM_FOLDER=$(BUILD_ROOT)/rom
+BUILD_ROOT=../../build
+BUILD_FOLDER=$(BUILD_ROOT)/$(BUILD_TYPE)/$(PROJECT_NAME)
+ROM_FOLDER=$(BUILD_ROOT)/$(BUILD_TYPE)
+# LOAD_FOLDER=$(BUILD_ROOT)/load
 COMMON_BUILD_FOLDER=$(BUILD_ROOT)/common
 
 # Include folders
-COMMON_ROOT=../common
+COMMON_ROOT=../../common
 COMMON_INCLUDE_FOLDER=$(COMMON_ROOT)/include
 COMMON_SOURCE_FOLDER=$(COMMON_ROOT)/source
 
@@ -61,11 +62,17 @@ ADDRESS_MODE=ext
 # Default clock mode (slow/fast)
 FASTCLOCK=1
 
+ifeq ($(BUILD_TYPE),load)
 # Choose configuration file for firmware (determines addressing mode)
-FIRMWARE_CFG=../common/firmware.$(ADDRESS_MODE).cfg
-
+FIRMWARE_CFG=../../common/load.cfg
+# Resulting binary file (ROM to be uploaded)
+FIRMWARE_BINARY=$(ROM_FOLDER)/$(PROJECT_NAME).load.bin
+else
+# Choose configuration file for firmware (determines addressing mode)
+FIRMWARE_CFG=../../common/firmware.$(ADDRESS_MODE).cfg
 # Resulting binary file (ROM to be uploaded)
 FIRMWARE_BINARY=$(ROM_FOLDER)/$(PROJECT_NAME).$(ADDRESS_MODE).bin
+endif
 
 # Compile assembler sources
 $(BUILD_FOLDER)/%.o: %.s $(FIRMWARE_CFG)
@@ -89,13 +96,27 @@ $(COMMON_BUILD_FOLDER)/%.o: $(COMMON_SOURCE_FOLDER)/%.c $(FIRMWARE_CFG)
 	$(CC65_BINARY) $(CC65_FLAGS) -I $(COMMON_INCLUDE_FOLDER) -o $(@:.o=.s) $<
 	$(CA65_BINARY) $(CA65_FLAGS) -o $@ -l $(@:.o=.lst) $(@:.o=.s)
 
+# Compile common assembler sources for load module (shared objects)
+$(COMMON_BUILD_FOLDER)/%.load.o: $(COMMON_SOURCE_FOLDER)/%.s $(FIRMWARE_CFG)
+	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(COMMON_BUILD_FOLDER)
+	$(CA65_BINARY) $(CA65_FLAGS) -Dload -I $(COMMON_INCLUDE_FOLDER) -o $@ -l $(@:.o=.lst) $<
+
 # Standard build
 all: $(FIRMWARE_BINARY)
 
 # Linking process
 $(FIRMWARE_BINARY): $(OBJECTS)
 	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(ROM_FOLDER)
+ifeq ($(BUILD_TYPE),load)
+	$(CL65_BINARY) $(CL65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_BINARY:.bin=.map) -o $(@:.bin=.raw) $^
+	printf "\x00\x10" | cat - $(@:.bin=.raw) | bbe `echo -e 's/\x00*$$//'` >  $@
+#	sed `echo -e 's/^/\x00\x10/'` $(@:.bin=.raw) | sed `echo -e 's/\x00*$$//'` >  $@
+#	printf "\x00\x10" | - $(@:.bin=.raw) | sed `echo -e ':L;s/\x00*$$/$$/;tL'` >  $@
+#	printf "\x00\x10" | cat - $(@:.bin=.raw)  >  $@
+else
 	$(CL65_BINARY) $(CL65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_BINARY:.bin=.map) -o $@ $^
+endif
+
 
 # Display ROM contents
 test: $(FIRMWARE_BINARY)

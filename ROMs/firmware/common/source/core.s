@@ -4,6 +4,7 @@
       .include "lcd.inc"
       .include "acia.inc"
       .include "blink.inc"
+      .include "syscalls.inc"
 
       .export _init_system
       .export _interrupt_handler
