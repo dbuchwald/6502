@@ -34,11 +34,14 @@ MKDIR_FLAGS=-p
 PICOCOM_BINARY=picocom
 PICOCOM_FLAGS=-b 19200 -fh --send-cmd 'sz -X'
 
+# Python binary
+PYTHON_BINARY=python
+PYTHON_PROGRAM=../../common/loadtrim.py
+
 # Build folder
 BUILD_ROOT=../../build
 BUILD_FOLDER=$(BUILD_ROOT)/$(BUILD_TYPE)/$(PROJECT_NAME)
 ROM_FOLDER=$(BUILD_ROOT)/$(BUILD_TYPE)
-# LOAD_FOLDER=$(BUILD_ROOT)/load
 COMMON_BUILD_FOLDER=$(BUILD_ROOT)/common
 
 # Include folders
@@ -109,10 +112,7 @@ $(FIRMWARE_BINARY): $(OBJECTS)
 	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(ROM_FOLDER)
 ifeq ($(BUILD_TYPE),load)
 	$(CL65_BINARY) $(CL65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_BINARY:.bin=.map) -o $(@:.bin=.raw) $^
-	printf "\x00\x10" | cat - $(@:.bin=.raw) | bbe `echo -e 's/\x00*$$//'` >  $@
-#	sed `echo -e 's/^/\x00\x10/'` $(@:.bin=.raw) | sed `echo -e 's/\x00*$$//'` >  $@
-#	printf "\x00\x10" | - $(@:.bin=.raw) | sed `echo -e ':L;s/\x00*$$/$$/;tL'` >  $@
-#	printf "\x00\x10" | cat - $(@:.bin=.raw)  >  $@
+	$(PYTHON_BINARY) $(PYTHON_PROGRAM) $(@:.bin=.raw) $@
 else
 	$(CL65_BINARY) $(CL65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_BINARY:.bin=.map) -o $@ $^
 endif
