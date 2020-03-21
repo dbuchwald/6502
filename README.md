@@ -165,7 +165,7 @@ Clock signal can be provided in one of three ways:
 
 1. Use onboard 1MHz oscillator - simply put jumper on J1 connector two leftmost pins,
 2. Use external clock module - remove the jumper from J1 connector, and connect clock signal to middle pin,
-3. Use expansion port - remove jumper from J1 connector and provide clocl signal via CLK pin of the expansion port.
+3. Use expansion port - remove jumper from J1 connector and provide clock signal via CLK pin of the expansion port.
 
 Last option will be used in (planned currently) custom debugger board.
 
