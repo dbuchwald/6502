@@ -1,19 +1,23 @@
 # What is this?
+
 This repository contains all the work in progress during my build of Ben Eater's inspired 6502 8-bit computer similar to typical machines of the early 1980s. If you haven't seen Ben's videos, I would strongly suggest you start there:
 
 [Ben Eater's 6502 project](https://eater.net/6502)
 
-As stated above, this build is not 100% compatible with what Ben had done - and for a reason, described in next section. 
+As stated above, this build is not 100% compatible with what Ben had done - and for a reason, described in next section.
 
 If I had to explain shortly "what it is", the answer would be: simple, yet easy to expand, 8-bit CPU based computer designed and built with one goal only: to use it as a learning and tinkering platform to understand how computers really work. You can use it for simple things like understanding buses, clock cycles, instruction execution, but it also demonstrates more complex concepts like interrupts, interfaces to external components and device handling. More on that below. Everything, hopefully, is simple enough to wrap your head around by one person in couple of weeks.
 
 ## Why build something different?
+
 [Ben's videos](https://www.youtube.com/playlist?list=PLowKtXNTBypFbtuVMUVXNR0z1mu7dp7eH) on 6502 computer are absolutely awesome - it's one of the best sources in the whole Internet explaining how any computer works. The build he introduced is probably sufficient for most of the things you might ever want to build, and yet I decided to deviate from his design.
 
 The rationale behind this project is pretty simple - the best way to test your understanding of certain subject is to try to expand on what you have learned. You never know if you understood something until you test it by introducing changes to original design - and I used this approach in this project to learn a lot. It was my first proper electronics project, so I would like to apologize for any mistakes. If you think something is off or could have been done differently - please go ahead and raise issue for the repo! All improvements are welcome!
 
 ## What is different then?
+
 Compared to Ben's 6502 build I introduced the following changes:
+
 1. Added automatic power-up reset circuitry
 2. Changed address decoder logic (**very important from compatibility perspective**)
 3. Changed LCD interface from 8-bit to 4-bit (**very important from compatibility perspective**)
@@ -28,13 +32,15 @@ You might be wondering if this means that you can't run Ben's programs on this b
 Detailed description and rationale for each change is discussed in next sections.
 
 ### Automatic power-on reset
+
 More of a cosmetic thing, but I liked the idea of computer running automatic reset on power-up. The added appeal was that the circuitry is actually copied from the original C64, which makes it instantly 1000x cooler :) You can read more on that here:
 [Dirk Grappendorf's 6502 project - RESET](https://www.grappendorf.net/projects/6502-home-computer/reset-circuit.html)
 
 As a side note - I would strongly recommend anybody interested to read about Dirk's project, he has plenty of great insight there!
 
 ### Address decoder change
-This one was my first *real* change as in it was *mine*. As Ben explained in his video, there are many ways to handle address decoding logic and he opted for model with 16K RAM, 16K I/O shadow and 32K ROM. He does note that it's a bit of a waste, but given the simplicity of the project it should not be a problem - and he is absolutely right.
+
+This one was my first _real_ change as in it was _mine_. As Ben explained in his video, there are many ways to handle address decoding logic and he opted for model with 16K RAM, 16K I/O shadow and 32K ROM. He does note that it's a bit of a waste, but given the simplicity of the project it should not be a problem - and he is absolutely right.
 
 That being said, I wanted more for my build. I knew I wanted to be able to load programs into my computer and I wanted to ensure that I provide user with as much RAM as possible. At the same time, I wanted to save some space on more optimized I/O shadow segment. And, most importantly, I wanted to test my understanding of how address decoding works. As stated above, the best way to learn is to change and test your hypothesis. If you want to learn more, I posted thread on [Reddit](https://www.reddit.com/r/beneater/comments/ej3lqi/65c02_address_decoder_for_32k_ram_24k_rom_and_2/) explaining what I did, how I did that and why I know it works. My build provides 32K RAM, 8K I/O shadow (for up to 11 devices), 24K ROM.
 
@@ -104,7 +110,9 @@ rom[0x7ffd] = 0xa0
 with open("rom.bin", "wb") as out_file:
   out_file.write(rom)
 ```
+
 ### LCD interface change
+
 One of the silly things I decided to do, was to save pins on the first VIA chip and I decided on the following mapping:
 |Port|Pins|Connection|
 |---|---|---|
@@ -120,26 +128,31 @@ Afterwards it turned out that 4-bit operation is actually bit more complicated t
 If you want to use onboard LCD conector and 4-bit interface it is suggested to use the code I supplied in this repo. It has all the data communication routines for LCD 4-bit operation tested and ready to go.
 
 ### Extra VIA chip
+
 This one increases cost of the build, but in the end you have the whole chip to yourself, so you can hack whatever contraptions you can think of :)
 
 This extra VIA chip can be also used to run Ben't programs, but you have to remember to update addressing mode.
 
 ### Extra ACIA chip for serial communication
+
 This one is really important - thanks to ACIA chip you can actually forget about LCD and keyboard altogether, and all the input/output can be handled by the serial port. This also allows you to run programs that are loaded in runtime, over the serial line, making the ROM flashing no longer necessary. Obviously, there is a bootloader program required in ROM and one will be provided in this repo for your use shortly.
 
 Currently my software supports only Rockwell R6551P chips and it uses fully asynchronous, buffered and IRQ driven send/receive operations. In future I plan to add support for WDC65C51 chips, but this requires change in source code to blocking send operation. Not a biggie, just not at the top of my priorities now. More on the ACIA chips below, in the PCB BOM section.
 
 ### Extra USB->UART interface chip
+
 When I designed PCB for this build, I had one goal in mind: it must be possible to build it with THT-only components. So, if you don't want to play with SMD soldering (which, admittably, is much easier that it seems), you can completely skip this component and connect serial over one of many UART->USB adapters. The same goes for the Micro-USB port - you can skip it, and use only USB-B port for power. Your call.
 
 If you do decide to use FT230X chip onboard, you will have a 6502 computer that requires only USB cable - simply plug it in your PC, connect using serial terminal and you are good to go, nothing else needed. Power consumption is well below USB limits, even with LCD and external keyboard connected.
 
 ### PS/2 Keyboard interface and ATtiny4313 based controller
-This was a bit of an overkill with the serial port addition, but I wanted the build to be versatile and enable operation without PC connected. 
+
+This was a bit of an overkill with the serial port addition, but I wanted the build to be versatile and enable operation without PC connected.
 
 Software to be uploaded to ATtiny is also provided in this repo and discussed in detail in dedicated section. You can either program the chip away from the board or use the included AVR ISP interface. I have successfully used USBASP programmer onboard, and since the reset lines between ATtiny and CPU/VIA/ACIA/FT230X are all connected, upload operation simply resets the whole computer without any risk for running programs. Pretty neat, that one :)
 
 ### Expansion port
+
 The main purpose is to enable easy connection of Arduino-based debugger as used in Ben's videos. Everyone who managed to build the 6502 kit on breadboard knows how difficult it is to manage these connections and prevent them from unplugging system bus wires. In my build there is dedicated connector with several other options.
 
 Beside address bus, data bus, clock and R/W signals, you will also find reset line (can be pulled low for external reset), IRQ input line (can be pulled low to signal interrupt, but can't be used to intercept system IRQs) and IOCS signal from address decoder indicating that CPU is now using address in I/O shadow range.
@@ -147,22 +160,26 @@ Beside address bus, data bus, clock and R/W signals, you will also find reset li
 IOCS line can be used to add additional chips like ACIA or VIA via expansion port. VIA1 is selected using IOCS and A12 line (address 0b1001xxxxxxxxxxxx), VIA2 is selected using IOCS and A11 line (address 0b100x1xxxxxxxxxx), ACIA using IOCS and A10 line (address 0b100xx1xxxxxxxxxx), and you can access external I/O chips using addresses like IOCS and A9 for example (address 0b100xxx1xxxxxxxx). As you can see, it enables up to 8 external I/O chips (last two lines A0/A1 for register select) :)
 
 ### Clock input
+
 Clock signal can be provided in one of three ways:
+
 1. Use onboard 1MHz oscillator - simply put jumper on J1 connector two leftmost pins,
 2. Use external clock module - remove the jumper from J1 connector, and connect clock signal to middle pin,
 3. Use expansion port - remove jumper from J1 connector and provide clocl signal via CLK pin of the expansion port.
 
 Last option will be used in (planned currently) custom debugger board.
 
-# What's in the repo
+## What's in the repo
+
 Everything, basically. Schematics of the 6502 board, modified clock module, address decoder and other circuits I built during the project. Arduino sketches I used for debugging and simple programs used to test different features.
 
 And, last but not least, full set of sample programs to follow Ben's videos on my build plus my own bootloader/OS. The last two things are coming soon :)
 
-# Getting started
+## Getting started
+
 TO BE COMPLETED SHORTLY
 
-# Printed Circuit Boards
+## Printed Circuit Boards
 
 [First revision of PCBs](https://github.com/dbuchwald/6502/releases/tag/pcb-v001) have been released (one for modified clock module and one for the computer itself). PCBs can be ordered here:
 
@@ -170,120 +187,120 @@ TO BE COMPLETED SHORTLY
 
 [PCBWay Shared Projects - Clock Module](https://www.pcbway.com/project/shareproject/Modified_version_of_Clock_Module_by_Ben_Eater_s.html)
 
-## 65C02 Computer Bill Of Materials
+### 65C02 Computer Bill Of Materials
 
 The following components are required for building 65C02 Computer
 
-|Reference|Type|Value|Description|
-|---|---|---|---|
-|C1|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C2|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C3|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C4|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C5|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C6|Polarized Capacitor|10 uF|Tube, 2.5mm raster, 5mm diameter|
-|C7|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C8|Unpolarized Capacitor|10 nF|Disk, 2.5mm raster|
-|C9|Unpolarized Capacitor|47 pF|Disk, 2.5mm raster|
-|C10|Unpolarized Capacitor|47 pF|Disk, 2.5mm raster|
-|C11|Polarized Capacitor|1000 uF|Tube, 5mm raster, 10mm diameter|
-|C12|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C13|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C14|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C15|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C16|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|C17|Unpolarized Capacitor|100 nF|Disk, 2.5mm raster|
-|D1|LED|Green|5mm diameter (PWR)|
-|D2|LED|Red|5mm diameter (TX)|
-|D3|LED|Green|5mm diameter (RX)|
-|D4|LED|Red|5mm diameter (BLINK)|
-|FB1|Ferrite bead small|||
-|J1|Pin header 3x1||2.54mm raster|
-|J2|Female pin header 6x1||2.54mm raster|
-|J3|USB B Micro||Molex 105017-0001|
-|J4|USB B||Standard THT horizontal USB B port|
-|J5|Barrel Jack||Standard power input 2.1/5.5|
-|J6|Mini-Din-6||Standard THT PS/2 Keyboard port|
-|J7|Female pin header 16x2||2.54mm raster|
-|J8|Pin header 3x2||AVR ISP 2.54mm raster|
-|J9|Pin header 12x1||2.54mm raster|
-|J10|Pin header 12x1||2.54mm raster|
-|J11|Female pin header 16x1||2.54mm raster|
-|R1|Resistor|1M||
-|R2|Resistor|47K||
-|R3|Resistor|10K||
-|R4|Resistor|27||
-|R5|Resistor|27||
-|R6|Resistor|4K7||
-|R7|Resistor|4K7||
-|R8|Resistor|4K7||
-|R9|Resistor|220||
-|R10|Resistor|220||
-|R11|Resistor|220||
-|R12|Resistor|220||
-|R13|Resistor|4K7||
-|RV1|Potentiometer|10K|Piher PT10-LV10-103|
-|SW1|Pushbutton||Standard 6mm THT pushbutton|
-|U1|IC|74HC21|Add socket|
-|U2|IC|74HC00|Add socket|
-|U3|IC|74HC02|Add socket|
-|U4|IC|NE555|Add socket|
-|U5|IC|6551|Add socket; ACIA chip, see notes below|
-|U6|IC|FT230XS||
-|U7|IC|65C02S|Add socket|
-|U8|IC|28C256|Add socket|
-|U9|IC|62256|Add socket|
-|U10|IC|ATtiny4313-PU|Add socket|
-|U11|IC|65C22S|Add socket|
-|U12|IC|65C22S|Add socket|
-|X1|Crystal Oscillator|1MHz||
-|X2|Crystal Oscillator|1.8432MHz||
+| Reference | Type                   | Value         | Description                            |
+| --------- | ---------------------- | ------------- | -------------------------------------- |
+| C1        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C2        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C3        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C4        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C5        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C6        | Polarized Capacitor    | 10 uF         | Tube, 2.5mm raster, 5mm diameter       |
+| C7        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C8        | Unpolarized Capacitor  | 10 nF         | Disk, 2.5mm raster                     |
+| C9        | Unpolarized Capacitor  | 47 pF         | Disk, 2.5mm raster                     |
+| C10       | Unpolarized Capacitor  | 47 pF         | Disk, 2.5mm raster                     |
+| C11       | Polarized Capacitor    | 1000 uF       | Tube, 5mm raster, 10mm diameter        |
+| C12       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C13       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C14       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C15       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C16       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| C17       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
+| D1        | LED                    | Green         | 5mm diameter (PWR)                     |
+| D2        | LED                    | Red           | 5mm diameter (TX)                      |
+| D3        | LED                    | Green         | 5mm diameter (RX)                      |
+| D4        | LED                    | Red           | 5mm diameter (BLINK)                   |
+| FB1       | Ferrite bead small     |               |                                        |
+| J1        | Pin header 3x1         |               | 2.54mm raster                          |
+| J2        | Female pin header 6x1  |               | 2.54mm raster                          |
+| J3        | USB B Micro            |               | Molex 105017-0001                      |
+| J4        | USB B                  |               | Standard THT horizontal USB B port     |
+| J5        | Barrel Jack            |               | Standard power input 2.1/5.5           |
+| J6        | Mini-Din-6             |               | Standard THT PS/2 Keyboard port        |
+| J7        | Female pin header 16x2 |               | 2.54mm raster                          |
+| J8        | Pin header 3x2         |               | AVR ISP 2.54mm raster                  |
+| J9        | Pin header 12x1        |               | 2.54mm raster                          |
+| J10       | Pin header 12x1        |               | 2.54mm raster                          |
+| J11       | Female pin header 16x1 |               | 2.54mm raster                          |
+| R1        | Resistor               | 1M            |                                        |
+| R2        | Resistor               | 47K           |                                        |
+| R3        | Resistor               | 10K           |                                        |
+| R4        | Resistor               | 27            |                                        |
+| R5        | Resistor               | 27            |                                        |
+| R6        | Resistor               | 4K7           |                                        |
+| R7        | Resistor               | 4K7           |                                        |
+| R8        | Resistor               | 4K7           |                                        |
+| R9        | Resistor               | 220           |                                        |
+| R10       | Resistor               | 220           |                                        |
+| R11       | Resistor               | 220           |                                        |
+| R12       | Resistor               | 220           |                                        |
+| R13       | Resistor               | 4K7           |                                        |
+| RV1       | Potentiometer          | 10K           | Piher PT10-LV10-103                    |
+| SW1       | Pushbutton             |               | Standard 6mm THT pushbutton            |
+| U1        | IC                     | 74HC21        | Add socket                             |
+| U2        | IC                     | 74HC00        | Add socket                             |
+| U3        | IC                     | 74HC02        | Add socket                             |
+| U4        | IC                     | NE555         | Add socket                             |
+| U5        | IC                     | 6551          | Add socket; ACIA chip, see notes below |
+| U6        | IC                     | FT230XS       |                                        |
+| U7        | IC                     | 65C02S        | Add socket                             |
+| U8        | IC                     | 28C256        | Add socket                             |
+| U9        | IC                     | 62256         | Add socket                             |
+| U10       | IC                     | ATtiny4313-PU | Add socket                             |
+| U11       | IC                     | 65C22S        | Add socket                             |
+| U12       | IC                     | 65C22S        | Add socket                             |
+| X1        | Crystal Oscillator     | 1MHz          |                                        |
+| X2        | Crystal Oscillator     | 1.8432MHz     |                                        |
 
-*Important note about the ACIA chip*: There are basically two types of chips that can be used. Modern, rated to higher frequencies WDC65C51 and older, Rockwell 6551P chips, rated only for 1MHz. The problem with former is that there is a bug with interrupt handling on transmit operation - both IRQ and status flag polling fail, you have to implement dead loop to wait long enough for the byte to be transmitted. Latter chip is probably no longer manufactured, but can be purchased online from Chinese sellers - these are cheap, but not all of them work correctly, so get more than one to be safe. For me the second chip worked correctly and both polling and IRQ-based transmit work as expected.
+_Important note about the ACIA chip_: There are basically two types of chips that can be used. Modern, rated to higher frequencies WDC65C51 and older, Rockwell 6551P chips, rated only for 1MHz. The problem with former is that there is a bug with interrupt handling on transmit operation - both IRQ and status flag polling fail, you have to implement dead loop to wait long enough for the byte to be transmitted. Latter chip is probably no longer manufactured, but can be purchased online from Chinese sellers - these are cheap, but not all of them work correctly, so get more than one to be safe. For me the second chip worked correctly and both polling and IRQ-based transmit work as expected.
 
-## Clock Module Bill Of Materials
+### Clock Module Bill Of Materials
 
 The following components are required for building Clock Module
 
-|Reference|Type|Value|Description|
-|---|---|---|---|
-|C1|Polarized capacitor|1 uF|2.5mm raster, 5mm diameter|
-|C2|Polarized capacitor|1 uF|2.5mm raster, 5mm diameter|
-|C3|Unpolarized capacitor|10 nF|2.5mm raster|
-|C4|Unpolarized capacitor|100 nF|2.5mm raster|
-|C5|Unpolarized capacitor|100 nF|2.5mm raster|
-|C6|Unpolarized capacitor|100 nF|2.5mm raster|
-|C7|Unpolarized capacitor|100 nF|2.5mm raster|
-|C8|Unpolarized capacitor|100 nF|2.5mm raster|
-|C9|Polarized capacitor|1 uF|2.5mm raster, 5mm diameter|
-|D1|LED|Yellow|5mm diameter (Automatic tick)|
-|D2|LED|Red|5mm diameter (Manual mode)|
-|D3|LED|Green|5mm diameter (Automatic mode)|
-|D4|LED|Yellow|5mm diameter (Manual tick)|
-|D5|LED|Blue|5mm diameter (Output tick)|
-|J1|Female pin header 6x1||2.54mm raster|
-|J2|Barrel Jack||Standard power input 2.1/5.5|
-|R1|Resistor|1K||
-|R2|Resistor|1K||
-|R3|Resistor|1K||
-|R4|Resistor|100K||
-|R5|Resistor|10K||
-|R6|Resistor|1K||
-|R7|Resistor|10K||
-|R8|Resistor|1K||
-|R9|Resistor|1M||
-|R10|Resistor|220||
-|R11|Resistor|220||
-|R12|Resistor|220||
-|R13|Resistor|220||
-|R14|Resistor|220||
-|R15|Resistor|1K||
-|RV1|Potentiometer|10K|Piher PT10-LV10-105|
-|SW1|Pushbutton||Standard 6mm THT pushbutton|
-|SW2|Pushbutton||Standard 6mm THT pushbutton|
-|U1|IC|NE555|Add socket|
-|U2|IC|NE555|Add socket|
-|U3|IC|NE555|Add socket|
-|U4|IC|74LS04|Add socket|
-|U5|IC|74LS32|Add socket|
-|U6|IC|74LS08|Add socket|
+| Reference | Type                  | Value  | Description                   |
+| --------- | --------------------- | ------ | ----------------------------- |
+| C1        | Polarized capacitor   | 1 uF   | 2.5mm raster, 5mm diameter    |
+| C2        | Polarized capacitor   | 1 uF   | 2.5mm raster, 5mm diameter    |
+| C3        | Unpolarized capacitor | 10 nF  | 2.5mm raster                  |
+| C4        | Unpolarized capacitor | 100 nF | 2.5mm raster                  |
+| C5        | Unpolarized capacitor | 100 nF | 2.5mm raster                  |
+| C6        | Unpolarized capacitor | 100 nF | 2.5mm raster                  |
+| C7        | Unpolarized capacitor | 100 nF | 2.5mm raster                  |
+| C8        | Unpolarized capacitor | 100 nF | 2.5mm raster                  |
+| C9        | Polarized capacitor   | 1 uF   | 2.5mm raster, 5mm diameter    |
+| D1        | LED                   | Yellow | 5mm diameter (Automatic tick) |
+| D2        | LED                   | Red    | 5mm diameter (Manual mode)    |
+| D3        | LED                   | Green  | 5mm diameter (Automatic mode) |
+| D4        | LED                   | Yellow | 5mm diameter (Manual tick)    |
+| D5        | LED                   | Blue   | 5mm diameter (Output tick)    |
+| J1        | Female pin header 6x1 |        | 2.54mm raster                 |
+| J2        | Barrel Jack           |        | Standard power input 2.1/5.5  |
+| R1        | Resistor              | 1K     |                               |
+| R2        | Resistor              | 1K     |                               |
+| R3        | Resistor              | 1K     |                               |
+| R4        | Resistor              | 100K   |                               |
+| R5        | Resistor              | 10K    |                               |
+| R6        | Resistor              | 1K     |                               |
+| R7        | Resistor              | 10K    |                               |
+| R8        | Resistor              | 1K     |                               |
+| R9        | Resistor              | 1M     |                               |
+| R10       | Resistor              | 220    |                               |
+| R11       | Resistor              | 220    |                               |
+| R12       | Resistor              | 220    |                               |
+| R13       | Resistor              | 220    |                               |
+| R14       | Resistor              | 220    |                               |
+| R15       | Resistor              | 1K     |                               |
+| RV1       | Potentiometer         | 10K    | Piher PT10-LV10-105           |
+| SW1       | Pushbutton            |        | Standard 6mm THT pushbutton   |
+| SW2       | Pushbutton            |        | Standard 6mm THT pushbutton   |
+| U1        | IC                    | NE555  | Add socket                    |
+| U2        | IC                    | NE555  | Add socket                    |
+| U3        | IC                    | NE555  | Add socket                    |
+| U4        | IC                    | 74LS04 | Add socket                    |
+| U5        | IC                    | 74LS32 | Add socket                    |
+| U6        | IC                    | 74LS08 | Add socket                    |
