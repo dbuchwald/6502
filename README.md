@@ -1,5 +1,166 @@
-# 6502
-65C02 based computer
+# What is this?
+This repository contains all the work in progress during my build of Ben Eater's inspired 6502 8-bit computer similar to typical machines of the early 1980s. If you haven't seen Ben's videos, I would strongly suggest you start there:
+
+[Ben Eater's 6502 project](https://eater.net/6502)
+
+As stated above, this build is not 100% compatible with what Ben had done - and for a reason, described in next section. 
+
+If I had to explain shortly "what it is", the answer would be: simple, yet easy to expand, 8-bit CPU based computer designed and built with one goal only: to use it as a learning and tinkering platform to understand how computers really work. You can use it for simple things like understanding buses, clock cycles, instruction execution, but it also demonstrates more complex concepts like interrupts, interfaces to external components and device handling. More on that below. Everything, hopefully, is simple enough to wrap your head around by one person in couple of weeks.
+
+## Why build something different?
+[Ben's videos](https://www.youtube.com/playlist?list=PLowKtXNTBypFbtuVMUVXNR0z1mu7dp7eH) on 6502 computer are absolutely awesome - it's one of the best sources in the whole Internet explaining how any computer works. The build he introduced is probably sufficient for most of the things you might ever want to build, and yet I decided to deviate from his design.
+
+The rationale behind this project is pretty simple - the best way to test your understanding of certain subject is to try to expand on what you have learned. You never know if you understood something until you test it by introducing changes to original design - and I used this approach in this project to learn a lot. It was my first proper electronics project, so I would like to apologize for any mistakes. If you think something is off or could have been done differently - please go ahead and raise issue for the repo! All improvements are welcome!
+
+## What is different then?
+Compared to Ben's 6502 build I introduced the following changes:
+1. Added automatic power-up reset circuitry
+2. Changed address decoder logic (**very important from compatibility perspective**)
+3. Changed LCD interface from 8-bit to 4-bit (**very important from compatibility perspective**)
+4. Added additional VIA chip to provide easy expansion of the system
+5. Added ACIA chip for serial communication
+6. Added (**optional - more on that later**) USB-UART interface for easy connectivity with PC
+7. Added PS/2 keyboard port and ATtiny4313-based keyboard controller to provide proper replacement for five pushbuttons in Ben's design
+8. Added expansion port (not really deviation from Ben's build, save for one detail - unlike Ben's build, my version can support various interrupt sources, including the expansion port).
+
+You might be wondering if this means that you can't run Ben's programs on this build - and the answer is **YES YOU CAN**. Indeed, some changes to the code are necessary, but thanks to the additional VIA chip and with some changes to the addressing mode you can run any program from Ben's videos. If you want to use LCD in 8-bit mode, you can also use the additional VIA for it, ignoring the built-in LCD connector.
+
+Detailed description and rationale for each change is discussed in next sections.
+
+### Automatic power-on reset
+More of a cosmetic thing, but I liked the idea of computer running automatic reset on power-up. The added appeal was that the circuitry is actually copied from the original C64, which makes it instantly 1000x cooler :) You can read more on that here:
+[Dirk Grappendorf's 6502 project - RESET](https://www.grappendorf.net/projects/6502-home-computer/reset-circuit.html)
+
+As a side note - I would strongly recommend anybody interested to read about Dirk's project, he has plenty of great insight there!
+
+### Address decoder change
+This one was my first *real* change as in it was *mine*. As Ben explained in his video, there are many ways to handle address decoding logic and he opted for model with 16K RAM, 16K I/O shadow and 32K ROM. He does note that it's a bit of a waste, but given the simplicity of the project it should not be a problem - and he is absolutely right.
+
+That being said, I wanted more for my build. I knew I wanted to be able to load programs into my computer and I wanted to ensure that I provide user with as much RAM as possible. At the same time, I wanted to save some space on more optimized I/O shadow segment. And, most importantly, I wanted to test my understanding of how address decoding works. As stated above, the best way to learn is to change and test your hypothesis. If you want to learn more, I posted thread on [Reddit](https://www.reddit.com/r/beneater/comments/ej3lqi/65c02_address_decoder_for_32k_ram_24k_rom_and_2/) explaining what I did, how I did that and why I know it works. My build provides 32K RAM, 8K I/O shadow (for up to 11 devices), 24K ROM.
+
+The key takeway here is that when porting Ben's programs you have to use this "mapping table":
+|Segment|Ben's build|My build|Comment|
+|---|---|---|---|
+|RAM|0x0000-0x3fff|0x0000-0x5fff||
+|VIA1|N/A|0x9000|Connected to keyboard/LCD/blink LED in my build|
+|VIA2|0x6000|0x8800|Can be used to run Ben's programs|
+|ACIA|N/A|0x8400||
+|ROM|0x8000-0xffff|0xa000-0xffff|**First 8K are not accessible, but need to be burned to the chip**|
+
+Simplest possible example - [Blink LED example](https://eater.net/downloads/makerom.py) from Ben's page:
+
+```python
+#
+# Please see this video for details:
+# https://www.youtube.com/watch?v=yl8vPW5hydQ
+#
+code = bytearray([
+  0xa9, 0xff,         # lda #$ff
+  0x8d, 0x02, 0x60,   # sta $6002
+
+  0xa9, 0x55,         # lda #$55
+  0x8d, 0x00, 0x60,   # sta $6000
+
+  0xa9, 0xaa,         # lda #$aa
+  0x8d, 0x00, 0x60,   # sta $6000
+
+  0x4c, 0x05, 0x80,   # jmp $8005
+  ])
+
+rom = code + bytearray([0xea] * (32768 - len(code)))
+
+rom[0x7ffc] = 0x00
+rom[0x7ffd] = 0x80
+
+with open("rom.bin", "wb") as out_file:
+  out_file.write(rom)
+```
+
+The same program to run on my build:
+
+```python
+#
+# Please see this video for details:
+# https://www.youtube.com/watch?v=yl8vPW5hydQ
+#
+code = bytearray([
+  0xa9, 0xff,         # lda #$ff
+  0x8d, 0x02, 0x88,   # sta $8802
+
+  0xa9, 0x55,         # lda #$55
+  0x8d, 0x00, 0x88,   # sta $8800
+
+  0xa9, 0xaa,         # lda #$aa
+  0x8d, 0x00, 0x88,   # sta $8800
+
+  0x4c, 0x05, 0xa0,   # jmp $a005
+  ])
+
+rom = bytearray([0xea] * 8192) + code + bytearray([0xea] * (24576 - len(code)))
+
+rom[0x7ffc] = 0x00
+rom[0x7ffd] = 0xa0
+
+with open("rom.bin", "wb") as out_file:
+  out_file.write(rom)
+```
+### LCD interface change
+One of the silly things I decided to do, was to save pins on the first VIA chip and I decided on the following mapping:
+|Port|Pins|Connection|
+|---|---|---|
+|PORTA|CA1,CA2|Keyboard controller read handshake - for IRQ based communication with keyboard controller|
+|PORTA|D0-D7|Keyboard controller data line - for transferring ASCII scancodes of pressed characters|
+|PORTB|CB1,CB2|Not used, disconnected|
+|PORTB|D0|Blink LED - to be used as the Arduino onboard LED, for easy debugging|
+|PORTB|D1-D3|LCD control signals (register select, R/W, enable)|
+|PORTB|D4-D7|LCD data signals for 4-bit operation|
+
+Afterwards it turned out that 4-bit operation is actually bit more complicated that 8-bit, and it breaks compatibility with Ben's programs. My best advice, if you want to run Ben's LCD programs on this build, is to use the second VIA port and use 8-bit interface.
+
+If you want to use onboard LCD conector and 4-bit interface it is suggested to use the code I supplied in this repo. It has all the data communication routines for LCD 4-bit operation tested and ready to go.
+
+### Extra VIA chip
+This one increases cost of the build, but in the end you have the whole chip to yourself, so you can hack whatever contraptions you can think of :)
+
+This extra VIA chip can be also used to run Ben't programs, but you have to remember to update addressing mode.
+
+### Extra ACIA chip for serial communication
+This one is really important - thanks to ACIA chip you can actually forget about LCD and keyboard altogether, and all the input/output can be handled by the serial port. This also allows you to run programs that are loaded in runtime, over the serial line, making the ROM flashing no longer necessary. Obviously, there is a bootloader program required in ROM and one will be provided in this repo for your use shortly.
+
+Currently my software supports only Rockwell R6551P chips and it uses fully asynchronous, buffered and IRQ driven send/receive operations. In future I plan to add support for WDC65C51 chips, but this requires change in source code to blocking send operation. Not a biggie, just not at the top of my priorities now. More on the ACIA chips below, in the PCB BOM section.
+
+### Extra USB->UART interface chip
+When I designed PCB for this build, I had one goal in mind: it must be possible to build it with THT-only components. So, if you don't want to play with SMD soldering (which, admittably, is much easier that it seems), you can completely skip this component and connect serial over one of many UART->USB adapters. The same goes for the Micro-USB port - you can skip it, and use only USB-B port for power. Your call.
+
+If you do decide to use FT230X chip onboard, you will have a 6502 computer that requires only USB cable - simply plug it in your PC, connect using serial terminal and you are good to go, nothing else needed. Power consumption is well below USB limits, even with LCD and external keyboard connected.
+
+### PS/2 Keyboard interface and ATtiny4313 based controller
+This was a bit of an overkill with the serial port addition, but I wanted the build to be versatile and enable operation without PC connected. 
+
+Software to be uploaded to ATtiny is also provided in this repo and discussed in detail in dedicated section. You can either program the chip away from the board or use the included AVR ISP interface. I have successfully used USBASP programmer onboard, and since the reset lines between ATtiny and CPU/VIA/ACIA/FT230X are all connected, upload operation simply resets the whole computer without any risk for running programs. Pretty neat, that one :)
+
+### Expansion port
+The main purpose is to enable easy connection of Arduino-based debugger as used in Ben's videos. Everyone who managed to build the 6502 kit on breadboard knows how difficult it is to manage these connections and prevent them from unplugging system bus wires. In my build there is dedicated connector with several other options.
+
+Beside address bus, data bus, clock and R/W signals, you will also find reset line (can be pulled low for external reset), IRQ input line (can be pulled low to signal interrupt, but can't be used to intercept system IRQs) and IOCS signal from address decoder indicating that CPU is now using address in I/O shadow range.
+
+IOCS line can be used to add additional chips like ACIA or VIA via expansion port. VIA1 is selected using IOCS and A12 line (address 0b1001xxxxxxxxxxxx), VIA2 is selected using IOCS and A11 line (address 0b100x1xxxxxxxxxx), ACIA using IOCS and A10 line (address 0b100xx1xxxxxxxxxx), and you can access external I/O chips using addresses like IOCS and A9 for example (address 0b100xxx1xxxxxxxx). As you can see, it enables up to 8 external I/O chips (last two lines A0/A1 for register select) :)
+
+### Clock input
+Clock signal can be provided in one of three ways:
+1. Use onboard 1MHz oscillator - simply put jumper on J1 connector two leftmost pins,
+2. Use external clock module - remove the jumper from J1 connector, and connect clock signal to middle pin,
+3. Use expansion port - remove jumper from J1 connector and provide clocl signal via CLK pin of the expansion port.
+
+Last option will be used in (planned currently) custom debugger board.
+
+# What's in the repo
+Everything, basically. Schematics of the 6502 board, modified clock module, address decoder and other circuits I built during the project. Arduino sketches I used for debugging and simple programs used to test different features.
+
+And, last but not least, full set of sample programs to follow Ben's videos on my build plus my own bootloader/OS. The last two things are coming soon :)
+
+# Getting started
+TO BE COMPLETED SHORTLY
 
 # Printed Circuit Boards
 
