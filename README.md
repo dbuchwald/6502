@@ -18,16 +18,17 @@ The rationale behind this project is pretty simple - the best way to test your u
 
 Compared to Ben's 6502 build I introduced the following changes:
 
-1. Added automatic power-up reset circuitry,
-2. Changed address decoder logic (**very important from compatibility perspective**),
-3. Changed LCD interface from 8-bit to 4-bit (**very important from compatibility perspective**),
-4. Added additional VIA chip to provide easy expansion of the system,
-5. Added ACIA chip for serial communication,
-6. Added (**optional - more on that later**) USB-UART interface for easy connectivity with PC,
-7. Added PS/2 keyboard port and ATtiny4313-based keyboard controller to provide proper replacement for five pushbuttons in Ben's design,
-8. Added expansion port (not really deviation from Ben's build, save for one detail - unlike Ben's build, my version can support various interrupt sources, including the expansion port),
-9. Modified clock module (external),
-10. Changed compilator from VASM to CC65.
+1. Added [automatic power-up reset circuitry](#automatic-power-on-reset),
+2. Changed [address decoder logic](#address-decoder-change) (**very important from compatibility perspective**),
+3. Changed [LCD interface](#lcd-interface-change) from 8-bit to 4-bit (**very important from compatibility perspective**),
+4. Added [additional VIA chip](#extra-via-chip) to provide easy expansion of the system,
+5. Added [ACIA chip for serial communication](#extra-acia-chip-for-serial-communication),
+6. Added (**optional - more on that later**) [USB-UART interface](#extra-usb-uart-interface-chip) for easy connectivity with PC,
+7. Added [PS/2 keyboard port and ATtiny4313-based keyboard controller](#ps2-keyboard-interface-and-attiny4313-based-controller) to provide proper replacement for five pushbuttons in Ben's design,
+8. Added [expansion port](#expansion-port) (not really deviation from Ben's build, save for one detail - unlike Ben's build, my version can support various interrupt sources, including the expansion port),
+9. Modified [clock module](#modified-clock-module) (external),
+10. Changed [compilator from VASM to CC65](#migration-from-vasm-to-cc65),
+11. Added [simple way to choose clock source](#clock-input).
 
 You might be wondering if this means that you can't run Ben's programs on this build - and the answer is **YES YOU CAN**. Indeed, some changes to the code are necessary, but thanks to the additional VIA chip and with some changes to the addressing mode you can run any program from Ben's videos. If you want to use LCD in 8-bit mode, you can also use the additional VIA for it, ignoring the built-in LCD connector.
 
