@@ -131,7 +131,7 @@ If you want to use onboard LCD conector and 4-bit interface it is suggested to u
 
 This one increases cost of the build, but in the end you have the whole chip to yourself, so you can hack whatever contraptions you can think of :)
 
-This extra VIA chip can be also used to run Ben't programs, but you have to remember to update addressing mode.
+This extra VIA chip can be also used to run Ben's programs, but you have to remember to update addressing mode.
 
 ### Extra ACIA chip for serial communication
 
