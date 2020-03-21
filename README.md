@@ -41,7 +41,7 @@ That being said, I wanted more for my build. I knew I wanted to be able to load 
 The key takeway here is that when porting Ben's programs you have to use this "mapping table":
 |Segment|Ben's build|My build|Comment|
 |---|---|---|---|
-|RAM|0x0000-0x3fff|0x0000-0x5fff||
+|RAM|0x0000-0x3fff|0x0000-0x7fff||
 |VIA1|N/A|0x9000|Connected to keyboard/LCD/blink LED in my build|
 |VIA2|0x6000|0x8800|Can be used to run Ben's programs|
 |ACIA|N/A|0x8400||
