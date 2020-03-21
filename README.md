@@ -226,19 +226,19 @@ The following components are required for building 65C02 Computer
 | J9        | Pin header 12x1        |               | 2.54mm raster                          |
 | J10       | Pin header 12x1        |               | 2.54mm raster                          |
 | J11       | Female pin header 16x1 |               | 2.54mm raster                          |
-| R1        | Resistor               | 1M            |                                        |
-| R2        | Resistor               | 47K           |                                        |
-| R3        | Resistor               | 10K           |                                        |
-| R4        | Resistor               | 27            |                                        |
-| R5        | Resistor               | 27            |                                        |
-| R6        | Resistor               | 4K7           |                                        |
-| R7        | Resistor               | 4K7           |                                        |
-| R8        | Resistor               | 4K7           |                                        |
-| R9        | Resistor               | 220           |                                        |
-| R10       | Resistor               | 220           |                                        |
-| R11       | Resistor               | 220           |                                        |
-| R12       | Resistor               | 220           |                                        |
-| R13       | Resistor               | 4K7           |                                        |
+| R1        | Resistor               | 1M            | 1/4 watt                               |
+| R2        | Resistor               | 47K           | 1/4 watt                               |
+| R3        | Resistor               | 10K           | 1/4 watt                               |
+| R4        | Resistor               | 27            | 1/4 watt                               |
+| R5        | Resistor               | 27            | 1/4 watt                               |
+| R6        | Resistor               | 4K7           | 1/4 watt                               |
+| R7        | Resistor               | 4K7           | 1/4 watt                               |
+| R8        | Resistor               | 4K7           | 1/4 watt                               |
+| R9        | Resistor               | 220           | 1/4 watt                               |
+| R10       | Resistor               | 220           | 1/4 watt                               |
+| R11       | Resistor               | 220           | 1/4 watt                               |
+| R12       | Resistor               | 220           | 1/4 watt                               |
+| R13       | Resistor               | 4K7           | 1/4 watt                               |
 | RV1       | Potentiometer          | 10K           | Piher PT10-LV10-103                    |
 | SW1       | Pushbutton             |               | Standard 6mm THT pushbutton            |
 | U1        | IC                     | 74HC21        | Add socket                             |
@@ -280,21 +280,21 @@ The following components are required for building Clock Module
 | D5        | LED                   | Blue   | 5mm diameter (Output tick)    |
 | J1        | Female pin header 6x1 |        | 2.54mm raster                 |
 | J2        | Barrel Jack           |        | Standard power input 2.1/5.5  |
-| R1        | Resistor              | 1K     |                               |
-| R2        | Resistor              | 1K     |                               |
-| R3        | Resistor              | 1K     |                               |
-| R4        | Resistor              | 100K   |                               |
-| R5        | Resistor              | 10K    |                               |
-| R6        | Resistor              | 1K     |                               |
-| R7        | Resistor              | 10K    |                               |
-| R8        | Resistor              | 1K     |                               |
-| R9        | Resistor              | 1M     |                               |
-| R10       | Resistor              | 220    |                               |
-| R11       | Resistor              | 220    |                               |
-| R12       | Resistor              | 220    |                               |
-| R13       | Resistor              | 220    |                               |
-| R14       | Resistor              | 220    |                               |
-| R15       | Resistor              | 1K     |                               |
+| R1        | Resistor              | 1K     | 1/4 watt                      |
+| R2        | Resistor              | 1K     | 1/4 watt                      |
+| R3        | Resistor              | 1K     | 1/4 watt                      |
+| R4        | Resistor              | 100K   | 1/4 watt                      |
+| R5        | Resistor              | 10K    | 1/4 watt                      |
+| R6        | Resistor              | 1K     | 1/4 watt                      |
+| R7        | Resistor              | 10K    | 1/4 watt                      |
+| R8        | Resistor              | 1K     | 1/4 watt                      |
+| R9        | Resistor              | 1M     | 1/4 watt                      |
+| R10       | Resistor              | 220    | 1/4 watt                      |
+| R11       | Resistor              | 220    | 1/4 watt                      |
+| R12       | Resistor              | 220    | 1/4 watt                      |
+| R13       | Resistor              | 220    | 1/4 watt                      |
+| R14       | Resistor              | 220    | 1/4 watt                      |
+| R15       | Resistor              | 1K     | 1/4 watt                      |
 | RV1       | Potentiometer         | 10K    | Piher PT10-LV10-105           |
 | SW1       | Pushbutton            |        | Standard 6mm THT pushbutton   |
 | SW2       | Pushbutton            |        | Standard 6mm THT pushbutton   |
