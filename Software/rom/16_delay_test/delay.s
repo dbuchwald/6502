@@ -37,8 +37,6 @@ char_loop:
       lda chars_msg,x
       beq end_loop
       jsr _lcd_print_char
-      ; lda #$01
-      ; jsr _delay_sec
       inx
       bra char_loop
 end_loop:

@@ -30,7 +30,8 @@ FIRMWARE_PROJECTS = 01_nop_fill \
                     19_keyboard_test \
                     20_convert_test
 
-LOADABLE_PROJECTS = 01_blink_test
+LOADABLE_PROJECTS = 01_blink_test \
+                    02_hello_world
 
 FIRMWARE_BINARIES=$(FIRMWARE_PROJECTS:%=$(ROM_FOLDER)/%.$(ADDRESS_MODE).bin)
 

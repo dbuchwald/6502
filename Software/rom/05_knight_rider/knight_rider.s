@@ -11,16 +11,16 @@
 
 init:
       lda #$ff
-      sta VIA1_DDRB
+      sta VIA2_DDRB
       lda #$01
-      sta VIA1_PORTB
+      sta VIA2_PORTB
 loop_l:
       rol A
       bcs loop_r
-      sta VIA1_PORTB
+      sta VIA2_PORTB
       jmp loop_l
 loop_r:
       ror A
       bcs loop_l
-      sta VIA1_PORTB
+      sta VIA2_PORTB
       jmp loop_r

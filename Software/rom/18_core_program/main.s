@@ -21,19 +21,17 @@ init:
       txs
       ; Run setup routine
       jsr _init_system
-; wait_for_acia_input:
-;       jsr _acia_is_data_available
-;       cmp #00
-;       beq wait_for_acia_input
+
+wait_for_acia_input:
+      jsr _acia_is_data_available
+      cmp #00
+      beq wait_for_acia_input
+
       ldx #00
 prompt_loop:
       lda prompt,x
       beq main_loop
       jsr _acia_write_byte
-      ; ; Duplicate output to LCD - to be removed
-      ; lda prompt,x
-      ; jsr _lcd_print_char
-      ; ; End of debug code
       inx
       bra prompt_loop
 

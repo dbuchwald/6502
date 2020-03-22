@@ -19,21 +19,21 @@ NPULSE        = %01111111
 
 init:
       lda #%11100000           ; PA5, PA6 and PA7 are outputs
-      sta VIA1_DDRA 
+      sta VIA2_DDRA
       lda #%11111111           ; PORTB is all output
-      sta VIA1_DDRB
+      sta VIA2_DDRB
       lda #%00000000           ; Initialize port outputs with $00
-      sta VIA1_PORTA
-      sta VIA1_PORTB
+      sta VIA2_PORTA
+      sta VIA2_PORTB
       ldx #$00                 ; Initialize counter (register X)
 loop_init_seq:
       lda lcd_init_sequence,x  ; Fetch data from address lcd_init_sequence + x
       beq data_display         ; If fetched $00 (end of stream), move to data transmission
-      sta VIA1_PORTB                ; Send data to PORTB
+      sta VIA2_PORTB           ; Send data to PORTB
       lda #(COMMAND_MODE | WRITE_MODE | PULSE) ; Set write command mode with active pulse
-      sta VIA1_PORTA
+      sta VIA2_PORTA
       and #NPULSE              ; Disable pulse bit (E) and send to LCD
-      sta VIA1_PORTA
+      sta VIA2_PORTA
       inx                      ; Increase counter
       jmp loop_init_seq        ; Keep looping over init sequence
 
@@ -42,11 +42,11 @@ data_display:
 loop_data:
       lda data,x               ; Load data bytes from address data + x
       beq end_prog             ; On end of stream move to end of program
-      sta VIA1_PORTB
+      sta VIA2_PORTB
       lda #(DATA_MODE | WRITE_MODE | PULSE) ; Set write data mode with active pulse
-      sta VIA1_PORTA
+      sta VIA2_PORTA
       and #NPULSE              ; Disable pulse bit (E) 
-      sta VIA1_PORTA
+      sta VIA2_PORTA
       inx                      ; Increase counter
       jmp loop_data
 end_prog:

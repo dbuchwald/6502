@@ -2,11 +2,6 @@
       .include "utils.inc"
       .include "via.inc"
       .include "lcd.inc"
-      .import __RAM_START__
-
-WRITE_INDEX   = __RAM_START__
-MEM_BUFFER    = __RAM_START__+1
-
       .segment "VECTORS"
 
       .word   $0000
@@ -29,10 +24,6 @@ handshake_init:
       lda #(VIA_IER_SET_FLAGS | VIA_IER_CA1_FLAG)
       sta VIA1_IER
 
-      ldx #00                  ; set display index to 0
-      stz WRITE_INDEX          ; set buffer index to 0
-      ldy #00                  ; set internal buffer pointer to 0
-
       jsr _lcd_init
 
       lda #$ff
@@ -49,18 +40,10 @@ handshake_init:
 
 program_loop:
       jmp program_loop
-      ; cpx WRITE_INDEX
-      ; beq program_loop
-      ; inx
-      ; lda MEM_BUFFER,x         ; Load data bytes from address data + x
-      ; jsr _lcd_print_char
 
 read_data:
       pha
       lda VIA1_PORTA           ; should trigger data taken signal
-      ; sta MEM_BUFFER,y
-      ; iny
-      ; sty WRITE_INDEX
       jsr _lcd_print_char
 read_data_end:
       pla

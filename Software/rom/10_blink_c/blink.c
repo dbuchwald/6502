@@ -1,11 +1,11 @@
 #include "via_utils.h"
 
 int main() {
-  via1_init();
+  via2_init();
 
   while (1) {
-    via1_output_portb(0x55);
-    via1_output_portb(0xaa);
+    via2_output_portb(0x55);
+    via2_output_portb(0xaa);
   }
 
   return 0;

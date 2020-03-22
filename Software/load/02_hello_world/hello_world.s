@@ -1,18 +1,6 @@
         .include "syslib.inc"
 
         .code
-;         ldx #10
-; main_loop:
-;         sec
-;         jsr _call_blink_led
-;         lda #250
-;         jsr _call_delay_ms
-;         clc
-;         jsr _call_blink_led
-;         lda #250
-;         jsr _call_delay_ms
-;         dex
-;         bne main_loop
         jsr _call_lcd_clear
         ldx #$00
 main_loop:

@@ -26,18 +26,15 @@ init:
       stz bytescount+1
 
 ; wait_for_acia_input:
-;       jsr _acia_is_data_available
-;       cmp #00
-;       beq wait_for_acia_input
+      jsr _acia_is_data_available
+      cmp #00
+      beq wait_for_acia_input
+
       ldx #00
 prompt_loop:
       lda prompt,x
       beq main_loop
       jsr _acia_write_byte
-      ; ; Duplicate output to LCD - to be removed
-      ; lda prompt,x
-      ; jsr _lcd_print_char
-      ; ; End of debug code
       inx
       bra prompt_loop
 
@@ -111,8 +108,8 @@ main_loop:
       bne not_full
       inc bytescount+1
 not_full:
-      ; lda #5
-      ; jsr _delay_ms
+      lda #5
+      jsr _delay_ms
 
       jmp main_loop
 

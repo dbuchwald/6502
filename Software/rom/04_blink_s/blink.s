@@ -11,10 +11,10 @@
 
 init:
       lda #$ff
-      sta VIA1_DDRB
+      sta VIA2_DDRB
 loop:
       lda #$55
-      sta VIA1_PORTB
+      sta VIA2_PORTB
       lda #$aa
-      sta VIA1_PORTB
+      sta VIA2_PORTB
       jmp loop
