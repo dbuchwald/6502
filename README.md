@@ -195,6 +195,7 @@ And, last but not least, full set of sample programs to follow Ben's videos on m
 ### `Arduino` folder
 
 There are several sketches here, as described below
+
 * `6502-monitor` - based on Ben's monitor code with some small modifications (like clock counter I used for clock interrupt testing), to be uploaded to Arduino Mega for debugging **USED FREQUENTLY AND WORKS**
 * `6522-monitor` - similar to the above, implemented for testing of the output from VIA chip **NOT TESTED FOR A LONG TIME**
 * `address-decoder-test` - my own take on the TDD principles in hardware design, described in detail [here](https://www.reddit.com/r/beneater/comments/ej3lqi/65c02_address_decoder_for_32k_ram_24k_rom_and_2/) **NOT TESTED FOR A LONG TIME**
@@ -218,12 +219,56 @@ All the datasheets I used when designing my build, attached for reference.
 ### `Schematics` folder
 
 All the KiCAD schematics for the 6502 computer, modified clock module and several others:
+
 * 65C02_Computer - main schematic, including PCB design for my build of 6502 computer,
 * Clock_module - schematic for the modified clock module, including PCB design,
 * 555_troubleshoot - schematic of circuit used in [troubleshooting of clock module monostable noise issue](https://www.reddit.com/r/beneater/comments/edp1ls/noise_issue_in_monostable_mode_of_ben_eaters/),
 * Address_decoder_basic - schematic of Ben Eater's address decoder for 6502 project,
 * Address_decoder_basic_v2 - slightly modified version of the above,
 * Address_decoder_extended - schematic of my own address decoder, used in the final build of my 6502 computer.
+
+### `Software` folder
+
+This one is the most important folder, as it contains range of different programs to play with the 6502 computer. Large subset of this programs can be built for Ben Eater's version of the 6502 computer without any changes. Some of them, however, use features available only in this build, like ACIA or keyboard connector. These can still be ran on Ben Eater's 6502 computer, assuming that compatible hardware is added to it.
+
+The `Software` folder is currently divided into four main parts:
+
+* `build` - temporary folder where all the build artifacts are created, including ROM binaries to be uploaded to EEPROM,
+* `common` - common sources: include files with common constants, sources with shared function, configuration files for different address decoder logic modes, shared makefile used by all projects and small python script to optimize size of loadable modules,
+* `rom` - set of projects used to create various ROM images to follow Ben's videos, test different features of the board and **some day** complete operating system for the computer,
+* `load` - set of project containing loadable modules. These can be uploaded at runtime, without the need to flash the EEPROM. Basic bootloader is required, obviously, and the usage instructions are provided below.
+
+There is also one "master" makefile located directly in the `Software` folder - it will build all the projects in `rom` and `load` subfolders.
+
+#### Building software
+
+General rule is simple: `make` should be sufficient for all the build/installation. If you want to use this software under Windows, you have basically two options: Windows Subsystem for Linux (works, with the exception of minipro upload operation) or some sort of MinGW/Cygwin. If you have better idea on how to do it, and can provide Pull Request - I will be more than happy to have something better.
+
+Beside `make` the following tools are used:
+
+* `cc65` compiler, available [here](https://github.com/cc65/cc65),
+* `minipro` software to upload ROM image to EEPROM, available [here](https://gitlab.com/DavidGriffith/minipro/),
+* `hexdump` for testing the contents of the binaries,
+* `md5` to generate binary checksum,
+* `rm` and `mkdir` for folder/file manipulation,
+* `picocom` for serial communication with the computer,
+* `sz` for loadable module upload via `picocom`,
+* `python` to run small utility written in Python to trim loadable modules and add start vector,
+* `x6502` to run computer emulator (enables execution of generated binaries on PC), available [here](https://github.com/dbuchwald/x6502) - **please note: this one is optional, still in development, and lagging behind the actual computer.** Simple programs can be executed, but anything more complex than LCD operation (including ACIA/keyboard) don't work just yet.
+
+The following `make` targets are to be used for building software:
+
+* `all` - build the project,
+* `clean` - delete all temporary files,
+* `test` - dump the contents and checksum of generated binary file,
+* `install` - upload generated binary to AT28C256 chip using `minipro` tool,
+* `terminal` - connect to the 6502 computer using serial port, please note - currently uses my own device ID as visible under MacOS and most likely needs to be adapted to your build/OS,
+* `emu` - run the generated binary in system emulator. Again: suitable for simple programs, more complex ones are not yet supported. So far I needed it only for simple debugging and that's why it is so limited.
+
+Beside the targets, there are two very important build flags:
+
+* `ADDRESS_MODE` - with acceptable values `basic` and `ext` (the latter being default if omitted) that drives target addressing model. To build for Ben Eater's machine, use `basic` mode; for my build, use `ext` mode. If you want to support your own model, create additional configuration file, as explained in common sources section below,
+* `FASTCLOCK` - with acceptable values `0` and `1` enables build time selection of runtime clock variant. Basically, certain operations (like LCD initialization) require delays at 1MHz implemented as dead loops. Each 1ms delay translates to 1000 clock cycles. Now, if you want to run the code with external clock module or in emulator, it will take literally hours to clock through single delay loop. TODO COMPLETE
 
 ## Getting started
 
