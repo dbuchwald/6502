@@ -58,13 +58,13 @@ This one was my first _real_ change as in it was _mine_. As Ben explained in his
 That being said, I wanted more for my build. I knew I wanted to be able to load programs into my computer and I wanted to ensure that I provide user with as much RAM as possible. At the same time, I wanted to save some space on more optimized I/O shadow segment. And, most importantly, I wanted to test my understanding of how address decoding works. As stated above, the best way to learn is to change and test your hypothesis. If you want to learn more, I posted thread on [Reddit](https://www.reddit.com/r/beneater/comments/ej3lqi/65c02_address_decoder_for_32k_ram_24k_rom_and_2/) explaining what I did, how I did that and why I know it works. My build provides 32K RAM, 8K I/O shadow (for up to 11 devices), 24K ROM.
 
 The key takeway here is that when porting Ben's programs you have to use this "mapping table":
-|Segment|Ben's build|My build|Comment|
-|---|---|---|---|
-|RAM|0x0000-0x3fff|0x0000-0x7fff||
-|VIA1|N/A|0x9000|Connected to keyboard/LCD/blink LED in my build|
-|VIA2|0x6000|0x8800|Can be used to run Ben's programs|
-|ACIA|N/A|0x8400||
-|ROM|0x8000-0xffff|0xa000-0xffff|**First 8K are not accessible, but need to be burned to the chip**|
+|Segment|Ben's build  |My build     |Comment                                                           |
+|-------|-------------|-------------|------------------------------------------------------------------|
+|RAM    |0x0000-0x3fff|0x0000-0x7fff|                                                                  |
+|VIA1   |N/A          |0x9000       |Connected to keyboard/LCD/blink LED in my build                   |
+|VIA2   |0x6000       |0x8800       |Can be used to run Ben's programs                                 |
+|ACIA   |N/A          |0x8400       |                                                                  |
+|ROM    |0x8000-0xffff|0xa000-0xffff|**First 8K are not accessible, but need to be burned to the chip**|
 
 Simplest possible example - [Blink LED example](https://eater.net/downloads/makerom.py) from Ben's page:
 
