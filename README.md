@@ -222,6 +222,54 @@ Most of the decisions made during the schematic design were explained above. Jus
 
 This will be explained in the most detail, obviously. Start with getting [the PCBs](#printed-circuit-boards). **Please note:** clock module is entirely optional, but really useful for single stepping or slow clocking required by Ben Eater's design of Arduino Mega based bus analyzer. As explained in number of places here, you can either order PCBs from PCBWay directly or use your manufacturer of choice - it should have no impact on the final result.
 
+So, let's assume you got the PCBs and all the components, listed in the Bill of Materials. First thing is to solder the components on. At this stage you have to decide if you want to try soldering on the SMD components - there are two, each of them being totally optional. FT230X chip is required if you want to have onboard serial USB->UART converter. MicroUSB connector if you want to use this connector standard. You can replace MicroUSB with standard USB B port (and you can also solder both, as I did, but only use one at a time).
+
+Other optional components are:
+
+* UART Port (J2) - it was placed on the board if you decide to skip the FT230X chip, but you still want to use serial connection. You can use this port to connect to one of external USB->UART converters. **Please note:** if your USB->UART converter doesn't expose CTS/RTS lines, you have to connect CTS and RTS lines permanently to ground,
+* USB-B Port (J4) - if you prefer to use Micro-USB port,
+* Power-In Port (J5) - you can power the computer using any of the USB ports, so this one is optional,
+* PS/2 Connector (J6) - you can skip this one, if you don't intend to connect keyboard. Please note - ATtiny must be connected and programmed even if you don't plan to use keyboard - otherwise the lines would be left floating and could cause strange behavior. You can try grounding them using ATtiny socket, but this has not been tested,
+* AVR-ISP Port (J9) - required only if you plan to program the ATtiny onboard, otherwise you can program the chip externally, but it requires chip removal each time,
+* Expansion Port (J7) - this one can be skipped, if you don't plan to use Arduino Mega bus analyzer nor any extensions, but it's not recommended.
+
+For the soldering, I would suggest to start with the most difficult components - you will probably get more than one board, so use the first one to brave the SMD components. Important step after soldering is to verify if there are any bridges/shorts between adjacent chip/port pins. Since checking the pins itself might be difficult (they are pretty small), it's easier to check on the connected THT pads, and these are:
+
+|FT230X Pin|Connected THT pad on PCB        |
+|----------|--------------------------------|
+|1         |RxD pad of UART Port (J2)       |
+|2         |CTS pad of UART Port (J2)       |
+|3         |Bottom pads of resistor R10, R11|
+|4         |TxD pad of UART Port (J2)       |
+|5         |Left pad of capacitor C8        |
+|6         |RTS pad of UART Port (J2)       |
+|7         |Disconnected                    |
+|8         |Left pad of resistor R5         |
+|9         |Left pad of resistor R4         |
+|10        |Bottom pads of resistors R10,R11|
+|11        |Pad 4 of the ACIA chip (U5)     |
+|12        |Right pad of capacitor C8       |
+|13        |Left pad of capacitor C8        |
+|14        |Left pad of LED D3              |
+|15        |Left pad of LED D2              |
+|16        |Disconnected                    |
+
+|MicroUSB Pin|Connected THT pad on PCB        |
+|------------|--------------------------------|
+|1           |Top pad of ferrite bead FB1     |
+|2           |Right pad of capacitor C10      |
+|3           |Right pad of capacitor C9       |
+|4           |Disconnected                    |
+|5           |Left pad of capacitors C9, C10  |
+
+So, to verify that there is no bridge between pins 5 and 6 of FT230X, connect your multimeter in circuit continuity mode between left pad of capacitor C8 and RTS pad of UART Port (J2). If it beeps, you have bridge between these two pins and you need to check your soldering again.
+
+Repeat for each pair of adjacent pins. You want to have zero beeps :) Please note: this only means that there are no bridges, it doesn't guarantee that your chip is soldered correctly, that will be verified later.
+
+After SMD components are in place (or if you skipped them), solder on all the THT components, starting from the smallest ones and going up the size. There is plenty of redundant space on the board, so this should be pretty easy. Make sure to observe polarity of capacitors and LEDs and be careful when mounting ACIA chip - it's actually oriented differently than the rest of horizontal chips on the board.
+
+After all the components are soldered in place, put the chips in sockets (I recommend using two tooled sockets for ROM - one will be soldered to the board, the other one will be used for easy ROM replacement for programming) and check everything once again - orientation of the chips, visible solder bridges, etc. If it looks good, connect power and you expect the power LED to light up. If this works, go to next section.
+
 ## What's in the repo
 
 Everything, basically. Schematics of the 6502 board, modified clock module, address decoder and other circuits I built during the project. Arduino sketches I used for debugging and simple programs used to test different features.
