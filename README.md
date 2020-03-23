@@ -138,7 +138,7 @@ One of the silly things I decided to do, was to save pins on the first VIA chip 
 |PORTB|D1-D3|LCD control signals (register select, R/W, enable)|
 |PORTB|D4-D7|LCD data signals for 4-bit operation|
 
-Afterwards it turned out that 4-bit operation is actually bit more complicated that 8-bit, and it breaks compatibility with Ben's programs. My best advice, if you want to run Ben's LCD programs on this build, is to use the second VIA port and use 8-bit interface.
+Afterwards it turned out that 4-bit operation is actually bit more complicated that 8-bit, and it breaks compatibility with Ben's programs. My best advice, if you want to run Ben's LCD programs on this build, is to use the second VIA port and 8-bit interface.
 
 If you want to use onboard LCD conector and 4-bit interface it is suggested to use the code I supplied in this repo. It has all the data communication routines for LCD 4-bit operation tested and ready to go.
 
