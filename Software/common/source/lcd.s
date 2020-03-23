@@ -400,8 +400,8 @@ lcd_wrap_line:
       cpx #(LCD_ROWS-1)
       bne @lcd_wrap_screen_not_full
       ; it is last row - scroll the screen up
-      lda #01
-      jsr _delay_sec
+      lda #250
+      jsr _delay_ms
       jsr _lcd_scroll_up
       ; X contains line number, move cursor to the beginning of this line
       lda lcd_mapping_coordinates,x
@@ -487,7 +487,7 @@ lcd_line_buffer:
       .SEGMENT "RODATA"
 
 lcd_force_reset_sequence:
-      .byte 100
+      .byte 20
       .byte LCD_CMD_FUNCTION_SET | LCD_FS_8_BIT | LCD_COMMAND_MODE | LCD_WRITE_MODE
       .byte 5
       .byte LCD_CMD_FUNCTION_SET | LCD_FS_8_BIT | LCD_COMMAND_MODE | LCD_WRITE_MODE
