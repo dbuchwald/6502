@@ -14,6 +14,14 @@ If I had to explain shortly "what it is", the answer would be: simple, yet easy 
 
 The rationale behind this project is pretty simple - the best way to test your understanding of certain subject is to try to expand on what you have learned. You never know if you understood something until you test it by introducing changes to original design - and I used this approach in this project to learn a lot. It was my first proper electronics project, so I would like to apologize for any mistakes. If you think something is off or could have been done differently - please go ahead and raise issue for the repo! All improvements are welcome!
 
+## Why would I bother using this build instead of Ben's?
+
+Basically, it gives you almost all the flexibility of Ben's buid without the hassle of breadboard connections for the critical components. You can still run all of Ben's programs (using second VIA port), but the days of looking for loose wire between RAM and CPU are over :) You can, obviously, still experiment with peripherals and breadboard connections using extension port and second VIA.
+
+On top of that you get additional features like extra screen (via onboard connector), keyboard for more versatile input and finally all-in-one serial over USB terminal. You also get easy to use software ready to be installed on the machine to jumpstart your tinkering. When using bootloader you don't even have to flash the EEPROM more than once!
+
+**Important note:** All of the content here is, and always will be open source and free to use, and I don't intend to make any profit out of it. The only way I get anything at all (and it's only small commission to be used for future PCBWay orders) is when you order my boards from PCBWay using the links posted below, but you are welcome to grab these gerber files and order the boards from another provider, or even from PCBWay, just by uploading gerbers to your account, if you don't want me to get the commission :)
+
 ## What is different then?
 
 Compared to Ben's 6502 build I introduced the following changes:
@@ -268,15 +276,27 @@ The following `make` targets are to be used for building software:
 Beside the targets, there are two very important build flags:
 
 * `ADDRESS_MODE` - with acceptable values `basic` and `ext` (the latter being default if omitted) that drives target addressing model. To build for Ben Eater's machine, use `basic` mode; for my build, use `ext` mode. If you want to support your own model, create additional configuration file, as explained in common sources section below,
-* `FASTCLOCK` - with acceptable values `0` and `1` enables build time selection of runtime clock variant. Basically, certain operations (like LCD initialization) require delays at 1MHz implemented as dead loops. Each 1ms delay translates to 1000 clock cycles. Now, if you want to run the code with external clock module or in emulator, it will take literally hours to clock through single delay loop. TODO COMPLETE
+* `FASTCLOCK` - with acceptable values `0` and `1` (the latter being default if omitted) enables build time selection of runtime clock variant. Basically, certain operations (like LCD initialization) require delays when working at 1MHz clock speed, and the delays are implemented as dead loops. Each 1ms delay translates to 1000 clock cycles. Now, if you want to run the code with external clock module or in emulator, it will take literally hours to clock through single delay loop. To mitigate this issue and prevent necessity to change code each time, this flag was added. **Please note: to enable detection of possible stack related issues in code using delay operations, these routines are not fully disabled, jump to subroutine still happens, it just results in immediate return.**
+
+Build examples:
+
+```shell
+make ADDRESS_MODE=basic FASTCLOCK=0 clean all test install
+```
+
+This will build sources with Ben's addressing scheme (16K RAM, 32K ROM, VIA at 0x6000), with support for slow clocking - any delay routines will be skipped. First, all the binaries will be removed, then built from scratch, hexdump of the resulting binary will be displayed and the binary uploaded to the EEPROM, assuming it's connected via minipro-compatible programmer.
+
+```shell
+make FASTCLOCK=1 all test
+```
+
+This command will rebuild only modified modules with support for my own addressing scheme (32K RAM, 24K ROM, VIA at 0x9000) and suitable for 1MHz execution - all delays will be enabled.
 
 ## Getting started
 
-TO BE COMPLETED SHORTLY
-
 ## Printed Circuit Boards
 
-[First revision of PCBs](https://github.com/dbuchwald/6502/releases/tag/pcb-v001) have been released (one for modified clock module and one for the computer itself). PCBs can be ordered here:
+[First revision of PCBs](https://github.com/dbuchwald/6502/releases/tag/pcb-v001) have been released (one for modified clock module and one for the computer itself). PCBs can be ordered here (**please note: I get small commission in coupons from PCBWay when ordering using these links**. If you don't want that to happen, please download gerbers from the GitHub rulease page and order directly via PCBWay home page):
 
 [PCBWay Shared Projects - 65C02 Hobby Computer](https://www.pcbway.com/project/shareproject/65C02_Hobby_Computer.html)
 
