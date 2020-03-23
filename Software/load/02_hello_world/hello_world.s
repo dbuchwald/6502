@@ -1,18 +1,12 @@
-        .include "syslib.inc"
+        .include "lcd.inc"
+        .include "utils.inc"
 
         .code
-        jsr _call_lcd_clear
-        ldx #$00
-main_loop:
-        lda message,x
-        beq done
-        jsr _call_lcd_print_char
-        inx
-        bra main_loop
-done:
+        jsr _lcd_init
+        write_lcd message
         lda #$03
-        jsr _call_delay_sec
-        jsr _call_lcd_clear
+        jsr _delay_sec
+        jsr _lcd_clear
         rts
 
         .segment "RODATA"

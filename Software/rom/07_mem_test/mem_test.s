@@ -1,6 +1,5 @@
       .setcpu "65C02"
       .include "via.inc"
-      .import __RAM_START__
 
 COMMAND_MODE  = %00000000
 DATA_MODE     = %00100000
@@ -9,7 +8,6 @@ READ_MODE     = %01000000
 PULSE         = %10000000
 
 NPULSE        = %01111111
-MEM_BUFFER    = __RAM_START__
 
       .segment "VECTORS"
 
@@ -30,7 +28,7 @@ init:
       ldx #$00                 ; Initialize counter (register X)
 copymem:
       lda data,x               ; Copy data to RAM 
-      sta MEM_BUFFER,x
+      sta buffer,x
       beq lcd_init             ; Exit after $00 copied
       inx                      ; Increase copy counter
       jmp copymem              ; Loop
@@ -50,7 +48,7 @@ loop_init_seq:
 data_display:
       ldx #$00                 ; Initialize counter
 loop_data:
-      lda MEM_BUFFER,x               ; Load data bytes from address data + x
+      lda buffer,x               ; Load data bytes from address data + x
       beq end_prog             ; On end of stream move to end of program
       sta VIA2_PORTB
       lda #(DATA_MODE | WRITE_MODE | PULSE) ; Set write data mode with active pulse
@@ -68,6 +66,11 @@ lcd_init_sequence:
       .byte %00000110
       .byte %00000001
       .byte %00000000
- 
+
+      .segment "RODATA"
 data:
       .byte "Merry Christmas!",$00
+
+      .segment "SYSRAM"
+buffer:
+      .res 256

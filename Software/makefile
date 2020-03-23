@@ -28,7 +28,9 @@ FIRMWARE_PROJECTS = 01_nop_fill \
                     17_blink_test \
                     18_core_program \
                     19_keyboard_test \
-                    20_convert_test
+                    20_convert_test \
+                    21_serial_load_test \
+                    22_modem_test
 
 LOADABLE_PROJECTS = 01_blink_test \
                     02_hello_world

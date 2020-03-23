@@ -25,7 +25,7 @@ init:
       stz bytescount
       stz bytescount+1
 
-; wait_for_acia_input:
+wait_for_acia_input:
       jsr _acia_is_data_available
       cmp #00
       beq wait_for_acia_input
