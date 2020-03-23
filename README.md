@@ -194,6 +194,34 @@ Clock signal can be provided in one of three ways:
 
 Last option will be used in (planned currently) custom debugger board.
 
+## Getting started
+
+Okay, so it should be pretty clear what this project is about, so how to start playing with it? That really depends on what you decide to do:
+
+* Stick with Ben Eater's build and just use subset of provided software (either to install it in EEPROM, or just use it as reference for your own hacking),
+* Build your own breadboard design based on this one with any modifications you can think of,
+* Order PCBs of my build, solder the components and run provided software to see how it works and get started with your own designs.
+
+To start from scratch it's actually easiest to select last option - after some waiting you will end up having pretty solid base to extend your design on.
+
+### Using provided software with Ben's build
+
+If you decide to go down that route, head straight to the `Software` folder, where you will find several programs either identical or similar to what Ben has shown in his videos, but built with much more versatile toolchain.
+
+If you want to read more, go ahead and read [Software folder](#software-folder) section. Make sure to check out the [building software](#building-software) subsection, as it explains how to compile programs to run on Ben's build directly!
+
+### Build your own breadboard design
+
+Maybe you have already started expanding on Ben's build, or maybe you are just considering it now. If you want to check out how I did certain things, jump right into `Schematics` folder, where you will find KiCAD projects for all the components used in this project. Obviously the most important one is the `65C02_Computer` project, but there are some additional goodies there.
+
+**Please note:** This part is not very well documented, I have assumed that anybody willing to dig into these schematics already knows how to read them.
+
+Most of the decisions made during the schematic design were explained above. Justification for anything not covered here can be probably found in the [invaluable 6502 primer](http://wilsonminesco.com/6502primer/).
+
+### Using my PCB design
+
+This will be explained in the most detail, obviously. Start with getting [the PCBs](#printed-circuit-boards). **Please note:** clock module is entirely optional, but really useful for single stepping or slow clocking required by Ben Eater's design of Arduino Mega based bus analyzer. As explained in number of places here, you can either order PCBs from PCBWay directly or use your manufacturer of choice - it should have no impact on the final result.
+
 ## What's in the repo
 
 Everything, basically. Schematics of the 6502 board, modified clock module, address decoder and other circuits I built during the project. Arduino sketches I used for debugging and simple programs used to test different features.
@@ -291,8 +319,6 @@ make FASTCLOCK=1 all test
 ```
 
 This command will rebuild only modified modules with support for my own addressing scheme (32K RAM, 24K ROM, VIA at 0x9000) and suitable for 1MHz execution - all delays will be enabled.
-
-## Getting started
 
 ## Printed Circuit Boards
 
