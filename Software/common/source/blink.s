@@ -1,12 +1,12 @@
       .include "via.inc"
       .include "utils.inc"
 
-      .export _init_blink_led
+      .export _blink_init
       .export _blink_led
       .export _strobe_led
 
 ; Initialize DDRB bit to output
-_init_blink_led:
+_blink_init:
       pha
       lda VIA1_DDRB
       ora #%00000001

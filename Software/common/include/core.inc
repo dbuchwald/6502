@@ -1,2 +1,2 @@
-        .import _init_system
+        .import _system_init
         .import _interrupt_handler

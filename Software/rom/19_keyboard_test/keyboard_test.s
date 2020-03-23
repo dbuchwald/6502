@@ -22,7 +22,7 @@ init:
       lda #$ff
       jsr _delay_ms
       ; Initialize keyboard
-      jsr _init_keyboard
+      jsr _keyboard_init
       ; Say hello
       write_lcd hello_msg
       lda #01

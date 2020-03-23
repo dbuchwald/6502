@@ -52,15 +52,15 @@
         .endmacro
 
 _syscall_system_init:
-        SYSCALL_VECTOR _init_system
+        SYSCALL_VECTOR _system_init
 _syscall_blink_init:
-        SYSCALL_VECTOR _init_blink_led
+        SYSCALL_VECTOR _blink_init
 _syscall_lcd_init:
         SYSCALL_VECTOR _lcd_init
 _syscall_acia_init:
         SYSCALL_VECTOR _acia_init
 _syscall_keyboard_init:
-        SYSCALL_VECTOR _init_keyboard
+        SYSCALL_VECTOR _keyboard_init
 _syscall_delay_ms:
         SYSCALL_VECTOR _delay_ms
 _syscall_delay_sec:

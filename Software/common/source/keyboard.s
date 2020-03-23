@@ -1,7 +1,7 @@
       .include "via.inc"
       .include "zeropage.inc"
       .include "utils.inc"
-      .export _init_keyboard
+      .export _keyboard_init
       .export _handle_keyboard_irq
       .export _keyboard_is_connected
       .export _keyboard_is_data_available
@@ -12,7 +12,7 @@ KEYBOARD_BUFFER_SIZE = 64
 ; No parameters taken
 ; No registers changed
 ; No output values
-_init_keyboard:
+_keyboard_init:
       pha
       ; Assume keyboard is disconnected
       lda #$00

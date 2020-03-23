@@ -6,7 +6,7 @@
       .include "blink.inc"
       .include "syscalls.inc"
 
-      .export _init_system
+      .export _system_init
       .export _interrupt_handler
 
 ; Main system initialization routine
@@ -14,9 +14,9 @@
 ; ACIA initialization
 ; Disable BCD mode
 ; Enable interrupt handling
-_init_system:
+_system_init:
       ; Initialize BLINK LED
-      jsr _init_blink_led
+      jsr _blink_init
       ; Short BLINK LED strobe
       jsr _strobe_led
       ; Enable BLINK LED during init operation

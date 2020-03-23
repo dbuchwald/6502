@@ -20,7 +20,7 @@ init:
       ldx #$ff
       txs
       ; Run setup routine
-      jsr _init_system
+      jsr _system_init
 
       stz bytescount
       stz bytescount+1

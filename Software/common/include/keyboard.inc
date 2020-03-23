@@ -1,4 +1,4 @@
-      .import _init_keyboard
+      .import _keyboard_init
       .import _handle_keyboard_irq
       .import _keyboard_is_connected
       .import _keyboard_is_data_available
