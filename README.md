@@ -129,14 +129,15 @@ with open("rom.bin", "wb") as out_file:
 ### LCD interface change
 
 One of the silly things I decided to do, was to save pins on the first VIA chip and I decided on the following mapping:
-|Port|Pins|Connection|
-|---|---|---|
+
+|Port |Pins   |Connection                                                                               |
+|-----|-------|-----------------------------------------------------------------------------------------|
 |PORTA|CA1,CA2|Keyboard controller read handshake - for IRQ based communication with keyboard controller|
-|PORTA|D0-D7|Keyboard controller data line - for transferring ASCII scancodes of pressed characters|
-|PORTB|CB1,CB2|Not used, disconnected|
-|PORTB|D0|Blink LED - to be used as the Arduino onboard LED, for easy debugging|
-|PORTB|D1-D3|LCD control signals (register select, R/W, enable)|
-|PORTB|D4-D7|LCD data signals for 4-bit operation|
+|PORTA|D0-D7  |Keyboard controller data line - for transferring ASCII scancodes of pressed characters   |
+|PORTB|CB1,CB2|Not used, disconnected                                                                   |
+|PORTB|D0     |Blink LED - to be used as the Arduino onboard LED, for easy debugging                    |
+|PORTB|D1-D3  |LCD control signals (register select, R/W, enable)                                       |
+|PORTB|D4-D7  |LCD data signals for 4-bit operation                                                     |
 
 Afterwards it turned out that 4-bit operation is actually bit more complicated that 8-bit, and it breaks compatibility with Ben's programs. My best advice, if you want to run Ben's LCD programs on this build, is to use the second VIA port and 8-bit interface.
 
