@@ -1,4 +1,4 @@
-# What is this?
+# What is this
 
 This repository contains all the work in progress during my build of Ben Eater's inspired 6502 8-bit computer similar to typical machines of the early 1980s. If you haven't seen Ben's videos, I would strongly suggest you start there:
 
@@ -8,13 +8,13 @@ As stated above, this build is not 100% compatible with what Ben had done - and 
 
 If I had to explain shortly "what it is", the answer would be: simple, yet easy to expand, 8-bit CPU based computer designed and built with one goal only: to use it as a learning and tinkering platform to understand how computers really work. You can use it for simple things like understanding buses, clock cycles, instruction execution, but it also demonstrates more complex concepts like interrupts, interfaces to external components and device handling. More on that below. Everything, hopefully, is simple enough to wrap your head around by one person in couple of weeks.
 
-## Why build something different?
+## Why build something different
 
 [Ben's videos](https://www.youtube.com/playlist?list=PLowKtXNTBypFbtuVMUVXNR0z1mu7dp7eH) on 6502 computer are absolutely awesome - it's one of the best sources in the whole Internet explaining how any computer works. The build he introduced is probably sufficient for most of the things you might ever want to build, and yet I decided to deviate from his design.
 
 The rationale behind this project is pretty simple - the best way to test your understanding of certain subject is to try to expand on what you have learned. You never know if you understood something until you test it by introducing changes to original design - and I used this approach in this project to learn a lot. It was my first proper electronics project, so I would like to apologize for any mistakes. If you think something is off or could have been done differently - please go ahead and raise issue for the repo! All improvements are welcome!
 
-## Why would I bother using this build instead of Ben's?
+## Why would you bother using this build instead of Ben's
 
 Basically, it gives you almost all the flexibility of Ben's buid without the hassle of breadboard connections for the critical components. You can still run all of Ben's programs (using second VIA port), but the days of looking for loose wire between RAM and CPU are over :) You can, obviously, still experiment with peripherals and breadboard connections using extension port and second VIA.
 
@@ -22,7 +22,7 @@ On top of that you get additional features like extra screen (via onboard connec
 
 **Important note:** All of the content here is, and always will be open source and free to use, and I don't intend to make any profit out of it. The only way I get anything at all (and it's only small commission to be used for future PCBWay orders) is when you order my boards from PCBWay using the links posted below, but you are welcome to grab these gerber files and order the boards from another provider, or even from PCBWay, just by uploading gerbers to your account, if you don't want me to get the commission :)
 
-## What is different then?
+## What is different
 
 Compared to Ben's 6502 build I introduced the following changes:
 
@@ -209,7 +209,7 @@ To start from scratch it's actually easiest to select last option - after some w
 
 If you decide to go down that route, head straight to the `Software` folder, where you will find several programs either identical or similar to what Ben has shown in his videos, but built with much more versatile toolchain.
 
-If you want to read more, go ahead and read [Software folder](#software-folder) section. Make sure to check out the [building software](#building-software) subsection, as it explains how to compile programs to run on Ben's build directly!
+If you want to read more, go ahead and read [Software folder](#software-folder) section. Make sure to check out the [building software](#building-software) subsection, as it explains how to compile programs to run on Ben's build directly.
 
 ### Build your own breadboard design
 
@@ -269,7 +269,174 @@ Repeat for each pair of adjacent pins. You want to have zero beeps :) Please not
 
 After SMD components are in place (or if you skipped them), solder on all the THT components, starting from the smallest ones and going up the size. There is plenty of redundant space on the board, so this should be pretty easy. Make sure to observe polarity of capacitors and LEDs and be careful when mounting ACIA chip - it's actually oriented differently than the rest of horizontal chips on the board.
 
-After all the components are soldered in place, put the chips in sockets (I recommend using two tooled sockets for ROM - one will be soldered to the board, the other one will be used for easy ROM replacement for programming) and check everything once again - orientation of the chips, visible solder bridges, etc. If it looks good, connect power and you expect the power LED to light up. If this works, go to next section.
+After all the components are soldered in place, put the chips in sockets (I recommend using two tooled sockets for ROM - one will be soldered to the board, the other one will be used for easy ROM replacement for programming) and check everything once again - orientation of the chips, visible solder bridges, etc. If it looks good, connect power and you expect the power LED to light up. If this works, go to next step, would be building, installing and running sample programs.
+
+### Getting started with provided software
+
+Details of the `Software` folder are covered in [dedicated section](#software-folder), but here I will show how to use sample programs for smoke testing of the soldered board.
+
+I recommend running first couple of programs in slow clock mode, so with external clock module, with Arduino Mega based bus analyzer.
+
+#### Connecting Arduino Mega
+
+First, make sure you have the 6502-monitor program installed on your Arduino Mega board. You will find it in `Arduino/6502-monitor` folder.
+
+Connect pins as per following table:
+
+|Expansion port pins  |Arduino Mega pins|
+|---------------------|-----------------|
+|D0-D7 (data bus)     |53-39            |
+|A00-A15 (address bus)|52-22            |
+|CLK (system clock)   |2                |
+|R/W (read/write)     |3                |
+|GND                  |GND              |
+|+5V                  |+5V              |
+
+**PLEASE NOTE: Connections are reversed for convenience. D0 is connected to pin 53, D1 to pin 51, A00 to pin 52 and A15 to pin 22.**
+
+Also, connect clock module as follows:
+
+|Computer connection         |Clock module connection|
+|----------------------------|-----------------------|
+|CLK input (middle pin on J1)|CLK output             |
+|UART +5V                    |+5V                    |
+|UART GND                    |GND                    |
+
+It might seem strange that the clock module is powered from UART port, but in fact it doesn't matter which of the power outputs you choose. I use this one, since this one is closes to the clock connector (J1). This is one thing I didn't consider when designing the PCB - I provided GND reference in J1, but the power is missing...
+
+The whole thing will be powered from Arduino via USB - don't worry, the load will not be too high.
+
+#### Running the simplest possible program
+
+Now you need to build the first program. Go to `Software/rom/01_nop_fill` folder and run:
+
+```shell
+make clean all test
+```
+
+You expect output similar to the following:
+
+```text
+rm -f ../../build/rom/*.bin \
+  ../../build/rom/01_nop_fill/*.o \
+  ../../build/rom/01_nop_fill/*.lst \
+  ../../build/rom/01_nop_fill/*.s \
+  ../../build/rom/*.map \
+  ../../build/common/*.o \
+  ../../build/common/*.lst \
+  ../../build/common/*.s \
+
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/rom/01_nop_fill/nop_fill.o -l ../../build/rom/01_nop_fill/nop_fill.lst nop_fill.s
+cl65 -t none -C ../../common/firmware.ext.cfg -m ../../build/rom/01_nop_fill.ext.map -o ../../build/rom/01_nop_fill.ext.bin ../../build/rom/01_nop_fill/nop_fill.o
+hexdump -C ../../build/rom/01_nop_fill.ext.bin
+00000000  ea ea ea ea ea ea ea ea  ea ea ea ea ea ea ea ea  |................|
+*
+00008000
+MD5 (../../build/rom/01_nop_fill.ext.bin) = 49d01fd92a6a02370364f8eef2ee2c93
+```
+
+If you remember Ben's video - this is the first program he uploads to ROM. Now, run `make install` to upload the binary to your EEPROM - I assume you put the ROM chip in TL866II+ programmer and it is connected to your machine.
+
+```shell
+make install
+```
+
+You expect the following output:
+
+```text
+minipro -p AT28C256 -w ../../build/rom/01_nop_fill.ext.bin
+Found TL866II+ 04.2.109 (0x26d)
+Erasing... 0.02Sec OK
+Protect off...OK
+Writing Code...  6.78Sec  OK
+Reading Code...  0.49Sec  OK
+Verification OK
+Protect on...OK
+```
+
+Plug the ROM back in your board, connect the Arduino to your PC, toggle clock module to manual mode, reset 6502 computer and start serial monitor. Go a few cycles step by step and you should see something similar to the below in serial monitor:
+
+```text
+10:13:51.707 -> 000000   1110101011110010   11101010   eaf2  r ea
+10:13:52.315 -> 000001   1111111111111111   11101010   ffff  r ea
+10:13:52.776 -> 000002   1110101011110010   11101010   eaf2  r ea
+10:13:53.201 -> 000003   0000000111111101   10111101   01fd  r bd
+10:13:53.585 -> 000004   0000000111111100   10111001   01fc  r b9
+10:13:54.074 -> 000005   0000000111111011   10000001   01fb  r 81
+10:13:54.576 -> 000006   1111111111111100   11101010   fffc  r ea
+10:13:55.562 -> 000007   1111111111111101   11101010   fffd  r ea
+10:13:56.020 -> 000008   1110101011101010   11101010   eaea  r ea
+10:13:56.511 -> 000009   1110101011101011   11101010   eaeb  r ea
+10:13:56.982 -> 000010   1110101011101011   11101010   eaeb  r ea
+10:13:57.337 -> 000011   1110101011101100   11101010   eaec  r ea
+10:13:57.659 -> 000012   1110101011101100   11101010   eaec  r ea
+10:13:57.940 -> 000013   1110101011101101   11101010   eaed  r ea
+10:13:58.253 -> 000014   1110101011101101   11101010   eaed  r ea
+10:13:58.658 -> 000015   1110101011101110   11101010   eaee  r ea
+```
+
+First six lines might be different, but starting from line 7 you should see identical output. If this works, it means your CPU and ROM are working just fine, your clock module and Arduino Mega bus analyzer are attached correctly. Congratulations!
+
+If you have any problems during build, installation or execution - check instructions above again, maybe you missed something.
+
+#### More complex programs
+
+After having ran the first one, try executing the following programs:
+
+* `Software/rom/02_nop_fffc` - this one will jump to the beginning of the accessible ROM address space and will confirm your address decoder functions correctly,
+* `Software/rom/03_first_code` - this is another program taken directly from Ben's videos - it will store value 0x42 in the address 0x6000. Please note: this will have no effect whatsoever.
+
+Now, if the both above work as expected (when checked using bus analyzer), you can try connecting peripherals to your computer. If you want to follow Ben's videos, keep reading this section, otherwise, skip to [next one](#initiate-warp-speed).
+
+First, let's play with some LEDs. Using the connectors in bottom left corner of the PCB, connect 8 LEDs to VIA2 PORTB lines PB0-PB7, and then, using current limiting resistors of 220Ohm, connect these to ground (also from the VIA2 PORTB connector).
+
+Having these connected, upload `Software/rom/04_blink_s` or `Software/rom/05_knight_rider` to your ROM. After powering on, you should see LEDs blinking in a way similar to what Ben did in his videos. If it works correctly, you can move on to connecting LCD. For now, use it in 8-bit mode with slow clock - just as in Ben's videos.
+
+To do this, connect LCD to breadboard (not to the dedicated LCD port on PCB), and then connect each line as listed below:
+
+|VIA2 Pin|LCD Pin|
+|--------|-------|
+|PA5     |RS     |
+|PA6     |R/W    |
+|PA7     |E      |
+|PB0     |DB0    |
+|PB1     |DB1    |
+|PB2     |DB2    |
+|PB3     |DB3    |
+|PB4     |DB4    |
+|PB5     |DB5    |
+|PB6     |DB6    |
+|PB7     |DB7    |
+
+Also, connect A and VDD connectors to +5V, K and VSS to GND and connect V0 to a middle pin of 10KOhm potentiometer plugged between GND and +5V.
+
+Now upload program `Software/rom/06_lcd_test` to ROM - when executed, it should display "Merry Christmas!" message on the LCD.
+
+If it works correctly, follow with `Software/rom/07_mem_test` and `Software/rom/08_stack_test` - these will test if RAM works as expected: first one will copy data from ROM to RAM, while the second will use stack routines. Congratulations, you have working CPU, ROM, RAM, VIA and address decoder!
+
+#### Initiate warp speed
+
+Now it's time to go a bit faster and test the more complex features. Please note: you could keep using the analyzer and external clock with these programs, you just have to remember to build them with `FASTCLOCK=0` flag. More details can be found in [building software section](#building-software).
+
+For now let's assume we move to 1MHz clock. To do it, put jumper on two leftmost pins of clock connector (J1). Disconnect external clock and bus analyzer - first one is not needed, second one will not work with high frequencies anyway. Connect your LCD to onboard LCD port and upload `Software/rom/13_4bit_lcd` to your ROM. Upon boot you expect to see message "Hello 4-bit! Chars!" on your screen. If it works, it means that the primary VIA works just fine and clock is OK.
+
+Next one to test will be serial connection, so upload `Software/rom/15_serial_irq`. Now, depending on whether you soldered on FT230X chip or not, connect your board using USB cable to PC (using either MicroUSB or USB-B port), or use external USB->UART connector. Connect to your board using `picocom` with baud rate of 19200.
+
+```shell
+picocom -b 19200 /dev/tty.usbserial-HANF88HD
+```
+
+When you get "Terminal ready" message, press any key - you should get a response of "Hello IRQ>". This means that two things are working correctly: interrupt handling and serial communication. Congratulations, you are almost ready to go.
+
+#### Keyboard connection
+
+Even if you don't intend to use keyboard just yet, you still need to upload the controller sketch to ATtiny4313. Recommended way of doing that is to use onboard AVR-ISP connector and some kind of AVR programmer. I used USBASP programmer and it works lovely directly from Arduino IDE. The sketch to upload is in `Arduino/keyboard-4313` folder.
+
+After successful sketch upload, flash your rom with `Software/rom/19_keyboard_test`. Connect your PS/2 keyboard to the port and try pressing some keys - you should see messages on the LCD with confirmation.
+
+#### Using the bootloader
+
+TO BE COMPLETED SOON
 
 ## What's in the repo
 
