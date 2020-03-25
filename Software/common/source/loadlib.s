@@ -17,6 +17,7 @@
         .export _acia_is_data_available
         .export _acia_read_byte
         .export _acia_write_byte
+        .export _acia_write_string
 ; Keyboard routines
         .export _keyboard_is_connected
         .export _keyboard_is_data_available
@@ -32,6 +33,9 @@
 ; XMODEM routines
         .export _modem_send
         .export _modem_receive
+; string routines
+        .export _strcmp
+        .export _strlen
 
         .code
 
@@ -78,6 +82,9 @@ _acia_read_byte:
 _acia_write_byte:
         jmp (_syscall_acia_write_byte)
 
+_acia_write_string:
+        jmp (_syscall_acia_write_string)
+
 ; Keyboard routines
 _keyboard_is_connected:
         jmp (_syscall_keyboard_is_connected)
@@ -116,3 +123,10 @@ _modem_send:
 
 _modem_receive:
         jmp (_syscall_modem_receive)
+
+; string routines
+_strcmp:
+        jmp (_syscall_strcmp)
+
+_strlen:
+        jmp (_syscall_strlen)

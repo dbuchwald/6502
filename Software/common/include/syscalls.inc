@@ -15,6 +15,7 @@
         .import _syscall_acia_is_data_available
         .import _syscall_acia_read_byte
         .import _syscall_acia_write_byte
+        .import _syscall_acia_write_string
 ; Keyboard routines
         .import _syscall_keyboard_is_connected
         .import _syscall_keyboard_is_data_available
@@ -30,3 +31,7 @@
 ; XMODEM routines
         .import _syscall_modem_send
         .import _syscall_modem_receive
+; string routines
+        .import _syscall_strcmp
+        .import _syscall_strlen
+

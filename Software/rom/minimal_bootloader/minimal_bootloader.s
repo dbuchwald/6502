@@ -39,7 +39,7 @@ init:
 @no_keyboard:
       write_lcd keyboard_disconnected
 @wait_for_3s:
-      lda #03
+      lda #02
       jsr _delay_sec
 
       jsr _lcd_clear

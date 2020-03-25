@@ -10,6 +10,7 @@
         .export _acia_is_data_available
         .export _acia_read_byte
         .export _acia_write_byte
+        .export _acia_write_string
 
 ACIA_DATA    = __ACIA_START__ + $00
 ACIA_STATUS  = __ACIA_START__ + $01
@@ -192,6 +193,10 @@ _acia_is_data_available:
 
 ; Return one byte from RX buffer
 _acia_read_byte:
+        ; block until data available
+        jsr _acia_is_data_available
+        bcc _acia_read_byte
+        ; proceed
         phx
         ldx acia_rx_rptr
         lda acia_rx_buffer,x
@@ -239,6 +244,36 @@ _acia_write_byte:
         pla
 
         plx
+        rts
+
+; Write null terminated string to TX buffer
+; Assume input pointer in acia_str_ptr
+_acia_write_string:
+        ; preserve A register
+        pha
+        ; preserve Y register
+        phy
+        ; init index
+        ldy #$00
+@string_loop:
+        ; load character
+        lda (acia_str_ptr),y
+        ; stop if null
+        beq @end_loop
+        ; send char to buffer
+        jsr _acia_write_byte
+        ; increase index
+        iny 
+        ; prevent infinite loop
+        beq @end_loop
+        ; repeat
+        bra @string_loop
+@end_loop:
+        ; restore Y register
+        ply
+        ; restore A register
+        pla
+        ; return
         rts
 
         .segment "BSS"

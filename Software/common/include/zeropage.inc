@@ -14,6 +14,7 @@
 .globalzp acia_rx_wptr
 .globalzp acia_tx_rptr
 .globalzp acia_tx_wptr
+.globalzp acia_str_ptr
 .globalzp keyboard_conn
 .globalzp keyboard_rptr
 .globalzp keyboard_wptr

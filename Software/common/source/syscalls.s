@@ -7,6 +7,7 @@
         .include "modem.inc"
         .include "zeropage.inc"
         .include "utils.inc"
+        .include "string.inc"
 
 ; Init routines
         .export _syscall_system_init
@@ -25,6 +26,7 @@
         .export _syscall_acia_is_data_available
         .export _syscall_acia_read_byte
         .export _syscall_acia_write_byte
+        .export _syscall_acia_write_string
 ; Keyboard routines
         .export _syscall_keyboard_is_connected
         .export _syscall_keyboard_is_data_available
@@ -40,6 +42,9 @@
 ; XMODEM routines
         .export _syscall_modem_send
         .export _syscall_modem_receive
+; string routines
+        .export _syscall_strcmp
+        .export _syscall_strlen
 
         .segment "SYSCALLS"
 
@@ -66,7 +71,7 @@ _syscall_delay_ms:
 _syscall_delay_sec:
         SYSCALL_VECTOR _delay_sec
 _syscall_convert_to_hex:
-        SYSCALL_VECTOR _syscall_convert_to_hex
+        SYSCALL_VECTOR _convert_to_hex
 _syscall_blink_led:
         SYSCALL_VECTOR _blink_led
 _syscall_strobe_led:
@@ -77,6 +82,8 @@ _syscall_acia_read_byte:
         SYSCALL_VECTOR _acia_read_byte
 _syscall_acia_write_byte:
         SYSCALL_VECTOR _acia_write_byte
+_syscall_acia_write_string:
+        SYSCALL_VECTOR _acia_write_string
 _syscall_keyboard_is_connected:
         SYSCALL_VECTOR _keyboard_is_connected
 _syscall_keyboard_is_data_available:
@@ -101,3 +108,7 @@ _syscall_modem_send:
         SYSCALL_VECTOR _modem_send
 _syscall_modem_receive:
         SYSCALL_VECTOR _modem_receive
+_syscall_strcmp:
+        SYSCALL_VECTOR _strcmp
+_syscall_strlen:
+        SYSCALL_VECTOR _strlen
