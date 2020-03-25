@@ -1,4 +1,4 @@
-PROJECT_NAME=01_blink_test
+PROJECT_NAME=23_blink_test
 BUILD_TYPE=rom
 
 ASM_SOURCES=blink_test.s

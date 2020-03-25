@@ -30,7 +30,9 @@ FIRMWARE_PROJECTS = 01_nop_fill \
                     19_keyboard_test \
                     20_convert_test \
                     21_serial_load_test \
-                    22_modem_test
+                    22_modem_test \
+										23_blink_test \
+										minimal_bootloader
 
 LOADABLE_PROJECTS = 01_blink_test \
                     02_hello_world

@@ -436,7 +436,25 @@ After successful sketch upload, flash your rom with `Software/rom/19_keyboard_te
 
 #### Using the bootloader
 
-TO BE COMPLETED SOON
+Currently only the minimal bootloader is provided, but it should be sufficient for software development without constant need to reflash the EEPROM. To use it, build ROM image in `Software/rom/minimal_bootloader` folder and flash it to EEPROM. To test this functionality, you have to build example loadable programs in `Software/load/01_blink_test` and `Software/load/02_hello_world`.
+
+**PLEASE NOTE:** Both the bootloader and sample programs will be built automatically when invoking `make all` directly in `Software` folder.
+
+Upon boot you will be prompted to connect to the PC via serial connection and press Enter key - either in termina window if keyboard is not connected, or on the keyboard otherwise. Connection details will be displayed on the LCD:
+
+* 19200 baud,
+* 8-bit, no parity, 1 stop bit,
+* CTS/RTS hardware flow control.
+
+In MacOS/Linux you can use `picocom` for this operation, under Windows I have successfully used [ExtraPuTTy](https://www.extraputty.com/).
+
+After connection is established you need to press enter as prompted (either on PS/2 keyboard or terminal window) and you will be prompted to initiate file transfer. In `picocom` this requires that your send command is set to `sz -X` (see `make terminal` target in `Software/common/makefile`) and you initiate transfer with Ctrl+A followed by Ctrl+S. Enter load file path (i.e. `Software/build/load/01_blink_test.load.bin`) and press enter. If the transfer fails, try again. `picocom` seems to fail every now and then, while ExtraPuTTy hardly ever has any issues.
+
+In ExtraPuTTy open "Files Transfer" menu item, then "Xmodem" and "Send". Point to loadable module (i.e. `Software/build/load/02_hello_world.load.bin`) and click "Open" button.
+
+Program should load and be automatically executed. Congratulations, you got yourself working bootloader!
+
+**MORE INFO COMING SOON**
 
 ## What's in the repo
 

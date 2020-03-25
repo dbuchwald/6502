@@ -5,6 +5,7 @@
       .include "acia.inc"
       .include "blink.inc"
       .include "syscalls.inc"
+      .include "keyboard.inc"
 
       .export _system_init
       .export _interrupt_handler
@@ -26,6 +27,8 @@ _system_init:
       jsr _lcd_init
       ; Initialize ACIA
       jsr _acia_init
+      ; Initialize keyboard
+      jsr _keyboard_init
       ; Disable BCD mode
       cld
       ; Enable interrupt processing
@@ -45,6 +48,15 @@ _interrupt_handler:
       jsr _handle_acia_irq
 check_via1:
       bit VIA1_IFR
-      ;bmi _handle_via1_irq
+      bpl check_via2
+      pha
+      lda VIA1_IFR
+      and VIA1_IER
+      and #%00000010 ; IFR_CA1
+      beq not_keyboard
+      jsr _handle_keyboard_irq
+not_keyboard:
+      pla
+check_via2:
       bit VIA2_IFR
       rti
