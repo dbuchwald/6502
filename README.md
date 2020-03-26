@@ -622,9 +622,28 @@ All the programs in the `load` folder are to be uploaded to the 6502 computer ov
 
 * `load/01_blink_test` - simple program that blinks onboard LED 10 times, provided to illustrate loadable module build process. This one has been copied to `rom/23_blink_test` to illustrate differences between the two models,
 * `load/02_hello_world` - "Hello World" example in a loadable module version,
-* `load/03_string_test` - small program written to test string handling library functions.
+* `load/03_string_test` - small program written to test string handling library functions,
+* `load/04_blink_large` - presents different model of linking loadable code (with included common modules).
 
 As for software compatibility - all the loadable modules require bootloader, and this one, in turn, requires ACIA for operation, so by design these are not compatible with vanilla Ben Eater's build.
+
+##### Loadable modules explained
+
+There is one thing important to consider when working with loadable modules. The idea behind them is to have the possibility to run the same code from RAM and ROM, preferably preserving the former if possible and reducing the loadable file size. The idea is to be able to execute common functions stored in ROM from the code running in RAM.
+
+There are two examples in the code repository demonstrating alternative approaches. Naive one, that assumes that all the code to be executed is included in the loadable module is available in `load/04_blink_large` folder. When built, you will notice it contains all the functions required: `_blink_init`, `_blink_led` and `_delay_ms` compiled and bundled. The only difference between this program and `rom/23_blink_test` is the value of `BUILD_TYPE=` flag in `makefile` resulting in different addressing model being used for code storage.
+
+Now, the second example, provided in `load/01_blink_test` is much more interesting. The binary file is smaller (admittably, not by much, due to inclusion of the loadlib vector array!), but none of the code of the common functions (`_blink_init`, `_blink_led` and `_delay_ms`) is actually bundled in the binary. All these references are provided by stub functions, defined in `common/source/loadlib.s` - each of these functions really contains jump to vector defined in dedicated vector range in ROM (0xf800-0xfff9). This indirection layer enables updates to ROM without needing to recompile all the loadable modules. The only requirement is to keep the order of the calls intact and adding new functions to `common/source/syscalls.s` at the end so to keep previously defined addresses unchanged.
+
+Defining new shared function requires the following:
+
+* implementation of the code in `common/source` folder,
+* implementation of the interface include in `common/include` folder,
+* adding this new function to `common/source/syscalls.s` module,
+* adding stub function to `common/source/loadlib.s` module,
+* adding new objects to `rom/minimal_bootloader/makefile` and `rom/22_modem_test/makefile`.
+
+The list above should help you understand how this code reusability has been achieved.
 
 ## Printed Circuit Boards
 
