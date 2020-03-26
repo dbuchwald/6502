@@ -26,23 +26,23 @@ On top of that you get additional features like extra screen (via onboard connec
 
 Compared to Ben's 6502 build I introduced the following changes:
 
-1. Added [automatic power-up reset circuitry](Schematics/#automatic-power-on-reset),
-2. Changed [address decoder logic](Schematics/#address-decoder-change) (**very important from compatibility perspective**),
-3. Changed [LCD interface](Schematics/#lcd-interface-change) from 8-bit to 4-bit (**very important from compatibility perspective**),
-4. Added [additional VIA chip](Schematics/#extra-via-chip) to provide easy expansion of the system,
-5. Added [ACIA chip for serial communication](Schematics/#extra-acia-chip-for-serial-communication),
-6. Added (**optional - more on that later**) [USB-UART interface](Schematics/#extra-usb-uart-interface-chip) for easy connectivity with PC,
-7. Added [PS/2 keyboard port and ATtiny4313-based keyboard controller](Schematics/#ps2-keyboard-interface-and-attiny4313-based-controller) to provide proper replacement for five pushbuttons in Ben's design,
-8. Added [expansion port](Schematics/#expansion-port) (not really deviation from Ben's build, save for one detail - unlike Ben's build, my version can support various interrupt sources, including the expansion port),
-9. Modified [clock module](Schematics/#modified-clock-module) (external),
-10. Changed [compilator from VASM to CC65](Schematics/#migration-from-vasm-to-cc65),
-11. Added [simple way to choose clock source](Schematics/#clock-input).
+1. Added [automatic power-up reset circuitry](Schematics/README.md#automatic-power-on-reset),
+2. Changed [address decoder logic](Schematics/README.md#address-decoder-change) (**very important from compatibility perspective**),
+3. Changed [LCD interface](Schematics/README.md#lcd-interface-change) from 8-bit to 4-bit (**very important from compatibility perspective**),
+4. Added [additional VIA chip](Schematics/README.md#extra-via-chip) to provide easy expansion of the system,
+5. Added [ACIA chip for serial communication](Schematics/README.md#extra-acia-chip-for-serial-communication),
+6. Added (**optional - more on that later**) [USB-UART interface](Schematics/README.md#extra-usb-uart-interface-chip) for easy connectivity with PC,
+7. Added [PS/2 keyboard port and ATtiny4313-based keyboard controller](Schematics/README.md#ps2-keyboard-interface-and-attiny4313-based-controller) to provide proper replacement for five pushbuttons in Ben's design,
+8. Added [expansion port](Schematics/README.md#expansion-port) (not really deviation from Ben's build, save for one detail - unlike Ben's build, my version can support various interrupt sources, including the expansion port),
+9. Modified [clock module](Schematics/README.md#modified-clock-module) (external),
+10. Changed [compilator from VASM to CC65](Schematics/README.md#migration-from-vasm-to-cc65),
+11. Added [simple way to choose clock source](Schematics/README.md#clock-input).
 
 You might be wondering if this means that you can't run Ben's programs on this build - and the answer is **YES YOU CAN**. Indeed, some changes to the code are necessary, but thanks to the additional VIA chip and with some changes to the addressing mode you can run any program from Ben's videos. If you want to use LCD in 8-bit mode, you can also use the additional VIA for it, ignoring the built-in LCD connector.
 
 By the way, the opposite is also true - **you can compile and run my programs on Ben's computer**. There are special compilation flags that enable usage of Ben's address decoder. I will describe this in more detail in software section.
 
-Detailed description and rationale for each change is discussed in [Schematics README](Schematics).
+Detailed description and rationale for each change is discussed in [Schematics README](Schematics/README.md).
 
 ## Getting started
 
@@ -58,11 +58,11 @@ To start from scratch it's actually easiest to select last option - after some w
 
 If you decide to go down that route, head straight to the `Software` folder, where you will find several programs either identical or similar to what Ben has shown in his videos, but built with much more versatile toolchain.
 
-If you want to read more, go ahead and read [Software folder](Software) section. Make sure to check out the [building software](Software/#building-software) subsection, as it explains how to compile programs to run on Ben's build directly.
+If you want to read more, go ahead and read [Software folder](Software/README.md) section. Make sure to check out the [building software](Software/README.md#building-software) subsection, as it explains how to compile programs to run on Ben's build directly.
 
 ### Build your own breadboard design
 
-Maybe you have already started expanding on Ben's build, or maybe you are just considering it now. If you want to check out how I did certain things, jump right into `Schematics` [folder](Schematics), where you will find KiCAD projects for all the components used in this project. Obviously the most important one is the `65C02_Computer` project, but there are some additional goodies there.
+Maybe you have already started expanding on Ben's build, or maybe you are just considering it now. If you want to check out how I did certain things, jump right into `Schematics` [folder](Schematics/README.md), where you will find KiCAD projects for all the components used in this project. Obviously the most important one is the `65C02_Computer` project, but there are some additional goodies there.
 
 **Please note:** This part is not very well documented, I have assumed that anybody willing to dig into these schematics already knows how to read them.
 
@@ -70,7 +70,7 @@ Most of the decisions made during the schematic design were explained above. Jus
 
 ### Using my PCB design
 
-This will be explained in the most detail, obviously. Start with getting [the PCBs](Schematics/#ordering-pcb). **Please note:** clock module is entirely optional, but really useful for single stepping or slow clocking required by Ben Eater's design of Arduino Mega based bus analyzer. As explained in number of places here, you can either order PCBs from PCBWay directly or use your manufacturer of choice - it should have no impact on the final result.
+This will be explained in the most detail, obviously. Start with getting [the PCBs](Schematics/README.md#ordering-pcb). **Please note:** clock module is entirely optional, but really useful for single stepping or slow clocking required by Ben Eater's design of Arduino Mega based bus analyzer. As explained in number of places here, you can either order PCBs from PCBWay directly or use your manufacturer of choice - it should have no impact on the final result.
 
 ## What's in the repo
 
@@ -80,7 +80,7 @@ And, last but not least, full set of sample programs to follow Ben's videos on m
 
 ### `Arduino` folder
 
-There are several sketches there, and their full description is available is [separate README](Arduino).
+There are several sketches there, and their full description is available is [separate README](Arduino/README.md).
 
 ### `Datasheets` folder
 
@@ -97,7 +97,7 @@ All the KiCAD schematics for the 6502 computer, modified clock module and severa
 * Address_decoder_basic_v2 - slightly modified version of the above,
 * Address_decoder_extended - schematic of my own address decoder, used in the final build of my 6502 computer.
 
-There is dedicated [README](Schematics) in the folder, containing all the build-related details.
+There is dedicated [README](Schematics/README.md) in the folder, containing all the build-related details.
 
 ### `Software` folder
 
@@ -112,4 +112,4 @@ The `Software` folder is currently divided into four main parts:
 
 There is also one "master" makefile located directly in the `Software` folder - it will build all the projects in `rom` and `load` subfolders.
 
-There is dedicated [README](Software) in the folder, containing all the software-related details.
+There is dedicated [README](Software/README.md) in the folder, containing all the software-related details.
