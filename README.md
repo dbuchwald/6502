@@ -554,6 +554,78 @@ make FASTCLOCK=1 all test
 
 This command will rebuild only modified modules with support for my own addressing scheme (32K RAM, 24K ROM, VIA at 0x9000) and suitable for 1MHz execution - all delays will be enabled.
 
+#### Detailed description of modules in `Software` folder
+
+There are quite many programs in the `Software` folder, making the navigation a bit difficult. This section should support you in navigating provided software library.
+
+##### ROM images in `rom` folder
+
+In the `rom` folder you will find the following ROM images:
+
+* `01_nop_fill` - simplest possible program, composed of 32K of NOP (0xea) instructions. The source itself seems empty, because default fill is defined in firmware configuration files (`common/firmware.basic.cfg` and `common/firmware.ext.cfg`),
+* `02_nop_fffc` - extension of the above program by adding `VECTORS` segment, containing start address for 6502. Address of the `init` label depends on the firmware configuration used,
+* `03_first_code` - very simple program that actually executes some code, but there is no effect to be observed,
+* `04_blink_s` - first example of a program interfacing with external world, using VIA2 to drive LEDs, as in Ben's videos,
+* `05_knight_rider` - modification of the previous one to achieve classic effect,
+* `06_lcd_test` - modified version of Ben Eater's first LCD program. Modification involves using loops, but runs without RAM, only ROM is used. This program will work only on slow clock (not 1MHz), and will not work with onboard LCD connector. To execute this one, you need to connect LCD via breadboard to VIA2 connectors on the PCB. When compiled for Ben Eater's build (with `ADDRESS_MODE = basic`) it will work out of the box,
+* `07_mem_test` - modification of the previous one, testing RAM module usage - message contents are copied first from ROM to RAM and only then displayed on the LCD,
+* `08_stack_test` - modification of the previous one, but this time stack is utilized for JSR/RTS operation showcase,
+* `09_serial_test` - simplest possible ACIA/serial testing program, using blocking send/receive operation to send simple message in response to each input on serial terminal,
+* `10_blink_c` - modification of `04_blink_s`, but mixing low-level ASM code for hardware handling and C code for "business logic", shows how to use software stack to write code in C,
+* `11_int_test` - illustration how to use VIA1 clock timer interrupt - basically displays text on LCD attached to VIA2 while changing LED (connected to VIA2 PA0) state each 50 cycles. Obviously needs to be executed in slow clock mode,
+* `12_handshake_test` - very simple program that shows how to use CA1/CA2 hardware handshake operation with keyboard controller, will print on the LCD screen (connected to onboard LCD connector in 4-bit mode!) keys pressed on the attached PS/2 keyboard. Requires 1MHz clock for smooth operation, and is not compatible with Ben's build,
+* `13_4bit_lcd` - testing program for 4-bit LCD interface, hence not compatible with Ben's build,
+* `14_irq_test` - small program to run with slow clock showing operation of the VIA1 timer interrupt,
+* `15_serial_irq` - interrupt-driven serial communication (both RX and TX), sends static message in response to each input from serial terminal,
+* `16_delay_test` - testing program for improved 4-bit LCD library for onboard port, using functions like line wrap and vertical screen scrolling, not compatible with Ben's build because of the 4-bit interface,
+* `17_blink_test` - another blink program, but this one uses common library functions to drive onboard LCD. Can be adapted to work with Ben's build, you just need to connect the LCD to PB0,
+* `18_core_program` - test program used to verify operation of aggregated system init operation, uses onboard LCD to present contents of RX/TX buffer pointers (used in debugging of serial connection),
+* `19_keyboard_test` - more complex program presenting integration with onboard keyboard controller, with IRQ driven data transmission, hardware state change detection and pretty interface on the onboard LCD port,
+* `20_convert_test` - small testing program to test hex conversion function, aimed at x6502 emulator execution,
+* `21_serial_load_test` - attempt to implement testing program for high serial load, counting incoming characters,
+* `22_modem_test` - barebone modem testing application, sort of bootloader without user interface,
+* `23_blink_test` - copy of `load/01_blink_test` to show how simple `makefile` change can be used to build the same source either as ROM image or bootloader-compatible loadable module,
+* `minimal_bootloader` - simplest possible bootloader application that can be used to simplify software development thanks to making ROM flashing unnecessary for each code change.
+
+The following table summarizes compatibility of each program with different versions of the 6502 computers:
+
+|Program                  |Ben Eater's build execution notes|This build execution notes                                         |
+|-------------------------|---------------------------------|-------------------------------------------------------------------|
+|`rom/01_nop_fill`        |Works out of the box             |Works out of the box, slow clock and bus analyzer recommended      |
+|`rom/02_nop_fffc`        |Build with ADDRESS_MODE=basic    |Works out of the box, slow clock and bus analyzer recommended      |
+|`rom/03_first_code`      |Build with ADDRESS_MODE=basic    |Works out of the box, slow clock and bus analyzer recommended      |
+|`rom/04_blink_s`         |Build with ADDRESS_MODE=basic    |Works out of the box, attach LEDs to VIA2, needs slow clock        |
+|`rom/05_knight_rider`    |Build with ADDRESS_MODE=basic    |Works out of the box, attach LEDs to VIA2, needs slow clock        |
+|`rom/06_lcd_test`        |Build with ADDRESS_MODE=basic    |Works out of the box, attach LCD to VIA2, needs slow clock         |
+|`rom/07_mem_test`        |Build with ADDRESS_MODE=basic    |Works out of the box, attach LCD to VIA2, needs slow clock         |
+|`rom/08_stack_test`      |Build with ADDRESS_MODE=basic    |Works out of the box, attach LCD to VIA2, needs slow clock         |
+|`rom/09_serial_test`     |ACIA chip needs to be added      |Works out of the box with R6551, WDC65C51 needs slow clock         |
+|`rom/10_blink_c`         |Build with ADDRESS_MODE=basic    |Works out of the box, attach LEDs to VIA2, needs slow clock        |
+|`rom/11_int_test`        |Build with ADDRESS_MODE=basic    |Works out of the box, attach LCD and LED to VIA2, needs slow clock |
+|`rom/12_handshake_test`  |Not supported                    |Works out of the box, 1MHz clock recommended, onboard LCD port     |
+|`rom/13_4bit_lcd`        |Not supported                    |Works out of the box, onboard LCD port                             |
+|`rom/14_irq_test`        |Build with ADDRESS_MODE=basic    |Works out of the box, slow clock and bus analyzer recommended      |
+|`rom/15_serial_irq`      |ACIA chip needs to be added      |Works out of the box with R6551, 1MHz recommended                  |
+|`rom/16_delay_test`      |Not supported                    |Works out of the box, 1MHz clock recommended, onboard LCD port     |
+|`rom/17_blink_test`      |ADDRESS_MODE=basic, LED on PB0   |Works out of the box                                               |
+|`rom/18_core_program`    |Not supported                    |Works out of the box                                               |
+|`rom/19_keyboard_test`   |Not supported                    |Works out of the box                                               |
+|`rom/20_convert_test`    |Build with ADDRESS_MODE=basic    |Works out of the box, slow clock and bus analyzer recommended      |
+|`rom/21_serial_load_test`|Not supported                    |Works out of the box                                               |
+|`rom/22_modem_test`      |ACIA chip needs to be added      |Works out of the box                                               |
+|`rom/23_blink_test`      |ADDRESS_MODE=basic, LED on PB0   |Works out of the box                                               |
+|`rom/minimal_bootloader` |Not supported                    |Works out of the box                                               |
+
+##### Loadable programs in `load` folder
+
+All the programs in the `load` folder are to be uploaded to the 6502 computer over serial port with XMODEM protocol and require ROM to be flashed with software capable of receiving them. Currently this is `rom/22_modem_test` and `rom/minimal_bootloader`. Following list describes them in more detail:
+
+* `load/01_blink_test` - simple program that blinks onboard LED 10 times, provided to illustrate loadable module build process. This one has been copied to `rom/23_blink_test` to illustrate differences between the two models,
+* `load/02_hello_world` - "Hello World" example in a loadable module version,
+* `load/03_string_test` - small program written to test string handling library functions.
+
+As for software compatibility - all the loadable modules require bootloader, and this one, in turn, requires ACIA for operation, so by design these are not compatible with vanilla Ben Eater's build.
+
 ## Printed Circuit Boards
 
 [First revision of PCBs](https://github.com/dbuchwald/6502/releases/tag/pcb-v001) have been released (one for modified clock module and one for the computer itself). PCBs can be ordered here (**please note: I get small commission in coupons from PCBWay when ordering using these links**. If you don't want that to happen, please download gerbers from the GitHub rulease page and order directly via PCBWay home page):
