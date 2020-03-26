@@ -34,4 +34,6 @@
 ; string routines
         .import _syscall_strcmp
         .import _syscall_strlen
+        .import _syscall_strtoupper
+        .import _syscall_strtolower
 

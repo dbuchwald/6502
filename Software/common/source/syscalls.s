@@ -45,6 +45,8 @@
 ; string routines
         .export _syscall_strcmp
         .export _syscall_strlen
+        .export _syscall_strtoupper
+        .export _syscall_strtolower
 
         .segment "SYSCALLS"
 
@@ -112,3 +114,7 @@ _syscall_strcmp:
         SYSCALL_VECTOR _strcmp
 _syscall_strlen:
         SYSCALL_VECTOR _strlen
+_syscall_strtoupper:
+        SYSCALL_VECTOR _strtoupper
+_syscall_strtolower:
+        SYSCALL_VECTOR _strtolower

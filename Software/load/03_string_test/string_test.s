@@ -48,6 +48,14 @@ init:
         sta result_val+1
         write_acia result_msg
 
+        write_acia to_upper_message
+        strtoupper to_upper_message
+        write_acia to_upper_message
+
+        write_acia to_lower_message
+        strtolower to_lower_message
+        write_acia to_lower_message
+
         rts
 
         .segment "RODATA"
@@ -57,9 +65,16 @@ msg2:    .byte "_strcmp on strc1,strc2 - ", $0000
 msg3:    .byte "_strcmp on strc2,strc3 - ", $0000
 msg4:    .byte "_strcmp on strc3,strc4 - ", $0000
 
-result_msg: .byte "Function returns 0x"
-result_val: .byte "00"
-            .byte CR, LF, $00
+to_upper_message: 
+         .byte "Testing 12938, ToUppEr AND tOlOWEr _# operatiOn?abcxyz@[]", CR, LF, $00
+to_lower_message:
+         .byte "Testing 12938, ToUppEr AND tOlOWEr _# operatiOn?abcxyz@[]", CR, LF, $00
+
+result_msg: 
+         .byte "Function returns 0x"
+result_val: 
+         .byte "00"
+         .byte CR, LF, $00
 
 strc1:   .byte "abcd", $00
 strc2:   .byte "abcd", $00

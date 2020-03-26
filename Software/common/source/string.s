@@ -2,6 +2,8 @@
 
         .export _strlen
         .export _strcmp
+        .export _strtoupper
+        .export _strtolower
 
 ; Compare two strings (ptr1, ptr2)
 ; A will contain comparison result
@@ -51,5 +53,53 @@ _strlen:
         dey
 @return:
         tya
+        ply
+        rts
+
+; Converts string to upper case in place
+_strtoupper:
+        phy
+        pha
+        ldy #$00
+@strtoupper_loop:
+        lda (ptr1),y
+        beq @return
+        cmp #('a')
+        bmi @nextchar
+        cmp #('z'+1)
+        bpl @nextchar
+        sec
+        sbc #('a'-'A')
+        sta (ptr1),y
+@nextchar:
+        iny
+        beq @return ; prevention against infinite loop
+        bra @strtoupper_loop
+@return:
+        pla
+        ply
+        rts
+
+; Converts string to lower case in place
+_strtolower:
+        phy
+        pha
+        ldy #$00
+@strtolower_loop:
+        lda (ptr1),y
+        beq @return
+        cmp #('A')
+        bmi @nextchar
+        cmp #('Z'+1)
+        bpl @nextchar
+        clc
+        adc #('a'-'A')
+        sta (ptr1),y
+@nextchar:
+        iny
+        beq @return ; prevention against infinite loop
+        bra @strtolower_loop
+@return:
+        pla
         ply
         rts

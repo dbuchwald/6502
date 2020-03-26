@@ -36,6 +36,8 @@
 ; string routines
         .export _strcmp
         .export _strlen
+        .export _strtoupper
+        .export _strtolower
 
         .code
 
@@ -130,3 +132,9 @@ _strcmp:
 
 _strlen:
         jmp (_syscall_strlen)
+
+_strtoupper:
+        jmp (_syscall_strtoupper)
+
+_strtolower:
+        jmp (_syscall_strtolower)

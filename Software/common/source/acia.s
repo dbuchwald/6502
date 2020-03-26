@@ -230,7 +230,19 @@ still_rx_overflow:
 _acia_write_byte:
         ; Preserve x register
         phx
-        ; Load data from the TX buffer
+        ; Preserve input value
+        pha
+        ; Check if TX buffer full - if so, keep polling until more space available
+@compare_with_read_pointer:
+        ; Load current value of write pointer
+        lda acia_tx_wptr
+        sec
+        sbc acia_tx_rptr
+        cmp #$ff
+        beq @compare_with_read_pointer
+        ; Restore input value
+        pla
+        ; Write data to the TX buffer
         ldx acia_tx_wptr
         sta acia_tx_buffer,x
         ; Increase pointer

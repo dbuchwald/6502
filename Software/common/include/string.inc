@@ -2,6 +2,8 @@
 
         .import _strlen
         .import _strcmp
+        .import _strtoupper
+        .import _strtolower
 
 LF      = $0a   ; Line Feed
 CR      = $0d   ; Carriage Return
@@ -20,7 +22,7 @@ CR      = $0d   ; Carriage Return
         jsr _strcmp
         .endmacro
 
-        .macro strlen str1, str2
+        .macro strlen str1
         pha
         lda #<str1
         sta ptr1
@@ -28,4 +30,24 @@ CR      = $0d   ; Carriage Return
         sta ptr1+1
         pla
         jsr _strlen
+        .endmacro
+
+        .macro strtoupper str1
+        pha
+        lda #<str1
+        sta ptr1
+        lda #>str1
+        sta ptr1+1
+        pla
+        jsr _strtoupper
+        .endmacro
+
+        .macro strtolower str1
+        pha
+        lda #<str1
+        sta ptr1
+        lda #>str1
+        sta ptr1+1
+        pla
+        jsr _strtolower
         .endmacro
