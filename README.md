@@ -48,9 +48,9 @@ Detailed description and rationale for each change is discussed in [Schematics R
 
 Okay, so it should be pretty clear what this project is about, so how to start playing with it? That really depends on what you decide to do:
 
-* Stick with Ben Eater's build and just use subset of provided software (either to install it in EEPROM, or just use it as reference for your own hacking),
-* Build your own breadboard design based on this one with any modifications you can think of,
-* Order PCBs of my build, solder the components and run provided software to see how it works and get started with your own designs.
+- Stick with Ben Eater's build and just use subset of provided software (either to install it in EEPROM, or just use it as reference for your own hacking),
+- Build your own breadboard design based on this one with any modifications you can think of,
+- Order PCBs of my build, solder the components and run provided software to see how it works and get started with your own designs.
 
 To start from scratch it's actually easiest to select last option - after some waiting you will end up having pretty solid base to extend your design on.
 
@@ -90,12 +90,12 @@ All the datasheets I used when designing my build, attached for reference.
 
 All the KiCAD schematics for the 6502 computer, modified clock module and several others:
 
-* 65C02_Computer - main schematic, including PCB design for my build of 6502 computer,
-* Clock_module - schematic for the modified clock module, including PCB design,
-* 555_troubleshoot - schematic of circuit used in [troubleshooting of clock module monostable noise issue](https://www.reddit.com/r/beneater/comments/edp1ls/noise_issue_in_monostable_mode_of_ben_eaters/),
-* Address_decoder_basic - schematic of Ben Eater's address decoder for 6502 project,
-* Address_decoder_basic_v2 - slightly modified version of the above,
-* Address_decoder_extended - schematic of my own address decoder, used in the final build of my 6502 computer.
+- 65C02_Computer - main schematic, including PCB design for my build of 6502 computer,
+- Clock_module - schematic for the modified clock module, including PCB design,
+- 555_troubleshoot - schematic of circuit used in [troubleshooting of clock module monostable noise issue](https://www.reddit.com/r/beneater/comments/edp1ls/noise_issue_in_monostable_mode_of_ben_eaters/),
+- Address_decoder_basic - schematic of Ben Eater's address decoder for 6502 project,
+- Address_decoder_basic_v2 - slightly modified version of the above,
+- Address_decoder_extended - schematic of my own address decoder, used in the final build of my 6502 computer.
 
 There is dedicated [README](Schematics/README.md) in the folder, containing all the build-related details.
 
@@ -105,10 +105,10 @@ This one is the most important folder, as it contains range of different program
 
 The `Software` folder is currently divided into four main parts:
 
-* `build` - temporary folder where all the build artifacts are created, including ROM binaries to be uploaded to EEPROM,
-* `common` - common sources: include files with common constants, sources with shared function, configuration files for different address decoder logic modes, shared makefile used by all projects and small python script to optimize size of loadable modules,
-* `rom` - set of projects used to create various ROM images to follow Ben's videos, test different features of the board and **some day** complete operating system for the computer,
-* `load` - set of project containing loadable modules. These can be uploaded at runtime, without the need to flash the EEPROM. Basic bootloader is required, obviously, and the usage instructions are provided below.
+- `build` - temporary folder where all the build artifacts are created, including ROM binaries to be uploaded to EEPROM,
+- `common` - common sources: include files with common constants, sources with shared function, configuration files for different address decoder logic modes, shared makefile used by all projects and small python script to optimize size of loadable modules,
+- `rom` - set of projects used to create various ROM images to follow Ben's videos, test different features of the board and **some day** complete operating system for the computer,
+- `load` - set of project containing loadable modules. These can be uploaded at runtime, without the need to flash the EEPROM. Basic bootloader is required, obviously, and the usage instructions are provided below.
 
 There is also one "master" makefile located directly in the `Software` folder - it will build all the projects in `rom` and `load` subfolders.
 
