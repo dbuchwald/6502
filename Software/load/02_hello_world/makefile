@@ -3,7 +3,6 @@ BUILD_TYPE=load
 
 ASM_SOURCES=hello_world.s
 C_SOURCES=
-COMMON_DEPS=syscalls.load.o loadlib.o zeropage.o
 
 include ../../common/makefile
 

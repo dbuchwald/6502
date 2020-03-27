@@ -5,6 +5,7 @@
       .export _blink_led
       .export _strobe_led
 
+      .code
 ; Initialize DDRB bit to output
 _blink_init:
       pha

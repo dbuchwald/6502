@@ -2,7 +2,6 @@
       .include "utils.inc"
       .include "via.inc"
       .include "lcd.inc"
-      .include "zeropage.inc"
       .include "keyboard.inc"
       .segment "VECTORS"
 

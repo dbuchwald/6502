@@ -3,7 +3,6 @@ BUILD_TYPE=load
 
 ASM_SOURCES=blink_test.s
 C_SOURCES=
-COMMON_DEPS=syscalls.load.o loadlib.o
 
 include ../../common/makefile
 

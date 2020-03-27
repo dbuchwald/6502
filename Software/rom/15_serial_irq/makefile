@@ -3,7 +3,6 @@ BUILD_TYPE=rom
 
 ASM_SOURCES=serial_irq.s
 C_SOURCES=
-COMMON_DEPS=
 
 include ../../common/makefile
 

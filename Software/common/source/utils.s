@@ -4,6 +4,7 @@
       .export _delay_sec
       .export _convert_to_hex
 
+      .code
 _delay_ms:
       ; Skip the routine when 1MHz clock is disabled
       .if fastclock=0

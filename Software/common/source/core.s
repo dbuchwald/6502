@@ -10,6 +10,7 @@
       .export _system_init
       .export _interrupt_handler
 
+      .code
 ; Main system initialization routine
 ; LCD initialization
 ; ACIA initialization

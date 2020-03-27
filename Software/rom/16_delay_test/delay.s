@@ -1,7 +1,6 @@
       .setcpu "65C02"
       .include "utils.inc"
       .include "lcd.inc"
-      .include "zeropage.inc"
       .include "via.inc"
 
       .segment "VECTORS"

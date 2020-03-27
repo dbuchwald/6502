@@ -1,13 +1,11 @@
       .setcpu "65C02"
       .include "utils.inc"
       .include "lcd.inc"
-      .include "zeropage.inc"
-      .include "via.inc"
-      .include "blink.inc"
       .include "core.inc"
       .include "acia.inc"
       .include "keyboard.inc"
       .include "modem.inc"
+      .include "syscalls.inc"
 
       .segment "VECTORS"
 

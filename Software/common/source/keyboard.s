@@ -9,6 +9,7 @@
 
 KEYBOARD_BUFFER_SIZE = 64
 
+      .code
 ; No parameters taken
 ; No registers changed
 ; No output values

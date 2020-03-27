@@ -5,6 +5,7 @@
         .export _strtoupper
         .export _strtolower
 
+        .code
 ; Compare two strings (ptr1, ptr2)
 ; A will contain comparison result
 ; -1 -> ptr1 < ptr2

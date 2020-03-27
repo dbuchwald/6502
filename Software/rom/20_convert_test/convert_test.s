@@ -1,6 +1,5 @@
       .setcpu "65C02"
       .include "utils.inc"
-      .include "zeropage.inc"
       .segment "VECTORS"
 
       .word   $0000
