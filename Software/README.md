@@ -175,7 +175,7 @@ Currently only the minimal bootloader is provided, but it should be sufficient f
 
 **PLEASE NOTE:** Both the bootloader and sample programs will be built automatically when invoking `make all` directly in `Software` folder.
 
-Upon boot you will be prompted to connect to the PC via serial connection and press Enter key - either in termina window if keyboard is not connected, or on the keyboard otherwise. Connection details will be displayed on the LCD:
+Upon boot you will be prompted to connect to the PC via serial connection and press Enter key - either in terminal window if keyboard is not connected, or on the keyboard otherwise. Connection details will be displayed on the LCD:
 
 - 19200 baud,
 - 8-bit, no parity, 1 stop bit,
