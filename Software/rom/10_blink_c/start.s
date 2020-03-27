@@ -2,9 +2,6 @@
 
       .export __STARTUP__ : absolute = 1
 
-      .import zerobss
-      .import copydata
-
       .segment "VECTORS"
 
       .word   $eaea
@@ -20,6 +17,4 @@ init:
       ldx #$ff
       txs
 
-      jsr zerobss
-      jsr copydata
       jsr _main

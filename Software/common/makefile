@@ -1,7 +1,7 @@
 # cc65 utilities used in this example
 CA65_BINARY=ca65
 CC65_BINARY=cc65
-CL65_BINARY=cl65
+LD65_BINARY=ld65
 
 CPU_FLAG=--cpu 65C02
 ARCH_FLAG=-t none
@@ -9,7 +9,7 @@ CLOCK_FLAG=-Dfastclock=$(FASTCLOCK)
 
 CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) -O
 CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG)
-CL65_FLAGS=$(ARCH_FLAG)
+LD65_FLAGS=
 
 # MiniPro will be used to upload the ROM
 MINIPRO_BINARY=minipro
@@ -111,10 +111,10 @@ all: $(FIRMWARE_BINARY)
 $(FIRMWARE_BINARY): $(OBJECTS)
 	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(ROM_FOLDER)
 ifeq ($(BUILD_TYPE),load)
-	$(CL65_BINARY) $(CL65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_BINARY:.bin=.map) -o $(@:.bin=.raw) $^
+	$(LD65_BINARY) $(LD65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_BINARY:.bin=.map) -o $(@:.bin=.raw) $^
 	$(PYTHON_BINARY) $(PYTHON_PROGRAM) $(@:.bin=.raw) $@
 else
-	$(CL65_BINARY) $(CL65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_BINARY:.bin=.map) -o $@ $^
+	$(LD65_BINARY) $(LD65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_BINARY:.bin=.map) -o $@ $^
 endif
 
 
