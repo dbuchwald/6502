@@ -1,7 +1,11 @@
 RM_BINARY=rm
 RM_FLAGS=-rf
 
-MD5_BINARY=md5
+ifeq ($(OS),Windows_NT)
+	MD5_BINARY=md5sum
+else
+	MD5_BINARY=md5
+endif
 
 BUILD_FOLDER=build
 ROM_FOLDER=$(BUILD_FOLDER)/rom
@@ -54,7 +58,7 @@ $(LOAD_FOLDER)/%.bin:
 all: $(FIRMWARE_BINARIES) $(LOADABLE_BINARIES)
 
 test: $(FIRMWARE_BINARIES) $(LOADABLE_BINARIES)
-	$(MD5_BINARY) $^ 
+	@$(MD5_BINARY) $^ 
 
 clean:
 	$(RM_BINARY) $(RM_FLAGS) $(BUILD_FOLDER)

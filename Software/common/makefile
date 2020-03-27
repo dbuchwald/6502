@@ -25,7 +25,11 @@ HEXDUMP_FLAGS=-C
 X6502_BINARY=x6502
 
 # Checksum generator
-MD5_BINARY=md5
+ifeq ($(OS),Windows_NT)
+	MD5_BINARY=md5sum
+else
+	MD5_BINARY=md5
+endif
 
 # Standard utilities (rm/mkdir)
 RM_BINARY=rm
