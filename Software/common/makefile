@@ -45,6 +45,7 @@ BUILD_ROOT=../../build
 BUILD_FOLDER=$(BUILD_ROOT)/$(BUILD_TYPE)/$(PROJECT_NAME)
 ROM_FOLDER=$(BUILD_ROOT)/$(BUILD_TYPE)
 COMMON_BUILD_FOLDER=$(BUILD_ROOT)/common
+COMMON_LIB_FOLDER=$(BUILD_ROOT)/lib
 
 # Include folders
 COMMON_ROOT=../../common
@@ -67,7 +68,7 @@ COMMON_SOURCES=zeropage.s  \
 
 COMMON_OBJECTS=$(COMMON_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.o)
 
-COMMON_LIBRARY=$(COMMON_BUILD_FOLDER)/common.lib
+COMMON_LIBRARY=$(COMMON_LIB_FOLDER)/common.lib
 
 # Common library for loadable modules
 COMMON_LOAD_SOURCES=zeropage.s \
@@ -76,7 +77,7 @@ COMMON_LOAD_SOURCES=zeropage.s \
 
 COMMON_LOAD_OBJECTS=$(COMMON_LOAD_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.load.o)
 
-COMMON_LOAD_LIBRARY=$(COMMON_BUILD_FOLDER)/common.load.lib
+COMMON_LOAD_LIBRARY=$(COMMON_LIB_FOLDER)/common.load.lib
 
 # Source files to be compiled
 # ASM_SOURCES = via.s start.s
@@ -95,12 +96,15 @@ ifeq ($(BUILD_TYPE),load)
 # Choose configuration file for firmware (determines addressing mode)
 FIRMWARE_CFG=../../common/load.cfg
 # Resulting binary file (ROM to be uploaded)
+FIRMWARE_RAW=$(ROM_FOLDER)/$(PROJECT_NAME)/$(PROJECT_NAME).load.raw
 FIRMWARE_BINARY=$(ROM_FOLDER)/$(PROJECT_NAME).load.bin
+FIRMWARE_MAP=$(ROM_FOLDER)/$(PROJECT_NAME)/$(PROJECT_NAME).load.map
 else
 # Choose configuration file for firmware (determines addressing mode)
 FIRMWARE_CFG=../../common/firmware.$(ADDRESS_MODE).cfg
 # Resulting binary file (ROM to be uploaded)
 FIRMWARE_BINARY=$(ROM_FOLDER)/$(PROJECT_NAME).$(ADDRESS_MODE).bin
+FIRMWARE_MAP=$(ROM_FOLDER)/$(PROJECT_NAME)/$(PROJECT_NAME).$(ADDRESS_MODE).map
 endif
 
 # Compile assembler sources
@@ -131,9 +135,11 @@ $(COMMON_BUILD_FOLDER)/%.load.o: $(COMMON_SOURCE_FOLDER)/%.s $(FIRMWARE_CFG)
 	$(CA65_BINARY) $(CA65_FLAGS) -Dload -I $(COMMON_INCLUDE_FOLDER) -o $@ -l $(@:.o=.lst) $<
 
 $(COMMON_LIBRARY): $(COMMON_OBJECTS)
+	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(COMMON_LIB_FOLDER)
 	$(AR65_BINARY) $(AR65_FLAGS) $(COMMON_LIBRARY) $^
 
 $(COMMON_LOAD_LIBRARY): $(COMMON_LOAD_OBJECTS)
+	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(COMMON_LIB_FOLDER)
 	$(AR65_BINARY) $(AR65_FLAGS) $(COMMON_LOAD_LIBRARY) $^
 
 # Standard build
@@ -141,14 +147,16 @@ all: $(FIRMWARE_BINARY)
 
 # Linking process
 ifeq ($(BUILD_TYPE),load)
-$(FIRMWARE_BINARY): $(OBJECTS) $(COMMON_LOAD_LIBRARY)
+$(FIRMWARE_RAW): $(OBJECTS) $(COMMON_LOAD_LIBRARY)
 	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(ROM_FOLDER)
-	$(LD65_BINARY) $(LD65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_BINARY:.bin=.map) -o $(@:.bin=.raw) $^
-	$(PYTHON_BINARY) $(PYTHON_PROGRAM) $(@:.bin=.raw) $@
+	$(LD65_BINARY) $(LD65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_MAP) -o $(FIRMWARE_RAW) $^
+
+$(FIRMWARE_BINARY): $(FIRMWARE_RAW)
+	$(PYTHON_BINARY) $(PYTHON_PROGRAM) $^ $@
 else
 $(FIRMWARE_BINARY): $(OBJECTS) $(COMMON_LIBRARY)
 	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(ROM_FOLDER)
-	$(LD65_BINARY) $(LD65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_BINARY:.bin=.map) -o $@ $^
+	$(LD65_BINARY) $(LD65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_MAP) -o $@ $^
 endif
 
 # Display ROM contents
