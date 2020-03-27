@@ -1,6 +1,10 @@
 # 6502 system software
 
-This documentation provides necessary insight into software provided in the repository.
+This documentation provides necessary insight into software provided in the repository, and it is organized in the following sections:
+
+* [Getting started with provided software](#getting-started-with-provided-software),
+* [Building software](#building-software),
+* [Detailed description of modules in software folder](#detailed-description-of-modules-in-software-folder).
 
 ## Getting started with provided software
 
