@@ -25,11 +25,7 @@ HEXDUMP_FLAGS=-C
 X6502_BINARY=x6502
 
 # Checksum generator
-ifeq ($(OS),Windows_NT)
-	MD5_BINARY=md5sum
-else
-	MD5_BINARY=md5
-endif
+MD5_BINARY=md5sum
 
 # Standard utilities (rm/mkdir)
 RM_BINARY=rm
@@ -50,6 +46,11 @@ BUILD_FOLDER=$(BUILD_ROOT)/$(BUILD_TYPE)/$(PROJECT_NAME)
 ROM_FOLDER=$(BUILD_ROOT)/$(BUILD_TYPE)
 COMMON_BUILD_FOLDER=$(BUILD_ROOT)/common
 COMMON_LIB_FOLDER=$(BUILD_ROOT)/lib
+
+# Loadable module linking mode (dynamic/static)
+ifneq ($(LOAD_LINK),static)
+	LOAD_LINK=dynamic
+endif
 
 # Include folders
 COMMON_ROOT=../../common
@@ -111,6 +112,13 @@ FIRMWARE_BINARY=$(ROM_FOLDER)/$(PROJECT_NAME).$(ADDRESS_MODE).bin
 FIRMWARE_MAP=$(ROM_FOLDER)/$(PROJECT_NAME)/$(PROJECT_NAME).$(ADDRESS_MODE).map
 endif
 
+# Loadable module linking library - depending on link mode
+ifeq ($(LOAD_LINK),dynamic)
+	LOAD_LINK_LIBRARY = $(COMMON_LOAD_LIBRARY)
+else
+	LOAD_LINK_LIBRARY = $(COMMON_LIBRARY)
+endif
+
 # Compile assembler sources
 $(BUILD_FOLDER)/%.o: %.s $(FIRMWARE_CFG)
 	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(BUILD_FOLDER)
@@ -151,7 +159,7 @@ all: $(FIRMWARE_BINARY)
 
 # Linking process
 ifeq ($(BUILD_TYPE),load)
-$(FIRMWARE_RAW): $(OBJECTS) $(COMMON_LOAD_LIBRARY)
+$(FIRMWARE_RAW): $(OBJECTS) $(LOAD_LINK_LIBRARY)
 	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(ROM_FOLDER)
 	$(LD65_BINARY) $(LD65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_MAP) -o $(FIRMWARE_RAW) $^
 

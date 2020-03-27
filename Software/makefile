@@ -1,11 +1,7 @@
 RM_BINARY=rm
 RM_FLAGS=-rf
 
-ifeq ($(OS),Windows_NT)
-	MD5_BINARY=md5sum
-else
-	MD5_BINARY=md5
-endif
+MD5_BINARY=md5sum
 
 BUILD_FOLDER=build
 ROM_FOLDER=$(BUILD_FOLDER)/rom
