@@ -33,13 +33,14 @@ FIRMWARE_PROJECTS = 01_nop_fill \
                     20_convert_test \
                     21_serial_load_test \
                     22_modem_test \
-										23_blink_test \
-										minimal_bootloader
+                    23_blink_test \
+                    minimal_bootloader
 
 LOADABLE_PROJECTS = 01_blink_test \
                     02_hello_world \
                     03_string_test \
-										04_blink_large
+                    04_blink_large \
+                    05_simple_shell
 
 FIRMWARE_BINARIES=$(FIRMWARE_PROJECTS:%=$(ROM_FOLDER)/%.$(ADDRESS_MODE).bin)
 
