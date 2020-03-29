@@ -47,6 +47,8 @@
         .export _syscall_strlen
         .export _syscall_strtoupper
         .export _syscall_strtolower
+        .export _syscall_strtriml
+        .export _syscall_strtrimr
 
         .segment "SYSCALLS"
 
@@ -118,3 +120,7 @@ _syscall_strtoupper:
         SYSCALL_VECTOR _strtoupper
 _syscall_strtolower:
         SYSCALL_VECTOR _strtolower
+_syscall_strtriml:
+        SYSCALL_VECTOR _strtriml
+_syscall_strtrimr:
+        SYSCALL_VECTOR _strtrimr

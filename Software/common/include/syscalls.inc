@@ -36,4 +36,5 @@
         .forceimport _syscall_strlen
         .forceimport _syscall_strtoupper
         .forceimport _syscall_strtolower
-
+        .forceimport _syscall_strtriml
+        .forceimport _syscall_strtrimr

@@ -4,6 +4,10 @@
         .export _strcmp
         .export _strtoupper
         .export _strtolower
+        .export _strtriml
+        .export _strtrimr
+
+SPACE = $20
 
         .code
 ; Compare two strings (ptr1, ptr2)
@@ -100,6 +104,66 @@ _strtolower:
         iny
         beq @return ; prevention against infinite loop
         bra @strtolower_loop
+@return:
+        pla
+        ply
+        rts
+
+; Trim all leading and trailing space characters
+; ptr1 - points at the beginning of null terminated string
+; ptr2 - used to copy data
+_strtriml:
+        phy
+        pha
+        ; Copy ptr1 to ptr2
+        lda ptr1
+        sta ptr2
+        lda ptr1+1
+        sta ptr2+1
+        ldy #$00
+@skip_loop:
+        ; keep moving ptr2 until first non-white char found
+        lda (ptr2),y
+        cmp #(SPACE)
+        bne @copy_loop
+        inc ptr2
+        bne @skip_loop
+        inc ptr2+1
+        bra @skip_loop
+@copy_loop:
+        lda (ptr2),y
+        sta (ptr1),y
+        beq @return
+        iny
+        beq @return ; prevention against infinite loop
+        bra @copy_loop
+@return:
+        pla
+        ply
+        rts
+
+; Trims all the trailing space characters
+; ptr1 points to null terminated string to be trimmed
+_strtrimr:
+        phy
+        pha
+        ldy #$00
+@skip_loop:
+        ; keep moving until the end of string is found
+        lda (ptr1),y
+        beq @trimr_loop
+        iny
+        beq @return ; prevention against infinite loop
+        bra @skip_loop
+
+@trimr_loop:
+        dey
+        lda (ptr1),y
+        cmp #(SPACE)
+        bne @return
+        lda #$00
+        sta (ptr1),y
+        bra @trimr_loop
 @return:
         pla
         ply

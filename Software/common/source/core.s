@@ -4,7 +4,6 @@
       .include "lcd.inc"
       .include "acia.inc"
       .include "blink.inc"
-      .include "syscalls.inc"
       .include "keyboard.inc"
 
       .export _system_init

@@ -38,6 +38,8 @@
         .export _strlen
         .export _strtoupper
         .export _strtolower
+        .export _strtriml
+        .export _strtrimr
 
         .code
 
@@ -138,3 +140,9 @@ _strtoupper:
 
 _strtolower:
         jmp (_syscall_strtolower)
+
+_strtriml:
+        jmp (_syscall_strtriml)
+
+_strtrimr:
+        jmp (_syscall_strtrimr)

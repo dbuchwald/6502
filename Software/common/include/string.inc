@@ -4,9 +4,12 @@
         .import _strcmp
         .import _strtoupper
         .import _strtolower
+        .import _strtriml
+        .import _strtrimr
 
 LF      = $0a   ; Line Feed
 CR      = $0d   ; Carriage Return
+SPACE   = $20   ; Space character
 
         .macro strcmp str1, str2
         pha
@@ -51,3 +54,24 @@ CR      = $0d   ; Carriage Return
         pla
         jsr _strtolower
         .endmacro
+
+        .macro strtriml str1
+        pha
+        lda #<str1
+        sta ptr1
+        lda #>str1
+        sta ptr1+1
+        pla
+        jsr _strtriml
+        .endmacro
+
+        .macro strtrimr str1
+        pha
+        lda #<str1
+        sta ptr1
+        lda #>str1
+        sta ptr1+1
+        pla
+        jsr _strtrimr
+        .endmacro
+

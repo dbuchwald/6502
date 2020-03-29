@@ -9,7 +9,6 @@ LINE_BUFFER_SIZE = 64
 ENTER = $0d
 BACKSPACE = $7f
 ESC = $1b
-SPACE = $20
 
         .segment "VECTORS"
 
@@ -25,26 +24,6 @@ SPACE = $20
         sta ptr1+1
         pla
         jsr _acia_read_line
-        .endmacro
-
-        .macro strtriml str1
-        pha
-        lda #<str1
-        sta ptr1
-        lda #>str1
-        sta ptr1+1
-        pla
-        jsr _strtriml
-        .endmacro
-
-        .macro strtrimr str1
-        pha
-        lda #<str1
-        sta ptr1
-        lda #>str1
-        sta ptr1+1
-        pla
-        jsr _strtrimr
         .endmacro
 
         .code
@@ -171,61 +150,6 @@ _acia_read_line:
         iny
         bra @read_char_loop
 
-; Trim all leading and trailing space characters
-_strtriml:
-        phy
-        pha
-        ; Copy ptr1 to ptr2
-        lda ptr1
-        sta ptr2
-        lda ptr1+1
-        sta ptr2+1
-        ldy #$00
-@skip_loop:
-        ; keep moving ptr2 until first non-white char found
-        lda (ptr2),y
-        cmp #(SPACE)
-        bne @copy_loop
-        inc ptr2
-        bne @skip_loop
-        inc ptr2+1
-        bra @skip_loop
-@copy_loop:
-        lda (ptr2),y
-        sta (ptr1),y
-        beq @return
-        iny
-        beq @return ; prevention against infinite loop
-        bra @copy_loop
-@return:
-        pla
-        ply
-        rts
-
-_strtrimr:
-        phy
-        pha
-        ldy #$00
-@skip_loop:
-        ; keep moving until the end of string is found
-        lda (ptr1),y
-        beq @trimr_loop
-        iny
-        beq @return ; prevention against infinite loop
-        bra @skip_loop
-
-@trimr_loop:
-        dey
-        lda (ptr1),y
-        cmp #(SPACE)
-        bne @return
-        lda #$00
-        sta (ptr1),y
-        bra @trimr_loop
-@return:
-        pla
-        ply
-        rts
 
         .segment "BSS"
 line_buffer:
