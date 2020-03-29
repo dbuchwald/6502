@@ -3,6 +3,7 @@
         .include "acia.inc"
         .include "lcd.inc"
         .include "keyboard.inc"
+        .include "utils.inc"
 
         .export _tty_init
         .export _tty_read_line
@@ -37,6 +38,8 @@ _tty_read_line:
         cpy tmp1
         bne @clean_buffer_loop
         ldy #$00
+        ; decrease tmp1, since we want always the last char to be null
+        dec tmp1
 @read_char_loop:
         ; Read one characted from serial (blocks until read)
         jsr _tty_read_byte
@@ -69,23 +72,16 @@ _tty_read_line:
         ; check for extra chars (127-255) 
         cmp #$7e 
         bpl @read_char_loop
-        ; check for buffer full (we need to check y against tmp1-1 or y+1 against tmp1, 
-        ; since last char is always null)
-        iny 
+        ; check for buffer full 
         cpy tmp1
         ; if full, go back - accept enter or backspace
-        beq @buffer_full
-        ; decrease pointer to store in right location
-        dey
+        beq @read_char_loop
         ; store character in buffer
         sta (ptr1),y
         ; send back for echo
         jsr _tty_write_byte
         ; increase pointer
         iny
-        bra @read_char_loop
-@buffer_full:
-        dey
         bra @read_char_loop
 
 ; Write null terminated string to output
@@ -176,7 +172,9 @@ _tty_send_newline:
         ; Serial output disabled
         beq @skip_serial
         ; Send series of characters for backspace
+        push_ptr ptr1
         write_acia acia_newline
+        pull_ptr ptr1
 @skip_serial:
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_LCD)
@@ -196,7 +194,9 @@ _tty_send_backspace:
         ; Serial output disabled
         beq @skip_serial
         ; Send series of characters for backspace
+        push_ptr ptr1
         write_acia acia_backspace
+        pull_ptr ptr1
 @skip_serial:
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_LCD)

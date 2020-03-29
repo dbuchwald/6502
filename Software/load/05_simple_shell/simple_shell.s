@@ -2,6 +2,7 @@
         .include "utils.inc"
         .include "zeropage.inc"
         .include "tty.inc"
+        .include "lcd.inc"
 
         .segment "VECTORS"
 
@@ -13,7 +14,8 @@ LINE_BUFFER_SIZE = 10
 
         .code
 init:
-        lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_OUTPUT_SERIAL | TTY_CONFIG_OUTPUT_LCD)
+        ; all input, all output
+        lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL | TTY_CONFIG_OUTPUT_LCD)
         jsr _tty_init
 
         ; Display hello messages
@@ -27,8 +29,6 @@ main_loop:
 
         ; Read line 
         tty_read_line line_buffer, LINE_BUFFER_SIZE
-
-
 
         ; Trim the line
         strtriml line_buffer
@@ -113,4 +113,3 @@ cmd_load:
         .byte "LOAD", $00
 cmd_exit:
         .byte "EXIT", $00
-
