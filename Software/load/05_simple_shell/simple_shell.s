@@ -27,34 +27,50 @@ SPACE = $20
         jsr _acia_read_line
         .endmacro
 
-        .macro strtrim str1
+        .macro strtriml str1
         pha
         lda #<str1
         sta ptr1
         lda #>str1
         sta ptr1+1
         pla
-        jsr _strtrim
+        jsr _strtriml
+        .endmacro
+
+        .macro strtrimr str1
+        pha
+        lda #<str1
+        sta ptr1
+        lda #>str1
+        sta ptr1+1
+        pla
+        jsr _strtrimr
         .endmacro
 
         .code
 init:
+        ; Display hello messages
         write_acia msghello1
         write_acia msghello2
         write_acia msghello3
 
 main_loop:
+        ; Start with prompt
         write_acia os1prompt
 
+        ; Read line 
         acia_read_line line_buffer
-        jsr _lcd_clear
-        write_lcd line_buffer
 
+        ; Trim the line
+        strtriml line_buffer
+        strtrimr line_buffer
+
+        ; If empty - display prompt again
         strlen line_buffer
         cmp #$00
         beq main_loop
 
-        strtrim line_buffer
+        ; Convert to upper case for comparison
         strtoupper line_buffer
 
 @compare_cmd_help:
@@ -156,7 +172,7 @@ _acia_read_line:
         bra @read_char_loop
 
 ; Trim all leading and trailing space characters
-_strtrim:
+_strtriml:
         phy
         pha
         ; Copy ptr1 to ptr2
@@ -177,10 +193,27 @@ _strtrim:
 @copy_loop:
         lda (ptr2),y
         sta (ptr1),y
+        beq @return
+        iny
+        beq @return ; prevention against infinite loop
+        bra @copy_loop
+@return:
+        pla
+        ply
+        rts
+
+_strtrimr:
+        phy
+        pha
+        ldy #$00
+@skip_loop:
+        ; keep moving until the end of string is found
+        lda (ptr1),y
         beq @trimr_loop
         iny
-        beq @trimr_loop ; prevention against infinite loop
-        bra @copy_loop
+        beq @return ; prevention against infinite loop
+        bra @skip_loop
+
 @trimr_loop:
         dey
         lda (ptr1),y
