@@ -13,13 +13,12 @@ tmp1:          .res 1
 tmp2:          .res 1
 tmp3:          .res 1
 tmp4:          .res 1
-lcd_out_ptr:   .res 2
 acia_rx_rptr:  .res 1
 acia_rx_wptr:  .res 1
 acia_tx_rptr:  .res 1
 acia_tx_wptr:  .res 1
-acia_str_ptr:  .res 2
 keyboard_conn: .res 1
 keyboard_rptr: .res 1
 keyboard_wptr: .res 1
+tty_config:    .res 1
 

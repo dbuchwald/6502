@@ -70,6 +70,7 @@ COMMON_SOURCES=zeropage.s  \
 							 utils.s     \
 							 via.s       \
 							 via_utils.s \
+							 tty.s
 
 COMMON_OBJECTS=$(COMMON_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.o)
 

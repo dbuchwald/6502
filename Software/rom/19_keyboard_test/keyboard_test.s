@@ -89,10 +89,10 @@ program_loop:
 @print_special_key:
       inx
       lda special_keys,x
-      sta lcd_out_ptr
+      sta ptr1
       inx
       lda special_keys,x
-      sta lcd_out_ptr+1
+      sta ptr1+1
       jsr _lcd_print
       bra program_loop
 @regular_char:

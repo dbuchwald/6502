@@ -11,9 +11,9 @@
         .macro write_acia string
         pha
         lda #<string
-        sta acia_str_ptr
+        sta ptr1
         lda #>string
-        sta acia_str_ptr+1
+        sta ptr1+1
         pla
         jsr _acia_write_string
         .endmacro   

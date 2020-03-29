@@ -11,11 +11,9 @@
 
 init:
       jsr _lcd_init
-      lda #<hello_msg
-      sta lcd_out_ptr
-      lda #>hello_msg
-      sta lcd_out_ptr+1
-      jsr _lcd_print
+
+      write_lcd hello_msg
+
       ldx #$00
 char_loop:
       lda chars_msg,x

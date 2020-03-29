@@ -17,11 +17,9 @@ init:
       lda #$01
       sta VIA1_PORTB
       jsr _lcd_init
-      lda #<hello_msg
-      sta lcd_out_ptr
-      lda #>hello_msg
-      sta lcd_out_ptr+1
-      jsr _lcd_print
+
+      write_lcd hello_msg
+
       lda #$03
       jsr _delay_sec
       ldx #$00

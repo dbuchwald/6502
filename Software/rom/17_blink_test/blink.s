@@ -14,11 +14,9 @@
 
 init:
       jsr _lcd_init
-      lda #<blink_msg
-      sta lcd_out_ptr
-      lda #>blink_msg
-      sta lcd_out_ptr+1
-      jsr _lcd_print
+
+      write_lcd blink_msg
+
       lda #$01
       jsr _delay_sec
       lda VIA1_DDRB

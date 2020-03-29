@@ -118,7 +118,7 @@ _lcd_print:
       ldy #$00
 @lcd_print_loop:
       ; Read next byte of init sequence data
-      lda (lcd_out_ptr),y
+      lda (ptr1),y
       ; Exit loop if $00 read
       beq @lcd_print_end
       ; Set carry for data operation

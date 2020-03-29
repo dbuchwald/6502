@@ -19,9 +19,9 @@ LCD_DM_DISPLAY_ON       = %00000100
       .macro write_lcd string_address
       pha
       lda #<string_address
-      sta lcd_out_ptr
+      sta ptr1
       lda #>string_address
-      sta lcd_out_ptr+1
+      sta ptr1+1
       jsr _lcd_print
       pla
       .endmacro

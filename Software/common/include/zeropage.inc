@@ -9,12 +9,11 @@
 .globalzp ptr2
 .globalzp ptr3
 .globalzp ptr4
-.globalzp lcd_out_ptr
 .globalzp acia_rx_rptr
 .globalzp acia_rx_wptr
 .globalzp acia_tx_rptr
 .globalzp acia_tx_wptr
-.globalzp acia_str_ptr
 .globalzp keyboard_conn
 .globalzp keyboard_rptr
 .globalzp keyboard_wptr
+.globalzp tty_config

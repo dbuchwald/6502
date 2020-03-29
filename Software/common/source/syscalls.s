@@ -8,6 +8,7 @@
         .include "zeropage.inc"
         .include "utils.inc"
         .include "string.inc"
+        .include "tty.inc"
 
 ; Init routines
         .export _syscall_system_init
@@ -49,6 +50,11 @@
         .export _syscall_strtolower
         .export _syscall_strtriml
         .export _syscall_strtrimr
+; tty routines
+        .export _syscall_tty_init
+        .export _syscall_tty_read_line
+        .export _syscall_tty_write
+        .export _syscall_tty_writeln
 
         .segment "SYSCALLS"
 
@@ -124,3 +130,11 @@ _syscall_strtriml:
         SYSCALL_VECTOR _strtriml
 _syscall_strtrimr:
         SYSCALL_VECTOR _strtrimr
+_syscall_tty_init:
+        SYSCALL_VECTOR _tty_init
+_syscall_tty_read_line:
+        SYSCALL_VECTOR _tty_read_line
+_syscall_tty_write:
+        SYSCALL_VECTOR _tty_write
+_syscall_tty_writeln:
+        SYSCALL_VECTOR _tty_writeln

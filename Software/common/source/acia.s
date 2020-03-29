@@ -259,7 +259,7 @@ _acia_write_byte:
         rts
 
 ; Write null terminated string to TX buffer
-; Assume input pointer in acia_str_ptr
+; Assume input pointer in ptr1
 _acia_write_string:
         ; preserve A register
         pha
@@ -269,7 +269,7 @@ _acia_write_string:
         ldy #$00
 @string_loop:
         ; load character
-        lda (acia_str_ptr),y
+        lda (ptr1),y
         ; stop if null
         beq @end_loop
         ; send char to buffer
