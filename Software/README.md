@@ -41,6 +41,46 @@ It might seem strange that the clock module is powered from UART port, but in fa
 
 The whole thing will be powered from Arduino via USB - don't worry, the load will not be too high.
 
+### Setting up development environment
+
+Development environment requires the following tools:
+
+- `make` to invoke all the below,
+- `cc65` compiler, available [here](https://github.com/cc65/cc65),
+- `minipro` software to upload ROM image to EEPROM, available [here](https://gitlab.com/DavidGriffith/minipro/),
+- `hexdump` for testing the contents of the binaries,
+- `md5sum` to generate binary checksum,
+- `rm` and `mkdir` for folder/file manipulation,
+- `picocom` for serial communication with the computer (Linux/MacOS),
+- `ExtraPuTTy` for serial communication and upload (Windows specific),
+- `sz` for loadable module upload via `picocom` (Linux/MacOS),
+- `python` to run small utility written in Python to trim loadable modules and add start vector,
+- `x6502` to run computer emulator (enables execution of generated binaries on PC), available [here](https://github.com/dbuchwald/x6502) - **please note: this one is optional, still in development, and lagging behind the actual computer.** Simple programs can be executed, but anything more complex than LCD operation (including ACIA/keyboard) don't work just yet.
+
+One important thing to note is that you might need to install FTDI Virtual COM Port drivers, and it applies to all operating systems.
+
+#### Setting up development environment under Linux
+
+By default, Linux distro should contain most of the needed tools. You might need to install `git` to clone `cc65` and `minipro` repositories to build them. The latter requires also `pkg-config` package in Debian/Ubuntu. `sz` might not be available, so check your distro manual for details.
+
+#### Setting up development environment under MacOS
+
+You will probably need `brew` to install `make` and `git`. Tricky part is missing `md5sum` utility, which can be installed using:
+
+```shell
+brew install md5sha1sum
+```
+
+Other than that, `sz` will probably be missing, so you might need to install this one as well.
+
+#### Setting up development environment under Windows
+
+This one seems to cause most issues, while it's not really that difficult. You need to install [Cygwin](https://cygwin.com/), but while installing, make sure you add the following packages: `python2`, `pkg-config`, `git`, `make`. This should be enough to clone `cc65` and `minipro` repositories, and after building them make sure to issue `make avail` and `make install` respectively to enable invocation from command line.
+
+For serial communication you can use regular PuTTy, but it doesn't have the feature of sending files using XModem protocol, required for loadable module support. Since this is important feature of this hardware/software stack, it's really recommended to use ExtraPuTTy instead.
+
+**PLEASE NOTE:** You might be able to use virtual machines or Windows Subsystem for Linux (WSL) - but neither of the two worked correctly with `make install` target that uses TL866II+ programmer to flash the ROM. YMMV.
+
 ### Running the simplest possible program
 
 Now you need to build the first program. Go to `Software/rom/01_nop_fill` folder and run:
@@ -189,25 +229,13 @@ In ExtraPuTTy open "Files Transfer" menu item, then "Xmodem" and "Send". Point t
 
 Program should load and be automatically executed. Congratulations, you got yourself working bootloader!
 
-**MORE INFO COMING SOON**
+### Installing OS/1
+
+OS/1 is simple operating system, currently being developed for the machine. It already provides bootloader functionality and more is coming every day.
 
 ## Building software
 
-General rule is simple: `make` should be sufficient for all the build/installation. If you want to use this software under Windows, you have basically two options: Windows Subsystem for Linux (works, with the exception of minipro upload operation) or some sort of MinGW/Cygwin. If you have better idea on how to do it, and can provide Pull Request - I will be more than happy to have something better.
-
-Beside `make` the following tools are used:
-
-- `cc65` compiler, available [here](https://github.com/cc65/cc65),
-- `minipro` software to upload ROM image to EEPROM, available [here](https://gitlab.com/DavidGriffith/minipro/),
-- `hexdump` for testing the contents of the binaries,
-- `md5` to generate binary checksum,
-- `rm` and `mkdir` for folder/file manipulation,
-- `picocom` for serial communication with the computer,
-- `sz` for loadable module upload via `picocom`,
-- `python` to run small utility written in Python to trim loadable modules and add start vector,
-- `x6502` to run computer emulator (enables execution of generated binaries on PC), available [here](https://github.com/dbuchwald/x6502) - **please note: this one is optional, still in development, and lagging behind the actual computer.** Simple programs can be executed, but anything more complex than LCD operation (including ACIA/keyboard) don't work just yet.
-
-The following `make` targets are to be used for building software:
+General rule is simple: `make` should be sufficient for all the build/installation. The following `make` targets are to be used for building software:
 
 - `all` - build the project,
 - `clean` - delete all temporary files,
@@ -266,7 +294,8 @@ In the `rom` folder you will find the following ROM images:
 - `21_serial_load_test` - attempt to implement testing program for high serial load, counting incoming characters,
 - `22_modem_test` - barebone modem testing application, sort of bootloader without user interface,
 - `23_blink_test` - copy of `load/01_blink_test` to show how simple `makefile` change can be used to build the same source either as ROM image or bootloader-compatible loadable module,
-- `minimal_bootloader` - simplest possible bootloader application that can be used to simplify software development thanks to making ROM flashing unnecessary for each code change.
+- `minimal_bootloader` - simplest possible bootloader application that can be used to simplify software development thanks to making ROM flashing unnecessary for each code change,
+- `os1` - **work in progress** - basic operating system.
 
 The following table summarizes compatibility of each program with different versions of the 6502 computers:
 
@@ -296,6 +325,7 @@ The following table summarizes compatibility of each program with different vers
 | `rom/22_modem_test`       | ACIA chip needs to be added       | Works out of the box                                               |
 | `rom/23_blink_test`       | ADDRESS_MODE=basic, LED on PB0    | Works out of the box                                               |
 | `rom/minimal_bootloader`  | Not supported                     | Works out of the box                                               |
+| `rom/os1`                 | Not supported                     | Works out of the box                                               |
 
 ### Loadable programs in `load` folder
 
@@ -304,7 +334,9 @@ All the programs in the `load` folder are to be uploaded to the 6502 computer ov
 - `load/01_blink_test` - simple program that blinks onboard LED 10 times, provided to illustrate loadable module build process. This one has been copied to `rom/23_blink_test` to illustrate differences between the two models,
 - `load/02_hello_world` - "Hello World" example in a loadable module version,
 - `load/03_string_test` - small program written to test string handling library functions,
-- `load/04_blink_large` - presents different model of linking loadable code (with included common modules).
+- `load/04_blink_large` - presents different model of linking loadable code (with included common modules),
+- `load/05_simple_shell` - simple shell program later moved to `os1` image,
+- `load/06_memdump` - initial implementation of simple memory monitor.
 
 As for software compatibility - all the loadable modules require bootloader, and this one, in turn, requires ACIA for operation, so by design these are not compatible with vanilla Ben Eater's build.
 
