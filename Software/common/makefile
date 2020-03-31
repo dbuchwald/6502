@@ -173,7 +173,11 @@ $(FIRMWARE_BINARY): $(OBJECTS) $(COMMON_LIBRARY)
 endif
 
 # Display ROM contents
+ifeq ($(BUILD_TYPE),load)
+test: $(FIRMWARE_RAW)
+else
 test: $(FIRMWARE_BINARY)
+endif
 	$(HEXDUMP_BINARY) $(HEXDUMP_FLAGS) $<
 	@$(MD5_BINARY) $<
 
