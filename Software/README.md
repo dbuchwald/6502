@@ -92,22 +92,39 @@ make clean all test
 You expect output similar to the following:
 
 ```text
+$ make clean all test
 rm -f ../../build/rom/*.bin \
-  ../../build/rom/01_nop_fill/*.o \
-  ../../build/rom/01_nop_fill/*.lst \
-  ../../build/rom/01_nop_fill/*.s \
-  ../../build/rom/*.map \
-  ../../build/common/*.o \
-  ../../build/common/*.lst \
-  ../../build/common/*.s \
-
+rm -f ../../build/rom/*.raw \
+../../build/rom/01_nop_fill/*.o \
+../../build/rom/01_nop_fill/*.lst \
+../../build/rom/01_nop_fill/*.s \
+../../build/rom/*.map \
+../../build/common/*.o \
+../../build/common/*.lst \
+../../build/common/*.s \
+../../build/common/*.lib
 ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/rom/01_nop_fill/nop_fill.o -l ../../build/rom/01_nop_fill/nop_fill.lst nop_fill.s
-cl65 -t none -C ../../common/firmware.ext.cfg -m ../../build/rom/01_nop_fill.ext.map -o ../../build/rom/01_nop_fill.ext.bin ../../build/rom/01_nop_fill/nop_fill.o
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/zeropage.o -l ../../build/common/zeropage.lst ../../common/source/zeropage.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/sysram_map.o -l ../../build/common/sysram_map.lst ../../common/source/sysram_map.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/syscalls.o -l ../../build/common/syscalls.lst ../../common/source/syscalls.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/acia.o -l ../../build/common/acia.lst ../../common/source/acia.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/blink.o -l ../../build/common/blink.lst ../../common/source/blink.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/core.o -l ../../build/common/core.lst ../../common/source/core.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/keyboard.o -l ../../build/common/keyboard.lst ../../common/source/keyboard.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/lcd.o -l ../../build/common/lcd.lst ../../common/source/lcd.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/modem.o -l ../../build/common/modem.lst ../../common/source/modem.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/string.o -l ../../build/common/string.lst ../../common/source/string.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/utils.o -l ../../build/common/utils.lst ../../common/source/utils.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/via.o -l ../../build/common/via.lst ../../common/source/via.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/via_utils.o -l ../../build/common/via_utils.lst ../../common/source/via_utils.s
+ca65 --cpu 65C02 -Dfastclock=1 -I ../../common/include -o ../../build/common/tty.o -l ../../build/common/tty.lst ../../common/source/tty.s
+ar65 r ../../build/lib/common.lib ../../build/common/zeropage.o ../../build/common/sysram_map.o ../../build/common/syscalls.o ../../build/common/acia.o ../../build/common/blink.o ../../build/common/core.o ../../build/common/keyboard.o ../../build/common/lcd.o ../../build/common/modem.o ../../build/common/string.o ../../build/common/utils.o ../../build/common/via.o ../../build/common/via_utils.o ../../build/common/tty.o
+ld65  -C ../../common/firmware.ext.cfg -m ../../build/rom/01_nop_fill/01_nop_fill.ext.map -o ../../build/rom/01_nop_fill.ext.bin ../../build/rom/01_nop_fill/nop_fill.o ../../build/lib/common.lib
 hexdump -C ../../build/rom/01_nop_fill.ext.bin
 00000000  ea ea ea ea ea ea ea ea  ea ea ea ea ea ea ea ea  |................|
 *
 00008000
-MD5 (../../build/rom/01_nop_fill.ext.bin) = 49d01fd92a6a02370364f8eef2ee2c93
+49d01fd92a6a02370364f8eef2ee2c93 *../../build/rom/01_nop_fill.ext.bin
 ```
 
 If you remember Ben's video - this is the first program he uploads to ROM. Now, run `make install` to upload the binary to your EEPROM - I assume you put the ROM chip in TL866II+ programmer and it is connected to your machine.
