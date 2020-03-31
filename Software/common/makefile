@@ -59,6 +59,7 @@ COMMON_SOURCE_FOLDER=$(COMMON_ROOT)/source
 
 # Common objects to be linked
 COMMON_SOURCES=zeropage.s  \
+							 sysram_map.s \
 							 syscalls.s  \
 							 acia.s      \
                blink.s     \
@@ -78,6 +79,7 @@ COMMON_LIBRARY=$(COMMON_LIB_FOLDER)/common.lib
 
 # Common library for loadable modules
 COMMON_LOAD_SOURCES=zeropage.s \
+										sysram_map.s \
                     syscalls.s \
                     loadlib.s
 

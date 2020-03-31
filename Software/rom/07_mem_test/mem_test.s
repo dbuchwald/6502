@@ -71,6 +71,6 @@ lcd_init_sequence:
 data:
       .byte "Merry Christmas!",$00
 
-      .segment "SYSRAM"
+      .segment "BSS"
 buffer:
       .res 256

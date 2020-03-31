@@ -1,6 +1,9 @@
       .include "via.inc"
       .include "zeropage.inc"
       .include "utils.inc"
+      .include "sys_const.inc"
+      .include "sysram_map.inc"
+
       .export _lcd_init
       .export _lcd_print
       .export _lcd_print_char
@@ -55,9 +58,6 @@ LCD_DATA_MODE           = %00000010
 LCD_WRITE_MODE          = %00000000
 LCD_READ_MODE           = %00000100
 LCD_ENABLE_FLAG         = %00001000
-
-LCD_COLUMNS             = 20
-LCD_ROWS                = 4
 
       .code
 
@@ -478,11 +478,6 @@ lcd_clear_line:
       plx
       pla
       rts
-
-      .SEGMENT "BSS"
-
-lcd_line_buffer:
-      .res LCD_COLUMNS
 
       .SEGMENT "RODATA"
 

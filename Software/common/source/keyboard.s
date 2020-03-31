@@ -1,13 +1,14 @@
       .include "via.inc"
       .include "zeropage.inc"
+      .include "sys_const.inc"
+      .include "sysram_map.inc"
+
       .include "utils.inc"
       .export _keyboard_init
       .export _handle_keyboard_irq
       .export _keyboard_is_connected
       .export _keyboard_is_data_available
       .export _keyboard_read_char
-
-KEYBOARD_BUFFER_SIZE = 64
 
       .code
 ; No parameters taken
@@ -144,6 +145,3 @@ _keyboard_read_char:
       ; Handling completed
       rts
 
-      .segment "BSS"
-keyboard_buffer:
-      .res KEYBOARD_BUFFER_SIZE

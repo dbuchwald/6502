@@ -107,7 +107,6 @@ _perform_load:
 _perform_dump:
         writeln_tty msgdump
 
-        ; Copy template to SYSRAM
         ldx #$00
 @template_loop:
         lda dump_template,x
@@ -164,7 +163,7 @@ _display_exit_message:
         writeln_tty msgbye
         rts
 
-        .segment "SYSRAM"
+        .segment "BSS"
 dump_line:
         .res 64
 

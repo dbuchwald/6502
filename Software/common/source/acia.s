@@ -1,4 +1,6 @@
         .include "zeropage.inc"
+        .include "sys_const.inc"
+        .include "sysram_map.inc"
         
         .import __ACIA_START__
         .export ACIA_DATA
@@ -16,9 +18,6 @@ ACIA_DATA    = __ACIA_START__ + $00
 ACIA_STATUS  = __ACIA_START__ + $01
 ACIA_COMMAND = __ACIA_START__ + $02
 ACIA_CONTROL = __ACIA_START__ + $03
-
-ACIA_RX_BUFFER_SIZE = 256
-ACIA_TX_BUFFER_SIZE = 256
 
 ACIA_STOP_BITS_1 = %00000000
 ACIA_STOP_BITS_2 = %10000000
@@ -288,8 +287,3 @@ _acia_write_string:
         ; return
         rts
 
-        .segment "BSS"
-acia_rx_buffer:
-        .res ACIA_RX_BUFFER_SIZE
-acia_tx_buffer:
-        .res ACIA_TX_BUFFER_SIZE
