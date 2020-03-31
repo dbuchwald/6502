@@ -2,9 +2,9 @@
 
 This documentation provides all the information regarding my variant of BE6502 computer:
 
-* [Differences between the builds](#deviations-from-ben-eaters-design),
-* [Instruction to order the PCBs](#ordering-pcb),
-* [Getting started with the PCB](#building-pcb).
+- [Differences between the builds](#deviations-from-ben-eaters-design),
+- [Instruction to order the PCBs](#ordering-pcb),
+- [Getting started with the PCB](#building-pcb).
 
 ## Deviations from Ben Eater's design
 
@@ -24,13 +24,13 @@ This one was my first _real_ change as in it was _mine_. As Ben explained in his
 That being said, I wanted more for my build. I knew I wanted to be able to load programs into my computer and I wanted to ensure that I provide user with as much RAM as possible. At the same time, I wanted to save some space on more optimized I/O shadow segment. And, most importantly, I wanted to test my understanding of how address decoding works. As stated above, the best way to learn is to change and test your hypothesis. If you want to learn more, I posted thread on [Reddit](https://www.reddit.com/r/beneater/comments/ej3lqi/65c02_address_decoder_for_32k_ram_24k_rom_and_2/) explaining what I did, how I did that and why I know it works. My build provides 32K RAM, 8K I/O shadow (for up to 11 devices), 24K ROM.
 
 The key takeway here is that when porting Ben's programs you have to use this "mapping table":
-|Segment|Ben's build  |My build     |Comment                                                           |
+|Segment|Ben's build |My build |Comment |
 |-------|-------------|-------------|------------------------------------------------------------------|
-|RAM    |0x0000-0x3fff|0x0000-0x7fff|                                                                  |
-|VIA1   |N/A          |0x9000       |Connected to keyboard/LCD/blink LED in my build                   |
-|VIA2   |0x6000       |0x8800       |Can be used to run Ben's programs                                 |
-|ACIA   |N/A          |0x8400       |                                                                  |
-|ROM    |0x8000-0xffff|0xa000-0xffff|**First 8K are not accessible, but need to be burned to the chip**|
+|RAM |0x0000-0x3fff|0x0000-0x7fff| |
+|VIA1 |N/A |0x9000 |Connected to keyboard/LCD/blink LED in my build |
+|VIA2 |0x6000 |0x8800 |Can be used to run Ben's programs |
+|ACIA |N/A |0x8400 | |
+|ROM |0x8000-0xffff|0xa000-0xffff|**First 8K are not accessible, but need to be burned to the chip**|
 
 Simplest possible example - [Blink LED example](https://eater.net/downloads/makerom.py) from Ben's page:
 
@@ -96,14 +96,14 @@ with open("rom.bin", "wb") as out_file:
 
 One of the silly things I decided to do, was to save pins on the first VIA chip and I decided on the following mapping:
 
-|Port |Pins   |Connection                                                                               |
-|-----|-------|-----------------------------------------------------------------------------------------|
-|PORTA|CA1,CA2|Keyboard controller read handshake - for IRQ based communication with keyboard controller|
-|PORTA|D0-D7  |Keyboard controller data line - for transferring ASCII scancodes of pressed characters   |
-|PORTB|CB1,CB2|Not used, disconnected                                                                   |
-|PORTB|D0     |Blink LED - to be used as the Arduino onboard LED, for easy debugging                    |
-|PORTB|D1-D3  |LCD control signals (register select, R/W, enable)                                       |
-|PORTB|D4-D7  |LCD data signals for 4-bit operation                                                     |
+| Port  | Pins    | Connection                                                                                |
+| ----- | ------- | ----------------------------------------------------------------------------------------- |
+| PORTA | CA1,CA2 | Keyboard controller read handshake - for IRQ based communication with keyboard controller |
+| PORTA | D0-D7   | Keyboard controller data line - for transferring ASCII scancodes of pressed characters    |
+| PORTB | CB1,CB2 | Not used, disconnected                                                                    |
+| PORTB | D0      | Blink LED - to be used as the Arduino onboard LED, for easy debugging                     |
+| PORTB | D1-D3   | LCD control signals (register select, R/W, enable)                                        |
+| PORTB | D4-D7   | LCD data signals for 4-bit operation                                                      |
 
 Afterwards it turned out that 4-bit operation is actually bit more complicated that 8-bit, and it breaks compatibility with Ben's programs. My best advice, if you want to run Ben's LCD programs on this build, is to use the second VIA port and 8-bit interface.
 
@@ -293,41 +293,41 @@ So, let's assume you got the PCBs and all the components, listed in the Bill of 
 
 Other optional components are:
 
-* UART Port (J2) - it was placed on the board if you decide to skip the FT230X chip, but you still want to use serial connection. You can use this port to connect to one of external USB->UART converters. **Please note:** if your USB->UART converter doesn't expose CTS/RTS lines, you have to connect CTS and RTS lines permanently to ground,
-* USB-B Port (J4) - if you prefer to use Micro-USB port,
-* Power-In Port (J5) - you can power the computer using any of the USB ports, so this one is optional,
-* PS/2 Connector (J6) - you can skip this one, if you don't intend to connect keyboard. Please note - ATtiny must be connected and programmed even if you don't plan to use keyboard - otherwise the lines would be left floating and could cause strange behavior. You can try grounding them using ATtiny socket, but this has not been tested,
-* AVR-ISP Port (J9) - required only if you plan to program the ATtiny onboard, otherwise you can program the chip externally, but it requires chip removal each time,
-* Expansion Port (J7) - this one can be skipped, if you don't plan to use Arduino Mega bus analyzer nor any extensions, but it's not recommended.
+- UART Port (J2) - it was placed on the board if you decide to skip the FT230X chip, but you still want to use serial connection. You can use this port to connect to one of external USB->UART converters. **Please note:** if your USB->UART converter doesn't expose CTS/RTS lines, you have to connect CTS and RTS lines permanently to ground,
+- USB-B Port (J4) - if you prefer to use Micro-USB port,
+- Power-In Port (J5) - you can power the computer using any of the USB ports, so this one is optional,
+- PS/2 Connector (J6) - you can skip this one, if you don't intend to connect keyboard. Please note - ATtiny must be connected and programmed even if you don't plan to use keyboard - otherwise the lines would be left floating and could cause strange behavior. You can try grounding them using ATtiny socket, but this has not been tested,
+- AVR-ISP Port (J9) - required only if you plan to program the ATtiny onboard, otherwise you can program the chip externally, but it requires chip removal each time,
+- Expansion Port (J7) - this one can be skipped, if you don't plan to use Arduino Mega bus analyzer nor any extensions, but it's not recommended.
 
 For the soldering, I would suggest to start with the most difficult components - you will probably get more than one board, so use the first one to brave the SMD components. Important step after soldering is to verify if there are any bridges/shorts between adjacent chip/port pins. Since checking the pins itself might be difficult (they are pretty small), it's easier to check on the connected THT pads, and these are:
 
-|FT230X Pin|Connected THT pad on PCB        |
-|----------|--------------------------------|
-|1         |RxD pad of UART Port (J2)       |
-|2         |CTS pad of UART Port (J2)       |
-|3         |Bottom pads of resistor R10, R11|
-|4         |TxD pad of UART Port (J2)       |
-|5         |Left pad of capacitor C8        |
-|6         |RTS pad of UART Port (J2)       |
-|7         |Disconnected                    |
-|8         |Left pad of resistor R5         |
-|9         |Left pad of resistor R4         |
-|10        |Bottom pads of resistors R10,R11|
-|11        |Pad 4 of the ACIA chip (U5)     |
-|12        |Right pad of capacitor C8       |
-|13        |Left pad of capacitor C8        |
-|14        |Left pad of LED D3              |
-|15        |Left pad of LED D2              |
-|16        |Disconnected                    |
+| FT230X Pin | Connected THT pad on PCB         |
+| ---------- | -------------------------------- |
+| 1          | RxD pad of UART Port (J2)        |
+| 2          | CTS pad of UART Port (J2)        |
+| 3          | Bottom pads of resistor R10, R11 |
+| 4          | TxD pad of UART Port (J2)        |
+| 5          | Left pad of capacitor C8         |
+| 6          | RTS pad of UART Port (J2)        |
+| 7          | Disconnected                     |
+| 8          | Left pad of resistor R5          |
+| 9          | Left pad of resistor R4          |
+| 10         | Bottom pads of resistors R10,R11 |
+| 11         | Pad 4 of the ACIA chip (U5)      |
+| 12         | Right pad of capacitor C8        |
+| 13         | Left pad of capacitor C8         |
+| 14         | Left pad of LED D3               |
+| 15         | Left pad of LED D2               |
+| 16         | Disconnected                     |
 
-|MicroUSB Pin|Connected THT pad on PCB        |
-|------------|--------------------------------|
-|1           |Top pad of ferrite bead FB1     |
-|2           |Right pad of capacitor C10      |
-|3           |Right pad of capacitor C9       |
-|4           |Disconnected                    |
-|5           |Left pad of capacitors C9, C10  |
+| MicroUSB Pin | Connected THT pad on PCB       |
+| ------------ | ------------------------------ |
+| 1            | Top pad of ferrite bead FB1    |
+| 2            | Right pad of capacitor C10     |
+| 3            | Right pad of capacitor C9      |
+| 4            | Disconnected                   |
+| 5            | Left pad of capacitors C9, C10 |
 
 So, to verify that there is no bridge between pins 5 and 6 of FT230X, connect your multimeter in circuit continuity mode between left pad of capacitor C8 and RTS pad of UART Port (J2). If it beeps, you have bridge between these two pins and you need to check your soldering again.
 
