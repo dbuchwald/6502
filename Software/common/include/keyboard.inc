@@ -15,3 +15,4 @@ KEY_ARROW_RIGHT  = $15
 KEY_TAB          = $09
 KEY_PAGE_UP      = $19
 KEY_PAGE_DOWN    = $1a
+KEY_CTRL_X       = $18

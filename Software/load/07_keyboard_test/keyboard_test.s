@@ -3,26 +3,19 @@
       .include "via.inc"
       .include "lcd.inc"
       .include "keyboard.inc"
+      .include "blink.inc"
+
       .segment "VECTORS"
 
       .word   $0000
       .word   init
-      .word   handle_irq
+      .word   $0000
 
       .code
 
 init:
-      ; Init stack
-      ldx #$ff
-      txs
-      ; Init LCD
-      jsr _lcd_init
-      ; Wait a moment
-      lda #$ff
-      jsr _delay_ms
-      ; Initialize keyboard
-      jsr _keyboard_init
       ; Say hello
+      jsr _lcd_clear
       write_lcd hello_msg
       lda #01
       jsr _delay_sec
@@ -38,9 +31,6 @@ init:
       ; Unknown status first
       lda $ff
       sta last_keyboard_status
-
-      ; Enable interrupt processing
-      cli
 
 program_loop:
       ; Check current status of keyboard connection
@@ -71,6 +61,12 @@ program_loop:
       ; Nope
       bcc program_loop
       ; There is something new here
+      lda keyboard_conn
+      cmp #$00
+      bne @handle_input
+      ; Keyboard disconnected, yet keys are arriving
+      jsr _strobe_led
+@handle_input:
       jsr _lcd_clear
       jsr _keyboard_read_char
       ; New key is in the A now
@@ -105,30 +101,6 @@ program_loop:
       jsr _lcd_print_char
       write_lcd key_part_three
       jmp program_loop
-
-handle_irq:
-      ; Preserve A register
-      pha
-      ; Load interrupt flag register
-      lda VIA1_IFR
-      ; Not a VIA1 interrupt
-      bpl @not_via1
-      ; Preserve X register
-      phx
-      ; Prerve A in X for testing
-      tax
-      ; Check for keyboard interrupt
-      and #(VIA_IFR_CA1_ACTIVE_EDGE)
-      beq @not_keyboard
-      jsr _handle_keyboard_irq
-@not_keyboard:
-      ; Restore X
-      plx
-@not_via1:
-      ; Restore A
-      pla
-      ; Done
-      rti
 
       .segment "BSS"
 last_keyboard_status:

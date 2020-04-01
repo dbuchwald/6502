@@ -28,6 +28,7 @@
 #define PS2_F11       0
 #define PS2_F12       0
 #define PS2_SCROLL      0
+#define CTRL_X        24 // CANCEL
 
 #define PS2_INVERTED_EXCLAMATION  161 // ¡
 #define PS2_CENT_SIGN     162 // ¢
@@ -274,6 +275,7 @@ static inline uint8_t get_scan_code(void)
 #define SHIFT_L   0x04
 #define SHIFT_R   0x08
 #define ALTGR     0x10
+#define CTRL      0x20
 
 static char get_iso8859_code(void)
 {
@@ -294,6 +296,8 @@ static char get_iso8859_code(void)
           state &= ~SHIFT_L;
         } else if (s == 0x59) {
           state &= ~SHIFT_R;
+        } else if (s == 0x14) {
+          state &= ~CTRL;
         } else if (s == 0x11 && (state & MODIFIER)) {
           state &= ~ALTGR;
         }
@@ -307,6 +311,9 @@ static char get_iso8859_code(void)
         continue;
       } else if (s == 0x59) {
         state |= SHIFT_R;
+        continue;
+      } else if (s == 0x14) {
+        state |= CTRL;
         continue;
       } else if (s == 0x11 && (state & MODIFIER)) {
         state |= ALTGR;
@@ -334,6 +341,10 @@ static char get_iso8859_code(void)
       } else if (state & (SHIFT_L | SHIFT_R)) {
         if (s < PS2_KEYMAP_SIZE)
           c = pgm_read_byte(keymap->shift + s);
+      } else if (state & CTRL) {
+        if (s == 0x22) {
+          c = CTRL_X;
+        }
       } else {
         if (s < PS2_KEYMAP_SIZE)
           c = pgm_read_byte(keymap->noshift + s);
@@ -411,6 +422,10 @@ const char DATA[] = {9, 10, 11, 12, 13, 14, 15, 16};
 #define HS_DATA_TAKEN 5
 #define HS_DATA_READY 1
 
+#define KEYBOARD_CONNECTION_SIGNAL 0xff
+#define KEYBOARD_DISCONNECTION_SIGNAL 0xfe
+#define KEYBOARD_ECHO_COMMAND 0xee
+
 PS2Keyboard keyboard;
 bool lastStatus;
 
@@ -428,9 +443,9 @@ void setup() {
   delay(1000);
   keyboard.begin(DATA_PIN_4313, IRQ_PIN_4313);
   if (lastStatus=testConnection()) {
-    sendChar(0xff);
+    sendChar(KEYBOARD_CONNECTION_SIGNAL);
   } else {
-    sendChar(0xfe);
+    sendChar(KEYBOARD_DISCONNECTION_SIGNAL);
   }
 
 }
@@ -446,6 +461,11 @@ void loop() {
     
     // read the next key
     char c = keyboard.read();
+    // if keyboard is now connected
+    if (!lastStatus) {
+      lastStatus=true;
+      sendChar(KEYBOARD_CONNECTION_SIGNAL);
+    }
     sendChar(c);
   } else {
     if (currentTimestamp - lastSignalTimestamp > 5000) {
@@ -454,9 +474,9 @@ void loop() {
       if (currentStatus != lastStatus) {
         lastStatus=currentStatus;
         if (currentStatus) {
-          sendChar(0xff);
+          sendChar(KEYBOARD_CONNECTION_SIGNAL);
         } else {
-          sendChar(0xfe);
+          sendChar(KEYBOARD_DISCONNECTION_SIGNAL);
         }
       }
     }
@@ -464,12 +484,12 @@ void loop() {
 }
 
 bool testConnection() {
-  sendToKeyboard(0xee);
+  sendToKeyboard(KEYBOARD_ECHO_COMMAND);
   uint32_t start = millis();
   uint32_t current;
   do {
     uint8_t c = get_scan_code();
-    if (c == 0xee) {
+    if (c == KEYBOARD_ECHO_COMMAND) {
       return true;
     } else if (c != 0) {
       return false;
