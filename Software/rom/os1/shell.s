@@ -28,6 +28,19 @@ run_shell:
         lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL)
         jsr _tty_init
 
+        ; Display banner
+        writeln_tty msgemptyline
+        writeln_tty bannerh1
+        writeln_tty bannerh2
+        writeln_tty banner1
+        writeln_tty banner2
+        writeln_tty banner3
+        writeln_tty banner4
+        writeln_tty banner5
+        writeln_tty bannerh2
+        writeln_tty bannerh1
+        writeln_tty msgemptyline
+
         ; Display hello messages
         writeln_tty msghello1
         writeln_tty msghello2
@@ -184,47 +197,61 @@ line_buffer:
         .res LINE_BUFFER_SIZE
 
         .segment "RODATA"
+bannerh1:
+        .asciiz "+---------------------------+"
+bannerh2:
+        .asciiz "|                           |"
+banner1:
+        .asciiz "|   ####   ####     #   #   |"
+banner2:
+        .asciiz "|  ##  ## ##       #   ##   |"
+banner3:
+        .asciiz "|  #    #  ###    #   # #   |"
+banner4:
+        .asciiz "|  ##  ##    ##  #      #   |"
+banner5:
+        .asciiz "|   ####  ####  #      ###  |"
 msghello1: 
-        .byte "Welcome to OS/1 shell", $00
+        .asciiz "Welcome to OS/1 shell"
 msghello2: 
-        .byte "Enter command and follow by ENTER key", $00
+        .asciiz "Enter command and follow by ENTER key"
 msghello3:
-        .byte "Currently supported commands are: HELP, LOAD, DUMP, RUN and EXIT", $00
+        .asciiz "Currently supported commands are: HELP, LOAD, DUMP, RUN and EXIT"
 msghelp1:
-        .byte "HELP - display this message", $00
+        .asciiz "HELP - display this message"
 msghelp2:
-        .byte "LOAD - load program", $00
+        .asciiz "LOAD - load program"
 msghelp3:
-        .byte "RUN - run loaded program", $00
+        .asciiz "RUN - run loaded program"
 msghelp4:
-        .byte "DUMP - show memory contents", $00
+        .asciiz "DUMP - show memory contents"
 msghelp5:
-        .byte "EXIT - exit the shell", $00
+        .asciiz "EXIT - exit the shell"
 msgload:
-        .byte "Initiating load operation...", $00
+        .asciiz "Initiating load operation..."
 msgdump:
-        .byte "Commencing dump operation...", $00
+        .asciiz "Commencing dump operation..."
 dump_template:
-        .byte "0000xxxx  xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx", $00
+        .asciiz "0000xxxx  xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx"
 msgrun:
-        .byte "Running program...", $00
+        .asciiz "Running program..."
 msgbye:
-        .byte "Thank you for using OS/1 simple shell", $00
+        .asciiz "Thank you for using OS/1 simple shell"
 os1prompt:
-        .byte "OS/1>", $00
+        .asciiz "OS/1>"
 msgerror:
-        .byte "Command not recognized, please try again", $00
+        .asciiz "Command not recognized, please try again"
 msgemptyline:
         .byte $00
 msgsystembreak:
-        .byte "System break initiated, returning to shell...", $00
+        .asciiz "System break initiated, returning to shell..."
 cmd_help:
-        .byte "HELP", $00
+        .asciiz "HELP"
 cmd_load:
-        .byte "LOAD", $00
+        .asciiz "LOAD"
 cmd_dump:
-        .byte "DUMP", $00
+        .asciiz "DUMP"
 cmd_run:
-        .byte "RUN", $00
+        .asciiz "RUN"
 cmd_exit:
-        .byte "EXIT", $00
+        .asciiz "EXIT"

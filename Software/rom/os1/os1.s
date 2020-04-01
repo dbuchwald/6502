@@ -23,6 +23,8 @@ init:
       ; Run setup routine
       jsr _system_init
 @main_loop:
+      ; Clear screen in case there are some leftovers
+      jsr _lcd_clear
       ; Display hello message
       write_lcd welcome_message
       ; Display keyboard status
