@@ -18,7 +18,7 @@
 ; Enable interrupt handling
 _system_init:
       ; Clear system break flag
-      stz system_break
+      stz system_break_flag
       ; Set system break address to init vector
       lda $fffc
       sta system_break_address
@@ -71,7 +71,7 @@ check_via2:
       bit VIA2_IFR
       ; Test for system break flag
       pha
-      lda system_break
+      lda system_break_flag
       bne system_break_request
       pla
       rti
@@ -83,10 +83,11 @@ system_break_request:
       pha
       lda system_break_address
       pha
+      ; Clear interrupt flag upon return
       cli
       php
       ; Clear flag
-      stz system_break
+      stz system_break_flag
       rti
 
 _register_system_break:

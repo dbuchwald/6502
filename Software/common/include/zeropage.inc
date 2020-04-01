@@ -17,6 +17,6 @@
 .globalzp keyboard_rptr
 .globalzp keyboard_wptr
 .globalzp tty_config
-.globalzp system_break
+.globalzp system_break_flag
 .globalzp system_break_address
 .globalzp system_break_sp

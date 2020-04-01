@@ -88,7 +88,7 @@ _handle_keyboard_irq:
       bra @handling_done
 @system_break_request:
       lda #$80
-      sta system_break
+      sta system_break_flag
 @handling_done:
       ; Restore A register
       pla
