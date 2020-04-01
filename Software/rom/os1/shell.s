@@ -99,6 +99,7 @@ _display_help_message:
         writeln_tty msghelp2
         writeln_tty msghelp3
         writeln_tty msghelp4
+        writeln_tty msghelp5
         rts
 
 _perform_load:
