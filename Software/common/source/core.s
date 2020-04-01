@@ -8,6 +8,7 @@
 
       .export _system_init
       .export _interrupt_handler
+      .export _register_system_break
 
       .code
 ; Main system initialization routine
@@ -16,6 +17,15 @@
 ; Disable BCD mode
 ; Enable interrupt handling
 _system_init:
+      ; Clear system break flag
+      stz system_break
+      ; Set system break address to init vector
+      lda $fffc
+      sta system_break_address
+      lda $fffd
+      sta system_break_address+1
+      lda #$ff
+      sta system_break_sp
       ; Initialize BLINK LED
       jsr _blink_init
       ; Short BLINK LED strobe
@@ -59,4 +69,35 @@ not_keyboard:
       pla
 check_via2:
       bit VIA2_IFR
+      ; Test for system break flag
+      pha
+      lda system_break
+      bne system_break_request
+      pla
       rti
+system_break_request:
+      ; Replace return pointer with our own
+      ldx system_break_sp
+      txs
+      lda system_break_address+1
+      pha
+      lda system_break_address
+      pha
+      cli
+      php
+      ; Clear flag
+      stz system_break
+      rti
+
+_register_system_break:
+      ; Save address provided in parameters
+      sta system_break_address
+      stx system_break_address+1
+      ; Get current stack pointer
+      tsx
+      ; Remove last address - it's our own
+      inx
+      inx
+      ; Save for break operation
+      stx system_break_sp
+      rts

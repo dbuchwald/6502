@@ -21,4 +21,8 @@ keyboard_conn: .res 1
 keyboard_rptr: .res 1
 keyboard_wptr: .res 1
 tty_config:    .res 1
-
+system_break:  .res 1
+system_break_address: 
+               .res 2
+system_break_sp:
+               .res 1

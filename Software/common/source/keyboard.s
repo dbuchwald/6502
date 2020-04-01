@@ -52,6 +52,9 @@ _handle_keyboard_irq:
       ; Handle disconnection signal
       cmp #$fe
       beq @keyboard_disconnected
+      ; Handle system break signal
+      cmp #$18
+      beq @system_break_request
       ; Handle regular scancode
       ; Preserve X register
       phx
@@ -82,6 +85,10 @@ _handle_keyboard_irq:
       ; Store keyboard flag
 @keyboard_disconnected:
       stz keyboard_conn
+      bra @handling_done
+@system_break_request:
+      lda #$80
+      sta system_break
 @handling_done:
       ; Restore A register
       pla

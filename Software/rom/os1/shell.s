@@ -4,6 +4,8 @@
         .include "tty.inc"
         .include "lcd.inc"
         .include "modem.inc"
+        .include "blink.inc"
+        .include "core.inc"
 
         .export run_shell
 
@@ -30,6 +32,8 @@ run_shell:
         writeln_tty msghello1
         writeln_tty msghello2
         writeln_tty msghello3
+
+        register_system_break system_break_handler
 
 main_loop:
         ; Start with prompt
@@ -163,6 +167,14 @@ _display_exit_message:
         writeln_tty msgbye
         rts
 
+system_break_handler:
+        writeln_tty msgemptyline
+        writeln_tty msgemptyline
+        writeln_tty msgemptyline
+        writeln_tty msgsystembreak
+        jsr _strobe_led
+        jmp main_loop
+
         .segment "BSS"
 dump_line:
         .res 64
@@ -201,6 +213,10 @@ os1prompt:
         .byte "OS/1>", $00
 msgerror:
         .byte "Command not recognized, please try again", $00
+msgemptyline:
+        .byte $00
+msgsystembreak:
+        .byte "System break initiated, returning to shell...", $00
 cmd_help:
         .byte "HELP", $00
 cmd_load:
