@@ -24,7 +24,7 @@ This one was my first _real_ change as in it was _mine_. As Ben explained in his
 That being said, I wanted more for my build. I knew I wanted to be able to load programs into my computer and I wanted to ensure that I provide user with as much RAM as possible. At the same time, I wanted to save some space on more optimized I/O shadow segment. And, most importantly, I wanted to test my understanding of how address decoding works. As stated above, the best way to learn is to change and test your hypothesis. If you want to learn more, I posted thread on [Reddit](https://www.reddit.com/r/beneater/comments/ej3lqi/65c02_address_decoder_for_32k_ram_24k_rom_and_2/) explaining what I did, how I did that and why I know it works. My build provides 32K RAM, 8K I/O shadow (for up to 11 devices), 24K ROM.
 
 The key takeway here is that when porting Ben's programs you have to use this "mapping table":
-|Segment|Ben's build |My build |Comment |
+|Segment|BE6502 |DB6502 |Comment |
 |-------|-------------|-------------|------------------------------------------------------------------|
 |RAM |0x0000-0x3fff|0x0000-0x7fff| |
 |VIA1 |N/A |0x9000 |Connected to keyboard/LCD/blink LED in my build |
@@ -123,13 +123,13 @@ Currently my software supports only Rockwell R6551P chips and it uses fully asyn
 
 ### Extra USB->UART interface chip
 
-When I designed PCB for this build, I had one goal in mind: it must be possible to build it with THT-only components. So, if you don't want to play with SMD soldering (which, admittably, is much easier that it seems), you can completely skip this component and connect serial over one of many UART->USB adapters. The same goes for the Micro-USB port - you can skip it, and use only USB-B port for power. Your call.
+When I designed PCB for DB6502, I had one goal in mind: it must be possible to solder it with THT-only components. So, if you don't want to play with SMD soldering (which, admittably, is much easier that it seems), you can completely skip this component and connect serial over one of many UART->USB adapters. The same goes for the Micro-USB port - you can skip it, and use only USB-B port for power. Your call.
 
 If you do decide to use FT230X chip onboard, you will have a 6502 computer that requires only USB cable - simply plug it in your PC, connect using serial terminal and you are good to go, nothing else needed. Power consumption is well below USB limits, even with LCD and external keyboard connected.
 
 ### PS/2 Keyboard interface and ATtiny4313 based controller
 
-This was a bit of an overkill with the serial port addition, but I wanted the build to be versatile and enable operation without PC connected.
+This was a bit of an overkill with the serial port addition, but I wanted DB6502 to be versatile and enable operation without PC connected.
 
 Software to be uploaded to ATtiny is also provided in this repo and discussed in detail in dedicated section. You can either program the chip away from the board or use the included AVR ISP interface. I have successfully used USBASP programmer onboard, and since the reset lines between ATtiny and CPU/VIA/ACIA/FT230X are all connected, upload operation simply resets the whole computer without any risk for running programs. Pretty neat, that one :)
 
@@ -171,7 +171,7 @@ Last option will be used in (planned currently) custom debugger board.
 
 ### 65C02 Computer Bill Of Materials
 
-The following components are required for building 65C02 Computer
+The following components are required for DB65C02 Computer
 
 | Reference | Type                   | Value         | Description                            |
 | --------- | ---------------------- | ------------- | -------------------------------------- |

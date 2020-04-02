@@ -212,7 +212,7 @@ banner4:
 banner5:
         .asciiz "|   ####  ####  #      ###  |"
 msghello1: 
-        .asciiz "Welcome to OS/1 shell"
+        .asciiz "Welcome to OS/1 shell for DB6502 computer"
 msghello2: 
         .asciiz "Enter command and follow by ENTER key"
 msghello3:
