@@ -248,7 +248,19 @@ Program should load and be automatically executed. Congratulations, you got your
 
 ### Installing OS/1
 
-OS/1 is simple operating system, currently being developed for the machine. It already provides bootloader functionality and more is coming every day.
+OS/1 is simple operating system, currently being developed for the machine. It already provides bootloader functionality and more is coming every day. **THIS IS WORK IN PROGRESS, SO EXPECT STABILITY ISSUES**
+
+After installing to ROM and booting, it will display basic startup messages on onboard LCD and prompt you to connect via serial port (19200 baud, no parity, 8 data bits, 1 stop bit, CTS/RTS hardware flow control) and confirm connection by sending single char via serial, if no keyboard is connected to PS/2 port or by pressing Enter key on attached PS/2 keyboard otherwise.
+
+Simple prompt will be displayed, and the following commands are currently supported:
+
+- `HELP` - will display simple help message with basic description of the commands,
+- `LOAD` - will initiate XModem file receive operation to enable loading loadable modules (see [Using the bootloader](#using-the-bootloader) section for details),
+- `DUMP` - will display contents of the memory area where the loadable modules are loaded,
+- `RUN` - will run the loaded program,
+- `EXIT` - will exit the shell - and go back to it after soft reset.
+
+Loaded programs might fail or fall into infinite loop. To prevent having to reset them, you can press CTRL+X key combination on attached PS/2 keyboard - this will initiate system break operation and should return you back into the shell.
 
 ## Building software
 
@@ -353,7 +365,9 @@ All the programs in the `load` folder are to be uploaded to the 6502 computer ov
 - `load/03_string_test` - small program written to test string handling library functions,
 - `load/04_blink_large` - presents different model of linking loadable code (with included common modules),
 - `load/05_simple_shell` - simple shell program later moved to `os1` image,
-- `load/06_memdump` - initial implementation of simple memory monitor.
+- `load/06_memdump` - initial implementation of simple memory monitor (dumps contents of the memory area used to load programs to verify load operation),
+- `load/07_keyboard_test` - modified version of the ROM keyboard test application, implemented mostly to test new key binding (CTRL+X) and required changes in the keyboard controller firmware,
+- `load/08_system_break_test` - very simple application: when started, it runs infinite loop. That's all. It was created to demonstrate new OS/1 feature - system break.
 
 As for software compatibility - all the loadable modules require bootloader, and this one, in turn, requires ACIA for operation, so by design these are not compatible with vanilla Ben Eater's build.
 
