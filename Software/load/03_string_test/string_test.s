@@ -8,6 +8,8 @@
         .word   init
         .word   $0000
 
+TOKENIZE_BUFFER_SIZE = 64
+
         .code
 init:
         write_acia message
@@ -56,7 +58,116 @@ init:
         strtolower to_lower_message
         write_acia to_lower_message
 
+        write_acia token1
+
+        strtokenize token1, tokenize_buffer, TOKENIZE_BUFFER_SIZE
+
+        tax 
+        ; ldy #$00
+        lda #<tokenize_buffer
+        sta ptr4
+        lda #>tokenize_buffer
+        sta ptr4+1
+@token1_loop:
+        write_acia token_found
+        lda ptr4
+        sta ptr1
+        lda ptr4+1
+        sta ptr1+1
+        jsr _acia_write_string
+        write_acia token_newline
+        dec tmp2
+        beq @done_listing_token1
+        ldy #$00
+@next_token1_loop:
+        lda (ptr4),y
+        beq @end_of_token1
+        inc ptr4
+        bne @next_token1_loop
+        inc ptr4+1
+        bra @next_token1_loop
+@end_of_token1:
+        inc ptr4
+        bne @token1_loop
+        inc ptr4+1
+        bra @token1_loop
+@done_listing_token1:
+
+        write_acia token2
+
+        strtokenize token2, tokenize_buffer, TOKENIZE_BUFFER_SIZE
+
+        tax 
+        ; ldy #$00
+        lda #<tokenize_buffer
+        sta ptr4
+        lda #>tokenize_buffer
+        sta ptr4+1
+@token2_loop:
+        write_acia token_found
+        lda ptr4
+        sta ptr1
+        lda ptr4+1
+        sta ptr1+1
+        jsr _acia_write_string
+        write_acia token_newline
+        dec tmp2
+        beq @done_listing_token2
+        ldy #$00
+@next_token2_loop:
+        lda (ptr4),y
+        beq @end_of_token2
+        inc ptr4
+        bne @next_token2_loop
+        inc ptr4+1
+        bra @next_token2_loop
+@end_of_token2:
+        inc ptr4
+        bne @token2_loop
+        inc ptr4+1
+        bra @token2_loop
+@done_listing_token2:
+
+        write_acia token3
+
+        strtokenize token3, tokenize_buffer, TOKENIZE_BUFFER_SIZE
+
+        tax 
+        ; ldy #$00
+        lda #<tokenize_buffer
+        sta ptr4
+        lda #>tokenize_buffer
+        sta ptr4+1
+@token3_loop:
+        write_acia token_found
+        lda ptr4
+        sta ptr1
+        lda ptr4+1
+        sta ptr1+1
+        jsr _acia_write_string
+        write_acia token_newline
+        dec tmp2
+        beq @done_listing_token3
+        ldy #$00
+@next_token3_loop:
+        lda (ptr4),y
+        beq @end_of_token3
+        inc ptr4
+        bne @next_token3_loop
+        inc ptr4+1
+        bra @next_token3_loop
+@end_of_token3:
+        inc ptr4
+        bne @token3_loop
+        inc ptr4+1
+        bra @token3_loop
+@done_listing_token3:
+
         rts
+      
+        .segment "BSS"
+tokenize_buffer:
+        .res TOKENIZE_BUFFER_SIZE
 
         .segment "RODATA"
 message: .byte "Welcome to string testing module", CR, LF, $00
@@ -70,6 +181,10 @@ to_upper_message:
 to_lower_message:
          .byte "Testing 12938, ToUppEr AND tOlOWEr _# operatiOn?abcxyz@[]", CR, LF, $00
 
+token1:  .byte "  blink ON ", CR, LF, $00
+token2:  .byte " EXAMINE a001", CR, LF, $00
+token3:  .byte "ex 0100:    01ff     ", CR, LF, $00  
+
 result_msg: 
          .byte "Function returns 0x"
 result_val: 
@@ -80,3 +195,9 @@ strc1:   .byte "abcd", $00
 strc2:   .byte "abcd", $00
 strc3:   .byte "abc", $00
 strc4:   .byte "bcdedfg", $00
+
+
+token_found:
+         .byte "Token found: <", $00
+token_newline:
+         .byte ">", CR, LF, $00
