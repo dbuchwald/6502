@@ -50,6 +50,7 @@
         .export _syscall_strtolower
         .export _syscall_strtriml
         .export _syscall_strtrimr
+        .export _syscall_strtokenize
 ; tty routines
         .export _syscall_tty_init
         .export _syscall_tty_read_line
@@ -130,6 +131,8 @@ _syscall_strtriml:
         SYSCALL_VECTOR _strtriml
 _syscall_strtrimr:
         SYSCALL_VECTOR _strtrimr
+_syscall_strtokenize:
+        SYSCALL_VECTOR _strtokenize
 _syscall_tty_init:
         SYSCALL_VECTOR _tty_init
 _syscall_tty_read_line:

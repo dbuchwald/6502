@@ -6,6 +6,7 @@
         .export _strtolower
         .export _strtriml
         .export _strtrimr
+        .export _strtokenize
 
 SPACE = $20
 
@@ -167,4 +168,139 @@ _strtrimr:
 @return:
         pla
         ply
+        rts
+
+; Temp variables used:
+;  ptr1 - source string address (input)
+;  ptr2 - target buffer address (input)
+;  tmp1 - size of target buffer (input)
+;  tmp2 - count of tokens (internal)
+;  tmp3 - count of chars in output buffer (internal)
+_strtokenize:
+        phx
+        phy
+        stz tmp2
+
+        ldy #$00
+        lda (ptr1),y
+        jsr _get_char_type
+@tokenize_loop:
+        cpx #(CHAR_END)
+        beq @strtokenize_exit
+        cpx #(CHAR_WHITESPACE)
+        beq @skip_whitespace
+        cpx #(CHAR_STRING)
+        beq @process_string
+        cpx #(CHAR_SINGLE)
+        beq @process_single
+        ; Should never happen
+        bra @strtokenize_exit
+@skip_whitespace:
+        jsr _skip_char
+        lda (ptr1),y
+        jsr _get_char_type
+        cpx #(CHAR_WHITESPACE)
+        beq @skip_whitespace
+        bra @tokenize_loop
+@process_string:
+        jsr _copy_char_to_token_buffer
+        lda (ptr1),y
+        jsr _get_char_type
+        cpx #(CHAR_STRING)
+        beq @process_string
+        jsr _end_token
+        bra @tokenize_loop
+@process_single:
+        jsr _copy_char_to_token_buffer
+        jsr _end_token
+        lda (ptr1),y
+        jsr _get_char_type
+        bra @tokenize_loop
+@strtokenize_exit:
+        ply
+        plx
+        lda tmp2
+        rts
+
+CHAR_END        = $00
+CHAR_WHITESPACE = $01
+CHAR_STRING     = $02
+CHAR_SINGLE     = $03
+
+; Assumes input character in A
+; returns char type in X 
+;$0b,$0a,$0d,$20,$00
+_get_char_type:
+        cmp #$00 ; NULL
+        beq @return_end
+        cmp #$09 ; tab
+        beq @return_whitespace
+        cmp #$0a ; LF
+        beq @return_whitespace
+        cmp #$0d ; CR
+        beq @return_whitespace
+        cmp #$20 ; space
+        beq @return_whitespace
+        cmp #('_')
+        beq @return_string
+        cmp #('0')
+        bmi @return_single
+        cmp #('9'+1)
+        bmi @return_string
+        cmp #('A')
+        bmi @return_single
+        cmp #('Z'+1)
+        bmi @return_string
+        cmp #('a')
+        bmi @return_single
+        cmp #('z'+1)
+        bmi @return_string
+        bra @return_single
+@return_end:
+        ldx #(CHAR_END)
+        rts
+@return_whitespace:
+        ldx #(CHAR_WHITESPACE)
+        rts
+@return_string:
+        ldx #(CHAR_STRING)
+        rts
+@return_single:
+        ldx #(CHAR_SINGLE)
+        rts
+
+; Assumes ptr1 points to source
+; and ptr2 points to target in buffer
+_copy_char_to_token_buffer:
+        ldy #$00
+        lda (ptr1),y
+        sta (ptr2),y
+        inc ptr1
+        bne @inc_ptr2
+        inc ptr1+1
+@inc_ptr2:
+        inc ptr2
+        bne @copy_complete
+        inc ptr2+1
+@copy_complete:
+        rts
+
+; Assumes ptr1 points to character to be skipped
+_skip_char:
+        inc ptr1
+        bne @skip_complete
+        inc ptr1+1
+@skip_complete:
+        rts
+
+; Assumes ptr2 points to next char in target buffer
+_end_token:
+        lda #$00
+        ldy #$00
+        sta (ptr2),y
+        inc ptr2
+        bne @end_complete
+        inc ptr1+1
+@end_complete:
+        inc tmp2
         rts

@@ -6,6 +6,7 @@
         .import _strtolower
         .import _strtriml
         .import _strtrimr
+        .import _strtokenize
 
 LF      = $0a   ; Line Feed
 CR      = $0d   ; Carriage Return
@@ -75,3 +76,16 @@ SPACE   = $20   ; Space character
         jsr _strtrimr
         .endmacro
 
+        .macro strtokenize string, buffer, buffer_size
+        lda #<string
+        sta ptr1
+        lda #>string
+        sta ptr1+1
+        lda #<buffer
+        sta ptr2
+        lda #>buffer
+        sta ptr2+1
+        lda #(buffer_size)
+        sta tmp1
+        jsr _strtokenize
+        .endmacro  

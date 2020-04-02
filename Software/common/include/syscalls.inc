@@ -38,6 +38,7 @@
         .forceimport _syscall_strtolower
         .forceimport _syscall_strtriml
         .forceimport _syscall_strtrimr
+        .forceimport _syscall_strtokenize
 ; tty routines
         .forceimport _syscall_tty_init
         .forceimport _syscall_tty_read_line

@@ -40,6 +40,7 @@
         .export _strtolower
         .export _strtriml
         .export _strtrimr
+        .export _strtokenize
 ; tty routines
         .export _tty_init
         .export _tty_read_line
@@ -151,6 +152,9 @@ _strtriml:
 
 _strtrimr:
         jmp (_syscall_strtrimr)
+
+_strtokenize:
+        jmp (_syscall_strtokenize)
 
 ; tty routines
 _tty_init:
