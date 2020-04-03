@@ -56,6 +56,7 @@
         .export _syscall_tty_read_line
         .export _syscall_tty_write
         .export _syscall_tty_writeln
+        .export _syscall_tty_write_hex
 
         .segment "SYSCALLS"
 
@@ -141,3 +142,5 @@ _syscall_tty_write:
         SYSCALL_VECTOR _tty_write
 _syscall_tty_writeln:
         SYSCALL_VECTOR _tty_writeln
+_syscall_tty_write_hex:
+        SYSCALL_VECTOR _tty_write_hex

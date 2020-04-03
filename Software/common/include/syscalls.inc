@@ -44,4 +44,5 @@
         .forceimport _syscall_tty_read_line
         .forceimport _syscall_tty_write
         .forceimport _syscall_tty_writeln
+        .forceimport _syscall_tty_write_hex
 

@@ -46,6 +46,7 @@
         .export _tty_read_line
         .export _tty_write
         .export _tty_writeln
+        .export _tty_write_hex
 
         .code
 
@@ -168,3 +169,6 @@ _tty_write:
 
 _tty_writeln:
         jmp (_syscall_tty_writeln)
+
+_tty_write_hex:
+        jmp (_syscall_tty_write_hex)

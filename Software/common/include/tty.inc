@@ -4,6 +4,7 @@
         .import _tty_read_line
         .import _tty_write
         .import _tty_writeln
+        .import _tty_write_hex
 
         .macro tty_read_line buffer, buffer_size
         pha
@@ -37,6 +38,38 @@
         jsr _tty_writeln
         .endmacro
 
+        .macro write_tty_p address
+        pha
+        lda address
+        sta ptr1
+        lda address+1
+        sta ptr1+1
+        pla
+        jsr _tty_write
+        .endmacro
+
+        .macro writeln_tty_p address
+        pha
+        lda address
+        sta ptr1
+        lda address+1
+        sta ptr1+1
+        pla
+        jsr _tty_writeln
+        .endmacro
+
+        .macro write_tty_hex
+        jsr _tty_write_hex
+        .endmacro
+
+        .macro write_tty_address pointer
+        pha
+        lda pointer+1
+        jsr _tty_write_hex
+        lda pointer
+        jsr _tty_write_hex
+        pla
+        .endmacro
 
 TTY_CONFIG_INPUT_SERIAL   = %00000001
 TTY_CONFIG_INPUT_KEYBOARD = %00000010

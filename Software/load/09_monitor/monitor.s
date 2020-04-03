@@ -92,6 +92,7 @@ _display_help_message:
         writeln_tty msghelp3
         writeln_tty msghelp4
         writeln_tty msghelp5
+        writeln_tty msghelp6
         rts
 
 _display_exit_message:
@@ -111,7 +112,7 @@ msghello1:
 msghello2: 
         .asciiz "Try entering simple commands followed by ENTER"
 msghello3:
-        .asciiz "Currently supported commands are: HELP, EX[AMINE] and EXIT"
+        .asciiz "Currently supported commands are: HELP, EX[AMINE], BLINK and EXIT"
 prompt:
         .asciiz "OS/1 Monitor>"
 msghelp1:
@@ -123,6 +124,8 @@ msghelp3:
 msghelp4:
         .asciiz "  EXAMINE a000:a542 - will display all the memory contents between $a000 and $a542"
 msghelp5:
+        .asciiz "BLINK ON|OFF - turn on/off onboard LED"
+msghelp6:
         .asciiz "EXIT - exit the monitor"
 msgerror:
         .asciiz "Command not recognized, please try again"
@@ -134,10 +137,49 @@ cmd_ex:
         .asciiz "EX"
 cmd_examine:
         .asciiz "EXAMINE"
+cmd_blink:
+        .asciiz "BLINK"
 cmd_exit:
         .asciiz "EXIT"
+
+cmd_blink_on:
+        .asciiz "ON"
+cmd_blink_off:
+        .asciiz "OFF"
 
 token_found:
         .asciiz "Token found: <"
 token_newline:
         .asciiz ">"
+
+        .macro menuitem id, cmd, argc, desc, function
+        .local start_item
+        .local cmd_pos
+        .local argc_pos
+        .local desc_pos
+        .local next_item
+start_item:
+        .byte cmd_pos - start_item
+        .byte argc_pos - start_item
+        .byte desc_pos - start_item
+        .byte next_item - start_item
+cmd_pos:
+        .asciiz cmd
+argc_pos:
+        .byte argc
+desc_pos:
+        .asciiz desc
+next_item:
+        .endmacro
+
+        .macro endmenu
+        .byte $00
+        .endmacro
+
+        .asciiz "here"
+menu:
+        menuitem help, "HELP", 1, "HELP - display this message", _display_help_message
+        menuitem get2, "GET", 2, "GET - get data at the address", _display_exit_message
+        menuitem get4, "GET", 4, "GET - get data between addresses", _display_exit_message
+        menuitem exit, "EXIT", 1, "EXIT - exit monitor", _display_exit_message
+        endmenu 

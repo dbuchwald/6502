@@ -9,6 +9,7 @@
         .export _tty_read_line
         .export _tty_write
         .export _tty_writeln
+        .export _tty_write_hex
 
 TTY_CONFIG_INPUT_SERIAL   = %00000001
 TTY_CONFIG_INPUT_KEYBOARD = %00000010
@@ -162,6 +163,20 @@ _tty_write_byte:
         ; either way, restore character
         txa
         plx
+        rts
+
+_tty_write_hex:
+        pha
+        phx
+        phy
+        jsr _convert_to_hex
+        txa
+        jsr _tty_write_byte
+        tya
+        jsr _tty_write_byte
+        ply
+        plx
+        pla
         rts
 
 ; Sends newline instruction to selected channels
