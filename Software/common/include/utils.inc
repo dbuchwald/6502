@@ -15,3 +15,20 @@
       pla
       sta address+1
       .endmacro
+
+      .macro copy_ptr source, target
+      pha
+      lda source
+      sta target
+      lda source+1
+      sta target+1
+      pla
+      .endmacro
+
+      .macro inc_ptr pointer
+      .local skip
+      inc pointer
+      bne skip
+      inc pointer+1
+skip:
+      .endmacro

@@ -26,6 +26,20 @@ SPACE   = $20   ; Space character
         jsr _strcmp
         .endmacro
 
+        .macro strcmpp pstr1, pstr2
+        pha
+        lda pstr1
+        sta ptr1
+        lda pstr1+1
+        sta ptr1+1
+        lda pstr2
+        sta ptr2
+        lda pstr2+1
+        sta ptr2+1
+        pla
+        jsr _strcmp
+        .endmacro
+
         .macro strlen str1
         pha
         lda #<str1
@@ -41,6 +55,16 @@ SPACE   = $20   ; Space character
         lda #<str1
         sta ptr1
         lda #>str1
+        sta ptr1+1
+        pla
+        jsr _strtoupper
+        .endmacro
+
+        .macro strtoupperp pstr1
+        pha
+        lda pstr1
+        sta ptr1
+        lda pstr1+1
         sta ptr1+1
         pla
         jsr _strtoupper
