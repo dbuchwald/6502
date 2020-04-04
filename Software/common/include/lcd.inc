@@ -1,12 +1,12 @@
-      .include "zeropage.inc"
-      .import _lcd_init
-      .import _lcd_print
-      .import _lcd_print_char
-      .import _lcd_clear
-      .import _lcd_set_position
-      .import _lcd_display_mode
-      .import _lcd_scroll_up
-      .import _lcd_scroll_down
+        .include "zeropage.inc"
+        .import _lcd_init
+        .import _lcd_print
+        .import _lcd_print_char
+        .import _lcd_clear
+        .import _lcd_set_position
+        .import _lcd_display_mode
+        .import _lcd_scroll_up
+        .import _lcd_scroll_down
 
 ; Display mode command parameters
 LCD_DM_CURSOR_NOBLINK   = %00000000
@@ -16,12 +16,21 @@ LCD_DM_CURSOR_ON        = %00000010
 LCD_DM_DISPLAY_OFF      = %00000000
 LCD_DM_DISPLAY_ON       = %00000100  
 
-      .macro write_lcd string_address
-      pha
-      lda #<string_address
-      sta ptr1
-      lda #>string_address
-      sta ptr1+1
-      jsr _lcd_print
-      pla
-      .endmacro
+        .macro write_lcd string
+        pha
+        .if (.match (.left (1, {string}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({string})-1, {string}))
+            sta ptr1
+            lda #>(.right (.tcount ({string})-1, {string}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda string
+            sta ptr1
+            lda 1+(string)
+            sta ptr1+1
+        .endif
+        jsr _lcd_print
+        pla
+        .endmacro

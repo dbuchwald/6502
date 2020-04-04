@@ -26,7 +26,7 @@ init:
       ; Clear screen in case there are some leftovers
       jsr _lcd_clear
       ; Display hello message
-      write_lcd welcome_message
+      write_lcd #welcome_message
       ; Display keyboard status
       ldx #$00
       ldy #$01
@@ -35,26 +35,26 @@ init:
       jsr _delay_sec
       jsr _keyboard_is_connected
       bcc @no_keyboard
-      write_lcd keyboard_connected
+      write_lcd #keyboard_connected
       bra @wait_for_3s
 @no_keyboard:
-      write_lcd keyboard_disconnected
+      write_lcd #keyboard_disconnected
 @wait_for_3s:
       lda #02
       jsr _delay_sec
 
       jsr _lcd_clear
-      write_lcd instruction
+      write_lcd #instruction
       jsr _keyboard_is_connected
       bcc @wait_for_acia
-      write_lcd instruction_keyboard
+      write_lcd #instruction_keyboard
 @wait_for_keyboard_input:
       jsr _keyboard_read_char
       cmp #(KEY_ENTER)
       bne @wait_for_keyboard_input
       bra @run_shell
 @wait_for_acia:
-      write_lcd instruction_serial
+      write_lcd #instruction_serial
 @wait_for_acia_input:
       jsr _acia_is_data_available
       bcc @wait_for_acia_input
@@ -62,7 +62,7 @@ init:
 
 @run_shell:
       jsr _lcd_clear
-      write_lcd shell_connected
+      write_lcd #shell_connected
       jsr run_shell
       jmp @main_loop
 

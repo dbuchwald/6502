@@ -10,11 +10,19 @@
 
         .macro write_acia string
         pha
-        lda #<string
-        sta ptr1
-        lda #>string
-        sta ptr1+1
+        .if (.match (.left (1, {string}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({string})-1, {string}))
+            sta ptr1
+            lda #>(.right (.tcount ({string})-1, {string}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda string
+            sta ptr1
+            lda 1+(string)
+            sta ptr1+1
+        .endif
         pla
         jsr _acia_write_string
-        .endmacro   
-        
+        .endmacro

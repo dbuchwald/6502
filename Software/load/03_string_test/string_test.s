@@ -12,53 +12,53 @@ TOKENIZE_BUFFER_SIZE = 64
 
         .code
 init:
-        write_acia message
+        write_acia #message
 
-        write_acia msg1
+        write_acia #msg1
         strlen message
         jsr _convert_to_hex
         txa
         sta result_val
         tya
         sta result_val+1
-        write_acia result_msg
+        write_acia #result_msg
 
-        write_acia msg2
+        write_acia #msg2
         strcmp strc1, strc2
         jsr _convert_to_hex
         txa
         sta result_val
         tya
         sta result_val+1
-        write_acia result_msg
+        write_acia #result_msg
 
-        write_acia msg3
+        write_acia #msg3
         strcmp strc2, strc3
         jsr _convert_to_hex
         txa
         sta result_val
         tya
         sta result_val+1
-        write_acia result_msg
+        write_acia #result_msg
 
-        write_acia msg4
+        write_acia #msg4
         strcmp strc3, strc4
         jsr _convert_to_hex
         txa
         sta result_val
         tya
         sta result_val+1
-        write_acia result_msg
+        write_acia #result_msg
 
-        write_acia to_upper_message
+        write_acia #to_upper_message
         strtoupper to_upper_message
-        write_acia to_upper_message
+        write_acia #to_upper_message
 
-        write_acia to_lower_message
+        write_acia #to_lower_message
         strtolower to_lower_message
-        write_acia to_lower_message
+        write_acia #to_lower_message
 
-        write_acia token1
+        write_acia #token1
 
         strtokenize token1, tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
@@ -69,13 +69,13 @@ init:
         lda #>tokenize_buffer
         sta ptr4+1
 @token1_loop:
-        write_acia token_found
+        write_acia #token_found
         lda ptr4
         sta ptr1
         lda ptr4+1
         sta ptr1+1
         jsr _acia_write_string
-        write_acia token_newline
+        write_acia #token_newline
         dec tmp2
         beq @done_listing_token1
         ldy #$00
@@ -93,7 +93,7 @@ init:
         bra @token1_loop
 @done_listing_token1:
 
-        write_acia token2
+        write_acia #token2
 
         strtokenize token2, tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
@@ -104,13 +104,13 @@ init:
         lda #>tokenize_buffer
         sta ptr4+1
 @token2_loop:
-        write_acia token_found
+        write_acia #token_found
         lda ptr4
         sta ptr1
         lda ptr4+1
         sta ptr1+1
         jsr _acia_write_string
-        write_acia token_newline
+        write_acia #token_newline
         dec tmp2
         beq @done_listing_token2
         ldy #$00
@@ -128,7 +128,7 @@ init:
         bra @token2_loop
 @done_listing_token2:
 
-        write_acia token3
+        write_acia #token3
 
         strtokenize token3, tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
@@ -139,13 +139,13 @@ init:
         lda #>tokenize_buffer
         sta ptr4+1
 @token3_loop:
-        write_acia token_found
+        write_acia #token_found
         lda ptr4
         sta ptr1
         lda ptr4+1
         sta ptr1+1
         jsr _acia_write_string
-        write_acia token_newline
+        write_acia #token_newline
         dec tmp2
         beq @done_listing_token3
         ldy #$00

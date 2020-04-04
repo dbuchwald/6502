@@ -188,7 +188,7 @@ _tty_send_newline:
         beq @skip_serial
         ; Send series of characters for backspace
         push_ptr ptr1
-        write_acia acia_newline
+        write_acia #acia_newline
         pull_ptr ptr1
 @skip_serial:
         lda tty_config
@@ -210,7 +210,7 @@ _tty_send_backspace:
         beq @skip_serial
         ; Send series of characters for backspace
         push_ptr ptr1
-        write_acia acia_backspace
+        write_acia #acia_backspace
         pull_ptr ptr1
 @skip_serial:
         lda tty_config

@@ -10,7 +10,7 @@
         .code
 init:
         jsr _lcd_init
-        write_lcd message
+        write_lcd #message
         lda #$03
         jsr _delay_sec
         jsr _lcd_clear

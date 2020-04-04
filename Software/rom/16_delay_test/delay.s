@@ -18,7 +18,7 @@ init:
       sta VIA1_PORTB
       jsr _lcd_init
 
-      write_lcd hello_msg
+      write_lcd #hello_msg
 
       lda #$03
       jsr _delay_sec

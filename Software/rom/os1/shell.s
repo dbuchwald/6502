@@ -46,7 +46,7 @@ run_shell:
         writeln_tty msghello2
         writeln_tty msghello3
 
-        register_system_break system_break_handler
+        register_system_break #system_break_handler
 
 main_loop:
         ; Start with prompt

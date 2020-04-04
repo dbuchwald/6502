@@ -23,7 +23,7 @@ init:
       ; Initialize keyboard
       jsr _keyboard_init
       ; Say hello
-      write_lcd hello_msg
+      write_lcd #hello_msg
       lda #01
       jsr _delay_sec
       lda #('.')
@@ -58,12 +58,12 @@ program_loop:
       ; Display keyboard connection message
 @keyboard_connected:
       jsr _lcd_clear
-      write_lcd conn_msg
+      write_lcd #conn_msg
       jmp program_loop
       ; Display keyboard disconnection message
 @keyboard_disconnected:
       jsr _lcd_clear
-      write_lcd disconn_msg
+      write_lcd #disconn_msg
       jmp program_loop
 @no_change_to_keyboard_status:
       ; Is there new data to be read
@@ -74,7 +74,7 @@ program_loop:
       jsr _lcd_clear
       jsr _keyboard_read_char
       ; New key is in the A now
-      write_lcd key_msg
+      write_lcd #key_msg
       ldx #$00
 @special_keys_loop:
       cmp special_keys,x
@@ -97,13 +97,13 @@ program_loop:
       bra program_loop
 @regular_char:
       jsr _lcd_print_char
-      write_lcd key_part_two
+      write_lcd #key_part_two
       jsr _convert_to_hex
       txa
       jsr _lcd_print_char
       tya
       jsr _lcd_print_char
-      write_lcd key_part_three
+      write_lcd #key_part_three
       jmp program_loop
 
 handle_irq:

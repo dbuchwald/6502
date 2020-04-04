@@ -15,7 +15,7 @@
 init:
       jsr _lcd_init
 
-      write_lcd blink_msg
+      write_lcd #blink_msg
 
       lda #$01
       jsr _delay_sec

@@ -12,7 +12,7 @@
 init:
       jsr _lcd_init
 
-      write_lcd hello_msg
+      write_lcd #hello_msg
 
       ldx #$00
 char_loop:
