@@ -2,14 +2,14 @@
         .include "string.inc"
         .include "utils.inc"
 
-        .export _parse_onoff_p
-        .export _parse_hex_byte_p
-        .export _parse_hex_word_p
+        .export _parse_onoff
+        .export _parse_hex_byte
+        .export _parse_hex_word
 
 ; Function assumes token pointer in ptr1
 ; Returns status in carry flag (set - parsed successfully)
 ; Returns value in A (0 - off, 1 - on)
-_parse_onoff_p:
+_parse_onoff:
         ; Copy pointer to preserve during strcmp operation
         copy_ptr ptr1, parsed_token_pointer
         ; Convert whole token uppercase for comparison
@@ -38,7 +38,7 @@ _parse_onoff_p:
 ; Returns status in carry flag (set - parsed successfully)
 ; Returns value in A
 ; Stores temp value in tmp1 (but preserves it)
-_parse_hex_byte_p:
+_parse_hex_byte:
         ; preserve Y
         phy
         ; preserve tmp1
@@ -53,7 +53,7 @@ _parse_hex_byte_p:
         ; get first char
         ldy #$00
         lda (ptr1),y
-        jsr _parse_hex_single_char
+        jsr _parse_hex_char
         bcc @error
         asl
         asl
@@ -62,7 +62,7 @@ _parse_hex_byte_p:
         sta tmp1
         iny
         lda (ptr1),y
-        jsr _parse_hex_single_char
+        jsr _parse_hex_char
         bcc @error
         clc
         adc tmp1
@@ -80,7 +80,7 @@ _parse_hex_byte_p:
 ; Returns status in carry flag (set - parsed successfully)
 ; Returns value in MSB: A, LSB: X
 ; Stores temp value in tmp1 and tmp2 (but preserves them)
-_parse_hex_word_p:
+_parse_hex_word:
         ; preserve Y
         phy
         ; preserve tmp1
@@ -97,7 +97,7 @@ _parse_hex_word_p:
         ; get first char
         ldy #$00
         lda (ptr1),y
-        jsr _parse_hex_single_char
+        jsr _parse_hex_char
         bcc @error
         asl
         asl
@@ -106,14 +106,14 @@ _parse_hex_word_p:
         sta tmp1
         iny
         lda (ptr1),y
-        jsr _parse_hex_single_char
+        jsr _parse_hex_char
         bcc @error
         clc
         adc tmp1
         sta tmp1
         iny
         lda (ptr1),y
-        jsr _parse_hex_single_char
+        jsr _parse_hex_char
         bcc @error
         asl
         asl
@@ -122,7 +122,7 @@ _parse_hex_word_p:
         sta tmp2
         iny
         lda (ptr1),y
-        jsr _parse_hex_single_char
+        jsr _parse_hex_char
         bcc @error
         clc
         adc tmp2
@@ -145,7 +145,7 @@ _parse_hex_word_p:
 ; Assumes char in A
 ; returns status in carry (set - OK)
 ; returns value in A
-_parse_hex_single_char:
+_parse_hex_char:
         cmp #('0')
         bmi @error 
         cmp #('9'+1)

@@ -41,12 +41,18 @@
         .export _strtriml
         .export _strtrimr
         .export _strtokenize
+; parser routines
+        .export _parse_onoff
+        .export _parse_hex_byte
+        .export _parse_hex_word
 ; tty routines
         .export _tty_init
         .export _tty_read_line
         .export _tty_write
         .export _tty_writeln
         .export _tty_write_hex
+; menu routines
+        .export _run_menu
 
         .code
 
@@ -157,6 +163,16 @@ _strtrimr:
 _strtokenize:
         jmp (_syscall_strtokenize)
 
+; parser routines
+_parse_onoff:
+        jmp (_syscall_parse_onoff)
+
+_parse_hex_byte:
+        jmp (_syscall_parse_hex_byte)
+
+_parse_hex_word:
+        jmp (_syscall_parse_hex_word)
+
 ; tty routines
 _tty_init:
         jmp (_syscall_tty_init)
@@ -172,3 +188,7 @@ _tty_writeln:
 
 _tty_write_hex:
         jmp (_syscall_tty_write_hex)
+
+; menu routines
+_run_menu:
+        jmp (_syscall_run_menu)

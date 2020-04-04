@@ -9,6 +9,8 @@
         .include "utils.inc"
         .include "string.inc"
         .include "tty.inc"
+        .include "parse.inc"
+        .include "menu.inc"
 
 ; Init routines
         .export _syscall_system_init
@@ -51,12 +53,18 @@
         .export _syscall_strtriml
         .export _syscall_strtrimr
         .export _syscall_strtokenize
+; parser routines
+        .export _syscall_parse_onoff
+        .export _syscall_parse_hex_byte
+        .export _syscall_parse_hex_word
 ; tty routines
         .export _syscall_tty_init
         .export _syscall_tty_read_line
         .export _syscall_tty_write
         .export _syscall_tty_writeln
         .export _syscall_tty_write_hex
+; menu routines
+        .export _syscall_run_menu
 
         .segment "SYSCALLS"
 
@@ -134,6 +142,12 @@ _syscall_strtrimr:
         SYSCALL_VECTOR _strtrimr
 _syscall_strtokenize:
         SYSCALL_VECTOR _strtokenize
+_syscall_parse_onoff:
+        SYSCALL_VECTOR _parse_onoff
+_syscall_parse_hex_byte:
+        SYSCALL_VECTOR _parse_hex_byte
+_syscall_parse_hex_word:
+        SYSCALL_VECTOR _parse_hex_word
 _syscall_tty_init:
         SYSCALL_VECTOR _tty_init
 _syscall_tty_read_line:
@@ -144,3 +158,5 @@ _syscall_tty_writeln:
         SYSCALL_VECTOR _tty_writeln
 _syscall_tty_write_hex:
         SYSCALL_VECTOR _tty_write_hex
+_syscall_run_menu:
+        SYSCALL_VECTOR _run_menu

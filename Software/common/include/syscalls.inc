@@ -39,10 +39,16 @@
         .forceimport _syscall_strtriml
         .forceimport _syscall_strtrimr
         .forceimport _syscall_strtokenize
+; parser routines
+        .forceimport _syscall_parse_onoff
+        .forceimport _syscall_parse_hex_byte
+        .forceimport _syscall_parse_hex_word
 ; tty routines
         .forceimport _syscall_tty_init
         .forceimport _syscall_tty_read_line
         .forceimport _syscall_tty_write
         .forceimport _syscall_tty_writeln
         .forceimport _syscall_tty_write_hex
+; menu routines
+        .forceimport _syscall_run_menu
 
