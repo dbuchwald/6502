@@ -2,10 +2,8 @@
       .include "tty.inc"
       .include "string.inc"
       .include "utils.inc"
-      .include "acia.inc"
-
-LINE_BUFFER_SIZE = 32
-TOKENIZE_BUFFER_SIZE = 64
+      .include "menu.inc"
+      .include "parse.inc"
 
         .code
 init:
@@ -14,90 +12,176 @@ init:
         writeln_tty #msghello2
         writeln_tty #msghello3
 
-main_loop:
-        ; Start with prompt
-        write_tty #prompt
-
-        ; Read line 
-        tty_read_line #line_buffer, LINE_BUFFER_SIZE
-
-        ; If empty - display prompt again
-        strlen #line_buffer
-        cmp #$00
-        beq main_loop
-
-@compare_cmd_help:
-        strcmp #line_buffer, #cmd_help
-        cmp #$00
-        bne @compare_cmd_exit
-        jsr _display_help_message
-        jmp main_loop
-
-@compare_cmd_exit:
-        strcmp #line_buffer, #cmd_exit
-        cmp #$00
-        bne @tokenize
-        jsr _display_exit_message
+        run_menu #menu, #prompt
         rts
 
-@tokenize:
-        strtokenize #line_buffer, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
+_get_address:
+        copy_ptr ptr1, tokens_pointer
+        gettoken tokens_pointer, 1
+        copy_ptr ptr1, start_address_pointer
 
-        tax 
-        ; ldy #$00
-        lda #<tokenize_buffer
-        sta ptr4
-        lda #>tokenize_buffer
-        sta ptr4+1
-@token_loop:
-        write_tty #token_found
-        lda ptr4
-        sta ptr1
-        lda ptr4+1
-        sta ptr1+1
-        jsr _tty_write
-        writeln_tty #token_newline
-        dec tmp2
-        beq @done_listing_tokens
-        ldy #$00
-@next_token_loop:
-        lda (ptr4),y
-        beq @end_of_token
-        inc ptr4
-        bne @next_token_loop
-        inc ptr4+1
-        bra @next_token_loop
-@end_of_token:
-        inc ptr4
-        bne @token_loop
-        inc ptr4+1
-        bra @token_loop
-@done_listing_tokens:
+        parse_hex_word start_address_pointer
+        bcc @error
 
-@invalid_command:
-        writeln_tty #msgerror
-        writeln_tty #msghello3
-        jmp main_loop
-
-_display_help_message:
-        writeln_tty #msghelp1
-        writeln_tty #msghelp2
-        writeln_tty #msghelp3
-        writeln_tty #msghelp4
-        writeln_tty #msghelp5
-        writeln_tty #msghelp6
+        ; LSB 
+        stx start_address
+        ; MSB 
+        sta start_address+1
+        ; add 15 bytes
+        clc
+        lda start_address
+        adc #$0f
+        sta end_address
+        lda #$00
+        adc start_address+1
+        sta end_address+1
+        jmp _print_memory_range
+@error:
+        writeln_tty #parseerr
         rts
 
-_display_exit_message:
-        writeln_tty #msgbye
+_get_range:
+        copy_ptr ptr1, tokens_pointer
+        ; check if colon provided
+        gettoken tokens_pointer, 2
+        copy_ptr ptr1, operator_pointer
+        strcmp #colon, operator_pointer
+        cmp #$00
+        beq @good_op
+        jmp get_error
+@good_op:
+        ; get start address
+        gettoken tokens_pointer, 1
+        copy_ptr ptr1, start_address_pointer
+
+        parse_hex_word start_address_pointer
+        bcc get_error
+        ; LSB 
+        stx start_address
+        ; MSB 
+        sta start_address+1
+
+        ; get end address
+        gettoken tokens_pointer, 3
+        copy_ptr ptr1, end_address_pointer
+
+        parse_hex_word end_address_pointer
+        bcc get_error
+        ; LSB 
+        stx end_address
+        ; MSB 
+        sta end_address+1
+        jmp _print_memory_range
+get_error:
+        writeln_tty #parseerr
+        rts
+
+_print_memory_range:
+        lda start_address+1
+        jsr _convert_to_hex
+        txa
+        sta msgget_start
+        tya
+        sta msgget_start+1
+        lda start_address
+        jsr _convert_to_hex
+        txa
+        sta msgget_start+2
+        tya
+        sta msgget_start+3
+
+        lda end_address+1
+        jsr _convert_to_hex
+        txa
+        sta msgget_end
+        tya
+        sta msgget_end+1
+        lda end_address
+        jsr _convert_to_hex
+        txa
+        sta msgget_end+2
+        tya
+        sta msgget_end+3
+
+        writeln_tty #msgget
+        rts
+
+_put_value:
+        copy_ptr ptr1, tokens_pointer
+        ; check if colon provided
+        gettoken tokens_pointer, 2
+        copy_ptr ptr1, operator_pointer
+        strcmp #assign, operator_pointer
+        cmp #$00
+        beq @good_op
+        jmp put_error
+
+@good_op:
+        ; get address
+        gettoken tokens_pointer, 1
+        copy_ptr ptr1, start_address_pointer
+
+        parse_hex_word start_address_pointer
+        bcs @good_address
+        jmp put_error
+@good_address:
+        ; LSB 
+        stx start_address
+        ; MSB 
+        sta start_address+1
+
+        ; get value
+        gettoken tokens_pointer, 3
+        copy_ptr ptr1, value_pointer
+
+        parse_hex_byte value_pointer
+        bcc put_error
+        sta value
+
+        lda value
+        jsr _convert_to_hex
+        txa
+        sta msgput_value
+        tya
+        sta msgput_value+1
+
+        lda start_address+1
+        jsr _convert_to_hex
+        txa
+        sta msgput_address
+        tya
+        sta msgput_address+1
+        lda start_address
+        jsr _convert_to_hex
+        txa
+        sta msgput_address+2
+        tya
+        sta msgput_address+3
+
+        writeln_tty #msgput
+        rts
+
+put_error:
+        writeln_tty #parseerr
         rts
 
         .segment "BSS"
-line_buffer:
-        .res LINE_BUFFER_SIZE
-
-tokenize_buffer:
-        .res TOKENIZE_BUFFER_SIZE
+tokens_pointer:
+        .res 2
+start_address_pointer:
+        .res 2
+operator_pointer:
+        .res 2
+end_address_pointer:
+        .res 2
+value_pointer:
+        .res 2
+start_address:
+        .res 2
+end_address:
+        .res 2
+value:
+        .res 1
 
         .segment "RODATA"
 msghello1: 
@@ -105,74 +189,29 @@ msghello1:
 msghello2: 
         .asciiz "Try entering simple commands followed by ENTER"
 msghello3:
-        .asciiz "Currently supported commands are: HELP, EX[AMINE], BLINK and EXIT"
+        .asciiz "Currently supported commands are: HELP, GET, PUT and EXIT"
+msgget:
+        .byte   "Displaying contents of memory area "
+msgget_start:
+        .byte   "xxxx:"
+msgget_end:
+        .asciiz "yyyy"
+msgput:
+        .byte   "Storing value "
+msgput_value:
+        .byte   "yy at address "
+msgput_address:
+        .asciiz "xxxx"
+parseerr:
+        .asciiz "Unable to parse given address"
 prompt:
         .asciiz "OS/1 Monitor>"
-msghelp1:
-        .asciiz "HELP - display this message"
-msghelp2:
-        .asciiz "EX[AMINE] XXXX[:XXXX] - display memory contents"
-msghelp3:
-        .asciiz "  EX 3f01 - will display 16 bytes starting from $3f01"
-msghelp4:
-        .asciiz "  EXAMINE a000:a542 - will display all the memory contents between $a000 and $a542"
-msghelp5:
-        .asciiz "BLINK ON|OFF - turn on/off onboard LED"
-msghelp6:
-        .asciiz "EXIT - exit the monitor"
-msgerror:
-        .asciiz "Command not recognized, please try again"
-msgbye:
-        .asciiz "Thank you for using OS/1 monitor application"
-cmd_help:
-        .asciiz "HELP"
-cmd_ex:
-        .asciiz "EX"
-cmd_examine:
-        .asciiz "EXAMINE"
-cmd_blink:
-        .asciiz "BLINK"
-cmd_exit:
-        .asciiz "EXIT"
-
-cmd_blink_on:
-        .asciiz "ON"
-cmd_blink_off:
-        .asciiz "OFF"
-
-token_found:
-        .asciiz "Token found: <"
-token_newline:
-        .asciiz ">"
-
-        .macro menuitem id, cmd, argc, desc, function
-        .local start_item
-        .local cmd_pos
-        .local argc_pos
-        .local desc_pos
-        .local next_item
-start_item:
-        .byte cmd_pos - start_item
-        .byte argc_pos - start_item
-        .byte desc_pos - start_item
-        .byte next_item - start_item
-cmd_pos:
-        .asciiz cmd
-argc_pos:
-        .byte argc
-desc_pos:
-        .asciiz desc
-next_item:
-        .endmacro
-
-        .macro endmenu
-        .byte $00
-        .endmacro
-
-        .asciiz "here"
+colon:
+        .asciiz ":"
+assign:
+        .asciiz "="
 menu:
-        menuitem help, "HELP", 1, "HELP - display this message", _display_help_message
-        menuitem get2, "GET", 2, "GET - get data at the address", _display_exit_message
-        menuitem get4, "GET", 4, "GET - get data between addresses", _display_exit_message
-        menuitem exit, "EXIT", 1, "EXIT - exit monitor", _display_exit_message
+        menuitem get2, "GET", 2, "GET xxxx - get data at the address xxxx", _get_address
+        menuitem get4, "GET", 4, "GET xxxx:yyyy - get data between addresses xxxx and yyyy", _get_range
+        menuitem put, "PUT", 4, "PUT xxxx=yy - put value yy at address xxxx", _put_value
         endmenu 
