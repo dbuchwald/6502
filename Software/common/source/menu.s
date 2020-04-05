@@ -136,20 +136,20 @@ main_loop:
         tty_read_line line_buffer, LINE_BUFFER_SIZE
 
         ; Trim trailing and leading whitespace
-        strtriml line_buffer
-        strtrimr line_buffer
+        strtriml #line_buffer
+        strtrimr #line_buffer
 
         ; If empty - repeat
-        strlen line_buffer
+        strlen #line_buffer
         cmp #$00
         beq main_loop
 
         ; Tokenize input
-        strtokenize line_buffer, tokenize_buffer, TOKENIZE_BUFFER_SIZE
+        strtokenize #line_buffer, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
         sta tokens_count
 
         ; Convert first token to uppercase for comparison
-        strtoupper tokenize_buffer
+        strtoupper #tokenize_buffer
 
         ; Start from the beginning
         copy_ptr menu_root, menu_item
@@ -159,7 +159,7 @@ menu_commands_loop:
         jmp special_commands
 compare_item:
         get_menu_item menu_item, menu_item_cmd, menu_item_argc, menu_item_desc, menu_item_function
-        strcmpp tokenize_buffer_pointer, menu_item_cmd
+        strcmp tokenize_buffer_pointer, menu_item_cmd
         cmp #$00
         bne next_menu_item
         ; check number of parameters
@@ -196,13 +196,13 @@ special_commands:
         lda tokens_count
         cmp #$01
         bne invalid_command
-        strcmpp tokenize_buffer_pointer, cmd_help_ptr
+        strcmp tokenize_buffer_pointer, #cmd_help
         cmp #$00
         bne not_help
         jsr display_help_message
         jmp main_loop
 not_help:
-        strcmpp tokenize_buffer_pointer, cmd_exit_ptr
+        strcmp tokenize_buffer_pointer, #cmd_exit
         cmp #$00
         bne invalid_command
         writeln_tty byemsg
@@ -264,10 +264,6 @@ cmd_help:
         .asciiz "HELP"
 cmd_exit:
         .asciiz "EXIT"
-cmd_help_ptr:
-        .word cmd_help
-cmd_exit_ptr:
-        .word cmd_exit
 tokenize_buffer_pointer:
         .word tokenize_buffer
 errormsg1:

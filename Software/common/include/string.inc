@@ -14,101 +14,158 @@ SPACE   = $20   ; Space character
 
         .macro strcmp str1, str2
         pha
-        lda #<str1
-        sta ptr1
-        lda #>str1
-        sta ptr1+1
-        lda #<str2
-        sta ptr2
-        lda #>str2
-        sta ptr2+1
-        pla
-        jsr _strcmp
-        .endmacro
-
-        .macro strcmpp pstr1, pstr2
-        pha
-        lda pstr1
-        sta ptr1
-        lda pstr1+1
-        sta ptr1+1
-        lda pstr2
-        sta ptr2
-        lda pstr2+1
-        sta ptr2+1
+        .if (.match (.left (1, {str1}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1
+            lda #>(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda str1
+            sta ptr1
+            lda 1+(str1)
+            sta ptr1+1
+        .endif
+        .if (.match (.left (1, {str2}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({str2})-1, {str2}))
+            sta ptr2
+            lda #>(.right (.tcount ({str2})-1, {str2}))
+            sta ptr2+1
+        .else
+            ; assume absolute or zero page
+            lda str2
+            sta ptr2
+            lda 1+(str2)
+            sta ptr2+1
+        .endif
         pla
         jsr _strcmp
         .endmacro
 
         .macro strlen str1
         pha
-        lda #<str1
-        sta ptr1
-        lda #>str1
-        sta ptr1+1
+        .if (.match (.left (1, {str1}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1
+            lda #>(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda str1
+            sta ptr1
+            lda 1+(str1)
+            sta ptr1+1
+        .endif
         pla
         jsr _strlen
         .endmacro
 
         .macro strtoupper str1
         pha
-        lda #<str1
-        sta ptr1
-        lda #>str1
-        sta ptr1+1
-        pla
-        jsr _strtoupper
-        .endmacro
-
-        .macro strtoupperp pstr1
-        pha
-        lda pstr1
-        sta ptr1
-        lda pstr1+1
-        sta ptr1+1
+        .if (.match (.left (1, {str1}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1
+            lda #>(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda str1
+            sta ptr1
+            lda 1+(str1)
+            sta ptr1+1
+        .endif
         pla
         jsr _strtoupper
         .endmacro
 
         .macro strtolower str1
         pha
-        lda #<str1
-        sta ptr1
-        lda #>str1
-        sta ptr1+1
+        .if (.match (.left (1, {str1}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1
+            lda #>(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda str1
+            sta ptr1
+            lda 1+(str1)
+            sta ptr1+1
+        .endif
         pla
         jsr _strtolower
         .endmacro
 
         .macro strtriml str1
         pha
-        lda #<str1
-        sta ptr1
-        lda #>str1
-        sta ptr1+1
+        .if (.match (.left (1, {str1}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1
+            lda #>(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda str1
+            sta ptr1
+            lda 1+(str1)
+            sta ptr1+1
+        .endif
         pla
         jsr _strtriml
         .endmacro
 
         .macro strtrimr str1
         pha
-        lda #<str1
-        sta ptr1
-        lda #>str1
-        sta ptr1+1
+        .if (.match (.left (1, {str1}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1
+            lda #>(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda str1
+            sta ptr1
+            lda 1+(str1)
+            sta ptr1+1
+        .endif
         pla
         jsr _strtrimr
         .endmacro
 
         .macro strtokenize string, buffer, buffer_size
-        lda #<string
-        sta ptr1
-        lda #>string
-        sta ptr1+1
-        lda #<buffer
-        sta ptr2
-        lda #>buffer
-        sta ptr2+1
+        .if (.match (.left (1, {string}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({string})-1, {string}))
+            sta ptr1
+            lda #>(.right (.tcount ({string})-1, {string}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda string
+            sta ptr1
+            lda 1+(string)
+            sta ptr1+1
+        .endif
+        .if (.match (.left (1, {buffer}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({buffer})-1, {buffer}))
+            sta ptr2
+            lda #>(.right (.tcount ({buffer})-1, {buffer}))
+            sta ptr2+1
+        .else
+            ; assume absolute or zero page
+            lda buffer
+            sta ptr2
+            lda 1+(buffer)
+            sta ptr2+1
+        .endif
         lda #(buffer_size)
         sta tmp1
         jsr _strtokenize

@@ -13,9 +13,9 @@ _parse_onoff:
         ; Copy pointer to preserve during strcmp operation
         copy_ptr ptr1, parsed_token_pointer
         ; Convert whole token uppercase for comparison
-        strtoupperp parsed_token_pointer
+        strtoupper parsed_token_pointer
         ; Compare against "ON"
-        strcmpp token_on_ptr, parsed_token_pointer
+        strcmp #token_on, parsed_token_pointer
         cmp #$00
         bne @not_on
         ; Equal
@@ -24,7 +24,7 @@ _parse_onoff:
         rts
 @not_on:
         ; Compare against "OFF"
-        strcmpp token_off_ptr, parsed_token_pointer
+        strcmp #token_off, parsed_token_pointer
         cmp #$00
         bne @error
         sec
@@ -47,7 +47,7 @@ _parse_hex_byte:
         ; Copy pointer to preserve during strtoupper operation
         copy_ptr ptr1, parsed_token_pointer
         ; Convert whole token uppercase for comparison
-        strtoupperp parsed_token_pointer
+        strtoupper parsed_token_pointer
         ; Copy pointer back to dereference
         copy_ptr parsed_token_pointer, ptr1
         ; get first char
@@ -91,7 +91,7 @@ _parse_hex_word:
         ; Copy pointer to preserve during strtoupper operation
         copy_ptr ptr1, parsed_token_pointer
         ; Convert whole token uppercase for comparison
-        strtoupperp parsed_token_pointer
+        strtoupper parsed_token_pointer
         ; Copy pointer back to dereference
         copy_ptr parsed_token_pointer, ptr1
         ; get first char
@@ -177,7 +177,3 @@ token_on:
         .asciiz "ON"
 token_off:
         .asciiz "OFF"
-token_on_ptr:
-        .word token_on
-token_off_ptr:
-        .word token_off

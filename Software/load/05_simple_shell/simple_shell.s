@@ -31,33 +31,33 @@ main_loop:
         tty_read_line line_buffer, LINE_BUFFER_SIZE
 
         ; Trim the line
-        strtriml line_buffer
-        strtrimr line_buffer
+        strtriml #line_buffer
+        strtrimr #line_buffer
 
         ; If empty - display prompt again
-        strlen line_buffer
+        strlen #line_buffer
         cmp #$00
         beq main_loop
 
         ; Convert to upper case for comparison
-        strtoupper line_buffer
+        strtoupper #line_buffer
 
 @compare_cmd_help:
-        strcmp line_buffer, cmd_help
+        strcmp #line_buffer, #cmd_help
         cmp #$00
         bne @compare_cmd_load
         jsr _display_help_message
         jmp main_loop
 
 @compare_cmd_load:
-        strcmp line_buffer, cmd_load
+        strcmp #line_buffer, #cmd_load
         cmp #$00
         bne @compare_cmd_exit
         jsr _display_load_message
         jmp main_loop
 
 @compare_cmd_exit:
-        strcmp line_buffer, cmd_exit
+        strcmp #line_buffer, #cmd_exit
         cmp #$00
         bne @invalid_command
         jsr _display_exit_message

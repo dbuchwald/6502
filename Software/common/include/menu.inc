@@ -25,34 +25,34 @@ next_item:
         .byte $00, $ff
         .endmacro
 
-        .macro run_menu menu_pointer, prompt_pointer
-        pha
-        lda ptr1
-        pha
-        lda ptr1+1
-        pha
-        lda ptr2
-        pha
-        lda ptr2+1
-        pha
-        lda #<menu_pointer
-        sta ptr1
-        lda #>menu_pointer
-        sta ptr1+1
-        lda #<prompt_pointer
-        sta ptr2
-        lda #>prompt_pointer
-        sta ptr2+1
+        .macro run_menu menu, prompt
+        .if (.match (.left (1, {menu}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({menu})-1, {menu}))
+            sta ptr1
+            lda #>(.right (.tcount ({menu})-1, {menu}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda menu
+            sta ptr1
+            lda 1+(menu)
+            sta menu+1
+        .endif
+        .if (.match (.left (1, {prompt}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({prompt})-1, {prompt}))
+            sta ptr2
+            lda #>(.right (.tcount ({prompt})-1, {prompt}))
+            sta ptr2+1
+        .else
+            ; assume absolute or zero page
+            lda prompt
+            sta ptr2
+            lda 1+(prompt)
+            sta ptr2+1
+        .endif
         jsr _run_menu
-        pla
-        sta ptr2+1
-        pla
-        sta ptr2
-        pla
-        sta ptr1+1
-        pla
-        sta ptr1
-        pla
         .endmacro        
 
 

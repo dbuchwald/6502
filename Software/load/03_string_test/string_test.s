@@ -15,7 +15,7 @@ init:
         write_acia #message
 
         write_acia #msg1
-        strlen message
+        strlen #message
         jsr _convert_to_hex
         txa
         sta result_val
@@ -24,7 +24,7 @@ init:
         write_acia #result_msg
 
         write_acia #msg2
-        strcmp strc1, strc2
+        strcmp #strc1, #strc2
         jsr _convert_to_hex
         txa
         sta result_val
@@ -33,7 +33,7 @@ init:
         write_acia #result_msg
 
         write_acia #msg3
-        strcmp strc2, strc3
+        strcmp #strc2, #strc3
         jsr _convert_to_hex
         txa
         sta result_val
@@ -42,7 +42,7 @@ init:
         write_acia #result_msg
 
         write_acia #msg4
-        strcmp strc3, strc4
+        strcmp #strc3, #strc4
         jsr _convert_to_hex
         txa
         sta result_val
@@ -51,16 +51,16 @@ init:
         write_acia #result_msg
 
         write_acia #to_upper_message
-        strtoupper to_upper_message
+        strtoupper #to_upper_message
         write_acia #to_upper_message
 
         write_acia #to_lower_message
-        strtolower to_lower_message
+        strtolower #to_lower_message
         write_acia #to_lower_message
 
         write_acia #token1
 
-        strtokenize token1, tokenize_buffer, TOKENIZE_BUFFER_SIZE
+        strtokenize #token1, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
         tax 
         ; ldy #$00
@@ -95,7 +95,7 @@ init:
 
         write_acia #token2
 
-        strtokenize token2, tokenize_buffer, TOKENIZE_BUFFER_SIZE
+        strtokenize #token2, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
         tax 
         ; ldy #$00
@@ -130,7 +130,7 @@ init:
 
         write_acia #token3
 
-        strtokenize token3, tokenize_buffer, TOKENIZE_BUFFER_SIZE
+        strtokenize #token3, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
         tax 
         ; ldy #$00

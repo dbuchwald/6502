@@ -21,34 +21,27 @@ main_loop:
         ; Read line 
         tty_read_line line_buffer, LINE_BUFFER_SIZE
 
-        ; ; Trim the line
-        ; strtriml line_buffer
-        ; strtrimr line_buffer
-
         ; If empty - display prompt again
-        strlen line_buffer
+        strlen #line_buffer
         cmp #$00
         beq main_loop
 
-        ; Convert to upper case for comparison
-        ; strtoupper line_buffer
-
 @compare_cmd_help:
-        strcmp line_buffer, cmd_help
+        strcmp #line_buffer, #cmd_help
         cmp #$00
         bne @compare_cmd_exit
         jsr _display_help_message
         jmp main_loop
 
 @compare_cmd_exit:
-        strcmp line_buffer, cmd_exit
+        strcmp #line_buffer, #cmd_exit
         cmp #$00
         bne @tokenize
         jsr _display_exit_message
         rts
 
 @tokenize:
-        strtokenize line_buffer, tokenize_buffer, TOKENIZE_BUFFER_SIZE
+        strtokenize #line_buffer, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
         tax 
         ; ldy #$00

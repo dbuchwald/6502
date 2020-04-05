@@ -29,7 +29,7 @@ exit:
 
         .code
 init:
-        run_menu menu, test_prompt
+        run_menu #menu, #test_prompt
         rts
 
 process_get_2:
@@ -58,7 +58,7 @@ process_blink:
         gettoken tokens_pointer, 1
         copy_ptr ptr1, param_pointer
 
-        parse_onoff_p param_pointer
+        parse_onoff param_pointer
         bcc blink_error
         cmp #$00
         beq turn_off
@@ -84,7 +84,7 @@ process_print:
         gettoken tokens_pointer, 1
         copy_ptr ptr1, param_pointer
 
-        parse_hex_byte_p param_pointer
+        parse_hex_byte param_pointer
         bcc @error
         jsr _convert_to_hex
         txa
@@ -109,7 +109,7 @@ process_addr:
         gettoken tokens_pointer, 1
         copy_ptr ptr1, param_pointer
 
-        parse_hex_word_p param_pointer
+        parse_hex_word param_pointer
         bcc @error
         phx
         jsr _convert_to_hex

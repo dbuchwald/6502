@@ -49,11 +49,7 @@
 
         .code
 init:
-        ; strcmp strc1, strc2
-        ; .byte "####"
-        ; strcmpp strc1p, strc2p
-        ;pstrlen #strc1
-        ;pstrlen strc1p 
+
         pstrcmp #strc1, #strc2
         .byte "####"
         pstrcmp strc1p, strc2p
