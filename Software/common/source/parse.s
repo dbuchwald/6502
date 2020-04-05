@@ -46,6 +46,10 @@ _parse_hex_byte:
         pha
         ; Copy pointer to preserve during strtoupper operation
         copy_ptr ptr1, parsed_token_pointer
+        ; Check length (expect two chars only)
+        strlen parsed_token_pointer
+        cmp #$02
+        bne @error
         ; Convert whole token uppercase for comparison
         strtoupper parsed_token_pointer
         ; Copy pointer back to dereference
@@ -88,14 +92,22 @@ _parse_hex_word:
         pha
         lda tmp2
         pha
+        stz tmp1
         ; Copy pointer to preserve during strtoupper operation
         copy_ptr ptr1, parsed_token_pointer
         ; Convert whole token uppercase for comparison
         strtoupper parsed_token_pointer
         ; Copy pointer back to dereference
         copy_ptr parsed_token_pointer, ptr1
-        ; get first char
+        ; Set index pointer
         ldy #$00
+        ; Check length
+        strlen parsed_token_pointer
+        cmp #$02
+        beq @zeropage
+        cmp #$04
+        bne @error
+        ; get first char
         lda (ptr1),y
         jsr _parse_hex_char
         bcc @error
@@ -112,6 +124,7 @@ _parse_hex_word:
         adc tmp1
         sta tmp1
         iny
+@zeropage:
         lda (ptr1),y
         jsr _parse_hex_char
         bcc @error
@@ -140,7 +153,6 @@ _parse_hex_word:
         sty tmp1
         ply
         rts
-
 
 ; Assumes char in A
 ; returns status in carry (set - OK)

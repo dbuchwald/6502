@@ -170,3 +170,28 @@ SPACE   = $20   ; Space character
         sta tmp1
         jsr _strtokenize
         .endmacro  
+
+        .macro gettoken token_buffer, number
+        .local token_loop
+        .local char_loop
+        .local exit
+        phy
+        pha
+        lda #(number)
+        sta tmp1
+        copy_ptr token_buffer, ptr1
+        ldy #$00
+token_loop:
+        lda tmp1
+        beq exit
+char_loop:
+        inc_ptr ptr1
+        lda (ptr1),y
+        bne char_loop
+        inc_ptr ptr1
+        dec tmp1
+        bra token_loop
+exit:
+        pla
+        ply
+        .endmacro

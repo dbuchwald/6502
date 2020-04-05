@@ -193,15 +193,23 @@ next_menu_item:
         get_next_menu_item menu_item
         jmp menu_commands_loop
 special_commands:
-        lda tokens_count
-        cmp #$01
-        bne invalid_command
         strcmp tokenize_buffer_pointer, #cmd_help
         cmp #$00
         bne not_help
+        lda tokens_count
+        cmp #$03
+        bpl invalid_command
+        cmp #$02
+        beq filtered_help
         jsr display_help_message
         jmp main_loop
+filtered_help:
+        jsr display_filtered_help
+        jmp main_loop
 not_help:
+        lda tokens_count
+        cmp #$01
+        bne invalid_command
         strcmp tokenize_buffer_pointer, #cmd_exit
         cmp #$00
         bne invalid_command
@@ -220,12 +228,13 @@ execute_menu_function:
 display_help_message:
         writeln_tty #helpmsg1
         writeln_tty #helpmsg2
+        writeln_tty #helpmsg3
         copy_ptr menu_root, menu_item
 help_loop:
         is_last_menu_item menu_item
-        bcc display_item
-        jmp done_listing
-display_item:
+        bcc @display_item
+        jmp @done_listing
+@display_item:
         get_menu_item menu_item, menu_item_cmd, menu_item_argc, menu_item_desc, menu_item_function
 
         write_tty #helpind
@@ -233,15 +242,64 @@ display_item:
 
         get_next_menu_item menu_item
         jmp help_loop
-done_listing:
+@done_listing:
+        writeln_tty #helpmsg4
+        rts
+
+display_filtered_help:
+        gettoken tokenize_buffer_pointer, 1
+        copy_ptr ptr1, help_filter_pointer
+        strtoupper help_filter_pointer
+        ; Check default candidates
+        strcmp #cmd_help, help_filter_pointer
+        cmp #$00
+        bne @not_help
+        writeln_tty #helpmsg2
         writeln_tty #helpmsg3
         rts
+@not_help:
+        strcmp #cmd_exit, help_filter_pointer
+        cmp #$00
+        bne @not_exit
+        writeln_tty #helpmsg4
+        rts
+@not_exit:
+        ; Keep track of found matches
+        stz tmp1
+        copy_ptr menu_root, menu_item
+help_filter_loop:
+        is_last_menu_item menu_item
+        bcc @display_item
+        jmp @done_listing
+@display_item:
+        get_menu_item menu_item, menu_item_cmd, menu_item_argc, menu_item_desc, menu_item_function
+
+        strcmp menu_item_cmd, help_filter_pointer
+        cmp #$00
+        bne @next_item
+
+        inc tmp1
+        write_tty #helpind
+        writeln_tty menu_item_desc
+
+@next_item:
+        get_next_menu_item menu_item
+        jmp help_filter_loop
+@done_listing:
+        lda tmp1
+        bne @just_exit
+        writeln_tty #notfoundcmd
+@just_exit:
+        rts
+
 
         .segment "BSS"
 line_buffer:
         .res LINE_BUFFER_SIZE
 tokenize_buffer:
         .res TOKENIZE_BUFFER_SIZE
+help_filter_pointer:
+        .res 2
 tokens_count:
         .res 1
 menu_root:
@@ -277,6 +335,10 @@ helpmsg1:
 helpmsg2:
         .asciiz "  HELP - display this information"
 helpmsg3:
+        .asciiz "  HELP <command> - display help for <command>"
+helpmsg4:
         .asciiz "  EXIT - exit the menu"
 helpind:
         .asciiz "  "
+notfoundcmd:
+        .asciiz "Command not recognized, no help available"
