@@ -74,15 +74,15 @@
         .if (.match (.left (1, {pointer}), #))
             ; immediate mode
             lda #<(.right (.tcount ({pointer})-1, {pointer}))
-            sta ptr1
+            jsr _tty_write_hex
             lda #>(.right (.tcount ({pointer})-1, {pointer}))
-            sta ptr1+1
+            jsr _tty_write_hex
         .else
             ; assume absolute or zero page
             lda pointer
-            sta ptr1
+            jsr _tty_write_hex
             lda 1+(pointer)
-            sta ptr1+1
+            jsr _tty_write_hex
         .endif
         pla
         .endmacro
