@@ -8,10 +8,19 @@
 
         .macro tty_read_line buffer, buffer_size
         pha
-        lda #<buffer
-        sta ptr1
-        lda #>buffer
-        sta ptr1+1
+        .if (.match (.left (1, {buffer}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({buffer})-1, {buffer}))
+            sta ptr1
+            lda #>(.right (.tcount ({buffer})-1, {buffer}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda buffer
+            sta ptr1
+            lda 1+(buffer)
+            sta ptr1+1
+        .endif
         lda #buffer_size
         sta tmp1
         pla
@@ -20,40 +29,38 @@
 
         .macro write_tty string
         pha
-        lda #<string
-        sta ptr1
-        lda #>string
-        sta ptr1+1
+        .if (.match (.left (1, {string}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({string})-1, {string}))
+            sta ptr1
+            lda #>(.right (.tcount ({string})-1, {string}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda string
+            sta ptr1
+            lda 1+(string)
+            sta ptr1+1
+        .endif
         pla
         jsr _tty_write
         .endmacro
 
         .macro writeln_tty string
         pha
-        lda #<string
-        sta ptr1
-        lda #>string
-        sta ptr1+1
-        pla
-        jsr _tty_writeln
-        .endmacro
-
-        .macro write_tty_p address
-        pha
-        lda address
-        sta ptr1
-        lda address+1
-        sta ptr1+1
-        pla
-        jsr _tty_write
-        .endmacro
-
-        .macro writeln_tty_p address
-        pha
-        lda address
-        sta ptr1
-        lda address+1
-        sta ptr1+1
+        .if (.match (.left (1, {string}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({string})-1, {string}))
+            sta ptr1
+            lda #>(.right (.tcount ({string})-1, {string}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda string
+            sta ptr1
+            lda 1+(string)
+            sta ptr1+1
+        .endif
         pla
         jsr _tty_writeln
         .endmacro
@@ -64,10 +71,19 @@
 
         .macro write_tty_address pointer
         pha
-        lda pointer+1
-        jsr _tty_write_hex
-        lda pointer
-        jsr _tty_write_hex
+        .if (.match (.left (1, {pointer}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({pointer})-1, {pointer}))
+            sta ptr1
+            lda #>(.right (.tcount ({pointer})-1, {pointer}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda pointer
+            sta ptr1
+            lda 1+(pointer)
+            sta ptr1+1
+        .endif
         pla
         .endmacro
 

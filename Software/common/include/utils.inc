@@ -32,3 +32,14 @@
       inc pointer+1
 skip:
       .endmacro
+
+      .macro dec_ptr pointer
+      .local skip
+      pha
+      lda pointer
+      bne skip
+      dec pointer+1
+skip:
+      dec pointer
+      pla
+      .endmacro

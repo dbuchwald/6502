@@ -19,16 +19,16 @@ init:
         jsr _tty_init
 
         ; Display hello messages
-        writeln_tty msghello1
-        writeln_tty msghello2
-        writeln_tty msghello3
+        writeln_tty #msghello1
+        writeln_tty #msghello2
+        writeln_tty #msghello3
 
 main_loop:
         ; Start with prompt
-        write_tty os1prompt
+        write_tty #os1prompt
 
         ; Read line 
-        tty_read_line line_buffer, LINE_BUFFER_SIZE
+        tty_read_line #line_buffer, LINE_BUFFER_SIZE
 
         ; Trim the line
         strtriml #line_buffer
@@ -64,22 +64,22 @@ main_loop:
         rts
 
 @invalid_command:
-        writeln_tty msgerror
-        writeln_tty msghello3
+        writeln_tty #msgerror
+        writeln_tty #msghello3
         jmp main_loop
         
 _display_help_message:
-        writeln_tty msghelp1
-        writeln_tty msghelp2
-        writeln_tty msghelp3
+        writeln_tty #msghelp1
+        writeln_tty #msghelp2
+        writeln_tty #msghelp3
         rts
 
 _display_load_message:
-        writeln_tty msgload
+        writeln_tty #msgload
         rts
 
 _display_exit_message:
-        writeln_tty msgbye
+        writeln_tty #msgbye
         rts
 
         .segment "BSS"

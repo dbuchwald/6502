@@ -10,16 +10,16 @@ TOKENIZE_BUFFER_SIZE = 64
         .code
 init:
         ; Display hello messages
-        writeln_tty msghello1
-        writeln_tty msghello2
-        writeln_tty msghello3
+        writeln_tty #msghello1
+        writeln_tty #msghello2
+        writeln_tty #msghello3
 
 main_loop:
         ; Start with prompt
-        write_tty prompt
+        write_tty #prompt
 
         ; Read line 
-        tty_read_line line_buffer, LINE_BUFFER_SIZE
+        tty_read_line #line_buffer, LINE_BUFFER_SIZE
 
         ; If empty - display prompt again
         strlen #line_buffer
@@ -50,13 +50,13 @@ main_loop:
         lda #>tokenize_buffer
         sta ptr4+1
 @token_loop:
-        write_tty token_found
+        write_tty #token_found
         lda ptr4
         sta ptr1
         lda ptr4+1
         sta ptr1+1
         jsr _tty_write
-        writeln_tty token_newline
+        writeln_tty #token_newline
         dec tmp2
         beq @done_listing_tokens
         ldy #$00
@@ -75,21 +75,21 @@ main_loop:
 @done_listing_tokens:
 
 @invalid_command:
-        writeln_tty msgerror
-        writeln_tty msghello3
+        writeln_tty #msgerror
+        writeln_tty #msghello3
         jmp main_loop
 
 _display_help_message:
-        writeln_tty msghelp1
-        writeln_tty msghelp2
-        writeln_tty msghelp3
-        writeln_tty msghelp4
-        writeln_tty msghelp5
-        writeln_tty msghelp6
+        writeln_tty #msghelp1
+        writeln_tty #msghelp2
+        writeln_tty #msghelp3
+        writeln_tty #msghelp4
+        writeln_tty #msghelp5
+        writeln_tty #msghelp6
         rts
 
 _display_exit_message:
-        writeln_tty msgbye
+        writeln_tty #msgbye
         rts
 
         .segment "BSS"

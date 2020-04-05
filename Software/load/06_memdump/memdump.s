@@ -57,7 +57,7 @@ init:
         lda ptr3
         and #%00001111
         bne @byte_loop
-        writeln_tty dump_line
+        writeln_tty #dump_line
         bra @line_loop
 @exit:
         rts

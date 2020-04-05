@@ -130,10 +130,10 @@ _run_menu:
 
 main_loop:
         ; Display prompt
-        write_tty_p menu_prompt
+        write_tty menu_prompt
 
         ; Read one line
-        tty_read_line line_buffer, LINE_BUFFER_SIZE
+        tty_read_line #line_buffer, LINE_BUFFER_SIZE
 
         ; Trim trailing and leading whitespace
         strtriml #line_buffer
@@ -205,11 +205,11 @@ not_help:
         strcmp tokenize_buffer_pointer, #cmd_exit
         cmp #$00
         bne invalid_command
-        writeln_tty byemsg
+        writeln_tty #byemsg
         rts
 invalid_command:
-        writeln_tty errormsg1
-        writeln_tty errormsg2
+        writeln_tty #errormsg1
+        writeln_tty #errormsg2
         jmp main_loop
 
 execute_menu_function:
@@ -218,8 +218,8 @@ execute_menu_function:
         jmp (menu_item_function)
 
 display_help_message:
-        writeln_tty helpmsg1
-        writeln_tty helpmsg2
+        writeln_tty #helpmsg1
+        writeln_tty #helpmsg2
         copy_ptr menu_root, menu_item
 help_loop:
         is_last_menu_item menu_item
@@ -228,13 +228,13 @@ help_loop:
 display_item:
         get_menu_item menu_item, menu_item_cmd, menu_item_argc, menu_item_desc, menu_item_function
 
-        write_tty helpind
-        writeln_tty_p menu_item_desc
+        write_tty #helpind
+        writeln_tty menu_item_desc
 
         get_next_menu_item menu_item
         jmp help_loop
 done_listing:
-        writeln_tty helpmsg3
+        writeln_tty #helpmsg3
         rts
 
         .segment "BSS"

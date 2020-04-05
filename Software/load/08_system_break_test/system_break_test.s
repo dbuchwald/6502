@@ -2,7 +2,7 @@
       .include "tty.inc"
 
 init:
-      writeln_tty msgblocked
+      writeln_tty #msgblocked
 
 infinite_loop:
       jmp infinite_loop

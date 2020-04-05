@@ -29,31 +29,31 @@ run_shell:
         jsr _tty_init
 
         ; Display banner
-        writeln_tty msgemptyline
-        writeln_tty bannerh1
-        writeln_tty bannerh2
-        writeln_tty banner1
-        writeln_tty banner2
-        writeln_tty banner3
-        writeln_tty banner4
-        writeln_tty banner5
-        writeln_tty bannerh2
-        writeln_tty bannerh1
-        writeln_tty msgemptyline
+        writeln_tty #msgemptyline
+        writeln_tty #bannerh1
+        writeln_tty #bannerh2
+        writeln_tty #banner1
+        writeln_tty #banner2
+        writeln_tty #banner3
+        writeln_tty #banner4
+        writeln_tty #banner5
+        writeln_tty #bannerh2
+        writeln_tty #bannerh1
+        writeln_tty #msgemptyline
 
         ; Display hello messages
-        writeln_tty msghello1
-        writeln_tty msghello2
-        writeln_tty msghello3
+        writeln_tty #msghello1
+        writeln_tty #msghello2
+        writeln_tty #msghello3
 
         register_system_break #system_break_handler
 
 main_loop:
         ; Start with prompt
-        write_tty os1prompt
+        write_tty #os1prompt
 
         ; Read line 
-        tty_read_line line_buffer, LINE_BUFFER_SIZE
+        tty_read_line #line_buffer, LINE_BUFFER_SIZE
 
         ; Trim the line
         strtriml #line_buffer
@@ -103,27 +103,27 @@ main_loop:
         rts
 
 @invalid_command:
-        writeln_tty msgerror
-        writeln_tty msghello3
+        writeln_tty #msgerror
+        writeln_tty #msghello3
         jmp main_loop
         
 _display_help_message:
-        writeln_tty msghelp1
-        writeln_tty msghelp2
-        writeln_tty msghelp3
-        writeln_tty msghelp4
-        writeln_tty msghelp5
+        writeln_tty #msghelp1
+        writeln_tty #msghelp2
+        writeln_tty #msghelp3
+        writeln_tty #msghelp4
+        writeln_tty #msghelp5
         rts
 
 _perform_load:
-        writeln_tty msgload
+        writeln_tty #msgload
 @receive_file:
         jsr _modem_receive
         bcc @receive_file
         rts
 
 _perform_dump:
-        writeln_tty msgdump
+        writeln_tty #msgdump
 
         ldx #$00
 @template_loop:
@@ -166,26 +166,26 @@ _perform_dump:
         lda ptr3
         and #%00001111
         bne @byte_loop
-        writeln_tty dump_line
+        writeln_tty #dump_line
         bra @line_loop
 @exit:
         rts
 
 
 _run_program:
-        writeln_tty msgrun
+        writeln_tty #msgrun
         jsr $1000
         rts
 
 _display_exit_message:
-        writeln_tty msgbye
+        writeln_tty #msgbye
         rts
 
 system_break_handler:
-        writeln_tty msgemptyline
-        writeln_tty msgemptyline
-        writeln_tty msgemptyline
-        writeln_tty msgsystembreak
+        writeln_tty #msgemptyline
+        writeln_tty #msgemptyline
+        writeln_tty #msgemptyline
+        writeln_tty #msgsystembreak
         jsr _strobe_led
         jmp main_loop
 

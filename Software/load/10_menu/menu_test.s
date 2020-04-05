@@ -34,7 +34,7 @@ init:
 
 process_get_2:
         copy_ptr ptr1, tokens_pointer
-        writeln_tty get2msg
+        writeln_tty #get2msg
         lda #$02
         sta tmp1
         jsr list_params
@@ -42,7 +42,7 @@ process_get_2:
 
 process_get_4:
         copy_ptr ptr1, tokens_pointer
-        writeln_tty get4msg
+        writeln_tty #get4msg
         lda #$04
         sta tmp1
         jsr list_params
@@ -50,7 +50,7 @@ process_get_4:
 
 process_blink:
         copy_ptr ptr1, tokens_pointer
-        writeln_tty blinkmsg
+        writeln_tty #blinkmsg
         lda #$02
         sta tmp1
         jsr list_params
@@ -70,13 +70,13 @@ turn_off:
         jsr _blink_led
         rts
 blink_error:
-        writeln_tty blinkerror
+        writeln_tty #blinkerror
         rts
 
 
 process_print:
         copy_ptr ptr1, tokens_pointer
-        writeln_tty printmsg
+        writeln_tty #printmsg
         lda #$02
         sta tmp1
         jsr list_params
@@ -92,16 +92,16 @@ process_print:
         tya
         sta printplace+1
         
-        writeln_tty printparsed
+        writeln_tty #printparsed
 
         rts
 @error:
-        writeln_tty blinkerror
+        writeln_tty #blinkerror
         rts
 
 process_addr:
         copy_ptr ptr1, tokens_pointer
-        writeln_tty addrmsg
+        writeln_tty #addrmsg
         lda #$02
         sta tmp1
         jsr list_params
@@ -124,24 +124,24 @@ process_addr:
         tya
         sta addrplace+3
         
-        writeln_tty addrparsed
+        writeln_tty #addrparsed
 
         rts
 @error:
-        writeln_tty blinkerror
+        writeln_tty #blinkerror
         rts
 
 
 process_put:
-        writeln_tty putmsg
+        writeln_tty #putmsg
         rts
 
 list_params:
         copy_ptr tokens_pointer, ptr2
         ldy #$00
 list_loop:
-        write_tty paramval
-        writeln_tty_p ptr2
+        write_tty #paramval
+        writeln_tty ptr2
 next_token_loop:
         inc ptr2
         bne check_for_end
