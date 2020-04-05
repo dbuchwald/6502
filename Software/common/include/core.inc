@@ -6,15 +6,11 @@
         .if (.match (.left (1, {address}), #))
             ; immediate mode
             lda #<(.right (.tcount ({address})-1, {address}))
-            sta ptr1
-            lda #>(.right (.tcount ({address})-1, {address}))
-            sta ptr1+1
+            ldx #>(.right (.tcount ({address})-1, {address}))
         .else
             ; assume absolute or zero page
             lda address
-            sta ptr1
-            lda 1+(address)
-            sta ptr1+1
+            ldx 1+(address)
         .endif
         jsr _register_system_break
         .endmacro
