@@ -16,9 +16,6 @@
             lda 1+(address)
             sta ptr1+1
         .endif
-
-        lda #<address
-        ldx #>address
         jsr _register_system_break
         .endmacro
         
