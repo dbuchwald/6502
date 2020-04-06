@@ -6,25 +6,14 @@
         .include "modem.inc"
         .include "blink.inc"
         .include "core.inc"
+        .include "menu.inc"
+        .include "parse.inc"
 
-        .export run_shell
-
-        .macro hex_to_buffer
-        jsr _convert_to_hex
-        txa
-        ldx tmp1
-        sta dump_line,x
-        inx
-        tya
-        sta dump_line,x
-        inx
-        stx tmp1
-        .endmacro
-
-LINE_BUFFER_SIZE = 64
+        .export _run_shell
+        .import _run_monitor
 
         .code
-run_shell:
+_run_shell:
         lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL)
         jsr _tty_init
 
@@ -49,135 +38,45 @@ run_shell:
         register_system_break #system_break_handler
 
 main_loop:
-        ; Start with prompt
-        write_tty #os1prompt
-
-        ; Read line 
-        tty_read_line #line_buffer, LINE_BUFFER_SIZE
-
-        ; Trim the line
-        strtriml #line_buffer
-        strtrimr #line_buffer
-
-        ; If empty - display prompt again
-        strlen #line_buffer
-        cmp #$00
-        beq main_loop
-
-        ; Convert to upper case for comparison
-        strtoupper #line_buffer
-
-@compare_cmd_help:
-        strcmp #line_buffer, #cmd_help
-        cmp #$00
-        bne @compare_cmd_load
-        jsr _display_help_message
-        jmp main_loop
-
-@compare_cmd_load:
-        strcmp #line_buffer, #cmd_load
-        cmp #$00
-        bne @compare_cmd_dump
-        jsr _perform_load
-        jmp main_loop
-
-@compare_cmd_dump:
-        strcmp #line_buffer, #cmd_dump
-        cmp #$00
-        bne @compare_cmd_run
-        jsr _perform_dump
-        jmp main_loop
-
-@compare_cmd_run:
-        strcmp #line_buffer, #cmd_run
-        cmp #$00
-        bne @compare_cmd_exit
-        jsr _run_program
-        jmp main_loop
-
-@compare_cmd_exit:
-        strcmp #line_buffer, #cmd_exit
-        cmp #$00
-        bne @invalid_command
-        jsr _display_exit_message
+        run_menu #menu, #os1prompt
         rts
 
-@invalid_command:
-        writeln_tty #msgerror
-        writeln_tty #msghello3
-        jmp main_loop
-        
-_display_help_message:
-        writeln_tty #msghelp1
-        writeln_tty #msghelp2
-        writeln_tty #msghelp3
-        writeln_tty #msghelp4
-        writeln_tty #msghelp5
-        rts
-
-_perform_load:
+_process_load:
         writeln_tty #msgload
 @receive_file:
         jsr _modem_receive
         bcc @receive_file
         rts
 
-_perform_dump:
-        writeln_tty #msgdump
-
-        ldx #$00
-@template_loop:
-        lda dump_template,x
-        sta dump_line,x
-        inx
-        cmp #$00
-        bne @template_loop
-
-        lda #$00
-        sta ptr3
-
-        lda #$10
-        sta ptr3+1
-@line_loop:
-        lda #04
-        sta tmp1
-        lda ptr3+1
-        hex_to_buffer
-        lda ptr3
-        hex_to_buffer
-        inc tmp1
-        inc tmp1
-@byte_loop:
-        lda (ptr3)
-        hex_to_buffer
-        inc tmp1
-        inc ptr3
-        bne @next_item
-        inc ptr3+1
-        lda ptr3+1
-        cmp #$20
-        beq @exit
-@next_item:
-        lda ptr3
-        and #%00000111
-        bne @byte_loop
-        inc tmp1
-        lda ptr3
-        and #%00001111
-        bne @byte_loop
-        writeln_tty #dump_line
-        bra @line_loop
-@exit:
-        rts
-
-
-_run_program:
+_process_run:
         writeln_tty #msgrun
         jsr $1000
         rts
 
-_display_exit_message:
-        writeln_tty #msgbye
+_process_blink:
+        copy_ptr ptr1, tokens_pointer
+
+        gettoken tokens_pointer, 1
+        copy_ptr ptr1, param_pointer
+
+        parse_onoff param_pointer
+        bcc @error
+        cmp #$00
+        beq @turn_off
+        sec
+        jsr _blink_led
+        rts
+@turn_off:
+        clc
+        jsr _blink_led
+        rts
+@error:
+        writeln_tty #blinkerror
+        rts
+
+_process_monitor:
+        writeln_tty #msgmonitor
+        jsr _run_monitor
         rts
 
 system_break_handler:
@@ -189,11 +88,10 @@ system_break_handler:
         jmp main_loop
 
         .segment "BSS"
-dump_line:
-        .res 64
-
-line_buffer:
-        .res LINE_BUFFER_SIZE
+tokens_pointer:
+        .res 2
+param_pointer:
+        .res 2
 
         .segment "RODATA"
 bannerh1:
@@ -211,46 +109,28 @@ banner4:
 banner5:
         .asciiz "|   ####  ####  #      ###  |"
 msghello1: 
-        .asciiz "Welcome to OS/1 shell for DB6502 computer"
+        .asciiz "OS/1 Version 0.1 (Alpha)"
 msghello2: 
-        .asciiz "Enter command and follow by ENTER key"
+        .asciiz "Welcome to OS/1 shell for DB6502 computer"
 msghello3:
-        .asciiz "Currently supported commands are: HELP, LOAD, DUMP, RUN and EXIT"
-msghelp1:
-        .asciiz "HELP - display this message"
-msghelp2:
-        .asciiz "LOAD - load program"
-msghelp3:
-        .asciiz "RUN - run loaded program"
-msghelp4:
-        .asciiz "DUMP - show memory contents"
-msghelp5:
-        .asciiz "EXIT - exit the shell"
+        .asciiz "Enter HELP to get list of possible commands"
 msgload:
         .asciiz "Initiating load operation..."
-msgdump:
-        .asciiz "Commencing dump operation..."
-dump_template:
-        .asciiz "0000xxxx  xx xx xx xx xx xx xx xx  xx xx xx xx xx xx xx xx"
 msgrun:
         .asciiz "Running program..."
-msgbye:
-        .asciiz "Thank you for using OS/1 simple shell"
+msgmonitor:
+        .asciiz "Running monitor application..."
 os1prompt:
         .asciiz "OS/1>"
-msgerror:
-        .asciiz "Command not recognized, please try again"
 msgemptyline:
         .byte $00
+blinkerror:
+        .asciiz "Incorrect parameters passed"
 msgsystembreak:
         .asciiz "System break initiated, returning to shell..."
-cmd_help:
-        .asciiz "HELP"
-cmd_load:
-        .asciiz "LOAD"
-cmd_dump:
-        .asciiz "DUMP"
-cmd_run:
-        .asciiz "RUN"
-cmd_exit:
-        .asciiz "EXIT"
+menu:
+        menuitem load,    "LOAD",    1, "LOAD - load application using XMODEM/CRC protocol", _process_load
+        menuitem run,     "RUN",     1, "RUN - execute loaded application",                  _process_run
+        menuitem monitor, "MONITOR", 1, "MONITOR - run embedded monitor application",        _process_monitor
+        menuitem blink,   "BLINK",   2, "BLINK on/off - toggle onboard blink LED",           _process_blink
+        endmenu 

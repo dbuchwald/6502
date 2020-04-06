@@ -6,7 +6,7 @@
       .include "keyboard.inc"
       .include "syscalls.inc"
 
-      .import run_shell
+      .import _run_shell
 
       .segment "VECTORS"
 
@@ -63,7 +63,7 @@ init:
 @run_shell:
       jsr _lcd_clear
       write_lcd #shell_connected
-      jsr run_shell
+      jsr _run_shell
       jmp @main_loop
 
       .segment "RODATA"

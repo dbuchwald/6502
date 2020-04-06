@@ -24,7 +24,6 @@ _run_monitor:
         ; Display hello messages
         writeln_tty #msghello1
         writeln_tty #msghello2
-        writeln_tty #msghello3
 
         run_menu #menu, #prompt
         rts
@@ -93,33 +92,42 @@ _get_range:
         rts
 
 _print_memory_range:
+
+        write_tty #msgget
+
         lda start_address+1
         jsr _convert_to_hex
         txa
-        sta msgget_start
+        sta address_buffer
         tya
-        sta msgget_start+1
+        sta address_buffer+1
         lda start_address
         jsr _convert_to_hex
         txa
-        sta msgget_start+2
+        sta address_buffer+2
         tya
-        sta msgget_start+3
+        sta address_buffer+3
+        stz address_buffer+4
+
+        write_tty #address_buffer
+        write_tty #msgget_sep
 
         lda end_address+1
         jsr _convert_to_hex
         txa
-        sta msgget_end
+        sta address_buffer
         tya
-        sta msgget_end+1
+        sta address_buffer+1
         lda end_address
         jsr _convert_to_hex
         txa
-        sta msgget_end+2
+        sta address_buffer+2
         tya
-        sta msgget_end+3
+        sta address_buffer+3
+        stz address_buffer+4
 
-        writeln_tty #msgget
+        writeln_tty #address_buffer
+
         ; Actual memory dump
         copy_ptr start_address, ptr3
 @line_loop:
@@ -199,27 +207,35 @@ _put_value:
         bcc @error
         sta value
 
+        write_tty #msgput
+
         lda value
         jsr _convert_to_hex
         txa
-        sta msgput_value
+        sta value_buffer
         tya
-        sta msgput_value+1
+        sta value_buffer+1
+        stz value_buffer+2
+
+        write_tty #value_buffer
+
+        write_tty #msgput_at_address
 
         lda start_address+1
         jsr _convert_to_hex
         txa
-        sta msgput_address
+        sta address_buffer
         tya
-        sta msgput_address+1
+        sta address_buffer+1
         lda start_address
         jsr _convert_to_hex
         txa
-        sta msgput_address+2
+        sta address_buffer+2
         tya
-        sta msgput_address+3
+        sta address_buffer+3
+        stz address_buffer+4
 
-        writeln_tty #msgput
+        writeln_tty #address_buffer
 
         copy_ptr start_address, ptr1
         lda value
@@ -250,26 +266,24 @@ value:
         .res 1
 dump_line:
         .res 64
+address_buffer:
+        .res 5
+value_buffer:
+        .res 3
 
         .segment "RODATA"
 msghello1: 
         .asciiz "Welcome to OS/1 monitor application"
 msghello2: 
-        .asciiz "Try entering simple commands followed by ENTER"
-msghello3:
-        .asciiz "Currently supported commands are: HELP, GET, PUT and EXIT"
+        .asciiz "Enter HELP to see available commands"
 msgget:
-        .byte   "Displaying contents of memory area "
-msgget_start:
-        .byte   "xxxx:"
-msgget_end:
-        .asciiz "yyyy"
+        .asciiz "Displaying contents of memory area "
+msgget_sep:
+        .asciiz ":"
 msgput:
-        .byte   "Storing value "
-msgput_value:
-        .byte   "yy at address "
-msgput_address:
-        .asciiz "xxxx"
+        .asciiz "Storing value "
+msgput_at_address:
+        .asciiz " at address "
 parseerr:
         .asciiz "Unable to parse given address"
 prompt:
