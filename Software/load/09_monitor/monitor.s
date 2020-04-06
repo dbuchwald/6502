@@ -48,14 +48,14 @@ _get_range:
         strcmp #colon, operator_pointer
         cmp #$00
         beq @good_op
-        jmp get_error
+        jmp @error
 @good_op:
         ; get start address
         gettoken tokens_pointer, 1
         copy_ptr ptr1, start_address_pointer
 
         parse_hex_word start_address_pointer
-        bcc get_error
+        bcc @error
         ; LSB 
         stx start_address
         ; MSB 
@@ -66,13 +66,15 @@ _get_range:
         copy_ptr ptr1, end_address_pointer
 
         parse_hex_word end_address_pointer
-        bcc get_error
+        bcc @error
         ; LSB 
         stx end_address
         ; MSB 
         sta end_address+1
+        cmp_ptr end_address, start_address
+        bmi @error
         jmp _print_memory_range
-get_error:
+@error:
         writeln_tty #parseerr
         rts
 
@@ -114,7 +116,7 @@ _put_value:
         strcmp #assign, operator_pointer
         cmp #$00
         beq @good_op
-        jmp put_error
+        jmp @error
 
 @good_op:
         ; get address
@@ -123,7 +125,7 @@ _put_value:
 
         parse_hex_word start_address_pointer
         bcs @good_address
-        jmp put_error
+        jmp @error
 @good_address:
         ; LSB 
         stx start_address
@@ -135,7 +137,7 @@ _put_value:
         copy_ptr ptr1, value_pointer
 
         parse_hex_byte value_pointer
-        bcc put_error
+        bcc @error
         sta value
 
         lda value
@@ -161,7 +163,7 @@ _put_value:
         writeln_tty #msgput
         rts
 
-put_error:
+@error:
         writeln_tty #parseerr
         rts
 

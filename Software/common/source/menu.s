@@ -10,8 +10,8 @@ FUNCTION_OFFSET = $03
 NEXT_OFFSET     = $04
 
         .macro is_last_menu_item pointer
-        .local not_last
-        .local return
+        .local @not_last
+        .local @return
         pha
         phy
         lda ptr1
@@ -24,12 +24,12 @@ NEXT_OFFSET     = $04
         sta ptr1+1
         ldy #$00
         lda (ptr1),y
-        bne not_last
+        bne @not_last
         sec
-        bra return
-not_last:
+        bra @return
+@not_last:
         clc
-return:        
+@return:        
         pla
         sta ptr1+1
         pla
@@ -159,7 +159,7 @@ menu_commands_loop:
         jmp special_commands
 compare_item:
         get_menu_item menu_item, menu_item_cmd, menu_item_argc, menu_item_desc, menu_item_function
-        strcmp tokenize_buffer_pointer, menu_item_cmd
+        strcmp #tokenize_buffer, menu_item_cmd
         cmp #$00
         bne next_menu_item
         ; check number of parameters
@@ -193,7 +193,7 @@ next_menu_item:
         get_next_menu_item menu_item
         jmp menu_commands_loop
 special_commands:
-        strcmp tokenize_buffer_pointer, #cmd_help
+        strcmp #tokenize_buffer, #cmd_help
         cmp #$00
         bne not_help
         lda tokens_count
@@ -210,7 +210,7 @@ not_help:
         lda tokens_count
         cmp #$01
         bne invalid_command
-        strcmp tokenize_buffer_pointer, #cmd_exit
+        strcmp #tokenize_buffer, #cmd_exit
         cmp #$00
         bne invalid_command
         writeln_tty #byemsg
@@ -222,7 +222,7 @@ invalid_command:
 
 execute_menu_function:
         ; provide access to parameters
-        copy_ptr tokenize_buffer_pointer, ptr1
+        copy_ptr #tokenize_buffer, ptr1
         jmp (menu_item_function)
 
 display_help_message:
@@ -247,7 +247,7 @@ help_loop:
         rts
 
 display_filtered_help:
-        gettoken tokenize_buffer_pointer, 1
+        gettoken #tokenize_buffer, 1
         copy_ptr ptr1, help_filter_pointer
         strtoupper help_filter_pointer
         ; Check default candidates
@@ -322,8 +322,6 @@ cmd_help:
         .asciiz "HELP"
 cmd_exit:
         .asciiz "EXIT"
-tokenize_buffer_pointer:
-        .word tokenize_buffer
 errormsg1:
         .asciiz "Command not recognized - either wrong keyword or incorrect number of parameters"
 errormsg2:
