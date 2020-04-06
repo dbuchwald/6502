@@ -1,9 +1,21 @@
-      .setcpu "65C02"
-      .include "tty.inc"
-      .include "string.inc"
-      .include "utils.inc"
-      .include "menu.inc"
-      .include "parse.inc"
+        .setcpu "65C02"
+        .include "tty.inc"
+        .include "string.inc"
+        .include "utils.inc"
+        .include "menu.inc"
+        .include "parse.inc"
+
+        .macro hex_to_buffer
+        jsr _convert_to_hex
+        txa
+        ldx tmp1
+        sta dump_line,x
+        inx
+        tya
+        sta dump_line,x
+        inx
+        stx tmp1
+        .endmacro
 
         .code
 init:
@@ -106,6 +118,51 @@ _print_memory_range:
         sta msgget_end+3
 
         writeln_tty #msgget
+        ; Actual memory dump
+        copy_ptr start_address, ptr3
+@line_loop:
+        ldx #$00
+@template_loop:
+        lda dump_template,x
+        sta dump_line,x
+        inx
+        cmp #$00
+        bne @template_loop
+
+        lda #04
+        sta tmp1
+        lda ptr3+1
+        hex_to_buffer
+        lda ptr3
+        hex_to_buffer
+        inc tmp1
+        inc tmp1
+        stz tmp2
+@byte_loop:
+        lda (ptr3)
+        hex_to_buffer
+        inc tmp1
+        inc tmp2
+
+        cmp_ptr end_address,ptr3
+        beq @exit
+
+        inc_ptr ptr3
+@next_item:
+        lda tmp2
+        and #%00000111
+        bne @byte_loop
+
+        inc tmp1
+
+        lda tmp2
+        and #%00001111
+        bne @byte_loop
+
+        writeln_tty #dump_line
+        jmp @line_loop
+@exit:
+        writeln_tty #dump_line
         rts
 
 _put_value:
@@ -161,6 +218,11 @@ _put_value:
         sta msgput_address+3
 
         writeln_tty #msgput
+
+        copy_ptr start_address, ptr1
+        lda value
+        sta (ptr1)
+
         rts
 
 @error:
@@ -184,6 +246,8 @@ end_address:
         .res 2
 value:
         .res 1
+dump_line:
+        .res 64
 
         .segment "RODATA"
 msghello1: 
@@ -212,6 +276,8 @@ colon:
         .asciiz ":"
 assign:
         .asciiz "="
+dump_template:
+        .asciiz "0000xxxx                                                    "
 menu:
         menuitem get2, "GET", 2, "GET xxxx - get data at the address xxxx", _get_address
         menuitem get4, "GET", 4, "GET xxxx:yyyy - get data between addresses xxxx and yyyy", _get_range
