@@ -72,7 +72,7 @@ _get_range:
         ; MSB 
         sta end_address+1
         cmp_ptr end_address, start_address
-        bmi @error
+        bcc @error
         jmp _print_memory_range
 @error:
         writeln_tty #parseerr

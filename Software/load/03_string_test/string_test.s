@@ -64,32 +64,26 @@ init:
 
         tax 
         ; ldy #$00
-        lda #<tokenize_buffer
-        sta ptr4
-        lda #>tokenize_buffer
-        sta ptr4+1
+        copy_ptr #tokenize_buffer, ptr4
+
 @token1_loop:
         write_acia #token_found
-        lda ptr4
-        sta ptr1
-        lda ptr4+1
-        sta ptr1+1
+        ; lda ptr4
+        ; sta ptr1
+        ; lda ptr4+1
+        ; sta ptr1+1
+        copy_ptr ptr4, ptr1
         jsr _acia_write_string
         write_acia #token_newline
         dec tmp2
         beq @done_listing_token1
-        ldy #$00
 @next_token1_loop:
-        lda (ptr4),y
+        lda (ptr4)
         beq @end_of_token1
-        inc ptr4
-        bne @next_token1_loop
-        inc ptr4+1
+        inc_ptr ptr4
         bra @next_token1_loop
 @end_of_token1:
-        inc ptr4
-        bne @token1_loop
-        inc ptr4+1
+        inc_ptr ptr4
         bra @token1_loop
 @done_listing_token1:
 
@@ -98,33 +92,21 @@ init:
         strtokenize #token2, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
         tax 
-        ; ldy #$00
-        lda #<tokenize_buffer
-        sta ptr4
-        lda #>tokenize_buffer
-        sta ptr4+1
+        copy_ptr #tokenize_buffer, ptr4
 @token2_loop:
         write_acia #token_found
-        lda ptr4
-        sta ptr1
-        lda ptr4+1
-        sta ptr1+1
+        copy_ptr ptr4, ptr1
         jsr _acia_write_string
         write_acia #token_newline
         dec tmp2
         beq @done_listing_token2
-        ldy #$00
 @next_token2_loop:
-        lda (ptr4),y
+        lda (ptr4)
         beq @end_of_token2
-        inc ptr4
-        bne @next_token2_loop
-        inc ptr4+1
+        inc_ptr ptr4
         bra @next_token2_loop
 @end_of_token2:
-        inc ptr4
-        bne @token2_loop
-        inc ptr4+1
+        inc_ptr ptr4
         bra @token2_loop
 @done_listing_token2:
 
@@ -133,33 +115,21 @@ init:
         strtokenize #token3, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
         tax 
-        ; ldy #$00
-        lda #<tokenize_buffer
-        sta ptr4
-        lda #>tokenize_buffer
-        sta ptr4+1
+        copy_ptr #tokenize_buffer, ptr4
 @token3_loop:
         write_acia #token_found
-        lda ptr4
-        sta ptr1
-        lda ptr4+1
-        sta ptr1+1
+        copy_ptr ptr4, ptr1
         jsr _acia_write_string
         write_acia #token_newline
         dec tmp2
         beq @done_listing_token3
-        ldy #$00
 @next_token3_loop:
-        lda (ptr4),y
+        lda (ptr4)
         beq @end_of_token3
-        inc ptr4
-        bne @next_token3_loop
-        inc ptr4+1
+        inc_ptr ptr4
         bra @next_token3_loop
 @end_of_token3:
-        inc ptr4
-        bne @token3_loop
-        inc ptr4+1
+        inc_ptr ptr4
         bra @token3_loop
 @done_listing_token3:
 

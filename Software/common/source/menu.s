@@ -13,7 +13,6 @@ NEXT_OFFSET     = $04
         .local @not_last
         .local @return
         pha
-        phy
         lda ptr1
         pha
         lda ptr1+1
@@ -22,8 +21,7 @@ NEXT_OFFSET     = $04
         sta ptr1
         lda pointer+1
         sta ptr1+1
-        ldy #$00
-        lda (ptr1),y
+        lda (ptr1)
         bne @not_last
         sec
         bra @return
@@ -34,7 +32,6 @@ NEXT_OFFSET     = $04
         sta ptr1+1
         pla
         sta ptr1
-        ply
         pla
         .endmacro
 

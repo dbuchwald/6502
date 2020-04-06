@@ -1,4 +1,5 @@
         .include "zeropage.inc"
+        .include "utils.inc"
 
         .export _strlen
         .export _strcmp
@@ -178,11 +179,9 @@ _strtrimr:
 ;  tmp3 - count of chars in output buffer (internal)
 _strtokenize:
         phx
-        phy
         stz tmp2
 
-        ldy #$00
-        lda (ptr1),y
+        lda (ptr1)
         jsr _get_char_type
 @tokenize_loop:
         cpx #(CHAR_END)
@@ -197,14 +196,14 @@ _strtokenize:
         bra @strtokenize_exit
 @skip_whitespace:
         jsr _skip_char
-        lda (ptr1),y
+        lda (ptr1)
         jsr _get_char_type
         cpx #(CHAR_WHITESPACE)
         beq @skip_whitespace
         bra @tokenize_loop
 @process_string:
         jsr _copy_char_to_token_buffer
-        lda (ptr1),y
+        lda (ptr1)
         jsr _get_char_type
         cpx #(CHAR_STRING)
         beq @process_string
@@ -213,11 +212,10 @@ _strtokenize:
 @process_single:
         jsr _copy_char_to_token_buffer
         jsr _end_token
-        lda (ptr1),y
+        lda (ptr1)
         jsr _get_char_type
         bra @tokenize_loop
 @strtokenize_exit:
-        ply
         plx
         lda tmp2
         rts
@@ -272,35 +270,21 @@ _get_char_type:
 ; Assumes ptr1 points to source
 ; and ptr2 points to target in buffer
 _copy_char_to_token_buffer:
-        ldy #$00
-        lda (ptr1),y
-        sta (ptr2),y
-        inc ptr1
-        bne @inc_ptr2
-        inc ptr1+1
-@inc_ptr2:
-        inc ptr2
-        bne @copy_complete
-        inc ptr2+1
-@copy_complete:
+        lda (ptr1)
+        sta (ptr2)
+        inc_ptr ptr1
+        inc_ptr ptr2
         rts
 
 ; Assumes ptr1 points to character to be skipped
 _skip_char:
-        inc ptr1
-        bne @skip_complete
-        inc ptr1+1
-@skip_complete:
+        inc_ptr ptr1
         rts
 
 ; Assumes ptr2 points to next char in target buffer
 _end_token:
         lda #$00
-        ldy #$00
-        sta (ptr2),y
-        inc ptr2
-        bne @end_complete
-        inc ptr1+1
-@end_complete:
+        sta (ptr2)
+        inc_ptr ptr2
         inc tmp2
         rts

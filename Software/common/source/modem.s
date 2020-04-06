@@ -154,13 +154,11 @@ _modem_receive:
         ; No other first block with be first first
         stz first_block_flag
 @copy_block_to_memory:
-        ; Initialize Y pointer
-        ldy #$00
 @copy_block_loop:
         ; Load byte from receive buffer
         lda recv_buffer,x
         ; Store in address directed by pointer
-        sta (memory_pointer),y
+        sta (memory_pointer)
         ; Increase pointer
         inc memory_pointer
         ; Check if we crossed page boundary

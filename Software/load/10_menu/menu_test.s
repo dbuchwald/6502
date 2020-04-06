@@ -117,7 +117,6 @@ process_put:
 
 list_params:
         copy_ptr tokens_pointer, ptr2
-        ldy #$00
 list_loop:
         write_tty #paramval
         writeln_tty ptr2
@@ -126,7 +125,7 @@ next_token_loop:
         bne check_for_end
         inc ptr2+1
 check_for_end:
-        lda (ptr2),y
+        lda (ptr2)
         beq end_found
         bra next_token_loop
 end_found:

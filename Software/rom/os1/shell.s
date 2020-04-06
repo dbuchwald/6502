@@ -148,8 +148,7 @@ _perform_dump:
         inc tmp1
         inc tmp1
 @byte_loop:
-        ldy #$00
-        lda (ptr3),y
+        lda (ptr3)
         hex_to_buffer
         inc tmp1
         inc ptr3
