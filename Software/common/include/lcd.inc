@@ -3,7 +3,10 @@
         .import _lcd_print
         .import _lcd_print_char
         .import _lcd_clear
+        .import _lcd_get_position
         .import _lcd_set_position
+        .import _lcd_backspace
+        .import _lcd_newline
         .import _lcd_display_mode
         .import _lcd_scroll_up
         .import _lcd_scroll_down

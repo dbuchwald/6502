@@ -24,7 +24,10 @@
         .forceimport _syscall_lcd_print
         .forceimport _syscall_lcd_print_char
         .forceimport _syscall_lcd_clear
+        .forceimport _syscall_lcd_get_position
         .forceimport _syscall_lcd_set_position
+        .forceimport _syscall_lcd_backspace
+        .forceimport _syscall_lcd_newline
         .forceimport _syscall_lcd_display_mode
         .forceimport _syscall_lcd_scroll_up
         .forceimport _syscall_lcd_scroll_down
@@ -49,6 +52,7 @@
         .forceimport _syscall_tty_write
         .forceimport _syscall_tty_writeln
         .forceimport _syscall_tty_write_hex
+        .forceimport _syscall_tty_send_newline
 ; menu routines
         .forceimport _syscall_run_menu
 

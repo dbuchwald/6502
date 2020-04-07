@@ -3,14 +3,24 @@
         .include "zeropage.inc"
         .include "tty.inc"
         .include "menu.inc"
+        .include "lcd.inc"
 
         .code
 init:
+        jsr _lcd_clear
+
+        lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL | TTY_CONFIG_OUTPUT_LCD)
+;        lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL)
+        jsr _tty_init
         ; Display hello messages
         writeln_tty #msghello1
-        writeln_tty #msghello2
-        writeln_tty #msghello3
+
         run_menu #menu, #simpleprompt
+
+        lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL)
+        jsr _tty_init
+
+        jsr _lcd_clear
         rts        
 
 _display_load_message:
@@ -19,15 +29,11 @@ _display_load_message:
 
         .segment "RODATA"
 msghello1: 
-        .asciiz "Welcome to OS/1 simple shell"
-msghello2: 
-        .asciiz "Try entering simple commands followed by ENTER"
-msghello3:
-        .asciiz "Currently supported commands are: HELP, LOAD and EXIT"
+        .asciiz "OS/1 Mini Shell"
 msgload:
-        .asciiz "Pretending to load program now"
+        .asciiz "Loading now..."
 simpleprompt:
-        .asciiz "OS/1 Simple Shell>"
+        .asciiz "OS/1 MS>"
 menu:
-        menuitem load, "LOAD", 1, "LOAD - pretend to load program", _display_load_message
+        menuitem load, "LOAD", 1, "LOAD - load program", _display_load_message
         endmenu 

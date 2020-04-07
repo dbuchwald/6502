@@ -10,6 +10,7 @@
         .export _tty_write
         .export _tty_writeln
         .export _tty_write_hex
+        .export _tty_send_newline
 
 TTY_CONFIG_INPUT_SERIAL   = %00000001
 TTY_CONFIG_INPUT_KEYBOARD = %00000010
@@ -31,21 +32,27 @@ _tty_init:
 _tty_read_line:
         phy
         pha
+        lda tmp1
+        sta line_buffer_length
+        copy_ptr ptr1, line_buffer_pointer
         ldy #$00
         lda #$00
 @clean_buffer_loop:
         sta (ptr1),y
         iny
-        cpy tmp1
+        cpy line_buffer_length
         bne @clean_buffer_loop
         ldy #$00
-        ; decrease tmp1, since we want always the last char to be null
-        dec tmp1
+        ; decrease line_buffer_length, since we want always the last char to be null
+        dec line_buffer_length
+        jsr _tty_enable_cursor
 @read_char_loop:
         ; Read one characted from serial (blocks until read)
         jsr _tty_read_byte
         cmp #(ENTER)
         bne @not_enter
+        ; disable cursor display
+        jsr _tty_disable_cursor
         ; line buffer contains the command now, send newline chars
         jsr _tty_send_newline
         ; return now
@@ -61,6 +68,7 @@ _tty_read_line:
         ; decrease pointer
         dey
         ; clean buffer entry
+        copy_ptr line_buffer_pointer, ptr1
         lda #$00
         sta (ptr1),y
         ; send backspace character
@@ -74,9 +82,10 @@ _tty_read_line:
         cmp #$7e 
         bpl @read_char_loop
         ; check for buffer full 
-        cpy tmp1
+        cpy line_buffer_length
         ; if full, go back - accept enter or backspace
         beq @read_char_loop
+        copy_ptr line_buffer_pointer, ptr1
         ; store character in buffer
         sta (ptr1),y
         ; send back for echo
@@ -195,8 +204,7 @@ _tty_send_newline:
         and #(TTY_CONFIG_OUTPUT_LCD)
         ; lcd output disabled
         beq @skip_lcd
-        lda #('>')
-        jsr _lcd_print_char
+        jsr _lcd_newline
 @skip_lcd:
         pla
         rts
@@ -217,11 +225,40 @@ _tty_send_backspace:
         and #(TTY_CONFIG_OUTPUT_LCD)
         ; lcd output disabled
         beq @skip_lcd
-        lda #('<')
-        jsr _lcd_print_char
+        jsr _lcd_backspace
 @skip_lcd:
         pla
         rts
+
+_tty_enable_cursor:
+        pha
+        lda tty_config
+        and #(TTY_CONFIG_OUTPUT_LCD)
+        ; lcd output disabled
+        beq @skip_lcd
+        lda #(LCD_DM_DISPLAY_ON | LCD_DM_CURSOR_BLINK)
+        jsr _lcd_display_mode
+@skip_lcd:
+        pla
+        rts
+
+_tty_disable_cursor:
+        pha
+        lda tty_config
+        and #(TTY_CONFIG_OUTPUT_LCD)
+        ; lcd output disabled
+        beq @skip_lcd
+        lda #(LCD_DM_DISPLAY_ON | LCD_DM_CURSOR_OFF)
+        jsr _lcd_display_mode
+@skip_lcd:
+        pla
+        rts
+
+        .segment "BSS"
+line_buffer_pointer:
+        .res 2
+line_buffer_length:
+        .res 1
 
         .segment "RODATA"
 acia_newline:

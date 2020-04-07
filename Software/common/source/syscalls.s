@@ -38,7 +38,10 @@
         .export _syscall_lcd_print
         .export _syscall_lcd_print_char
         .export _syscall_lcd_clear
+        .export _syscall_lcd_get_position
         .export _syscall_lcd_set_position
+        .export _syscall_lcd_backspace
+        .export _syscall_lcd_newline
         .export _syscall_lcd_display_mode
         .export _syscall_lcd_scroll_up
         .export _syscall_lcd_scroll_down
@@ -63,6 +66,7 @@
         .export _syscall_tty_write
         .export _syscall_tty_writeln
         .export _syscall_tty_write_hex
+        .export _syscall_tty_send_newline
 ; menu routines
         .export _syscall_run_menu
 
@@ -116,8 +120,14 @@ _syscall_lcd_print_char:
         SYSCALL_VECTOR _lcd_print_char
 _syscall_lcd_clear:
         SYSCALL_VECTOR _lcd_clear
+_syscall_lcd_get_position:
+        SYSCALL_VECTOR _lcd_get_position
 _syscall_lcd_set_position:
         SYSCALL_VECTOR _lcd_set_position
+_syscall_lcd_backspace:
+        SYSCALL_VECTOR _syscall_lcd_backspace
+_syscall_lcd_newline:
+        SYSCALL_VECTOR _syscall_lcd_newline   
 _syscall_lcd_display_mode:
         SYSCALL_VECTOR _lcd_display_mode
 _syscall_lcd_scroll_up:
@@ -158,5 +168,7 @@ _syscall_tty_writeln:
         SYSCALL_VECTOR _tty_writeln
 _syscall_tty_write_hex:
         SYSCALL_VECTOR _tty_write_hex
+_syscall_tty_send_newline:
+        SYSCALL_VECTOR _tty_send_newline
 _syscall_run_menu:
         SYSCALL_VECTOR _run_menu

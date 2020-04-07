@@ -19,6 +19,8 @@
         stx tmp1
         .endmacro
 
+DUMP_BUFFER_SIZE = 64
+
         .code
 _run_monitor:
         ; Display hello messages
@@ -139,7 +141,7 @@ _print_memory_range:
         cmp #$00
         bne @template_loop
 
-        lda #04
+        lda #00
         sta tmp1
         lda ptr3+1
         hex_to_buffer
@@ -169,9 +171,11 @@ _print_memory_range:
         and #%00001111
         bne @byte_loop
 
+        strtrimr #dump_line
         writeln_tty #dump_line
         jmp @line_loop
 @exit:
+        strtrimr #dump_line
         writeln_tty #dump_line
         rts
 
@@ -265,7 +269,7 @@ end_address:
 value:
         .res 1
 dump_line:
-        .res 64
+        .res DUMP_BUFFER_SIZE
 address_buffer:
         .res 5
 value_buffer:
@@ -293,7 +297,7 @@ colon:
 assign:
         .asciiz "="
 dump_template:
-        .asciiz "0000xxxx                                                    "
+        .asciiz "xxxx                                                    "
 menu:
         menuitem get2, "GET", 2, "GET xxxx - get data at the address xxxx", _get_address
         menuitem get4, "GET", 4, "GET xxxx:yyyy - get data between addresses xxxx and yyyy", _get_range

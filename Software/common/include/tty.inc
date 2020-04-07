@@ -5,6 +5,7 @@
         .import _tty_write
         .import _tty_writeln
         .import _tty_write_hex
+        .import _tty_send_newline
 
         .macro tty_read_line buffer, buffer_size
         pha

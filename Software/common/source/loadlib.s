@@ -122,8 +122,17 @@ _lcd_print_char:
 _lcd_clear:
         jmp (_syscall_lcd_clear)
 
+_lcd_get_position:
+        jmp (_syscall_lcd_get_position)
+
 _lcd_set_position:
         jmp (_syscall_lcd_set_position)
+
+_lcd_backspace:
+        jmp (_syscall_lcd_backspace)
+
+_lcd_newline:
+        jmp (_syscall_lcd_newline)
 
 _lcd_display_mode:
         jmp (_syscall_lcd_display_mode)
@@ -188,6 +197,9 @@ _tty_writeln:
 
 _tty_write_hex:
         jmp (_syscall_tty_write_hex)
+
+_tty_send_newline:
+        jmp (_syscall_tty_send_newline)
 
 ; menu routines
 _run_menu:
