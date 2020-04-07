@@ -12,6 +12,7 @@
 SPACE = $20
 
         .code
+; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Compare two strings (ptr1, ptr2)
 ; A will contain comparison result
 ; -1 -> ptr1 < ptr2
@@ -45,6 +46,7 @@ _strcmp:
         ply
         rts
 
+; NEGATIVE C COMPLIANT - ptr1
 ; Count characters in string (ptr1)
 ; A will contain result
 _strlen:
@@ -63,6 +65,7 @@ _strlen:
         ply
         rts
 
+; NEGATIVE C COMPLIANT - ptr1
 ; Converts string to upper case in place
 _strtoupper:
         phy
@@ -87,6 +90,7 @@ _strtoupper:
         ply
         rts
 
+; NEGATIVE C COMPLIANT - ptr1
 ; Converts string to lower case in place
 _strtolower:
         phy
@@ -111,6 +115,7 @@ _strtolower:
         ply
         rts
 
+; NEGATIVE C COMPLIANT - ptr1 input
 ; Trim all leading and trailing space characters
 ; ptr1 - points at the beginning of null terminated string
 ; ptr2 - used to copy data
@@ -144,6 +149,7 @@ _strtriml:
         ply
         rts
 
+; NEGATIVE C COMPLIANT - ptr1
 ; Trims all the trailing space characters
 ; ptr1 points to null terminated string to be trimmed
 _strtrimr:
@@ -171,6 +177,7 @@ _strtrimr:
         ply
         rts
 
+; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Temp variables used:
 ;  ptr1 - source string address (input)
 ;  ptr2 - target buffer address (input)
@@ -182,7 +189,7 @@ _strtokenize:
         stz tmp2
 
         lda (ptr1)
-        jsr _get_char_type
+        jsr get_char_type
 @tokenize_loop:
         cpx #(CHAR_END)
         beq @strtokenize_exit
@@ -195,25 +202,25 @@ _strtokenize:
         ; Should never happen
         bra @strtokenize_exit
 @skip_whitespace:
-        jsr _skip_char
+        inc_ptr ptr1
         lda (ptr1)
-        jsr _get_char_type
+        jsr get_char_type
         cpx #(CHAR_WHITESPACE)
         beq @skip_whitespace
         bra @tokenize_loop
 @process_string:
-        jsr _copy_char_to_token_buffer
+        jsr copy_char_to_token_buffer
         lda (ptr1)
-        jsr _get_char_type
+        jsr get_char_type
         cpx #(CHAR_STRING)
         beq @process_string
-        jsr _end_token
+        jsr end_token
         bra @tokenize_loop
 @process_single:
-        jsr _copy_char_to_token_buffer
-        jsr _end_token
+        jsr copy_char_to_token_buffer
+        jsr end_token
         lda (ptr1)
-        jsr _get_char_type
+        jsr get_char_type
         bra @tokenize_loop
 @strtokenize_exit:
         plx
@@ -225,10 +232,11 @@ CHAR_WHITESPACE = $01
 CHAR_STRING     = $02
 CHAR_SINGLE     = $03
 
+; INTERNAL
 ; Assumes input character in A
 ; returns char type in X 
 ;$0b,$0a,$0d,$20,$00
-_get_char_type:
+get_char_type:
         cmp #$00 ; NULL
         beq @return_end
         cmp #$09 ; tab
@@ -267,22 +275,19 @@ _get_char_type:
         ldx #(CHAR_SINGLE)
         rts
 
+; INTERNAL
 ; Assumes ptr1 points to source
 ; and ptr2 points to target in buffer
-_copy_char_to_token_buffer:
+copy_char_to_token_buffer:
         lda (ptr1)
         sta (ptr2)
         inc_ptr ptr1
         inc_ptr ptr2
         rts
 
-; Assumes ptr1 points to character to be skipped
-_skip_char:
-        inc_ptr ptr1
-        rts
-
+; INTERNAL
 ; Assumes ptr2 points to next char in target buffer
-_end_token:
+end_token:
         lda #$00
         sta (ptr2)
         inc_ptr ptr2

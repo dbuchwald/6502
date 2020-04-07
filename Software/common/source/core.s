@@ -11,6 +11,8 @@
       .export _register_system_break
 
       .code
+
+; POSITIVE C COMPLIANT
 ; Main system initialization routine
 ; LCD initialization
 ; ACIA initialization
@@ -49,6 +51,7 @@ _system_init:
       ; Done, return from subroutine
       rts
 
+; TENTATIVE C COMPLIANT
 ; Main interrupt handling routine
 ; Uses ACIA and keyboard handling routines
 _interrupt_handler:
@@ -90,6 +93,7 @@ system_break_request:
       stz system_break_flag
       rti
 
+; POSITIVE C COMPLIANT
 _register_system_break:
       ; Save address provided in parameters
       sta system_break_address

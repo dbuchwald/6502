@@ -74,7 +74,8 @@ ACIA_STATUS_OVERRUN    = 1 << 2
 ACIA_STATUS_FRAME_ERR  = 1 << 1
 ACIA_STATUS_PARITY_ERR = 1 << 0
         .code
-        
+
+; POSITIVE C COMPLIANT        
 _acia_init:
         lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_ENABLE | ACIA_DTR_LOW)
         sta ACIA_COMMAND
@@ -86,6 +87,7 @@ _acia_init:
         stz acia_tx_wptr
         rts
 
+; TENTATIVE C COMPLIANT
 _handle_acia_irq:
         ; Preserve accumulator and x register
         pha
@@ -174,6 +176,7 @@ cts_high:
         pla
         rts
 
+; NEGATIVE C COMPLIANT - return value in carry flag
 ; Check if there is anything to receive and return in Carry flag
 ; 0 - data not available
 ; 1 - data available
@@ -190,6 +193,7 @@ _acia_is_data_available:
         pla
         rts
 
+; POSITIVE C COMPLIANT
 ; Return one byte from RX buffer
 _acia_read_byte:
         ; block until data available
@@ -224,6 +228,7 @@ still_rx_overflow:
         plx
         rts
 
+; POSITIVE C COMPLIANT
 ; Write one byte to TX buffer
 ; Assume input in accumulator
 _acia_write_byte:
@@ -257,6 +262,7 @@ _acia_write_byte:
         plx
         rts
 
+; NEGATIVE C COMPLIANT - pointer passing in ptr1
 ; Write null terminated string to TX buffer
 ; Assume input pointer in ptr1
 _acia_write_string:

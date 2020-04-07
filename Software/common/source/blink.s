@@ -6,6 +6,7 @@
       .export _strobe_led
 
       .code
+; POSITIVE C COMPLIANT
 ; Initialize DDRB bit to output
 _blink_init:
       pha
@@ -15,6 +16,7 @@ _blink_init:
       pla
       rts
 
+; NEGATIVE C COMPLIANT - input in carry flag
 ; operation is determined by carry flag
 _blink_led:
 ; store current value of accumulator
@@ -34,6 +36,7 @@ _blink_led:
       pla
       rts
 
+; POSITIVE C COMPLIANT
 ; Short "on/off" blink
 _strobe_led:
       sec

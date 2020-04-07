@@ -5,6 +5,7 @@
       .export _convert_to_hex
 
       .code
+; POSITIVE C COMPLIANT
 _delay_ms:
       ; Skip the routine when 1MHz clock is disabled
       .if fastclock=0
@@ -42,6 +43,7 @@ return:
       lda tmp1
       rts
 
+; POSITIVE C COMPLIANT
 _delay_sec:
       ; Skip the routine when 1MHz clock is disabled
       .if fastclock=0
@@ -73,6 +75,7 @@ exit_delay_sec:
 ; return
       rts
 
+; NEGATIVE C COMPLIANT - value returned in X, Y
 ; Destroys X and Y registers - output values there
 ; Y - lsb char
 ; X - msb char

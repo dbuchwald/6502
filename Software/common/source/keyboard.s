@@ -11,6 +11,8 @@
       .export _keyboard_read_char
 
       .code
+
+; POSITIVE C COMPLIANT
 ; No parameters taken
 ; No registers changed
 ; No output values
@@ -40,6 +42,7 @@ _keyboard_init:
       pla
       rts
 
+; TENTATIVE C COMPLIANT
 ; Writes data to keyboard buffer and updates pointers
 ; All registers preserved
 _handle_keyboard_irq:
@@ -95,6 +98,7 @@ _handle_keyboard_irq:
       ; Done, return
       rts
 
+; NEGATIVE C COMPLIANT - return value in carry flag
 ; Returns connection status in Carry flag
 ; 1 - connected
 ; 0 - disconnected
@@ -107,6 +111,7 @@ _keyboard_is_connected:
       sec
       rts
 
+; NEGATIVE C COMPLIANT - return value in carry flag
 ; Returns status in Carry flag
 ; 1 - new characters available
 ; 0 - no new characters available
@@ -123,6 +128,7 @@ _keyboard_is_data_available:
       pla
       rts
 
+; POSITIVE C COMPLIANT
 ; Returns single scancode in A register
 ; No other registers affected
 _keyboard_read_char:

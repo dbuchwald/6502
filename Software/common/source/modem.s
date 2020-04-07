@@ -37,6 +37,7 @@ _modem_send:
         ; nothing here yet
         rts
 
+; NEGATIVE C COMPLIANT - uses carry flag for result
 _modem_receive:
         ; Send prompt to terminal
         jsr @send_prompt

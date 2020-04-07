@@ -23,11 +23,13 @@ ESC                     = $1b
 
         .code
 
+; POSITIVE C COMPLIANT
 ; Assumes configuration in A register
 _tty_init:
         sta tty_config
         rts
 
+; NEGATIVE C COMPLIANT - uses ptr1 as input
 ; Blocks until full line read (Enter pressed)
 _tty_read_line:
         phy
@@ -45,14 +47,14 @@ _tty_read_line:
         ldy #$00
         ; decrease line_buffer_length, since we want always the last char to be null
         dec line_buffer_length
-        jsr _tty_enable_cursor
+        jsr tty_enable_cursor
 @read_char_loop:
         ; Read one characted from serial (blocks until read)
-        jsr _tty_read_byte
+        jsr tty_read_byte
         cmp #(ENTER)
         bne @not_enter
         ; disable cursor display
-        jsr _tty_disable_cursor
+        jsr tty_disable_cursor
         ; line buffer contains the command now, send newline chars
         jsr _tty_send_newline
         ; return now
@@ -72,7 +74,7 @@ _tty_read_line:
         lda #$00
         sta (ptr1),y
         ; send backspace character
-        jsr _tty_send_backspace
+        jsr tty_send_backspace
         bra @read_char_loop
 @not_backspace:
         ; check if special character (0-31)
@@ -89,11 +91,12 @@ _tty_read_line:
         ; store character in buffer
         sta (ptr1),y
         ; send back for echo
-        jsr _tty_write_byte
+        jsr tty_write_byte
         ; increase pointer
         iny
         bra @read_char_loop
 
+; NEGATIVE C COMPLIANT - uses ptr1 as input
 ; Write null terminated string to output
 _tty_write:
         pha
@@ -114,14 +117,16 @@ _tty_write:
         pla
         rts
 
+; NEGATIVE C COMPLIANT - uses ptr1 as input
 ; Write null terminated string to output followed by newline char
 _tty_writeln:
         jsr _tty_write
         jsr _tty_send_newline
         rts
 
+; INTERNAL
 ; Reads data from enabled input channers
-_tty_read_byte:
+tty_read_byte:
         lda tty_config
         and #(TTY_CONFIG_INPUT_SERIAL)
         ; Serial input disabled
@@ -145,10 +150,11 @@ _tty_read_byte:
         rts
 @skip_keyboard:
         ; nothing found yet, keep polling
-        bra _tty_read_byte
+        bra tty_read_byte
 
+; INTERNAL
 ; Assumes input in A, sends to proper channels
-_tty_write_byte:
+tty_write_byte:
         ; preserve index
         phx
         ; transfer A to X for temp storage
@@ -174,20 +180,22 @@ _tty_write_byte:
         plx
         rts
 
+; POSITIVE C COMPLIANT
 _tty_write_hex:
         pha
         phx
         phy
         jsr _convert_to_hex
         txa
-        jsr _tty_write_byte
+        jsr tty_write_byte
         tya
-        jsr _tty_write_byte
+        jsr tty_write_byte
         ply
         plx
         pla
         rts
 
+; POSITIVE C COMPLIANT
 ; Sends newline instruction to selected channels
 _tty_send_newline:
         pha
@@ -209,8 +217,9 @@ _tty_send_newline:
         pla
         rts
 
+; INTERNAL
 ; Sends backspace instruction to selected channels
-_tty_send_backspace:
+tty_send_backspace:
         pha
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_SERIAL)
@@ -230,7 +239,8 @@ _tty_send_backspace:
         pla
         rts
 
-_tty_enable_cursor:
+; INTERNAL
+tty_enable_cursor:
         pha
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_LCD)
@@ -242,7 +252,8 @@ _tty_enable_cursor:
         pla
         rts
 
-_tty_disable_cursor:
+; INTERNAL
+tty_disable_cursor:
         pha
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_LCD)

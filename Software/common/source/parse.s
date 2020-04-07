@@ -6,6 +6,7 @@
         .export _parse_hex_byte
         .export _parse_hex_word
 
+; NEGATIVE C COMPLIANT - ptr1, returning value in carry
 ; Function assumes token pointer in ptr1
 ; Returns status in carry flag (set - parsed successfully)
 ; Returns value in A (0 - off, 1 - on)
@@ -34,6 +35,7 @@ _parse_onoff:
         clc
         rts
 
+; NEGATIVE C COMPLIANT - input in ptr1, return value in carry
 ; Function assumes token pointer in ptr1
 ; Returns status in carry flag (set - parsed successfully)
 ; Returns value in A
@@ -57,7 +59,7 @@ _parse_hex_byte:
         ; get first char
         ldy #$00
         lda (ptr1),y
-        jsr _parse_hex_char
+        jsr parse_hex_char
         bcc @error
         asl
         asl
@@ -66,7 +68,7 @@ _parse_hex_byte:
         sta tmp1
         iny
         lda (ptr1),y
-        jsr _parse_hex_char
+        jsr parse_hex_char
         bcc @error
         clc
         adc tmp1
@@ -80,6 +82,7 @@ _parse_hex_byte:
         ply
         rts
 
+; NEGATIVE C COMPLIANT - input in ptr1, return value in carry
 ; Function assumes token pointer in ptr1
 ; Returns status in carry flag (set - parsed successfully)
 ; Returns value in MSB: A, LSB: X
@@ -109,7 +112,7 @@ _parse_hex_word:
         bne @error
         ; get first char
         lda (ptr1),y
-        jsr _parse_hex_char
+        jsr parse_hex_char
         bcc @error
         asl
         asl
@@ -118,7 +121,7 @@ _parse_hex_word:
         sta tmp1
         iny
         lda (ptr1),y
-        jsr _parse_hex_char
+        jsr parse_hex_char
         bcc @error
         clc
         adc tmp1
@@ -126,7 +129,7 @@ _parse_hex_word:
         iny
 @zeropage:
         lda (ptr1),y
-        jsr _parse_hex_char
+        jsr parse_hex_char
         bcc @error
         asl
         asl
@@ -135,7 +138,7 @@ _parse_hex_word:
         sta tmp2
         iny
         lda (ptr1),y
-        jsr _parse_hex_char
+        jsr parse_hex_char
         bcc @error
         clc
         adc tmp2
@@ -154,10 +157,11 @@ _parse_hex_word:
         ply
         rts
 
+; INTERNAL
 ; Assumes char in A
 ; returns status in carry (set - OK)
 ; returns value in A
-_parse_hex_char:
+parse_hex_char:
         cmp #('0')
         bmi @error 
         cmp #('9'+1)

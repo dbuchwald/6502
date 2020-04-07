@@ -121,6 +121,7 @@ TOKENIZE_BUFFER_SIZE = 64
 
         .code
 
+; NEGATIVE C COMPLIANT - using ptr1, ptr2 input
 _run_menu:
         copy_ptr ptr1, menu_root
         copy_ptr ptr2, menu_prompt

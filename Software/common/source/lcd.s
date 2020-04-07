@@ -65,6 +65,7 @@ LCD_ENABLE_FLAG         = %00001000
 LCD_SCROLL_DELAY_MS     = 150
         .code
 
+; POSITIVE C COMPLIANT
 _lcd_init:
         ; store registers A and X
         pha
@@ -114,6 +115,7 @@ _lcd_init:
         pla
         rts
 
+; NEGATIVE C COMPLIANT - ptr1 used
 _lcd_print:
         ; store registers A and Y
         pha
@@ -142,6 +144,7 @@ _lcd_print:
         pla
         rts
 
+; POSITIVE C COMPLIANT
 _lcd_print_char:
         ; store register A
         pha
@@ -155,6 +158,7 @@ _lcd_print_char:
         pla
         rts
 
+; POSITIVE C COMPLIANT
 ; _lcd_clear - clear screen
 ; no parameters
 ; internal variables
@@ -167,6 +171,7 @@ _lcd_clear:
         pla
         rts 
 
+; NEGATIVE C COMPLIANT - return values in X, Y
 ; _lcd_get_position - returns current cursor location
 ; in X,Y registers
 ; Internal variables - none
@@ -207,6 +212,7 @@ _lcd_get_position:
         pla
         rts
 
+; NEGATIVE C COMPLIANT - input values in X, Y
 ; _lcd_set_position - moves cursor to position on a screen
 ; Assumes position in X,Y registers
 ; Internal variables - none
@@ -223,6 +229,7 @@ _lcd_set_position:
         pla
         rts
 
+; POSITIVE C COMPLIANT
 ; _lcd_backspace - back up one char
 ; no params, no results
 _lcd_backspace:
@@ -254,6 +261,7 @@ _lcd_backspace:
         pla
         rts
 
+; POSITIVE C COMPLIANT
 ; _lcd_newline - advance to beginning of next line
 _lcd_newline:
         phx
@@ -275,6 +283,7 @@ _lcd_newline:
         plx
         rts
 
+; POSITIVE C COMPLIANT
 ; _lcd_display_mode - set the display mode
 ; Assumes mode passed in A register
 ; Internal variables - none
@@ -286,6 +295,7 @@ _lcd_display_mode:
         pla
         rts
 
+; POSITIVE C COMPLIANT
 ; _lcd_scroll_up - scroll LCD contents up
 ; No input/output params
 ; Internal variables - only local
@@ -313,6 +323,7 @@ _lcd_scroll_up:
         ply
         rts
 
+; POSITIVE C COMPLIANT
 ; _lcd_scroll_down - scroll LCD contents down
 ; No input/output params
 ; Internal variables - only local
@@ -339,6 +350,7 @@ _lcd_scroll_down:
         ply
         rts
 
+; INTERNAL
 ; lcd_write_byte - send one byte to LCD
 ; byte in A
 ; carry clear - command
@@ -410,6 +422,7 @@ lcd_write_byte:
         bmi @lcd_wait_bf_clear
         rts
 
+; INTERNAL
 ; lcd_read_byte - read one byte from LCD
 ; result in A
 ; carry clear - command
@@ -475,6 +488,7 @@ lcd_read_byte:
         ora tmp1
         rts
 
+; INTERNAL
 ; Checks if line break occured after last data write
 ; Assumes result of last write in A
 lcd_wrap_line:
@@ -515,6 +529,7 @@ lcd_wrap_line:
         pla
         rts
 
+; INTERNAL
 ; lcd_copy_line_to_buffer - copies single LCD line to buffer
 ; Assumes line number in Y
 lcd_copy_line_to_buffer:
@@ -537,6 +552,7 @@ lcd_copy_line_to_buffer:
         pla
         rts
 
+; INTERNAL
 ; lcd_paste_line_from_buffer - pastes buffer contents to LCD
 ; Assumes line number in Y
 lcd_paste_line_from_buffer:
@@ -556,6 +572,7 @@ lcd_paste_line_from_buffer:
         pla
         rts
 
+; INTERNAL
 ; lcd_clear_line - fills given line with spaces
 ; Assumes line number in Y
 lcd_clear_line:
