@@ -26,7 +26,10 @@
         .export _lcd_print
         .export _lcd_print_char
         .export _lcd_clear
+        .export _lcd_get_position
         .export _lcd_set_position
+        .export _lcd_backspace
+        .export _lcd_newline
         .export _lcd_display_mode
         .export _lcd_scroll_up
         .export _lcd_scroll_down
@@ -51,6 +54,7 @@
         .export _tty_write
         .export _tty_writeln
         .export _tty_write_hex
+        .export _tty_send_newline
 ; menu routines
         .export _run_menu
 

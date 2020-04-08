@@ -62,3 +62,17 @@
         cmp pointer2
 @skip:
         .endmacro
+
+        .macro add_offset pointer, offset
+        pha
+        php
+        clc
+        lda pointer
+        adc offset
+        sta pointer
+        lda pointer+1
+        adc offset+1
+        sta pointer+1
+        plp
+        pla
+        .endmacro       
