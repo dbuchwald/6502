@@ -2,6 +2,17 @@
         .import _delay_sec
         .import _convert_to_hex
 
+        .macro switch value
+        lda value
+        .endmacro
+        
+        .macro case value, vector
+        cmp #(value)
+        bne .ident(.concat("@not_", .string(vector)))
+        jmp vector
+.ident(.concat("@not_", .string(vector))):
+        .endmacro
+
         .macro push_ptr address
         lda address+1
         pha

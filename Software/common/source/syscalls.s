@@ -49,6 +49,7 @@
         .export _syscall_modem_send
         .export _syscall_modem_receive
 ; string routines
+        .export _syscall_strcpy
         .export _syscall_strcmp
         .export _syscall_strlen
         .export _syscall_strtoupper
@@ -138,6 +139,8 @@ _syscall_modem_send:
         SYSCALL_VECTOR _modem_send
 _syscall_modem_receive:
         SYSCALL_VECTOR _modem_receive
+_syscall_strcpy:
+        SYSCALL_VECTOR _strcpy
 _syscall_strcmp:
         SYSCALL_VECTOR _strcmp
 _syscall_strlen:

@@ -37,6 +37,7 @@
         .export _modem_send
         .export _modem_receive
 ; string routines
+        .export _strcpy
         .export _strcmp
         .export _strlen
         .export _strtoupper
@@ -155,6 +156,9 @@ _modem_receive:
         jmp (_syscall_modem_receive)
 
 ; string routines
+_strcpy:
+        jmp (_syscall_strcpy)
+
 _strcmp:
         jmp (_syscall_strcmp)
 

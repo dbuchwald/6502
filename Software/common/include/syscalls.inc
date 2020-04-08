@@ -35,6 +35,7 @@
         .forceimport _syscall_modem_send
         .forceimport _syscall_modem_receive
 ; string routines
+        .forceimport _syscall_strcpy
         .forceimport _syscall_strcmp
         .forceimport _syscall_strlen
         .forceimport _syscall_strtoupper

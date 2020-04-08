@@ -1,5 +1,6 @@
         .include "zeropage.inc"
 
+        .import _strcpy
         .import _strlen
         .import _strcmp
         .import _strtoupper
@@ -11,6 +12,38 @@
 LF      = $0a   ; Line Feed
 CR      = $0d   ; Carriage Return
 SPACE   = $20   ; Space character
+
+        .macro strcpy str1, str2
+        pha
+        .if (.match (.left (1, {str1}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1
+            lda #>(.right (.tcount ({str1})-1, {str1}))
+            sta ptr1+1
+        .else
+            ; assume absolute or zero page
+            lda str1
+            sta ptr1
+            lda 1+(str1)
+            sta ptr1+1
+        .endif
+        .if (.match (.left (1, {str2}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({str2})-1, {str2}))
+            sta ptr2
+            lda #>(.right (.tcount ({str2})-1, {str2}))
+            sta ptr2+1
+        .else
+            ; assume absolute or zero page
+            lda str2
+            sta ptr2
+            lda 1+(str2)
+            sta ptr2+1
+        .endif
+        pla
+        jsr _strcpy
+        .endmacro
 
         .macro strcmp str1, str2
         pha

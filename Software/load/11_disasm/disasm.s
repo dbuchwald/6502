@@ -5,7 +5,7 @@
         .include "menu.inc"
         .include "parse.inc"
 
-        .export _run_deasm
+        .export _run_disasm
 
 ACCUMULATOR = $01
 ABSOLUTE    = $02
@@ -29,7 +29,7 @@ OPERAND_BUFFER_SIZE = 10
         .import opcodes_matrix
 
         .code
-_run_deasm:
+_run_disasm:
         ; Display hello messages
         writeln_tty #msghello1
         writeln_tty #msghello2
@@ -37,7 +37,7 @@ _run_deasm:
         run_menu #menu, #prompt
         rts
 
-_deasm_address:
+_disasm_address:
         copy_ptr ptr1, tokens_pointer
         gettoken tokens_pointer, 1
         copy_ptr ptr1, start_address_pointer
@@ -52,13 +52,13 @@ _deasm_address:
 
         stz instruction_counter
 
-        jmp _deasm_code
+        jmp _disasm_code
 @error:
         writeln_tty #parseerr
         rts
 
-_deasm_code:
-        write_tty #msgdeasm
+_disasm_code:
+        write_tty #msgdisasm
         writeln_tty start_address_pointer
 
         copy_ptr start_address, pc_pointer
@@ -156,13 +156,6 @@ fetch_opcode_descriptor:
 
         rts
 
-        .macro case value, vector
-        cmp #(value)
-        bne .ident(.concat("@not_", .string(vector)))
-        jmp vector
-.ident(.concat("@not_", .string(vector))):
-        .endmacro
-
 format_operand:
         ldx #$00
         lda #(' ')
@@ -173,7 +166,7 @@ format_operand:
         bne @clean_loop
         stz operand_print_buffer,x
 
-        lda addressing_mode
+        switch addressing_mode
         case ACCUMULATOR, format_accumulator
         case ABSOLUTE,    format_absolute
         case ABSOLUTE_X,  format_absolute_x
@@ -191,54 +184,6 @@ format_operand:
         case INDIRECT,    format_indirect
         case INDIRECT_X,  format_indirect_x
         rts
-
-; NEGATIVE C COMPLIANT - ptr1, ptr2
-; Copy str1 to str2
-_strcpy:
-        phy
-        ldy #$00
-@strcpy_loop:
-        lda (ptr1),y
-        sta (ptr2),y
-        beq @return
-        iny
-        beq @return ; prevention against infinite loop
-        bra @strcpy_loop
-@return:
-        ply
-        rts
-
-        .macro strcpy str1, str2
-        pha
-        .if (.match (.left (1, {str1}), #))
-            ; immediate mode
-            lda #<(.right (.tcount ({str1})-1, {str1}))
-            sta ptr1
-            lda #>(.right (.tcount ({str1})-1, {str1}))
-            sta ptr1+1
-        .else
-            ; assume absolute or zero page
-            lda str1
-            sta ptr1
-            lda 1+(str1)
-            sta ptr1+1
-        .endif
-        .if (.match (.left (1, {str2}), #))
-            ; immediate mode
-            lda #<(.right (.tcount ({str2})-1, {str2}))
-            sta ptr2
-            lda #>(.right (.tcount ({str2})-1, {str2}))
-            sta ptr2+1
-        .else
-            ; assume absolute or zero page
-            lda str2
-            sta ptr2
-            lda 1+(str2)
-            sta ptr2+1
-        .endif
-        pla
-        jsr _strcpy
-        .endmacro
 
         .macro format_byte_operand format, offset
         strcpy format, #operand_print_buffer
@@ -416,17 +361,17 @@ relative_offset:
 
         .segment "RODATA"
 msghello1: 
-        .asciiz "Welcome to OS/1 deassembler"
+        .asciiz "Welcome to OS/1 disassembler"
 msghello2: 
         .asciiz "Enter HELP for information about supported commands"
-msgdeasm:
+msgdisasm:
         .asciiz "Displaying code starting at "
 parseerr:
         .asciiz "Unable to parse given address"
 prompt:
-        .asciiz "OS/1 DeASM>"
+        .asciiz "OS/1 DISASM>"
 menu:
-        menuitem deasm, "DEASM", 2, "GET xxxx - disassemble code starting at address xxxx", _deasm_address
+        menuitem disasm, "DISASM", 2, "DISASM xxxx - disassemble code starting at address xxxx", _disasm_address
         endmenu 
 
 str_space:

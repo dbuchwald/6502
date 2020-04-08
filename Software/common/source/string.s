@@ -1,6 +1,7 @@
         .include "zeropage.inc"
         .include "utils.inc"
 
+        .export _strcpy
         .export _strlen
         .export _strcmp
         .export _strtoupper
@@ -12,6 +13,22 @@
 SPACE = $20
 
         .code
+; NEGATIVE C COMPLIANT - ptr1, ptr2
+; Copy str1 to str2
+_strcpy:
+        phy
+        ldy #$00
+@strcpy_loop:
+        lda (ptr1),y
+        sta (ptr2),y
+        beq @return
+        iny
+        beq @return ; prevention against infinite loop
+        bra @strcpy_loop
+@return:
+        ply
+        rts
+
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Compare two strings (ptr1, ptr2)
 ; A will contain comparison result
