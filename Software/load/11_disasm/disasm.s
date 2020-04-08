@@ -375,7 +375,7 @@ menu:
         endmenu 
 
 str_space:
-        .asciiz " "
+        .asciiz "  "
 
 str_format_accumulator:
         .asciiz "A"
