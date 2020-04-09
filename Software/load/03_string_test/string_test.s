@@ -72,8 +72,9 @@ init:
         ; sta ptr1
         ; lda ptr4+1
         ; sta ptr1+1
-        copy_ptr ptr4, ptr1
-        jsr _acia_write_string
+        ; copy_ptr ptr4, ptr1
+        ; jsr _acia_write_string
+        write_acia ptr4
         write_acia #token_newline
         dec tmp2
         beq @done_listing_token1
@@ -95,8 +96,9 @@ init:
         copy_ptr #tokenize_buffer, ptr4
 @token2_loop:
         write_acia #token_found
-        copy_ptr ptr4, ptr1
-        jsr _acia_write_string
+        ; copy_ptr ptr4, ptr1
+        ; jsr _acia_write_string
+        write_acia ptr4
         write_acia #token_newline
         dec tmp2
         beq @done_listing_token2
@@ -118,8 +120,9 @@ init:
         copy_ptr #tokenize_buffer, ptr4
 @token3_loop:
         write_acia #token_found
-        copy_ptr ptr4, ptr1
-        jsr _acia_write_string
+        ; copy_ptr ptr4, ptr1
+        ; jsr _acia_write_string
+        write_acia ptr4
         write_acia #token_newline
         dec tmp2
         beq @done_listing_token3

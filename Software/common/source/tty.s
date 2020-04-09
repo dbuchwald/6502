@@ -29,14 +29,14 @@ _tty_init:
         sta tty_config
         rts
 
-; NEGATIVE C COMPLIANT - uses ptr1 as input
+; POSITIVE C COMPLIANT
 ; Blocks until full line read (Enter pressed)
 _tty_read_line:
-        phy
-        pha
-        lda tmp1
-        sta line_buffer_length
-        copy_ptr ptr1, line_buffer_pointer
+        sta line_buffer_pointer
+        sta ptr1
+        stx line_buffer_pointer+1
+        stx ptr1+1
+        sty line_buffer_length
         ldy #$00
         lda #$00
 @clean_buffer_loop:
@@ -58,8 +58,6 @@ _tty_read_line:
         ; line buffer contains the command now, send newline chars
         jsr _tty_send_newline
         ; return now
-        pla
-        ply
         rts
 @not_enter:
         cmp #(BACKSPACE)
@@ -96,15 +94,17 @@ _tty_read_line:
         iny
         bra @read_char_loop
 
-; NEGATIVE C COMPLIANT - uses ptr1 as input
+; POSITIVE C COMPLIANT
 ; Write null terminated string to output
 _tty_write:
-        pha
+        phy
+        tay
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_SERIAL)
         ; Serial output disabled
         beq @skip_serial
         ; Send series of characters for backspace
+        tya
         jsr _acia_write_string
 @skip_serial:
         lda tty_config
@@ -112,12 +112,13 @@ _tty_write:
         ; lcd output disabled
         beq @skip_lcd
         ; Send string to lcd
+        tya
         jsr _lcd_print
 @skip_lcd:
-        pla
+        ply
         rts
 
-; NEGATIVE C COMPLIANT - uses ptr1 as input
+; POSITIVE C COMPLIANT
 ; Write null terminated string to output followed by newline char
 _tty_writeln:
         jsr _tty_write

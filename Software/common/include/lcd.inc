@@ -22,20 +22,18 @@ LCD_DM_DISPLAY_ON       = %00000100
 
         .macro write_lcd string
         pha
+        phx
         .if (.match (.left (1, {string}), #))
             ; immediate mode
             lda #<(.right (.tcount ({string})-1, {string}))
-            sta ptr1
-            lda #>(.right (.tcount ({string})-1, {string}))
-            sta ptr1+1
+            ldx #>(.right (.tcount ({string})-1, {string}))
         .else
             ; assume absolute or zero page
             lda string
-            sta ptr1
-            lda 1+(string)
-            sta ptr1+1
+            ldx 1+(string)
         .endif
         jsr _lcd_print
+        plx
         pla
         .endmacro
 

@@ -116,12 +116,12 @@ _lcd_init:
         pla
         rts
 
-; NEGATIVE C COMPLIANT - ptr1 used
+; POSITIVE C COMPLIANT
 _lcd_print:
+        sta ptr1
+        stx ptr1+1
         ; store registers A and Y
-        pha
         phy
-        phx
         ldy #$00
 @lcd_print_loop:
         ; Read next byte of init sequence data
@@ -140,9 +140,7 @@ _lcd_print:
         ; Next character
         bra @lcd_print_loop
 @lcd_print_end:
-        plx
         ply
-        pla
         rts
 
 ; POSITIVE C COMPLIANT
@@ -387,37 +385,37 @@ _lcd_define_char:
 ; carry clear - command
 ; carry set - data
 ; internal variables
-; tmp1 - buffer for mode and blink flag
-; tmp2 - buffer for data
+; lcd_temp_char1 - buffer for mode and blink flag
+; lcd_temp_char2 - buffer for data
 lcd_write_byte:
-        sta tmp2
+        sta lcd_temp_char2
         bcs @lcd_write_data
         ; Set flags
         lda #(LCD_WRITE_MODE | LCD_COMMAND_MODE)
-        sta tmp1
+        sta lcd_temp_char1
         bra @lcd_write_mode_set
 @lcd_write_data:
         ; Set flags
         lda #(LCD_WRITE_MODE | LCD_DATA_MODE)
-        sta tmp1
+        sta lcd_temp_char1
 @lcd_write_mode_set:
         ; Get current value of blink led
         lda VIA1_PORTB
         and #%00000001
         ; Concatenate with current buffer and store it there
-        ora tmp1
-        sta tmp1
+        ora lcd_temp_char1
+        sta lcd_temp_char1
         ; Set port direction (output)
         lda VIA1_DDRB
         ora #%11111110
         sta VIA1_DDRB
         ; Process actual data
-        lda tmp2
+        lda lcd_temp_char2
         ; Most significant bits first
         ; Apply mask
         and #%11110000
-        ; Fetch current status from tmp1
-        ora tmp1
+        ; Fetch current status from lcd_temp_char1
+        ora lcd_temp_char1
         ; Send first 4 bits
         sta VIA1_PORTB
         ; Set enable flag
@@ -428,14 +426,14 @@ lcd_write_byte:
         eor #(LCD_ENABLE_FLAG)
         sta VIA1_PORTB
         ; Follow the same process with least significant bits
-        lda tmp2
+        lda lcd_temp_char2
         and #%00001111
         asl
         asl
         asl
         asl
         ; Get current status
-        ora tmp1
+        ora lcd_temp_char1
         ; Send first 4 bits
         sta VIA1_PORTB
         ; Set write command flags
@@ -459,19 +457,19 @@ lcd_write_byte:
 ; carry clear - command
 ; carry set - data
 ; internal variables
-; tmp1 - buffer for data MSB
-; tmp2 - buffer for data LSB
-; tmp3 - buffer for operation mode
+; lcd_temp_char1 - buffer for data MSB
+; lcd_temp_char2 - buffer for data LSB
+; lcd_temp_char3 - buffer for operation mode
 lcd_read_byte:
         bcs @lcd_read_data
         ; Set flags
         lda #(LCD_READ_MODE | LCD_COMMAND_MODE)
-        sta tmp3
+        sta lcd_temp_char3
         bra @lcd_read_mode_set
 @lcd_read_data:
         ; Set flags
         lda #(LCD_READ_MODE | LCD_DATA_MODE)
-        sta tmp3
+        sta lcd_temp_char3
 @lcd_read_mode_set:
         ; Preserve direction of last four bits of DDRB
         ; but toggle LCD data lines to input
@@ -482,7 +480,7 @@ lcd_read_byte:
         ; Preserve status of blink led
         lda VIA1_PORTB
         and #%00000001
-        ora tmp3
+        ora lcd_temp_char3
         sta VIA1_PORTB
         ; Give it a while
         ora #(LCD_ENABLE_FLAG)
@@ -491,32 +489,32 @@ lcd_read_byte:
         lda VIA1_PORTB
         and #%11110000
         ; Store result from LCD data lines
-        sta tmp1
+        sta lcd_temp_char1
         ; Toggle enable
         lda VIA1_PORTB
         eor #(LCD_ENABLE_FLAG)
         sta VIA1_PORTB
         ; Get next four bits
         and #%00000001
-        ora tmp3
+        ora lcd_temp_char3
         sta VIA1_PORTB
         ; Give it a while
         ora #(LCD_ENABLE_FLAG)
         sta VIA1_PORTB
         ; Read and construct result
         lda VIA1_PORTB
-        sta tmp2
+        sta lcd_temp_char2
         ; Toggle enable flag
         eor #(LCD_ENABLE_FLAG)
         sta VIA1_PORTB
         ; Combine results
-        lda tmp2
+        lda lcd_temp_char2
         and #%11110000
         lsr
         lsr
         lsr
         lsr
-        ora tmp1
+        ora lcd_temp_char1
         rts
 
 ; INTERNAL

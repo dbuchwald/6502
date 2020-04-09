@@ -9,6 +9,9 @@
 .globalzp ptr2
 .globalzp ptr3
 .globalzp ptr4
+.globalzp lcd_temp_char1
+.globalzp lcd_temp_char2
+.globalzp lcd_temp_char3
 .globalzp acia_rx_rptr
 .globalzp acia_rx_wptr
 .globalzp acia_tx_rptr

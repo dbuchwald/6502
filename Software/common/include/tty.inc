@@ -9,61 +9,56 @@
 
         .macro tty_read_line buffer, buffer_size
         pha
+        phx
+        phy
         .if (.match (.left (1, {buffer}), #))
             ; immediate mode
             lda #<(.right (.tcount ({buffer})-1, {buffer}))
-            sta ptr1
-            lda #>(.right (.tcount ({buffer})-1, {buffer}))
-            sta ptr1+1
+            ldx #>(.right (.tcount ({buffer})-1, {buffer}))
         .else
             ; assume absolute or zero page
             lda buffer
-            sta ptr1
-            lda 1+(buffer)
-            sta ptr1+1
+            ldx 1+(buffer)
         .endif
-        lda #buffer_size
-        sta tmp1
-        pla
+        ldy #(buffer_size)
         jsr _tty_read_line
+        ply
+        plx
+        pla
         .endmacro
 
         .macro write_tty string
         pha
+        phx
         .if (.match (.left (1, {string}), #))
             ; immediate mode
             lda #<(.right (.tcount ({string})-1, {string}))
-            sta ptr1
-            lda #>(.right (.tcount ({string})-1, {string}))
-            sta ptr1+1
+            ldx #>(.right (.tcount ({string})-1, {string}))
         .else
             ; assume absolute or zero page
             lda string
-            sta ptr1
-            lda 1+(string)
-            sta ptr1+1
+            ldx 1+(string)
         .endif
-        pla
         jsr _tty_write
+        plx
+        pla
         .endmacro
 
         .macro writeln_tty string
         pha
+        phx
         .if (.match (.left (1, {string}), #))
             ; immediate mode
             lda #<(.right (.tcount ({string})-1, {string}))
-            sta ptr1
-            lda #>(.right (.tcount ({string})-1, {string}))
-            sta ptr1+1
+            ldx #>(.right (.tcount ({string})-1, {string}))
         .else
             ; assume absolute or zero page
             lda string
-            sta ptr1
-            lda 1+(string)
-            sta ptr1+1
+            ldx 1+(string)
         .endif
-        pla
         jsr _tty_writeln
+        plx
+        pla
         .endmacro
 
         .macro write_tty_hex

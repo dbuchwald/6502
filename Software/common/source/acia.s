@@ -262,12 +262,12 @@ _acia_write_byte:
         plx
         rts
 
-; NEGATIVE C COMPLIANT - pointer passing in ptr1
+; POSITIVE C COMPLIANT
 ; Write null terminated string to TX buffer
-; Assume input pointer in ptr1
+; Assume input pointer in A,X
 _acia_write_string:
-        ; preserve A register
-        pha
+        sta ptr1
+        stx ptr1+1
         ; preserve Y register
         phy
         ; init index
@@ -288,8 +288,5 @@ _acia_write_string:
 @end_loop:
         ; restore Y register
         ply
-        ; restore A register
-        pla
         ; return
         rts
-

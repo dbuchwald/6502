@@ -71,24 +71,24 @@ program_loop:
       jsr _keyboard_read_char
       ; New key is in the A now
       write_lcd #key_msg
-      ldx #$00
+      ldy #$00
 @special_keys_loop:
-      cmp special_keys,x
+      cmp special_keys,y
       beq @print_special_key
-      inx
-      inx
-      inx
-      ldy special_keys,x
-      cpy #$00
+      iny
+      iny
+      iny
+      ldx special_keys,y
+      cpx #$00
       bne @special_keys_loop
       bra @regular_char
 @print_special_key:
-      inx
-      lda special_keys,x
-      sta ptr1
-      inx
-      lda special_keys,x
-      sta ptr1+1
+      iny
+      lda special_keys,y
+      ; sta ptr1
+      iny
+      ldx special_keys,y
+      ; sta ptr1+1
       jsr _lcd_print
       bra program_loop
 @regular_char:

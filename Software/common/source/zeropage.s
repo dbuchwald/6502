@@ -13,6 +13,9 @@ tmp1:                  .res 1
 tmp2:                  .res 1
 tmp3:                  .res 1
 tmp4:                  .res 1
+lcd_temp_char1:        .res 1
+lcd_temp_char2:        .res 1
+lcd_temp_char3:        .res 1
 acia_rx_rptr:          .res 1
 acia_rx_wptr:          .res 1
 acia_tx_rptr:          .res 1
