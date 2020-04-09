@@ -36,30 +36,24 @@ init:
       jsr _keyboard_is_connected
       bcc @no_keyboard
       write_lcd #keyboard_connected
-      bra @wait_for_3s
+      bra @wait_for_1s
 @no_keyboard:
       write_lcd #keyboard_disconnected
-@wait_for_3s:
-      lda #02
+@wait_for_1s:
+      lda #01
       jsr _delay_sec
+      jsr _lcd_newline
 
-      jsr _lcd_clear
       write_lcd #instruction
-      jsr _keyboard_is_connected
-      bcc @wait_for_acia
-      write_lcd #instruction_keyboard
-@wait_for_keyboard_input:
-      jsr _keyboard_read_char
-      cmp #(KEY_ENTER)
-      bne @wait_for_keyboard_input
-      bra @run_shell
-@wait_for_acia:
-      write_lcd #instruction_serial
 @wait_for_acia_input:
       jsr _acia_is_data_available
-      bcc @wait_for_acia_input
+      bcc @check_keyboard
       jsr _acia_read_byte
-
+      bra @run_shell
+@check_keyboard:
+      jsr _keyboard_is_data_available
+      bcc @wait_for_acia_input
+      jsr _keyboard_read_char
 @run_shell:
       jsr _lcd_clear
       write_lcd #shell_connected
@@ -69,16 +63,12 @@ init:
       .segment "RODATA"
 
 welcome_message:
-      .byte "OS/1 Starting", $00
+      .asciiz "OS/1 version 0.1"
 keyboard_disconnected:
-      .byte "No keyboard", $00
+      .asciiz "No keyboard"
 keyboard_connected:
-      .byte "Keyboard connected", $00
+      .asciiz "Keyboard connected"
 instruction:
-      .byte "Connect serial port (19200 N8S1 CTS/RTS) and press enter",$00
-instruction_keyboard:
-      .byte " on the keyboard",$00
-instruction_serial:
-      .byte " in terminal window", $00
+      .asciiz "Connect serial port (19200 N8S1 CTS/RTS) and press any key in terminal window"
 shell_connected:
-      .byte "Shell connected", $00
+      .asciiz "Shell connected"

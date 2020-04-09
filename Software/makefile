@@ -47,7 +47,8 @@ LOADABLE_PROJECTS = 01_blink_test        \
 										08_system_break_test \
 										09_monitor           \
 										10_menu              \
-										11_disasm
+										11_disasm            \
+										12_custom_chars
 
 FIRMWARE_BINARIES=$(FIRMWARE_PROJECTS:%=$(ROM_FOLDER)/%.$(ADDRESS_MODE).bin)
 

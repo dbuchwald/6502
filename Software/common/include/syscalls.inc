@@ -31,6 +31,7 @@
         .forceimport _syscall_lcd_display_mode
         .forceimport _syscall_lcd_scroll_up
         .forceimport _syscall_lcd_scroll_down
+        .forceimport _syscall_lcd_define_char
 ; XMODEM routines
         .forceimport _syscall_modem_send
         .forceimport _syscall_modem_receive

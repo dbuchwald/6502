@@ -15,6 +15,7 @@
         .export _lcd_display_mode
         .export _lcd_scroll_up
         .export _lcd_scroll_down
+        .export _lcd_define_char
 
         .export LCD_DM_CURSOR_NOBLINK
         .export LCD_DM_CURSOR_BLINK
@@ -348,6 +349,36 @@ _lcd_scroll_down:
         iny
         jsr lcd_clear_line
         ply
+        rts
+
+; POSITIVE C COMPLIANT
+; _lcd_define_char
+; A contains charcode ($00-$07)
+; X, Y contains address of the first byte in char map
+_lcd_define_char:
+        stx ptr1
+        sty ptr1+1
+        ; ensure proper input value
+        and #%00000111
+        ; move charcode to bits 3-5
+        asl
+        asl
+        asl
+        ; add flag to CGRAM command
+        ora #(LCD_CMD_CGRAM_SET)
+        ; command operation (set CGRAM address)
+        clc
+        jsr lcd_write_byte
+        ldy #$00
+@send_chardef_line_loop:
+        ; load byte from character definition table
+        lda (ptr1),y
+        ; send data to CGRAM
+        sec
+        jsr lcd_write_byte
+        iny
+        cpy #$08
+        bne @send_chardef_line_loop
         rts
 
 ; INTERNAL

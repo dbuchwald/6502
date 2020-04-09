@@ -10,6 +10,7 @@
         .import _lcd_display_mode
         .import _lcd_scroll_up
         .import _lcd_scroll_down
+        .import _lcd_define_char
 
 ; Display mode command parameters
 LCD_DM_CURSOR_NOBLINK   = %00000000
@@ -35,5 +36,25 @@ LCD_DM_DISPLAY_ON       = %00000100
             sta ptr1+1
         .endif
         jsr _lcd_print
+        pla
+        .endmacro
+
+        .macro lcd_define_char code, char_map
+        pha
+        phx
+        phy
+        lda #(code)
+        .if (.match (.left (1, {char_map}), #))
+            ; immediate mode
+            ldx #<(.right (.tcount ({char_map})-1, {char_map}))
+            ldy #>(.right (.tcount ({char_map})-1, {char_map}))
+        .else
+            ; assume absolute or zero page
+            ldx string
+            ldy 1+(string)
+        .endif
+        jsr _lcd_define_char
+        ply
+        plx
         pla
         .endmacro

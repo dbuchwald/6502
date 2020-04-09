@@ -33,6 +33,7 @@
         .export _lcd_display_mode
         .export _lcd_scroll_up
         .export _lcd_scroll_down
+        .export _lcd_define_char
 ; XMODEM routines
         .export _modem_send
         .export _modem_receive
@@ -147,6 +148,9 @@ _lcd_scroll_up:
 
 _lcd_scroll_down:
         jmp (_syscall_lcd_scroll_down)
+
+_lcd_define_char:
+        jmp (_syscall_lcd_define_char)
 
 ; XMODEM routines
 _modem_send:
