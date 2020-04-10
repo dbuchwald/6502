@@ -54,7 +54,7 @@ init:
       write_lcd #instruction_serial
 @wait_for_acia_input:
       jsr _acia_is_data_available
-      bcc @wait_for_acia_input
+      beq @wait_for_acia_input
       jsr _acia_read_byte
 
 @receive_file:

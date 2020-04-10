@@ -134,7 +134,7 @@ tty_read_byte:
         beq @skip_serial
         jsr _acia_is_data_available
         ; skip, no data available at this point
-        bcc @skip_serial
+        beq @skip_serial
         ; read and send back
         jsr _acia_read_byte
         rts

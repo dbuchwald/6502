@@ -75,7 +75,7 @@ main_loop:
       jsr _lcd_print_char
 
       jsr _acia_is_data_available
-      bcc main_loop
+      beq main_loop
       jsr _acia_read_byte
       ldx #08
       ldy #00

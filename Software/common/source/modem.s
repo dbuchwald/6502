@@ -198,7 +198,7 @@ _modem_receive:
         ; Is there any data available?
         jsr _acia_is_data_available
         ; Yes it is
-        bcs @three_read_data
+        bne @three_read_data
         ; Nope, it's not, wait 20ms
         lda #20
         jsr _delay_ms
@@ -223,7 +223,7 @@ _modem_receive:
         ; Is there any data available?
         jsr _acia_is_data_available
         ; Yes it is
-        bcs @one_read_data
+        bne @one_read_data
         ; Nope, it's not, wait 20ms
         lda #20
         jsr _delay_ms

@@ -73,6 +73,10 @@ ACIA_STATUS_RX_FULL    = 1 << 3
 ACIA_STATUS_OVERRUN    = 1 << 2
 ACIA_STATUS_FRAME_ERR  = 1 << 1
 ACIA_STATUS_PARITY_ERR = 1 << 0
+
+ACIA_DATA_AVAILABLE    = $01
+ACIA_NO_DATA_AVAILABLE = $00
+
         .code
 
 ; POSITIVE C COMPLIANT        
@@ -176,21 +180,18 @@ cts_high:
         pla
         rts
 
-; NEGATIVE C COMPLIANT - return value in carry flag
-; Check if there is anything to receive and return in Carry flag
+; POSITIVE C COMPLIANT - return value A
+; Check if there is anything to receive and return in A
 ; 0 - data not available
 ; 1 - data available
 _acia_is_data_available:
-        pha
         lda acia_rx_wptr
         cmp acia_rx_rptr
         beq @no_data_found
-        sec
-        pla
+        lda #(ACIA_DATA_AVAILABLE)
         rts
 @no_data_found:
-        clc
-        pla
+        lda #(ACIA_NO_DATA_AVAILABLE)
         rts
 
 ; POSITIVE C COMPLIANT
@@ -198,7 +199,7 @@ _acia_is_data_available:
 _acia_read_byte:
         ; block until data available
         jsr _acia_is_data_available
-        bcc _acia_read_byte
+        beq _acia_read_byte
         ; proceed
         phx
         ldx acia_rx_rptr

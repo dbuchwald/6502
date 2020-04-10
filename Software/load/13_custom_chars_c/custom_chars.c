@@ -1,4 +1,5 @@
 #include "blink.h"
+#include "acia.h"
 
 #define CHAR_MOUTH_OPEN 0x00
 #define CHAR_MOUTH_CLOSED 0x01
@@ -17,11 +18,21 @@ static char counter = 0;
 static const char blahmsg[] = "Blah blah";
 
 void main(void) {
-
+  unsigned char c;
   blink_init();
   blink_led(BLINK_LED_ON);
   delay_ms(250);
   blink_led(BLINK_LED_OFF);
+
+  acia_write_string(blahmsg);
+
+  while (!acia_is_data_available()) {}
+
+  strobe_led();
+
+  c = acia_read_byte();
+
+  acia_write_byte(c);
   
   // lcd_clear();
   // lcd_define_char(CHAR_MOUTH_OPEN, open_mouth_map);

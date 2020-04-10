@@ -47,7 +47,7 @@ init:
       write_lcd #instruction
 @wait_for_acia_input:
       jsr _acia_is_data_available
-      bcc @check_keyboard
+      beq @check_keyboard
       jsr _acia_read_byte
       bra @run_shell
 @check_keyboard:
