@@ -63,10 +63,12 @@ _strcmp:
         ply
         rts
 
-; NEGATIVE C COMPLIANT - ptr1
+; POSITIVE C COMPLIANT
 ; Count characters in string (ptr1)
 ; A will contain result
 _strlen:
+        sta ptr1
+        stx ptr1+1
         phy
         ldy #$00
 @strlen_loop:
@@ -82,11 +84,12 @@ _strlen:
         ply
         rts
 
-; NEGATIVE C COMPLIANT - ptr1
+; POSITIVE C COMPLIANT
 ; Converts string to upper case in place
 _strtoupper:
+        sta ptr1
+        stx ptr1+1
         phy
-        pha
         ldy #$00
 @strtoupper_loop:
         lda (ptr1),y
@@ -103,15 +106,15 @@ _strtoupper:
         beq @return ; prevention against infinite loop
         bra @strtoupper_loop
 @return:
-        pla
         ply
         rts
 
-; NEGATIVE C COMPLIANT - ptr1
+; POSTITIVE C COMPLIANT
 ; Converts string to lower case in place
 _strtolower:
+        sta ptr1
+        stx ptr1+1
         phy
-        pha
         ldy #$00
 @strtolower_loop:
         lda (ptr1),y
@@ -128,17 +131,17 @@ _strtolower:
         beq @return ; prevention against infinite loop
         bra @strtolower_loop
 @return:
-        pla
         ply
         rts
 
-; NEGATIVE C COMPLIANT - ptr1 input
+; POSITIVE C COMPLIANT
 ; Trim all leading and trailing space characters
 ; ptr1 - points at the beginning of null terminated string
 ; ptr2 - used to copy data
 _strtriml:
+        sta ptr1
+        stx ptr1+1
         phy
-        pha
         ; Copy ptr1 to ptr2
         lda ptr1
         sta ptr2
@@ -162,16 +165,16 @@ _strtriml:
         beq @return ; prevention against infinite loop
         bra @copy_loop
 @return:
-        pla
         ply
         rts
 
-; NEGATIVE C COMPLIANT - ptr1
+; POSITIVE C COMPLIANT
 ; Trims all the trailing space characters
 ; ptr1 points to null terminated string to be trimmed
 _strtrimr:
+        sta ptr1
+        stx ptr1+1
         phy
-        pha
         ldy #$00
 @skip_loop:
         ; keep moving until the end of string is found
@@ -190,7 +193,6 @@ _strtrimr:
         sta (ptr1),y
         bra @trimr_loop
 @return:
-        pla
         ply
         rts
 
