@@ -63,11 +63,11 @@ _process_blink:
         bcc @error
         cmp #$00
         beq @turn_off
-        sec
+        lda #(BLINK_LED_ON)
         jsr _blink_led
         rts
 @turn_off:
-        clc
+        lda #(BLINK_LED_OFF)
         jsr _blink_led
         rts
 @error:

@@ -13,11 +13,11 @@ init:
         jsr _blink_init
         ldx #10
 main_loop:
-        sec
+        lda #(BLINK_LED_ON)
         jsr _blink_led
         lda #250
         jsr _delay_ms
-        clc
+        lda #(BLINK_LED_OFF)
         jsr _blink_led
         lda #250
         jsr _delay_ms

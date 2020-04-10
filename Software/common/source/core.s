@@ -33,7 +33,7 @@ _system_init:
       ; Short BLINK LED strobe
       jsr _strobe_led
       ; Enable BLINK LED during init operation
-      sec
+      lda #(BLINK_LED_ON)
       jsr _blink_led
       ; Initialize LCD
       jsr _lcd_init
@@ -46,7 +46,7 @@ _system_init:
       ; Enable interrupt processing
       cli
       ; Turn off BLINK LED, init done
-      clc
+      lda #(BLINK_LED_OFF)
       jsr _blink_led
       ; Done, return from subroutine
       rts

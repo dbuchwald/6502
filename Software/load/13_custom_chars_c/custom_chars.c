@@ -1,3 +1,5 @@
+#include "blink.h"
+
 #define CHAR_MOUTH_OPEN 0x00
 #define CHAR_MOUTH_CLOSED 0x01
 
@@ -15,22 +17,27 @@ static char counter = 0;
 static const char blahmsg[] = "Blah blah";
 
 void main(void) {
+
+  blink_init();
+  blink_led(BLINK_LED_ON);
+  delay_ms(250);
+  blink_led(BLINK_LED_OFF);
   
-  lcd_clear();
-  lcd_define_char(CHAR_MOUTH_OPEN, open_mouth_map);
-  lcd_define_char(CHAR_MOUTH_CLOSED, closed_mouth_map);
-  lcd_set_position(0, 5, 1);
-  tty_write(blahmsg);
-  while (counter<10) {
-    lcd_set_position(0, 3, 1);
-    lcd_print_char(CHAR_MOUTH_OPEN);
-    delay_ms(200);
-    lcd_set_position(0, 3, 1);
-    lcd_print_char(CHAR_MOUTH_CLOSED);
-    delay_ms(150);
-    ++counter;
-  }
-  lcd_clear();
+  // lcd_clear();
+  // lcd_define_char(CHAR_MOUTH_OPEN, open_mouth_map);
+  // lcd_define_char(CHAR_MOUTH_CLOSED, closed_mouth_map);
+  // lcd_set_position(0, 5, 1);
+  // tty_write(blahmsg);
+  // while (counter<10) {
+  //   lcd_set_position(0, 3, 1);
+  //   lcd_print_char(CHAR_MOUTH_OPEN);
+  //   delay_ms(200);
+  //   lcd_set_position(0, 3, 1);
+  //   lcd_print_char(CHAR_MOUTH_CLOSED);
+  //   delay_ms(150);
+  //   ++counter;
+  // }
+  // lcd_clear();
 }
 
         

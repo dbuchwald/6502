@@ -27,7 +27,7 @@ init:
       sta VIA2_DDRB
 blink_loop:
 ; enable LED
-      sec
+      lda #(BLINK_LED_ON)
       jsr _blink_led
 ; blink VIA2 port A
       lda #$ff
@@ -39,7 +39,7 @@ blink_loop:
       lda #$01
       jsr _delay_sec
 ; disable LED
-      clc
+      lda #(BLINK_LED_OFF)
       jsr _blink_led
 ; disable VIA2 port A
       lda #$00
