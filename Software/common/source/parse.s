@@ -12,7 +12,8 @@
 ; Returns value in A (0 - off, 1 - on)
 _parse_onoff:
         ; Copy pointer to preserve during strcmp operation
-        copy_ptr ptr1, parsed_token_pointer
+        sta parsed_token_pointer
+        stx parsed_token_pointer+1
         ; Convert whole token uppercase for comparison
         strtoupper parsed_token_pointer
         ; Compare against "ON"
@@ -41,13 +42,15 @@ _parse_onoff:
 ; Returns value in A
 ; Stores temp value in tmp1 (but preserves it)
 _parse_hex_byte:
+        sta parsed_token_pointer
+        stx parsed_token_pointer+1
         ; preserve Y
         phy
         ; preserve tmp1
         lda tmp1
         pha
-        ; Copy pointer to preserve during strtoupper operation
-        copy_ptr ptr1, parsed_token_pointer
+        ; ; Copy pointer to preserve during strtoupper operation
+        ; copy_ptr ptr1, parsed_token_pointer
         ; Check length (expect two chars only)
         strlen parsed_token_pointer
         cmp #$02
@@ -88,6 +91,8 @@ _parse_hex_byte:
 ; Returns value in MSB: A, LSB: X
 ; Stores temp value in tmp1 and tmp2 (but preserves them)
 _parse_hex_word:
+        sta parsed_token_pointer
+        stx parsed_token_pointer+1
         ; preserve Y
         phy
         ; preserve tmp1
@@ -96,8 +101,8 @@ _parse_hex_word:
         lda tmp2
         pha
         stz tmp1
-        ; Copy pointer to preserve during strtoupper operation
-        copy_ptr ptr1, parsed_token_pointer
+        ; ; Copy pointer to preserve during strtoupper operation
+        ; copy_ptr ptr1, parsed_token_pointer
         ; Convert whole token uppercase for comparison
         strtoupper parsed_token_pointer
         ; Copy pointer back to dereference

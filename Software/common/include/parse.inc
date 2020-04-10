@@ -3,58 +3,44 @@
         .import _parse_hex_word
 
         .macro parse_onoff token
-        pha
+        phx
         .if (.match (.left (1, {token}), #))
             ; immediate mode
             lda #<(.right (.tcount ({token})-1, {token}))
-            sta ptr1
-            lda #>(.right (.tcount ({token})-1, {token}))
-            sta ptr1+1
+            ldx #>(.right (.tcount ({token})-1, {token}))
         .else
             ; assume absolute or zero page
             lda token
-            sta ptr1
-            lda 1+(token)
-            sta ptr1+1
+            ldx 1+(token)
         .endif
-        pla
         jsr _parse_onoff
+        plx
         .endmacro
 
         .macro parse_hex_byte token
-        pha
+        phx
         .if (.match (.left (1, {token}), #))
             ; immediate mode
             lda #<(.right (.tcount ({token})-1, {token}))
-            sta ptr1
-            lda #>(.right (.tcount ({token})-1, {token}))
-            sta ptr1+1
+            ldx #>(.right (.tcount ({token})-1, {token}))
         .else
             ; assume absolute or zero page
             lda token
-            sta ptr1
-            lda 1+(token)
-            sta ptr1+1
+            ldx 1+(token)
         .endif
-        pla
         jsr _parse_hex_byte
+        plx
         .endmacro
 
         .macro parse_hex_word token
-        pha
         .if (.match (.left (1, {token}), #))
             ; immediate mode
             lda #<(.right (.tcount ({token})-1, {token}))
-            sta ptr1
-            lda #>(.right (.tcount ({token})-1, {token}))
-            sta ptr1+1
+            ldx #>(.right (.tcount ({token})-1, {token}))
         .else
             ; assume absolute or zero page
             lda token
-            sta ptr1
-            lda 1+(token)
-            sta ptr1+1
+            ldx 1+(token)
         .endif
-        pla
         jsr _parse_hex_word
         .endmacro
