@@ -24,6 +24,10 @@ BS      = $7f   ; Backspace on Mac
 
 RECEIVE_BUFFER_SIZE = 140
 
+MODEM_RECEIVE_FAILED    = $00
+MODEM_RECEIVE_SUCCESS   = $01
+MODEM_RECEIVE_CANCELLED = $02
+
 ; Private modem variables
         .zeropage
 crc:              .res 2
@@ -68,7 +72,7 @@ _modem_receive:
         cmp #(ESC)
         bne @not_quitting_yet
         ; Transfer failed
-        clc
+        lda #(MODEM_RECEIVE_CANCELLED)
         ; Exit
         rts
 @not_quitting_yet:
@@ -104,7 +108,7 @@ _modem_receive:
         jsr @send_error_message
         jsr @flush_input
         ; Receive failed
-        clc
+        lda #(MODEM_RECEIVE_FAILED)
         rts
 @correct_block_number:
         ; Calculate second block indicator
@@ -187,7 +191,7 @@ _modem_receive:
         ; Send nice completion message
         jsr @send_completion_message
         ; Set successful completion flag
-        sec
+        lda #(MODEM_RECEIVE_SUCCESS)
         rts
 
 @wait_for_next_char:

@@ -45,7 +45,8 @@ _process_load:
         writeln_tty #msgload
 @receive_file:
         jsr _modem_receive
-        bcc @receive_file
+        cmp #(MODEM_RECEIVE_FAILED)
+        beq @receive_file
         rts
 
 _process_run:

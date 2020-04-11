@@ -34,7 +34,8 @@ init:
       lda #1
       jsr _delay_sec
       jsr _keyboard_is_connected
-      bcc @no_keyboard
+      cmp #(KEYBOARD_NOT_CONNECTED)
+      beq @no_keyboard
       write_lcd #keyboard_connected
       bra @wait_for_1s
 @no_keyboard:

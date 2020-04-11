@@ -38,7 +38,8 @@ prompt_loop:
 
 main_loop:
       jsr _modem_receive
-      bcc main_loop
+      cmp #(MODEM_RECEIVE_SUCCESS)
+      bne main_loop
       jsr $1000
       jmp main_loop
 

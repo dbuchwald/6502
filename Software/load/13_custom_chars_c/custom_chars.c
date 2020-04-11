@@ -1,5 +1,7 @@
 #include "blink.h"
 #include "acia.h"
+#include "keyboard.h"
+#include "modem.h"
 
 #define CHAR_MOUTH_OPEN 0x00
 #define CHAR_MOUTH_CLOSED 0x01
@@ -33,6 +35,27 @@ void main(void) {
   c = acia_read_byte();
 
   acia_write_byte(c);
+  acia_write_byte(0x0a);
+  acia_write_byte(0x0d);
+
+  if (keyboard_is_connected() == KEYBOARD_CONNECTED) {
+    acia_write_string("Keyboard connected");
+  } else {
+    acia_write_string("Keyboard not connected");
+  }
+
+  acia_write_byte(0x0a);
+  acia_write_byte(0x0d);
+
+  while (!keyboard_is_data_available()) {}
+
+  strobe_led();
+
+  c = keyboard_read_char();
+
+  acia_write_byte(c);
+  acia_write_byte(0x0a);
+  acia_write_byte(0x0d);
   
   // lcd_clear();
   // lcd_define_char(CHAR_MOUTH_OPEN, open_mouth_map);

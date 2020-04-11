@@ -31,7 +31,8 @@ init:
       lda #1
       jsr _delay_sec
       jsr _keyboard_is_connected
-      bcc @no_keyboard
+      cmp #(KEYBOARD_NOT_CONNECTED)
+      beq @no_keyboard
       write_lcd #keyboard_connected
       bra @wait_for_3s
 @no_keyboard:
@@ -43,7 +44,8 @@ init:
       jsr _lcd_clear
       write_lcd #instruction
       jsr _keyboard_is_connected
-      bcc @wait_for_acia
+      cmp #(KEYBOARD_NOT_CONNECTED)
+      beq @wait_for_acia
       write_lcd #instruction_keyboard
 @wait_for_keyboard_input:
       jsr _keyboard_read_char
@@ -59,7 +61,8 @@ init:
 
 @receive_file:
       jsr _modem_receive
-      bcc @receive_file
+      cmp #(MODEM_RECEIVE_SUCCESS)
+      bne @receive_file
       jsr $1000
       jsr _lcd_clear
       jmp @main_loop

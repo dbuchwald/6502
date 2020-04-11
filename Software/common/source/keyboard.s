@@ -10,6 +10,12 @@
       .export _keyboard_is_data_available
       .export _keyboard_read_char
 
+KEYBOARD_NOT_CONNECTED     = $00
+KEYBOARD_CONNECTED         = $01
+
+KEYBOARD_NO_DATA_AVAILABLE = $00
+KEYBOARD_DATA_AVAILABLE    = $01
+
       .code
 
 ; POSITIVE C COMPLIANT
@@ -98,34 +104,31 @@ _handle_keyboard_irq:
       ; Done, return
       rts
 
-; NEGATIVE C COMPLIANT - return value in carry flag
-; Returns connection status in Carry flag
+; POSITIVE C COMPLIANT - return value in A
+; Returns connection status in A
 ; 1 - connected
 ; 0 - disconnected
 _keyboard_is_connected:
-      clc
       bit keyboard_conn
       bmi @keyboard_connected
+      lda #(KEYBOARD_NOT_CONNECTED)
       rts
 @keyboard_connected:
-      sec
+      lda #(KEYBOARD_CONNECTED)
       rts
 
-; NEGATIVE C COMPLIANT - return value in carry flag
-; Returns status in Carry flag
+; POSITIVE C COMPLIANT - return value in A
+; Returns status in A
 ; 1 - new characters available
 ; 0 - no new characters available
 _keyboard_is_data_available:
-      pha
       lda keyboard_wptr
       cmp keyboard_rptr
       beq @no_data
-      sec
-      bra @check_completed
+      lda #(KEYBOARD_DATA_AVAILABLE)
+      rts
 @no_data:
-      clc
-@check_completed:
-      pla
+      lda #(KEYBOARD_NO_DATA_AVAILABLE)
       rts
 
 ; POSITIVE C COMPLIANT
