@@ -69,7 +69,8 @@ program_loop:
       ; Is there new data to be read
       jsr _keyboard_is_data_available
       ; Nope
-      bcc program_loop
+      cmp #(KEYBOARD_NO_DATA_AVAILABLE)
+      beq program_loop
       ; There is something new here
       jsr _lcd_clear
       jsr _keyboard_read_char

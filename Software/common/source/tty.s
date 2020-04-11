@@ -134,6 +134,7 @@ tty_read_byte:
         beq @skip_serial
         jsr _acia_is_data_available
         ; skip, no data available at this point
+        cmp #(ACIA_NO_DATA_AVAILABLE)
         beq @skip_serial
         ; read and send back
         jsr _acia_read_byte
@@ -144,8 +145,9 @@ tty_read_byte:
         ; keyboard input disabled
         beq @skip_keyboard
         jsr _keyboard_is_data_available
+        cmp #(KEYBOARD_NO_DATA_AVAILABLE)
         ; no data available, skip
-        bcc @skip_keyboard
+        beq @skip_keyboard
         ; read and send back
         jsr _keyboard_read_char
         rts

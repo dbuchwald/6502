@@ -21,7 +21,7 @@ init:
 
 wait_for_acia_input:
       jsr _acia_is_data_available
-      cmp #00
+      cmp #(ACIA_NO_DATA_AVAILABLE)
       beq wait_for_acia_input
 
       ldx #00
@@ -75,6 +75,7 @@ main_loop:
       jsr _lcd_print_char
 
       jsr _acia_is_data_available
+      cmp #(ACIA_NO_DATA_AVAILABLE)
       beq main_loop
       jsr _acia_read_byte
       ldx #08

@@ -201,6 +201,7 @@ _modem_receive:
 @three_second_wait:
         ; Is there any data available?
         jsr _acia_is_data_available
+        cmp #(ACIA_NO_DATA_AVAILABLE)
         ; Yes it is
         bne @three_read_data
         ; Nope, it's not, wait 20ms
@@ -226,6 +227,7 @@ _modem_receive:
 @one_second_wait:
         ; Is there any data available?
         jsr _acia_is_data_available
+        cmp #(ACIA_NO_DATA_AVAILABLE)
         ; Yes it is
         bne @one_read_data
         ; Nope, it's not, wait 20ms

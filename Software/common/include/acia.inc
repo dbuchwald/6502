@@ -8,6 +8,9 @@
         .import _acia_write_string
         .import ACIA_STATUS
 
+ACIA_DATA_AVAILABLE    = $01
+ACIA_NO_DATA_AVAILABLE = $00
+
         .macro write_acia string
         pha
         phx

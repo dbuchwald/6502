@@ -199,6 +199,7 @@ _acia_is_data_available:
 _acia_read_byte:
         ; block until data available
         jsr _acia_is_data_available
+        cmp #(ACIA_NO_DATA_AVAILABLE)
         beq _acia_read_byte
         ; proceed
         phx

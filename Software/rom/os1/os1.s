@@ -48,12 +48,14 @@ init:
       write_lcd #instruction
 @wait_for_acia_input:
       jsr _acia_is_data_available
+      cmp #(ACIA_NO_DATA_AVAILABLE)
       beq @check_keyboard
       jsr _acia_read_byte
       bra @run_shell
 @check_keyboard:
       jsr _keyboard_is_data_available
-      bcc @wait_for_acia_input
+      cmp #(KEYBOARD_NO_DATA_AVAILABLE)
+      beq @wait_for_acia_input
       jsr _keyboard_read_char
 @run_shell:
       jsr _lcd_clear
