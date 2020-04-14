@@ -127,9 +127,9 @@ _syscall_lcd_get_position:
 _syscall_lcd_set_position:
         SYSCALL_VECTOR _lcd_set_position
 _syscall_lcd_backspace:
-        SYSCALL_VECTOR _syscall_lcd_backspace
+        SYSCALL_VECTOR _lcd_backspace
 _syscall_lcd_newline:
-        SYSCALL_VECTOR _syscall_lcd_newline
+        SYSCALL_VECTOR _lcd_newline
 _syscall_lcd_display_mode:
         SYSCALL_VECTOR _lcd_display_mode
 _syscall_lcd_scroll_up:
