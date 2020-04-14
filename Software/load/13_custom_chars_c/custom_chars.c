@@ -3,6 +3,7 @@
 #include "keyboard.h"
 #include "modem.h"
 #include "lcd.h"
+#include "utils.h"
 
 #define CHAR_MOUTH_OPEN 0x00
 #define CHAR_MOUTH_CLOSED 0x01
@@ -11,8 +12,6 @@ static char open_mouth_map[] = {0b00001110, 0b00011111, 0b00010101, 0b00011111, 
 static char closed_mouth_map[] = {0b00001110, 0b00011111, 0b00010101, 0b00011111, 0b000111111, 0b00000000, 0b00000000, 0b00000000};
 
 extern void __fastcall__ tty_write(const char* string);
-extern void __fastcall__ delay_ms(const unsigned char c);
-extern void __fastcall__ delay_sec(const unsigned char c);
 
 static char counter = 0;
 static const char blahmsg[] = "Blah blah";
