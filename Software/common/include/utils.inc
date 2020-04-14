@@ -77,12 +77,15 @@
         .macro add_offset pointer, offset
         pha
         php
+        lda offset
+        bpl @not_neg
+        dec pointer+1
+@not_neg:
         clc
-        lda pointer
-        adc offset
+        adc pointer
         sta pointer
         lda pointer+1
-        adc offset+1
+        adc #$00
         sta pointer+1
         plp
         pla
