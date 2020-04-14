@@ -339,8 +339,8 @@ _lcd_scroll_down:
         jsr lcd_paste_line_from_buffer
         ; move to next line
         ; we need to dec 2 because of the increase before paste
-        dec
-        dec
+        dey
+        dey
         ; repeat until last line copied
         bpl @line_loop_down
         ; clear first row
