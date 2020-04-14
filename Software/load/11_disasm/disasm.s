@@ -245,7 +245,7 @@ format_relative:
         stz relative_offset+1
         copy_ptr pc_pointer, pc_pointer_original
         inc_ptr pc_pointer_original
-        add_offset pc_pointer_original, relative_offset
+        add_offset_relative pc_pointer_original, relative_offset
 
         lda pc_pointer_original
         jsr _convert_to_hex
@@ -356,7 +356,7 @@ opcode_entry:
 addressing_mode:
         .res 1
 relative_offset:
-        .res 2
+        .res 1
 
 
         .segment "RODATA"
