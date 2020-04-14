@@ -2,6 +2,7 @@
 #include "acia.h"
 #include "keyboard.h"
 #include "modem.h"
+#include "lcd.h"
 
 #define CHAR_MOUTH_OPEN 0x00
 #define CHAR_MOUTH_CLOSED 0x01
@@ -9,12 +10,9 @@
 static char open_mouth_map[] = {0b00001110, 0b00011111, 0b00010101, 0b00011111, 0b00010001, 0b00001110, 0b00000000, 0b00000000};
 static char closed_mouth_map[] = {0b00001110, 0b00011111, 0b00010101, 0b00011111, 0b000111111, 0b00000000, 0b00000000, 0b00000000};
 
-extern void lcd_clear();
-extern void __fastcall__ __near__ lcd_define_char(register char code, char* char_map);
 extern void __fastcall__ tty_write(const char* string);
-extern void __fastcall__ lcd_print_char(char c);
-extern void __fastcall__ delay_ms(char c);
-extern void __fastcall__ lcd_set_position(register char a, register char x, register char y);
+extern void __fastcall__ delay_ms(const unsigned char c);
+extern void __fastcall__ delay_sec(const unsigned char c);
 
 static char counter = 0;
 static const char blahmsg[] = "Blah blah";
@@ -56,6 +54,28 @@ void main(void) {
   acia_write_byte(c);
   acia_write_byte(0x0a);
   acia_write_byte(0x0d);
+
+  lcd_clear();
+  lcd_print("Testing LCD...");
+  delay_ms(200);
+  lcd_backspace();
+  delay_ms(200);
+  lcd_backspace();
+  delay_ms(200);
+  lcd_backspace();
+  delay_ms(200);
+  lcd_print(" - it works");
+  lcd_print_char('!');
+  lcd_display_mode(LCD_DM_DISPLAY_ON | LCD_DM_CURSOR_BLINK);
+  delay_sec(2);
+  lcd_scroll_down();
+  delay_sec(2);
+  lcd_scroll_down();
+  delay_sec(2);
+  lcd_scroll_up();
+  lcd_newline();
+  lcd_display_mode(LCD_DM_DISPLAY_ON | LCD_DM_CURSOR_OFF);
+  lcd_print("Works as a charm!");
   
   // lcd_clear();
   // lcd_define_char(CHAR_MOUTH_OPEN, open_mouth_map);
