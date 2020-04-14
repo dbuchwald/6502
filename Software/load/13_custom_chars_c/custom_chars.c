@@ -4,14 +4,13 @@
 #include "modem.h"
 #include "lcd.h"
 #include "utils.h"
+#include "tty.h"
 
 #define CHAR_MOUTH_OPEN 0x00
 #define CHAR_MOUTH_CLOSED 0x01
 
 static char open_mouth_map[] = {0b00001110, 0b00011111, 0b00010101, 0b00011111, 0b00010001, 0b00001110, 0b00000000, 0b00000000};
 static char closed_mouth_map[] = {0b00001110, 0b00011111, 0b00010101, 0b00011111, 0b000111111, 0b00000000, 0b00000000, 0b00000000};
-
-extern void __fastcall__ tty_write(const char* string);
 
 static char counter = 0;
 static const char blahmsg[] = "Blah blah";
@@ -24,6 +23,10 @@ void main(void) {
   blink_led(BLINK_LED_OFF);
 
   acia_write_string(blahmsg);
+
+  tty_writeln("This is blah too...");
+  tty_write_hex(0x8b);
+  tty_send_newline();
 
   while (!acia_is_data_available()) {}
 
@@ -66,13 +69,15 @@ void main(void) {
   lcd_print(" - it works");
   lcd_print_char('!');
   lcd_display_mode(LCD_DM_DISPLAY_ON | LCD_DM_CURSOR_BLINK);
-  delay_sec(2);
+  delay_ms(200);
   lcd_scroll_down();
-  delay_sec(2);
+  delay_ms(200);
   lcd_scroll_down();
-  delay_sec(2);
+  delay_ms(200);
   lcd_scroll_up();
+  delay_ms(200);
   lcd_newline();
+  delay_ms(200);
   lcd_display_mode(LCD_DM_DISPLAY_ON | LCD_DM_CURSOR_OFF);
   lcd_print("Works as a charm!");
   
