@@ -74,6 +74,7 @@
 ; tty routines
         .export _syscall__tty_init
         .export _syscall__tty_read_line
+        .export _syscall_tty_read_line
         .export _syscall__tty_write
         .export _syscall__tty_writeln
         .export _syscall__tty_write_hex
@@ -195,6 +196,8 @@ _syscall__tty_init:
         SYSCALL_VECTOR _tty_init
 _syscall__tty_read_line:
         SYSCALL_VECTOR _tty_read_line
+_syscall_tty_read_line:
+        SYSCALL_VECTOR tty_read_line
 _syscall__tty_write:
         SYSCALL_VECTOR _tty_write
 _syscall__tty_writeln:

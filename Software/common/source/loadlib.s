@@ -62,6 +62,7 @@
 ; tty routines
         .export _tty_init
         .export _tty_read_line
+        .export tty_read_line
         .export _tty_write
         .export _tty_writeln
         .export _tty_write_hex
@@ -236,6 +237,9 @@ _tty_init:
 
 _tty_read_line:
         jmp (_syscall__tty_read_line)
+
+tty_read_line:
+        jmp (_syscall_tty_read_line)
 
 _tty_write:
         jmp (_syscall__tty_write)

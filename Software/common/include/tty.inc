@@ -2,6 +2,7 @@
 
         .import _tty_init
         .import _tty_read_line
+        .import tty_read_line
         .import _tty_write
         .import _tty_writeln
         .import _tty_write_hex
@@ -21,7 +22,7 @@
             ldx 1+(buffer)
         .endif
         ldy #(buffer_size)
-        jsr _tty_read_line
+        jsr tty_read_line
         ply
         plx
         pla

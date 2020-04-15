@@ -7,6 +7,7 @@
 
         .export _tty_init
         .export _tty_read_line
+        .export tty_read_line
         .export _tty_write
         .export _tty_writeln
         .export _tty_write_hex
@@ -29,9 +30,22 @@ _tty_init:
         sta tty_config
         rts
 
-; POSITIVE C COMPLIANT
-; Blocks until full line read (Enter pressed)
+; C wrapper for tty_read_line
+; buffer size in A
+; buffer pointer on stack
 _tty_read_line:
+        pha
+        ldy #$01
+        lda (sp),y
+        tax
+        dey
+        lda (sp),y
+        ply
+        jmp tty_read_line
+
+; NEGATIVE C COMPLIANT
+; Blocks until full line read (Enter pressed)
+tty_read_line:
         sta line_buffer_pointer
         sta ptr1
         stx line_buffer_pointer+1

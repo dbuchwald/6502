@@ -60,6 +60,7 @@
 ; tty routines
         .forceimport _syscall__tty_init
         .forceimport _syscall__tty_read_line
+        .forceimport _syscall_tty_read_line
         .forceimport _syscall__tty_write
         .forceimport _syscall__tty_writeln
         .forceimport _syscall__tty_write_hex
