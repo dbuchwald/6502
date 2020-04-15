@@ -41,7 +41,10 @@ _tty_read_line:
         dey
         lda (sp),y
         ply
-        jmp tty_read_line
+        jsr tty_read_line
+        inc_ptr sp
+        inc_ptr sp
+        rts
 
 ; NEGATIVE C COMPLIANT
 ; Blocks until full line read (Enter pressed)

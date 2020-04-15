@@ -29,7 +29,10 @@ _strcopy:
         dey
         lda (sp),y
         sta ptr1
-        jmp strcopy
+        jsr strcopy
+        inc_ptr sp
+        inc_ptr sp
+        rts
 
         .code
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
@@ -62,7 +65,11 @@ _strcompare:
         dey
         lda (sp),y
         sta ptr1
-        jmp strcompare
+        jsr strcompare
+        ldx #$00
+        inc_ptr sp
+        inc_ptr sp
+        rts
 
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Compare two strings (ptr1, ptr2)
@@ -245,7 +252,11 @@ _strtokenize:
         dey
         lda (sp),y
         sta ptr1
-        jmp strtokenize
+        jsr strtokenize
+        ldx #$00
+        inc_ptr sp
+        inc_ptr sp
+        rts
 
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Temp variables used:

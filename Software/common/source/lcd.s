@@ -190,6 +190,9 @@ _lcd_get_position:
         sta (ptr1)
         txa
         sta (ptr2)
+        ; retrieve data from the stack
+        inc_ptr sp
+        inc_ptr sp
         rts
 
 ; NEGATIVE C COMPLIANT - return values in X, Y
@@ -239,7 +242,9 @@ _lcd_set_position:
         tay
         lda (sp)
         tax
-        jmp lcd_set_position 
+        jsr lcd_set_position
+        inc_ptr sp
+        rts 
 
 ; NEGATIVE C COMPLIANT - input values in X, Y
 ; lcd_set_position - moves cursor to position on a screen
@@ -386,7 +391,9 @@ _lcd_define_char:
         sta ptr1
         stx ptr1+1
         lda (sp)
-        jmp lcd_define_char
+        jsr lcd_define_char
+        inc_ptr sp
+        rts
 
 ; NEGATIVE C COMPLIANT
 ; lcd_define_char
