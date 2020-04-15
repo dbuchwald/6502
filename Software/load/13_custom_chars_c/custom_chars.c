@@ -5,6 +5,7 @@
 #include "lcd.h"
 #include "utils.h"
 #include "tty.h"
+#include "string.h"
 
 #define CHAR_MOUTH_OPEN 0x00
 #define CHAR_MOUTH_CLOSED 0x01
@@ -14,6 +15,7 @@ static char closed_mouth_map[] = {0b00001110, 0b00011111, 0b00010101, 0b00011111
 
 static char counter = 0;
 static const char blahmsg[] = "Blah blah";
+char buffer[32];
 
 void main(void) {
   unsigned char c;
@@ -23,6 +25,28 @@ void main(void) {
   blink_led(BLINK_LED_OFF);
 
   acia_write_string(blahmsg);
+
+  c_strcpy(blahmsg, buffer);
+  strtoupper(buffer);
+  tty_writeln(buffer);
+
+  tty_writeln("abcd, bcd");
+
+  tty_write_hex(c_strcmp("abcd", "bcd"));
+
+  tty_writeln("bcd, abcd");
+
+  tty_write_hex(c_strcmp("bcd", "abcd"));
+
+  tty_writeln("abcd, abcd");
+
+  tty_write_hex(c_strcmp("abcd", "abcd"));
+
+  tty_send_newline();
+
+  tty_write_hex(c_strtokenize("   get 8000  :   8001    ", buffer));
+
+  tty_writeln(buffer);
 
   tty_writeln("This is blah too...");
   tty_write_hex(0x8b);
@@ -98,4 +122,15 @@ void main(void) {
   // lcd_clear();
 }
 
-        
+unsigned char __fastcall__ test_func(const unsigned char input[], unsigned char output[])
+{
+  unsigned char i=0;
+  while (input[i])
+  {
+    output[i]=input[i];
+    ++i;
+  }
+  output[i]=0;
+  return i;
+}
+

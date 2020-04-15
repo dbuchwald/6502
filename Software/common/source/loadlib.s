@@ -38,14 +38,17 @@
         .export _modem_send
         .export _modem_receive
 ; string routines
-        .export _strcpy
-        .export _strcmp
+        .export _c_strcpy
+        .export _asm_strcpy
+        .export _c_strcmp
+        .export _asm_strcmp
         .export _strlen
         .export _strtoupper
         .export _strtolower
         .export _strtriml
         .export _strtrimr
-        .export _strtokenize
+        .export _c_strtokenize
+        .export _asm_strtokenize
 ; parser routines
         .export _parse_onoff
         .export _parse_hex_byte
@@ -160,11 +163,17 @@ _modem_receive:
         jmp (_syscall_modem_receive)
 
 ; string routines
-_strcpy:
-        jmp (_syscall_strcpy)
+_c_strcpy:
+        jmp (_syscall_c_strcpy)
 
-_strcmp:
-        jmp (_syscall_strcmp)
+_asm_strcpy:
+        jmp (_syscall_asm_strcpy)
+
+_c_strcmp:
+        jmp (_syscall_c_strcmp)
+
+_asm_strcmp:
+        jmp (_syscall_asm_strcmp)
 
 _strlen:
         jmp (_syscall_strlen)
@@ -181,8 +190,11 @@ _strtriml:
 _strtrimr:
         jmp (_syscall_strtrimr)
 
-_strtokenize:
-        jmp (_syscall_strtokenize)
+_asm_strtokenize:
+        jmp (_syscall_asm_strtokenize)
+
+_c_strtokenize:
+        jmp (_syscall_c_strtokenize)
 
 ; parser routines
 _parse_onoff:

@@ -1,21 +1,40 @@
         .include "zeropage.inc"
         .include "utils.inc"
 
-        .export _strcpy
+        .export _c_strcpy
+        .export _asm_strcpy
         .export _strlen
-        .export _strcmp
+        .export _c_strcmp
+        .export _asm_strcmp
         .export _strtoupper
         .export _strtolower
         .export _strtriml
         .export _strtrimr
-        .export _strtokenize
+        .export _c_strtokenize
+        .export _asm_strtokenize
 
 SPACE = $20
 
         .code
+; C Wrapper for _asm_strcpy function
+; A/X contain target string address
+; sp points to source string
+; pointers are copied to ptr1/ptr2
+_c_strcpy:
+        sta ptr2
+        stx ptr2+1
+        ldy #$01
+        lda (sp),y
+        sta ptr1+1
+        dey
+        lda (sp),y
+        sta ptr1
+        jmp _asm_strcpy
+
+        .code
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Copy str1 to str2
-_strcpy:
+_asm_strcpy:
         phy
         ldy #$00
 @strcpy_loop:
@@ -29,13 +48,29 @@ _strcpy:
         ply
         rts
 
+; C Wrapper for _asm_strcmp function
+; A/X contain string2 address
+; sp points to string1
+; pointers are copied to ptr1/ptr2
+; return value in A
+_c_strcmp:
+        sta ptr2
+        stx ptr2+1
+        ldy #$01
+        lda (sp),y
+        sta ptr1+1
+        dey
+        lda (sp),y
+        sta ptr1
+        jmp _asm_strcmp
+
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Compare two strings (ptr1, ptr2)
 ; A will contain comparison result
 ; -1 -> ptr1 < ptr2
 ; 0  -> ptr1 = ptr2
 ; +1 -> ptr1 > ptr2
-_strcmp:
+_asm_strcmp:
         phy
         ldy #$00
 @strcmp_loop:
@@ -196,6 +231,22 @@ _strtrimr:
         ply
         rts
 
+; C Wrapper for _asm_strtokenize function
+; A/X contain token buffer address
+; sp points to string
+; pointers are copied to ptr1/ptr2
+; return value in A
+_c_strtokenize:
+        sta ptr2
+        stx ptr2+1
+        ldy #$01
+        lda (sp),y
+        sta ptr1+1
+        dey
+        lda (sp),y
+        sta ptr1
+        jmp _asm_strtokenize
+
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Temp variables used:
 ;  ptr1 - source string address (input)
@@ -203,7 +254,7 @@ _strtrimr:
 ;  tmp1 - size of target buffer (input)
 ;  tmp2 - count of tokens (internal)
 ;  tmp3 - count of chars in output buffer (internal)
-_strtokenize:
+_asm_strtokenize:
         phx
         stz tmp2
 

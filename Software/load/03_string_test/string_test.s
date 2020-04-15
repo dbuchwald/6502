@@ -145,9 +145,9 @@ tokenize_buffer:
         .segment "RODATA"
 message: .byte "Welcome to string testing module", CR, LF, $00
 msg1:    .byte "_strlen on message - ", $00
-msg2:    .byte "_strcmp on strc1,strc2 - ", $0000
-msg3:    .byte "_strcmp on strc2,strc3 - ", $0000
-msg4:    .byte "_strcmp on strc3,strc4 - ", $0000
+msg2:    .byte "_asm_strcmp on strc1,strc2 - ", $0000
+msg3:    .byte "_asm_strcmp on strc2,strc3 - ", $0000
+msg4:    .byte "_asm_strcmp on strc3,strc4 - ", $0000
 
 to_upper_message: 
          .byte "Testing 12938, ToUppEr AND tOlOWEr _# operatiOn?abcxyz@[]", CR, LF, $00

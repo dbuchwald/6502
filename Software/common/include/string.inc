@@ -1,13 +1,16 @@
         .include "zeropage.inc"
 
-        .import _strcpy
+        .import _c_strcpy
+        .import _asm_strcpy
         .import _strlen
-        .import _strcmp
+        .import _c_strcmp
+        .import _asm_strcmp
         .import _strtoupper
         .import _strtolower
         .import _strtriml
         .import _strtrimr
-        .import _strtokenize
+        .import _c_strtokenize
+        .import _asm_strtokenize
 
 LF      = $0a   ; Line Feed
 CR      = $0d   ; Carriage Return
@@ -42,7 +45,7 @@ SPACE   = $20   ; Space character
             sta ptr2+1
         .endif
         pla
-        jsr _strcpy
+        jsr _asm_strcpy
         .endmacro
 
         .macro strcmp str1, str2
@@ -74,7 +77,7 @@ SPACE   = $20   ; Space character
             sta ptr2+1
         .endif
         pla
-        jsr _strcmp
+        jsr _asm_strcmp
         .endmacro
 
         .macro strlen str1
@@ -189,7 +192,7 @@ SPACE   = $20   ; Space character
         .endif
         lda #(buffer_size)
         sta tmp1
-        jsr _strtokenize
+        jsr _asm_strtokenize
         .endmacro  
 
         .macro gettoken token_buffer, number

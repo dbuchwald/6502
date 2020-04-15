@@ -50,14 +50,17 @@
         .export _syscall_modem_send
         .export _syscall_modem_receive
 ; string routines
-        .export _syscall_strcpy
-        .export _syscall_strcmp
+        .export _syscall_c_strcpy
+        .export _syscall_asm_strcpy
+        .export _syscall_c_strcmp
+        .export _syscall_asm_strcmp
         .export _syscall_strlen
         .export _syscall_strtoupper
         .export _syscall_strtolower
         .export _syscall_strtriml
         .export _syscall_strtrimr
-        .export _syscall_strtokenize
+        .export _syscall_c_strtokenize
+        .export _syscall_asm_strtokenize
 ; parser routines
         .export _syscall_parse_onoff
         .export _syscall_parse_hex_byte
@@ -142,10 +145,14 @@ _syscall_modem_send:
         SYSCALL_VECTOR _modem_send
 _syscall_modem_receive:
         SYSCALL_VECTOR _modem_receive
-_syscall_strcpy:
-        SYSCALL_VECTOR _strcpy
-_syscall_strcmp:
-        SYSCALL_VECTOR _strcmp
+_syscall_c_strcpy:
+        SYSCALL_VECTOR _c_strcpy
+_syscall_asm_strcpy:
+        SYSCALL_VECTOR _asm_strcpy
+_syscall_c_strcmp:
+        SYSCALL_VECTOR _c_strcmp
+_syscall_asm_strcmp:
+        SYSCALL_VECTOR _asm_strcmp
 _syscall_strlen:
         SYSCALL_VECTOR _strlen
 _syscall_strtoupper:
@@ -156,8 +163,10 @@ _syscall_strtriml:
         SYSCALL_VECTOR _strtriml
 _syscall_strtrimr:
         SYSCALL_VECTOR _strtrimr
-_syscall_strtokenize:
-        SYSCALL_VECTOR _strtokenize
+_syscall_c_strtokenize:
+        SYSCALL_VECTOR _c_strtokenize
+_syscall_asm_strtokenize:
+        SYSCALL_VECTOR _asm_strtokenize
 _syscall_parse_onoff:
         SYSCALL_VECTOR _parse_onoff
 _syscall_parse_hex_byte:

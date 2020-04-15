@@ -36,14 +36,17 @@
         .forceimport _syscall_modem_send
         .forceimport _syscall_modem_receive
 ; string routines
-        .forceimport _syscall_strcpy
-        .forceimport _syscall_strcmp
+        .forceimport _syscall_c_strcpy
+        .forceimport _syscall_asm_strcpy
+        .forceimport _syscall_c_strcmp
+        .forceimport _syscall_asm_strcmp
         .forceimport _syscall_strlen
         .forceimport _syscall_strtoupper
         .forceimport _syscall_strtolower
         .forceimport _syscall_strtriml
         .forceimport _syscall_strtrimr
-        .forceimport _syscall_strtokenize
+        .forceimport _syscall_c_strtokenize
+        .forceimport _syscall_asm_strtokenize
 ; parser routines
         .forceimport _syscall_parse_onoff
         .forceimport _syscall_parse_hex_byte
