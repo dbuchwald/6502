@@ -72,6 +72,7 @@ _modem_receive:
         cmp #(ESC)
         bne @not_quitting_yet
         ; Transfer failed
+        jsr @send_abort_message
         lda #(MODEM_RECEIVE_CANCELLED)
         ; Exit
         rts
@@ -276,6 +277,17 @@ _modem_receive:
 @error_done:
         rts
 
+@send_abort_message:
+        ldx #$00
+@abort_loop:
+        lda abort_message,x
+        beq @abort_done
+        jsr _acia_write_byte
+        inx
+        bra @abort_loop
+@abort_done:
+        rts
+
 @calculate_block_crc:
         stz crc
         stz crc+1
@@ -305,6 +317,9 @@ prompt:
 error_message:     
         .byte "Transfer Error!", CR, LF, $00
 
+abort_message:
+        .byte "Transfer Aborted!", CR, LF, $00
+
 success_message:    
         .byte EOT, CR, LF
         .byte "Transfer Successful!", CR, LF, $00
@@ -313,7 +328,7 @@ success_message:
 ; in the xmodem data blocks.  You can use these tables if you plan to
 ; store this program in ROM.  If you choose to build them at run-time,
 ; then just delete them and define the two labels: crclo & crchi.
-;
+        .segment "RODATA_PA" ; Page Aligned Read Only DATA
         .align 256
 ; low byte CRC lookup table (should be page aligned)
 crclo:  .byte $00,$21,$42,$63,$84,$A5,$C6,$E7,$08,$29,$4A,$6B,$8C,$AD,$CE,$EF
