@@ -39,13 +39,16 @@
         .export _syscall__lcd_print_char
         .export _syscall__lcd_clear
         .export _syscall__lcd_get_position
+        .export _syscall_lcd_get_position
         .export _syscall__lcd_set_position
+        .export _syscall_lcd_set_position
         .export _syscall__lcd_backspace
         .export _syscall__lcd_newline
         .export _syscall__lcd_display_mode
         .export _syscall__lcd_scroll_up
         .export _syscall__lcd_scroll_down
         .export _syscall__lcd_define_char
+        .export _syscall_lcd_define_char
 ; XMODEM routines
         .export _syscall__modem_send
         .export _syscall__modem_receive
@@ -127,8 +130,12 @@ _syscall__lcd_clear:
         SYSCALL_VECTOR _lcd_clear
 _syscall__lcd_get_position:
         SYSCALL_VECTOR _lcd_get_position
+_syscall_lcd_get_position:
+        SYSCALL_VECTOR lcd_get_position
 _syscall__lcd_set_position:
         SYSCALL_VECTOR _lcd_set_position
+_syscall_lcd_set_position:
+        SYSCALL_VECTOR lcd_set_position
 _syscall__lcd_backspace:
         SYSCALL_VECTOR _lcd_backspace
 _syscall__lcd_newline:
@@ -141,6 +148,8 @@ _syscall__lcd_scroll_down:
         SYSCALL_VECTOR _lcd_scroll_down
 _syscall__lcd_define_char:
         SYSCALL_VECTOR _lcd_define_char
+_syscall_lcd_define_char:
+        SYSCALL_VECTOR lcd_define_char
 _syscall__modem_send:
         SYSCALL_VECTOR _modem_send
 _syscall__modem_receive:

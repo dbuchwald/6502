@@ -27,13 +27,16 @@
         .export _lcd_print_char
         .export _lcd_clear
         .export _lcd_get_position
+        .export lcd_get_position
         .export _lcd_set_position
+        .export lcd_set_position
         .export _lcd_backspace
         .export _lcd_newline
         .export _lcd_display_mode
         .export _lcd_scroll_up
         .export _lcd_scroll_down
         .export _lcd_define_char
+        .export lcd_define_char
 ; XMODEM routines
         .export _modem_send
         .export _modem_receive
@@ -134,8 +137,14 @@ _lcd_clear:
 _lcd_get_position:
         jmp (_syscall__lcd_get_position)
 
+lcd_get_position:
+        jmp (_syscall_lcd_get_position)
+
 _lcd_set_position:
         jmp (_syscall__lcd_set_position)
+
+lcd_set_position:
+        jmp (_syscall_lcd_set_position)
 
 _lcd_backspace:
         jmp (_syscall__lcd_backspace)
@@ -154,6 +163,9 @@ _lcd_scroll_down:
 
 _lcd_define_char:
         jmp (_syscall__lcd_define_char)
+
+lcd_define_char:
+        jmp (_syscall_lcd_define_char)
 
 ; XMODEM routines
 _modem_send:

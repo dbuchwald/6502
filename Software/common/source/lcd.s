@@ -8,7 +8,9 @@
         .export _lcd_print
         .export _lcd_print_char
         .export _lcd_clear
+        .export lcd_get_position
         .export _lcd_get_position
+        .export lcd_set_position
         .export _lcd_set_position
         .export _lcd_backspace
         .export _lcd_newline
@@ -16,6 +18,7 @@
         .export _lcd_scroll_up
         .export _lcd_scroll_down
         .export _lcd_define_char
+        .export lcd_define_char
 
         .export LCD_DM_CURSOR_NOBLINK
         .export LCD_DM_CURSOR_BLINK
@@ -170,11 +173,30 @@ _lcd_clear:
         pla
         rts 
 
+; C wrapper for lcd_get_position function
+; stores result using provided pointers
+; X - on stack, Y - using A/X
+_lcd_get_position:
+        sta ptr1
+        stx ptr1+1
+        ldy #$01
+        lda (sp),y
+        sta ptr2+1
+        dey
+        lda (sp),y
+        sta ptr2
+        jsr lcd_get_position
+        tya
+        sta (ptr1)
+        txa
+        sta (ptr2)
+        rts
+
 ; NEGATIVE C COMPLIANT - return values in X, Y
-; _lcd_get_position - returns current cursor location
+; lcd_get_position - returns current cursor location
 ; in X,Y registers
 ; Internal variables - none
-_lcd_get_position:
+lcd_get_position:
         pha
         ; read current position from LCD
         clc
@@ -211,12 +233,20 @@ _lcd_get_position:
         pla
         rts
 
+; C wrapper for lcd_set_position operation
+; Y is passed in A, X on stack
+_lcd_set_position:
+        tay
+        lda (sp)
+        tax
+        jmp lcd_set_position 
+
 ; NEGATIVE C COMPLIANT - input values in X, Y
-; _lcd_set_position - moves cursor to position on a screen
+; lcd_set_position - moves cursor to position on a screen
 ; Assumes position in X,Y registers
 ; Internal variables - none
 ; Return value - none
-_lcd_set_position:
+lcd_set_position:
         pha
         txa
         clc
@@ -236,7 +266,7 @@ _lcd_backspace:
         phx
         phy
         ; get current position
-        jsr _lcd_get_position
+        jsr lcd_get_position
         ; Check if X equals 0 (backward line wrap required then)
         cpx #$00
         bne @same_line
@@ -250,10 +280,10 @@ _lcd_backspace:
 @same_line:
         dex
 @clear:
-        jsr _lcd_set_position
+        jsr lcd_set_position
         lda #(' ')
         jsr _lcd_print_char
-        jsr _lcd_set_position
+        jsr lcd_set_position
 @exit:
         ply
         plx
@@ -266,7 +296,7 @@ _lcd_newline:
         phx
         phy
         ; get current position
-        jsr _lcd_get_position
+        jsr lcd_get_position
         ; set X to 0
         ldx #$00
         ; compare Y against 3 - if last row, we need to scroll up
@@ -277,7 +307,7 @@ _lcd_newline:
 @next_line:
         iny
 @set_new_position:
-        jsr _lcd_set_position
+        jsr lcd_set_position
         ply
         plx
         rts
@@ -349,13 +379,20 @@ _lcd_scroll_down:
         ply
         rts
 
-; POSITIVE C COMPLIANT
-; _lcd_define_char
-; A contains charcode ($00-$07)
-; X, Y contains address of the first byte in char map
+; C wrapper for lcd_define_char operation
+; charcode on stack
+; mapping table in A/X
 _lcd_define_char:
-        stx ptr1
-        sty ptr1+1
+        sta ptr1
+        stx ptr1+1
+        lda (sp)
+        jmp lcd_define_char
+
+; NEGATIVE C COMPLIANT
+; lcd_define_char
+; A contains charcode ($00-$07)
+; ptr1 contains address of the first byte in char map
+lcd_define_char:
         ; ensure proper input value
         and #%00000111
         ; move charcode to bits 3-5
@@ -566,7 +603,7 @@ lcd_copy_line_to_buffer:
         phx
         ; set position to start of the line
         ldx #00
-        jsr _lcd_set_position
+        jsr lcd_set_position
         ; read byte from LCD DDRAM
 @char_read_loop:
         sec
@@ -588,7 +625,7 @@ lcd_paste_line_from_buffer:
         pha
         phx
         ldx #$00
-        jsr _lcd_set_position
+        jsr lcd_set_position
 @char_write_loop:
         lda lcd_line_buffer,x
         sec
@@ -608,7 +645,7 @@ lcd_clear_line:
         pha
         phx
         ldx #00
-        jsr _lcd_set_position
+        jsr lcd_set_position
 @erase_loop:
         lda #(' ')
         sec

@@ -25,13 +25,16 @@
         .forceimport _syscall__lcd_print_char
         .forceimport _syscall__lcd_clear
         .forceimport _syscall__lcd_get_position
+        .forceimport _syscall_lcd_get_position
         .forceimport _syscall__lcd_set_position
+        .forceimport _syscall_lcd_set_position
         .forceimport _syscall__lcd_backspace
         .forceimport _syscall__lcd_newline
         .forceimport _syscall__lcd_display_mode
         .forceimport _syscall__lcd_scroll_up
         .forceimport _syscall__lcd_scroll_down
         .forceimport _syscall__lcd_define_char
+        .forceimport _syscall_lcd_define_char
 ; XMODEM routines
         .forceimport _syscall__modem_send
         .forceimport _syscall__modem_receive

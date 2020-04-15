@@ -28,7 +28,7 @@ init:
       jsr _delay_sec
       ldx #05
       ldy #01
-      jsr _lcd_set_position
+      jsr lcd_set_position
       ldx #$00
 char_loop:
       lda chars_msg,x

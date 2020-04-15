@@ -30,7 +30,7 @@ init:
       ; Display keyboard status
       ldx #$00
       ldy #$01
-      jsr _lcd_set_position
+      jsr lcd_set_position
       lda #1
       jsr _delay_sec
       jsr _keyboard_is_connected

@@ -13,7 +13,7 @@ init:
         
         ldx #$05
         ldy #$01
-        jsr _lcd_set_position
+        jsr lcd_set_position
         write_lcd #blahmsg
 
         stz counter
@@ -22,7 +22,7 @@ init:
 
         ldx #$03
         ldy #$01
-        jsr _lcd_set_position
+        jsr lcd_set_position
         lda #(CHAR_MOUTH_OPEN)
         jsr _lcd_print_char
 
@@ -31,7 +31,7 @@ init:
 
         ldx #$03
         ldy #$01
-        jsr _lcd_set_position
+        jsr lcd_set_position
         lda #(CHAR_MOUTH_CLOSED)
         jsr _lcd_print_char
 

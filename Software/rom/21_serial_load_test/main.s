@@ -39,7 +39,7 @@ main_loop:
 
       ldx #00
       ldy #01
-      jsr _lcd_set_position      
+      jsr lcd_set_position      
       lda acia_tx_rptr
       jsr _convert_to_hex
       txa
@@ -49,7 +49,7 @@ main_loop:
 
       ldx #03
       ldy #01
-      jsr _lcd_set_position      
+      jsr lcd_set_position      
       lda acia_tx_wptr
       jsr _convert_to_hex
       txa
@@ -59,7 +59,7 @@ main_loop:
 
       ldx #06
       ldy #01
-      jsr _lcd_set_position      
+      jsr lcd_set_position      
       lda acia_rx_rptr
       jsr _convert_to_hex
       txa
@@ -69,7 +69,7 @@ main_loop:
 
       ldx #09
       ldy #01
-      jsr _lcd_set_position      
+      jsr lcd_set_position      
       lda acia_rx_wptr
       jsr _convert_to_hex
       txa
@@ -79,7 +79,7 @@ main_loop:
 
       ldx #00
       ldy #02
-      jsr _lcd_set_position      
+      jsr lcd_set_position      
       lda bytescount+1
       jsr _convert_to_hex
       txa
@@ -100,7 +100,7 @@ main_loop:
       jsr _acia_read_byte
       ldx #08
       ldy #00
-      jsr _lcd_set_position      
+      jsr lcd_set_position      
       jsr _lcd_print_char
       inc bytescount
       bne not_full
