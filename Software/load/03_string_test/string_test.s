@@ -15,7 +15,7 @@ init:
         write_acia #message
 
         write_acia #msg1
-        strlen #message
+        strlength #message
         jsr _convert_to_hex
         txa
         sta result_val
@@ -24,7 +24,7 @@ init:
         write_acia #result_msg
 
         write_acia #msg2
-        strcmp #strc1, #strc2
+        strcompare #strc1, #strc2
         jsr _convert_to_hex
         txa
         sta result_val
@@ -33,7 +33,7 @@ init:
         write_acia #result_msg
 
         write_acia #msg3
-        strcmp #strc2, #strc3
+        strcompare #strc2, #strc3
         jsr _convert_to_hex
         txa
         sta result_val
@@ -42,7 +42,7 @@ init:
         write_acia #result_msg
 
         write_acia #msg4
-        strcmp #strc3, #strc4
+        strcompare #strc3, #strc4
         jsr _convert_to_hex
         txa
         sta result_val
@@ -144,10 +144,10 @@ tokenize_buffer:
 
         .segment "RODATA"
 message: .byte "Welcome to string testing module", CR, LF, $00
-msg1:    .byte "_strlen on message - ", $00
-msg2:    .byte "_asm_strcmp on strc1,strc2 - ", $0000
-msg3:    .byte "_asm_strcmp on strc2,strc3 - ", $0000
-msg4:    .byte "_asm_strcmp on strc3,strc4 - ", $0000
+msg1:    .byte "_strlength on message - ", $00
+msg2:    .byte "strcompare on strc1,strc2 - ", $0000
+msg3:    .byte "strcompare on strc2,strc3 - ", $0000
+msg4:    .byte "strcompare on strc3,strc4 - ", $0000
 
 to_upper_message: 
          .byte "Testing 12938, ToUppEr AND tOlOWEr _# operatiOn?abcxyz@[]", CR, LF, $00

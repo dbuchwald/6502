@@ -1,26 +1,26 @@
         .include "zeropage.inc"
         .include "utils.inc"
 
-        .export _c_strcpy
-        .export _asm_strcpy
-        .export _strlen
-        .export _c_strcmp
-        .export _asm_strcmp
+        .export _strcopy
+        .export strcopy
+        .export _strlength
+        .export _strcompare
+        .export strcompare
         .export _strtoupper
         .export _strtolower
         .export _strtriml
         .export _strtrimr
-        .export _c_strtokenize
-        .export _asm_strtokenize
+        .export _strtokenize
+        .export strtokenize
 
 SPACE = $20
 
         .code
-; C Wrapper for _asm_strcpy function
+; C Wrapper for strcopy function
 ; A/X contain target string address
 ; sp points to source string
 ; pointers are copied to ptr1/ptr2
-_c_strcpy:
+_strcopy:
         sta ptr2
         stx ptr2+1
         ldy #$01
@@ -29,31 +29,31 @@ _c_strcpy:
         dey
         lda (sp),y
         sta ptr1
-        jmp _asm_strcpy
+        jmp strcopy
 
         .code
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Copy str1 to str2
-_asm_strcpy:
+strcopy:
         phy
         ldy #$00
-@strcpy_loop:
+@strcopy_loop:
         lda (ptr1),y
         sta (ptr2),y
         beq @return
         iny
         beq @return ; prevention against infinite loop
-        bra @strcpy_loop
+        bra @strcopy_loop
 @return:
         ply
         rts
 
-; C Wrapper for _asm_strcmp function
+; C Wrapper for strcompare function
 ; A/X contain string2 address
 ; sp points to string1
 ; pointers are copied to ptr1/ptr2
 ; return value in A
-_c_strcmp:
+_strcompare:
         sta ptr2
         stx ptr2+1
         ldy #$01
@@ -62,7 +62,7 @@ _c_strcmp:
         dey
         lda (sp),y
         sta ptr1
-        jmp _asm_strcmp
+        jmp strcompare
 
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Compare two strings (ptr1, ptr2)
@@ -70,17 +70,17 @@ _c_strcmp:
 ; -1 -> ptr1 < ptr2
 ; 0  -> ptr1 = ptr2
 ; +1 -> ptr1 > ptr2
-_asm_strcmp:
+strcompare:
         phy
         ldy #$00
-@strcmp_loop:
+@strcompare_loop:
         lda (ptr1),y
         beq @ptr1_end
         cmp (ptr2),y
         bne @set_result
         iny
         beq @equal ; prevention against infinite loop
-        bra @strcmp_loop
+        bra @strcompare_loop
 @ptr1_end:
         cmp (ptr2),y
 @set_result:
@@ -101,17 +101,17 @@ _asm_strcmp:
 ; POSITIVE C COMPLIANT
 ; Count characters in string (ptr1)
 ; A will contain result
-_strlen:
+_strlength:
         sta ptr1
         stx ptr1+1
         phy
         ldy #$00
-@strlen_loop:
+@strlength_loop:
         lda (ptr1),y
         beq @return
         iny
         beq @very_long ; prevention against infinite loop
-        bra @strlen_loop
+        bra @strlength_loop
 @very_long:
         dey
 @return:
@@ -231,12 +231,12 @@ _strtrimr:
         ply
         rts
 
-; C Wrapper for _asm_strtokenize function
+; C Wrapper for strtokenize function
 ; A/X contain token buffer address
 ; sp points to string
 ; pointers are copied to ptr1/ptr2
 ; return value in A
-_c_strtokenize:
+_strtokenize:
         sta ptr2
         stx ptr2+1
         ldy #$01
@@ -245,7 +245,7 @@ _c_strtokenize:
         dey
         lda (sp),y
         sta ptr1
-        jmp _asm_strtokenize
+        jmp strtokenize
 
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
 ; Temp variables used:
@@ -254,7 +254,7 @@ _c_strtokenize:
 ;  tmp1 - size of target buffer (input)
 ;  tmp2 - count of tokens (internal)
 ;  tmp3 - count of chars in output buffer (internal)
-_asm_strtokenize:
+strtokenize:
         phx
         stz tmp2
 

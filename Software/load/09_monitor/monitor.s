@@ -59,7 +59,7 @@ _get_range:
         ; check if colon provided
         gettoken tokens_pointer, 2
         copy_ptr ptr1, operator_pointer
-        strcmp #colon, operator_pointer
+        strcompare #colon, operator_pointer
         cmp #$00
         beq @good_op
         jmp @error
@@ -172,7 +172,7 @@ _put_value:
         ; check if colon provided
         gettoken tokens_pointer, 2
         copy_ptr ptr1, operator_pointer
-        strcmp #assign, operator_pointer
+        strcompare #assign, operator_pointer
         cmp #$00
         beq @good_op
         jmp @error

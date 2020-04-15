@@ -1,22 +1,22 @@
         .include "zeropage.inc"
 
-        .import _c_strcpy
-        .import _asm_strcpy
-        .import _strlen
-        .import _c_strcmp
-        .import _asm_strcmp
+        .import _strcopy
+        .import strcopy
+        .import _strlength
+        .import _strcompare
+        .import strcompare
         .import _strtoupper
         .import _strtolower
         .import _strtriml
         .import _strtrimr
-        .import _c_strtokenize
-        .import _asm_strtokenize
+        .import _strtokenize
+        .import strtokenize
 
 LF      = $0a   ; Line Feed
 CR      = $0d   ; Carriage Return
 SPACE   = $20   ; Space character
 
-        .macro strcpy str1, str2
+        .macro strcopy str1, str2
         pha
         .if (.match (.left (1, {str1}), #))
             ; immediate mode
@@ -45,10 +45,10 @@ SPACE   = $20   ; Space character
             sta ptr2+1
         .endif
         pla
-        jsr _asm_strcpy
+        jsr strcopy
         .endmacro
 
-        .macro strcmp str1, str2
+        .macro strcompare str1, str2
         pha
         .if (.match (.left (1, {str1}), #))
             ; immediate mode
@@ -77,10 +77,10 @@ SPACE   = $20   ; Space character
             sta ptr2+1
         .endif
         pla
-        jsr _asm_strcmp
+        jsr strcompare
         .endmacro
 
-        .macro strlen str1
+        .macro strlength str1
         phx
         .if (.match (.left (1, {str1}), #))
             ; immediate mode
@@ -91,7 +91,7 @@ SPACE   = $20   ; Space character
             lda str1
             ldx 1+(str1)
         .endif
-        jsr _strlen
+        jsr _strlength
         plx
         .endmacro
 
@@ -192,7 +192,7 @@ SPACE   = $20   ; Space character
         .endif
         lda #(buffer_size)
         sta tmp1
-        jsr _asm_strtokenize
+        jsr strtokenize
         .endmacro  
 
         .macro gettoken token_buffer, number

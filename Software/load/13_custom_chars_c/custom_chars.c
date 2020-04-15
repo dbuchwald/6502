@@ -26,25 +26,25 @@ void main(void) {
 
   acia_write_string(blahmsg);
 
-  c_strcpy(blahmsg, buffer);
+  strcopy(blahmsg, buffer);
   strtoupper(buffer);
   tty_writeln(buffer);
 
   tty_writeln("abcd, bcd");
 
-  tty_write_hex(c_strcmp("abcd", "bcd"));
+  tty_write_hex(strcompare("abcd", "bcd"));
 
   tty_writeln("bcd, abcd");
 
-  tty_write_hex(c_strcmp("bcd", "abcd"));
+  tty_write_hex(strcompare("bcd", "abcd"));
 
   tty_writeln("abcd, abcd");
 
-  tty_write_hex(c_strcmp("abcd", "abcd"));
+  tty_write_hex(strcompare("abcd", "abcd"));
 
   tty_send_newline();
 
-  tty_write_hex(c_strtokenize("   get 8000  :   8001    ", buffer));
+  tty_write_hex(strtokenize("   get 8000  :   8001    ", buffer));
 
   tty_writeln(buffer);
 

@@ -186,7 +186,7 @@ format_operand:
         rts
 
         .macro format_byte_operand format, offset
-        strcpy format, #operand_print_buffer
+        strcopy format, #operand_print_buffer
         jsr fetch_byte_operand
         ldx #(offset)
         lda operand_buffer
@@ -197,7 +197,7 @@ format_operand:
         .endmacro
 
         .macro format_word_operand format, offset
-        strcpy format, #operand_print_buffer
+        strcopy format, #operand_print_buffer
         jsr fetch_word_operand
         ldx #(offset)
         lda operand_buffer
@@ -214,7 +214,7 @@ format_operand:
         .endmacro
 
 format_accumulator:
-        strcpy #str_format_accumulator, #operand_print_buffer
+        strcopy #str_format_accumulator, #operand_print_buffer
         rts
 format_absolute:
         format_word_operand #str_format_absolute, 1
@@ -229,7 +229,7 @@ format_immediate:
         format_byte_operand #str_format_immediate, 2
         rts
 format_implied:
-        strcpy #str_format_implied, #operand_print_buffer
+        strcopy #str_format_implied, #operand_print_buffer
         rts
 format_x_indirect:
         format_byte_operand #str_format_x_indirect, 2

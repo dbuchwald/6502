@@ -138,7 +138,7 @@ main_loop:
         strtrimr #line_buffer
 
         ; If empty - repeat
-        strlen #line_buffer
+        strlength #line_buffer
         cmp #$00
         beq main_loop
 
@@ -157,7 +157,7 @@ menu_commands_loop:
         jmp special_commands
 compare_item:
         get_menu_item menu_item, menu_item_cmd, menu_item_argc, menu_item_desc, menu_item_function
-        strcmp #tokenize_buffer, menu_item_cmd
+        strcompare #tokenize_buffer, menu_item_cmd
         cmp #$00
         bne next_menu_item
         ; check number of parameters
@@ -191,7 +191,7 @@ next_menu_item:
         get_next_menu_item menu_item
         jmp menu_commands_loop
 special_commands:
-        strcmp #tokenize_buffer, #cmd_help
+        strcompare #tokenize_buffer, #cmd_help
         cmp #$00
         bne not_help
         lda tokens_count
@@ -208,7 +208,7 @@ not_help:
         lda tokens_count
         cmp #$01
         bne invalid_command
-        strcmp #tokenize_buffer, #cmd_exit
+        strcompare #tokenize_buffer, #cmd_exit
         cmp #$00
         bne invalid_command
         writeln_tty #byemsg
@@ -249,14 +249,14 @@ display_filtered_help:
         copy_ptr ptr1, help_filter_pointer
         strtoupper help_filter_pointer
         ; Check default candidates
-        strcmp #cmd_help, help_filter_pointer
+        strcompare #cmd_help, help_filter_pointer
         cmp #$00
         bne @not_help
         writeln_tty #helpmsg2
         writeln_tty #helpmsg3
         rts
 @not_help:
-        strcmp #cmd_exit, help_filter_pointer
+        strcompare #cmd_exit, help_filter_pointer
         cmp #$00
         bne @not_exit
         writeln_tty #helpmsg4
@@ -272,7 +272,7 @@ help_filter_loop:
 @display_item:
         get_menu_item menu_item, menu_item_cmd, menu_item_argc, menu_item_desc, menu_item_function
 
-        strcmp menu_item_cmd, help_filter_pointer
+        strcompare menu_item_cmd, help_filter_pointer
         cmp #$00
         bne @next_item
 

@@ -11,13 +11,13 @@
 ; Returns status in carry flag (set - parsed successfully)
 ; Returns value in A (0 - off, 1 - on)
 _parse_onoff:
-        ; Copy pointer to preserve during strcmp operation
+        ; Copy pointer to preserve during strcompare operation
         sta parsed_token_pointer
         stx parsed_token_pointer+1
         ; Convert whole token uppercase for comparison
         strtoupper parsed_token_pointer
         ; Compare against "ON"
-        strcmp #token_on, parsed_token_pointer
+        strcompare #token_on, parsed_token_pointer
         cmp #$00
         bne @not_on
         ; Equal
@@ -26,7 +26,7 @@ _parse_onoff:
         rts
 @not_on:
         ; Compare against "OFF"
-        strcmp #token_off, parsed_token_pointer
+        strcompare #token_off, parsed_token_pointer
         cmp #$00
         bne @error
         sec
@@ -52,7 +52,7 @@ _parse_hex_byte:
         ; ; Copy pointer to preserve during strtoupper operation
         ; copy_ptr ptr1, parsed_token_pointer
         ; Check length (expect two chars only)
-        strlen parsed_token_pointer
+        strlength parsed_token_pointer
         cmp #$02
         bne @error
         ; Convert whole token uppercase for comparison
@@ -110,7 +110,7 @@ _parse_hex_word:
         ; Set index pointer
         ldy #$00
         ; Check length
-        strlen parsed_token_pointer
+        strlength parsed_token_pointer
         cmp #$02
         beq @zeropage
         cmp #$04

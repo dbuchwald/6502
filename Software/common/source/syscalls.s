@@ -13,67 +13,67 @@
         .include "menu.inc"
 
 ; Init routines
-        .export _syscall_system_init
-        .export _syscall_blink_init
-        .export _syscall_lcd_init
-        .export _syscall_acia_init
-        .export _syscall_keyboard_init
+        .export _syscall__system_init
+        .export _syscall__blink_init
+        .export _syscall__lcd_init
+        .export _syscall__acia_init
+        .export _syscall__keyboard_init
 ; Common routines
-        .export _syscall_delay_ms
-        .export _syscall_delay_sec
-        .export _syscall_convert_to_hex
+        .export _syscall__delay_ms
+        .export _syscall__delay_sec
+        .export _syscall__convert_to_hex
 ; Blink routines
-        .export _syscall_blink_led
-        .export _syscall_strobe_led
+        .export _syscall__blink_led
+        .export _syscall__strobe_led
 ; ACIA routines 
-        .export _syscall_acia_is_data_available
-        .export _syscall_acia_read_byte
-        .export _syscall_acia_write_byte
-        .export _syscall_acia_write_string
+        .export _syscall__acia_is_data_available
+        .export _syscall__acia_read_byte
+        .export _syscall__acia_write_byte
+        .export _syscall__acia_write_string
 ; Keyboard routines
-        .export _syscall_keyboard_is_connected
-        .export _syscall_keyboard_is_data_available
-        .export _syscall_keyboard_read_char
+        .export _syscall__keyboard_is_connected
+        .export _syscall__keyboard_is_data_available
+        .export _syscall__keyboard_read_char
 ; LCD routines
-        .export _syscall_lcd_print
-        .export _syscall_lcd_print_char
-        .export _syscall_lcd_clear
-        .export _syscall_lcd_get_position
-        .export _syscall_lcd_set_position
-        .export _syscall_lcd_backspace
-        .export _syscall_lcd_newline
-        .export _syscall_lcd_display_mode
-        .export _syscall_lcd_scroll_up
-        .export _syscall_lcd_scroll_down
-        .export _syscall_lcd_define_char
+        .export _syscall__lcd_print
+        .export _syscall__lcd_print_char
+        .export _syscall__lcd_clear
+        .export _syscall__lcd_get_position
+        .export _syscall__lcd_set_position
+        .export _syscall__lcd_backspace
+        .export _syscall__lcd_newline
+        .export _syscall__lcd_display_mode
+        .export _syscall__lcd_scroll_up
+        .export _syscall__lcd_scroll_down
+        .export _syscall__lcd_define_char
 ; XMODEM routines
-        .export _syscall_modem_send
-        .export _syscall_modem_receive
+        .export _syscall__modem_send
+        .export _syscall__modem_receive
 ; string routines
-        .export _syscall_c_strcpy
-        .export _syscall_asm_strcpy
-        .export _syscall_c_strcmp
-        .export _syscall_asm_strcmp
-        .export _syscall_strlen
-        .export _syscall_strtoupper
-        .export _syscall_strtolower
-        .export _syscall_strtriml
-        .export _syscall_strtrimr
-        .export _syscall_c_strtokenize
-        .export _syscall_asm_strtokenize
+        .export _syscall__strcopy
+        .export _syscall_strcopy
+        .export _syscall__strcompare
+        .export _syscall_strcompare
+        .export _syscall__strlength
+        .export _syscall__strtoupper
+        .export _syscall__strtolower
+        .export _syscall__strtriml
+        .export _syscall__strtrimr
+        .export _syscall__strtokenize
+        .export _syscall_strtokenize
 ; parser routines
-        .export _syscall_parse_onoff
-        .export _syscall_parse_hex_byte
-        .export _syscall_parse_hex_word
+        .export _syscall__parse_onoff
+        .export _syscall__parse_hex_byte
+        .export _syscall__parse_hex_word
 ; tty routines
-        .export _syscall_tty_init
-        .export _syscall_tty_read_line
-        .export _syscall_tty_write
-        .export _syscall_tty_writeln
-        .export _syscall_tty_write_hex
-        .export _syscall_tty_send_newline
+        .export _syscall__tty_init
+        .export _syscall__tty_read_line
+        .export _syscall__tty_write
+        .export _syscall__tty_writeln
+        .export _syscall__tty_write_hex
+        .export _syscall__tty_send_newline
 ; menu routines
-        .export _syscall_run_menu
+        .export _syscall__run_menu
 
         .segment "SYSCALLS"
 
@@ -85,105 +85,105 @@
         .endif
         .endmacro
 
-_syscall_system_init:
+_syscall__system_init:
         SYSCALL_VECTOR _system_init
-_syscall_blink_init:
+_syscall__blink_init:
         SYSCALL_VECTOR _blink_init
-_syscall_lcd_init:
+_syscall__lcd_init:
         SYSCALL_VECTOR _lcd_init
-_syscall_acia_init:
+_syscall__acia_init:
         SYSCALL_VECTOR _acia_init
-_syscall_keyboard_init:
+_syscall__keyboard_init:
         SYSCALL_VECTOR _keyboard_init
-_syscall_delay_ms:
+_syscall__delay_ms:
         SYSCALL_VECTOR _delay_ms
-_syscall_delay_sec:
+_syscall__delay_sec:
         SYSCALL_VECTOR _delay_sec
-_syscall_convert_to_hex:
+_syscall__convert_to_hex:
         SYSCALL_VECTOR _convert_to_hex
-_syscall_blink_led:
+_syscall__blink_led:
         SYSCALL_VECTOR _blink_led
-_syscall_strobe_led:
+_syscall__strobe_led:
         SYSCALL_VECTOR _strobe_led
-_syscall_acia_is_data_available:
+_syscall__acia_is_data_available:
         SYSCALL_VECTOR _acia_is_data_available
-_syscall_acia_read_byte:
+_syscall__acia_read_byte:
         SYSCALL_VECTOR _acia_read_byte
-_syscall_acia_write_byte:
+_syscall__acia_write_byte:
         SYSCALL_VECTOR _acia_write_byte
-_syscall_acia_write_string:
+_syscall__acia_write_string:
         SYSCALL_VECTOR _acia_write_string
-_syscall_keyboard_is_connected:
+_syscall__keyboard_is_connected:
         SYSCALL_VECTOR _keyboard_is_connected
-_syscall_keyboard_is_data_available:
+_syscall__keyboard_is_data_available:
         SYSCALL_VECTOR _keyboard_is_data_available
-_syscall_keyboard_read_char:
+_syscall__keyboard_read_char:
         SYSCALL_VECTOR _keyboard_read_char
-_syscall_lcd_print:
+_syscall__lcd_print:
         SYSCALL_VECTOR _lcd_print
-_syscall_lcd_print_char:
+_syscall__lcd_print_char:
         SYSCALL_VECTOR _lcd_print_char
-_syscall_lcd_clear:
+_syscall__lcd_clear:
         SYSCALL_VECTOR _lcd_clear
-_syscall_lcd_get_position:
+_syscall__lcd_get_position:
         SYSCALL_VECTOR _lcd_get_position
-_syscall_lcd_set_position:
+_syscall__lcd_set_position:
         SYSCALL_VECTOR _lcd_set_position
-_syscall_lcd_backspace:
+_syscall__lcd_backspace:
         SYSCALL_VECTOR _lcd_backspace
-_syscall_lcd_newline:
+_syscall__lcd_newline:
         SYSCALL_VECTOR _lcd_newline
-_syscall_lcd_display_mode:
+_syscall__lcd_display_mode:
         SYSCALL_VECTOR _lcd_display_mode
-_syscall_lcd_scroll_up:
+_syscall__lcd_scroll_up:
         SYSCALL_VECTOR _lcd_scroll_up
-_syscall_lcd_scroll_down:
+_syscall__lcd_scroll_down:
         SYSCALL_VECTOR _lcd_scroll_down
-_syscall_lcd_define_char:
+_syscall__lcd_define_char:
         SYSCALL_VECTOR _lcd_define_char
-_syscall_modem_send:
+_syscall__modem_send:
         SYSCALL_VECTOR _modem_send
-_syscall_modem_receive:
+_syscall__modem_receive:
         SYSCALL_VECTOR _modem_receive
-_syscall_c_strcpy:
-        SYSCALL_VECTOR _c_strcpy
-_syscall_asm_strcpy:
-        SYSCALL_VECTOR _asm_strcpy
-_syscall_c_strcmp:
-        SYSCALL_VECTOR _c_strcmp
-_syscall_asm_strcmp:
-        SYSCALL_VECTOR _asm_strcmp
-_syscall_strlen:
-        SYSCALL_VECTOR _strlen
-_syscall_strtoupper:
+_syscall__strcopy:
+        SYSCALL_VECTOR _strcopy
+_syscall_strcopy:
+        SYSCALL_VECTOR strcopy
+_syscall__strcompare:
+        SYSCALL_VECTOR _strcompare
+_syscall_strcompare:
+        SYSCALL_VECTOR strcompare
+_syscall__strlength:
+        SYSCALL_VECTOR _strlength
+_syscall__strtoupper:
         SYSCALL_VECTOR _strtoupper
-_syscall_strtolower:
+_syscall__strtolower:
         SYSCALL_VECTOR _strtolower
-_syscall_strtriml:
+_syscall__strtriml:
         SYSCALL_VECTOR _strtriml
-_syscall_strtrimr:
+_syscall__strtrimr:
         SYSCALL_VECTOR _strtrimr
-_syscall_c_strtokenize:
-        SYSCALL_VECTOR _c_strtokenize
-_syscall_asm_strtokenize:
-        SYSCALL_VECTOR _asm_strtokenize
-_syscall_parse_onoff:
+_syscall__strtokenize:
+        SYSCALL_VECTOR _strtokenize
+_syscall_strtokenize:
+        SYSCALL_VECTOR strtokenize
+_syscall__parse_onoff:
         SYSCALL_VECTOR _parse_onoff
-_syscall_parse_hex_byte:
+_syscall__parse_hex_byte:
         SYSCALL_VECTOR _parse_hex_byte
-_syscall_parse_hex_word:
+_syscall__parse_hex_word:
         SYSCALL_VECTOR _parse_hex_word
-_syscall_tty_init:
+_syscall__tty_init:
         SYSCALL_VECTOR _tty_init
-_syscall_tty_read_line:
+_syscall__tty_read_line:
         SYSCALL_VECTOR _tty_read_line
-_syscall_tty_write:
+_syscall__tty_write:
         SYSCALL_VECTOR _tty_write
-_syscall_tty_writeln:
+_syscall__tty_writeln:
         SYSCALL_VECTOR _tty_writeln
-_syscall_tty_write_hex:
+_syscall__tty_write_hex:
         SYSCALL_VECTOR _tty_write_hex
-_syscall_tty_send_newline:
+_syscall__tty_send_newline:
         SYSCALL_VECTOR _tty_send_newline
-_syscall_run_menu:
+_syscall__run_menu:
         SYSCALL_VECTOR _run_menu
