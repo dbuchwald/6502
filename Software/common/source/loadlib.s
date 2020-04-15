@@ -54,8 +54,11 @@
         .export strtokenize
 ; parser routines
         .export _parse_onoff
+        .export parse_onoff
         .export _parse_hex_byte
+        .export parse_hex_byte
         .export _parse_hex_word
+        .export parse_hex_word
 ; tty routines
         .export _tty_init
         .export _tty_read_line
@@ -212,11 +215,20 @@ _strtokenize:
 _parse_onoff:
         jmp (_syscall__parse_onoff)
 
+parse_onoff:
+        jmp (_syscall_parse_onoff)
+
 _parse_hex_byte:
         jmp (_syscall__parse_hex_byte)
 
+parse_hex_byte:
+        jmp (_syscall_parse_hex_byte)
+
 _parse_hex_word:
         jmp (_syscall__parse_hex_word)
+
+parse_hex_word:
+        jmp (_syscall_parse_hex_word)
 
 ; tty routines
 _tty_init:

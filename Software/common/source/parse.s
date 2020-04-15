@@ -3,14 +3,42 @@
         .include "utils.inc"
 
         .export _parse_onoff
+        .export parse_onoff
         .export _parse_hex_byte
+        .export parse_hex_byte
         .export _parse_hex_word
+        .export parse_hex_word
+
+PARSE_SUCCESS = $01
+PARSE_FAILED  = $00
+
+; C wrapper for parse_onoff function
+; return status in A
+; buffer for result in A/X
+; data to parse on stack
+_parse_onoff:
+        sta return_buffer_pointer
+        stx return_buffer_pointer+1
+        ldy #$01
+        lda (sp),y
+        tax
+        dey
+        lda (sp),y
+        jsr parse_onoff
+        bcc @error
+        copy_ptr return_buffer_pointer, ptr1
+        sta (ptr1)
+        lda #(PARSE_SUCCESS)
+        rts
+@error:
+        lda #(PARSE_FAILED)
+        rts
 
 ; NEGATIVE C COMPLIANT - ptr1, returning value in carry
 ; Function assumes token pointer in ptr1
 ; Returns status in carry flag (set - parsed successfully)
 ; Returns value in A (0 - off, 1 - on)
-_parse_onoff:
+parse_onoff:
         ; Copy pointer to preserve during strcompare operation
         sta parsed_token_pointer
         stx parsed_token_pointer+1
@@ -36,12 +64,34 @@ _parse_onoff:
         clc
         rts
 
+; C wrapper for parse_hex_byte function
+; return status in A
+; buffer for result in A/X
+; data to parse on stack
+_parse_hex_byte:
+        sta return_buffer_pointer
+        stx return_buffer_pointer+1
+        ldy #$01
+        lda (sp),y
+        tax
+        dey
+        lda (sp),y
+        jsr parse_hex_byte
+        bcc @error
+        copy_ptr return_buffer_pointer, ptr1
+        sta (ptr1)
+        lda #(PARSE_SUCCESS)
+        rts
+@error:
+        lda #(PARSE_FAILED)
+        rts
+
 ; NEGATIVE C COMPLIANT - input in ptr1, return value in carry
 ; Function assumes token pointer in ptr1
 ; Returns status in carry flag (set - parsed successfully)
 ; Returns value in A
 ; Stores temp value in tmp1 (but preserves it)
-_parse_hex_byte:
+parse_hex_byte:
         sta parsed_token_pointer
         stx parsed_token_pointer+1
         ; preserve Y
@@ -85,12 +135,37 @@ _parse_hex_byte:
         ply
         rts
 
+; C wrapper for parse_hex_word function
+; return status in A
+; buffer for result in A/X
+; data to parse on stack
+_parse_hex_word:
+        sta return_buffer_pointer
+        stx return_buffer_pointer+1
+        ldy #$01
+        lda (sp),y
+        tax
+        dey
+        lda (sp),y
+        jsr parse_hex_word
+        bcc @error
+        copy_ptr return_buffer_pointer, ptr1
+        ldy #$01
+        sta (ptr1)
+        txa
+        sta (ptr1),y
+        lda #(PARSE_SUCCESS)
+        rts
+@error:
+        lda #(PARSE_FAILED)
+        rts
+
 ; NEGATIVE C COMPLIANT - input in ptr1, return value in carry
 ; Function assumes token pointer in ptr1
 ; Returns status in carry flag (set - parsed successfully)
 ; Returns value in MSB: A, LSB: X
 ; Stores temp value in tmp1 and tmp2 (but preserves them)
-_parse_hex_word:
+parse_hex_word:
         sta parsed_token_pointer
         stx parsed_token_pointer+1
         ; preserve Y
@@ -192,6 +267,8 @@ parse_hex_char:
 
         .segment "BSS"
 parsed_token_pointer:
+        .res 2
+return_buffer_pointer:
         .res 2
         .segment "RODATA"
 token_on:

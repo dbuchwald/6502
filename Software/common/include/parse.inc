@@ -1,6 +1,9 @@
         .import _parse_onoff
+        .import parse_onoff
         .import _parse_hex_byte
+        .import parse_hex_byte
         .import _parse_hex_word
+        .import parse_hex_word
 
         .macro parse_onoff token
         phx
@@ -13,7 +16,7 @@
             lda token
             ldx 1+(token)
         .endif
-        jsr _parse_onoff
+        jsr parse_onoff
         plx
         .endmacro
 
@@ -28,7 +31,7 @@
             lda token
             ldx 1+(token)
         .endif
-        jsr _parse_hex_byte
+        jsr parse_hex_byte
         plx
         .endmacro
 
@@ -42,5 +45,5 @@
             lda token
             ldx 1+(token)
         .endif
-        jsr _parse_hex_word
+        jsr parse_hex_word
         .endmacro

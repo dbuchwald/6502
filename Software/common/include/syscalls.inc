@@ -52,8 +52,11 @@
         .forceimport _syscall_strtokenize
 ; parser routines
         .forceimport _syscall__parse_onoff
+        .forceimport _syscall_parse_onoff
         .forceimport _syscall__parse_hex_byte
+        .forceimport _syscall_parse_hex_byte
         .forceimport _syscall__parse_hex_word
+        .forceimport _syscall_parse_hex_word
 ; tty routines
         .forceimport _syscall__tty_init
         .forceimport _syscall__tty_read_line
