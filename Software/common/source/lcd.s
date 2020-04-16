@@ -300,6 +300,7 @@ _lcd_display_mode:
 ; Internal variables - only local
 _lcd_scroll_up:
         phy
+        phx
         jsr _lcd_get_position
         phx
         phy
@@ -329,6 +330,7 @@ _lcd_scroll_up:
 @first_row:
         plx
         jsr _lcd_set_position
+        plx
         ply
         rts
 
@@ -338,6 +340,7 @@ _lcd_scroll_up:
 ; Internal variables - only local
 _lcd_scroll_down:
         phy
+        phx
         jsr _lcd_get_position
         phx
         phy
@@ -366,6 +369,7 @@ _lcd_scroll_down:
 @last_row:
         plx
         jsr _lcd_set_position
+        plx
         ply
         rts
 
