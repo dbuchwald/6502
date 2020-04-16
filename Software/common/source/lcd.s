@@ -335,6 +335,9 @@ _lcd_display_mode:
 ; Internal variables - only local
 _lcd_scroll_up:
         phy
+        jsr _lcd_get_position
+        phx
+        phy
         ; start with source line 1
         ldy #01
 @line_loop_up:
@@ -355,6 +358,13 @@ _lcd_scroll_up:
         dey
         jsr lcd_clear_line
         ply
+        cpy #$00
+        beq @first_row
+        dey
+@first_row:
+        plx
+        jsr _lcd_set_position
+        ply
         rts
 
 ; POSITIVE C COMPLIANT
@@ -362,6 +372,9 @@ _lcd_scroll_up:
 ; No input/output params
 ; Internal variables - only local
 _lcd_scroll_down:
+        phy
+        jsr _lcd_get_position
+        phx
         phy
         ; start with source line (last - 1)
         ldy #(LCD_ROWS-2)
@@ -381,6 +394,13 @@ _lcd_scroll_down:
         ; clear first row
         iny
         jsr lcd_clear_line
+        ply
+        cpy #(LCD_ROWS-1)
+        beq @last_row
+        iny
+@last_row:
+        plx
+        jsr _lcd_set_position
         ply
         rts
 
