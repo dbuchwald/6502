@@ -336,7 +336,7 @@ _lcd_display_mode:
 _lcd_scroll_up:
         phy
         phx
-        jsr _lcd_get_position
+        jsr lcd_get_position
         phx
         phy
         ; start with source line 1
@@ -364,7 +364,7 @@ _lcd_scroll_up:
         dey
 @first_row:
         plx
-        jsr _lcd_set_position
+        jsr lcd_set_position
         plx
         ply
         rts
@@ -376,7 +376,7 @@ _lcd_scroll_up:
 _lcd_scroll_down:
         phy
         phx
-        jsr _lcd_get_position
+        jsr lcd_get_position
         phx
         phy
         ; start with source line (last - 1)
@@ -403,7 +403,7 @@ _lcd_scroll_down:
         iny
 @last_row:
         plx
-        jsr _lcd_set_position
+        jsr lcd_set_position
         plx
         ply
         rts
