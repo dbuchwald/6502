@@ -30,7 +30,8 @@ _run_monitor:
         rts
 
 _get_address:
-        copy_ptr ptr1, tokens_pointer
+        sta tokens_pointer
+        stx tokens_pointer+1
         gettoken tokens_pointer, 1
         copy_ptr ptr1, start_address_pointer
 
@@ -55,7 +56,8 @@ _get_address:
         rts
 
 _get_range:
-        copy_ptr ptr1, tokens_pointer
+        sta tokens_pointer
+        stx tokens_pointer+1
         ; check if colon provided
         gettoken tokens_pointer, 2
         copy_ptr ptr1, operator_pointer
@@ -168,7 +170,8 @@ _print_memory_range:
         rts
 
 _put_value:
-        copy_ptr ptr1, tokens_pointer
+        sta tokens_pointer
+        stx tokens_pointer+1
         ; check if colon provided
         gettoken tokens_pointer, 2
         copy_ptr ptr1, operator_pointer

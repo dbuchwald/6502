@@ -55,7 +55,8 @@ _process_run:
         rts
 
 _process_blink:
-        copy_ptr ptr1, tokens_pointer
+        sta tokens_pointer
+        stx tokens_pointer+1
 
         gettoken tokens_pointer, 1
         copy_ptr ptr1, param_pointer

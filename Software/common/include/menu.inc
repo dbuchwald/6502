@@ -1,4 +1,5 @@
         .import _run_menu
+        .import run_menu
 
         .macro menuitem cmd, argc, desc, function
         .local start_item
@@ -43,5 +44,5 @@ next_item:
             lda 1+(prompt)
             sta ptr2+1
         .endif
-        jsr _run_menu
+        jsr run_menu
         .endmacro        

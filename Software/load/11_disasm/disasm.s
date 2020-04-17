@@ -38,7 +38,8 @@ _run_disasm:
         rts
 
 _disasm_address:
-        copy_ptr ptr1, tokens_pointer
+        sta tokens_pointer
+        stx tokens_pointer+1
         gettoken tokens_pointer, 1
         copy_ptr ptr1, start_address_pointer
 

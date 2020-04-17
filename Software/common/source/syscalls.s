@@ -81,6 +81,7 @@
         .export _syscall__tty_send_newline
 ; menu routines
         .export _syscall__run_menu
+        .export _syscall_run_menu
 
         .segment "SYSCALLS"
 
@@ -208,3 +209,5 @@ _syscall__tty_send_newline:
         SYSCALL_VECTOR _tty_send_newline
 _syscall__run_menu:
         SYSCALL_VECTOR _run_menu
+_syscall_run_menu:
+        SYSCALL_VECTOR run_menu

@@ -67,4 +67,5 @@
         .forceimport _syscall__tty_send_newline
 ; menu routines
         .forceimport _syscall__run_menu
+        .forceimport _syscall_run_menu
 

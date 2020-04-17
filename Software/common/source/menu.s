@@ -106,14 +106,32 @@ NEXT_OFFSET     = $07
         .endmacro
 
         .export _run_menu
+        .export run_menu
 
 LINE_BUFFER_SIZE = 32
 TOKENIZE_BUFFER_SIZE = 64
 
         .code
 
-; NEGATIVE C COMPLIANT - using ptr1, ptr2 input
+; C wrapper for run_menu instruction
+; prompt pointer in A/X
+; menu definition on stack
 _run_menu:
+        sta ptr2
+        stx ptr2+1
+        ldy #$01
+        lda (sp),y
+        sta ptr1+1
+        dey
+        lda (sp),y
+        sta ptr1
+        jsr run_menu
+        inc_ptr sp
+        inc_ptr sp
+        rts
+
+; NEGATIVE C COMPLIANT - using ptr1, ptr2 input
+run_menu:
         copy_ptr ptr1, menu_root
         copy_ptr ptr2, menu_prompt
 
@@ -211,7 +229,9 @@ invalid_command:
 
 execute_menu_function:
         ; provide access to parameters
-        copy_ptr #tokenize_buffer, ptr1
+        ; copy_ptr #tokenize_buffer, ptr1
+        lda #<tokenize_buffer
+        ldx #>tokenize_buffer
         jmp (menu_item_function)
 
 display_help_message:

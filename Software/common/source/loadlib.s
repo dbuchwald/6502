@@ -69,6 +69,7 @@
         .export _tty_send_newline
 ; menu routines
         .export _run_menu
+        .export run_menu
 
         .code
 
@@ -256,3 +257,6 @@ _tty_send_newline:
 ; menu routines
 _run_menu:
         jmp (_syscall__run_menu)
+
+run_menu:
+        jmp (_syscall_run_menu)

@@ -12,7 +12,8 @@ init:
         rts
 
 process_get_2:
-        copy_ptr ptr1, tokens_pointer
+        sta tokens_pointer
+        stx tokens_pointer+1
         writeln_tty #get2msg
         lda #$02
         sta tmp1
@@ -20,7 +21,8 @@ process_get_2:
         rts
 
 process_get_4:
-        copy_ptr ptr1, tokens_pointer
+        sta tokens_pointer
+        stx tokens_pointer+1
         writeln_tty #get4msg
         lda #$04
         sta tmp1
@@ -28,7 +30,8 @@ process_get_4:
         rts
 
 process_blink:
-        copy_ptr ptr1, tokens_pointer
+        sta tokens_pointer
+        stx tokens_pointer+1
         writeln_tty #blinkmsg
         lda #$02
         sta tmp1
@@ -54,7 +57,8 @@ blink_error:
 
 
 process_print:
-        copy_ptr ptr1, tokens_pointer
+        sta tokens_pointer
+        stx tokens_pointer+1
         writeln_tty #printmsg
         lda #$02
         sta tmp1
@@ -79,7 +83,8 @@ process_print:
         rts
 
 process_addr:
-        copy_ptr ptr1, tokens_pointer
+        sta tokens_pointer
+        stx tokens_pointer+1
         writeln_tty #addrmsg
         lda #$02
         sta tmp1
