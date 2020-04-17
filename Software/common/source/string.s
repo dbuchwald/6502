@@ -12,6 +12,7 @@
         .export _strtrimr
         .export _strtokenize
         .export strtokenize
+        .export _strgettoken
 
 SPACE = $20
 
@@ -373,4 +374,37 @@ end_token:
         sta (ptr2)
         inc_ptr ptr2
         inc tmp2
+        rts
+
+; C function to retrieve token
+; wrapper for ASM macro
+; token number in A
+; token buffer on stack
+; return pointer in A/X
+_strgettoken:
+        sta tmp1
+        phy
+        ldy #$01
+        lda (sp),y
+        sta ptr1+1
+        dey
+        lda (sp),y
+        sta ptr1
+
+@token_loop:
+        lda tmp1
+        beq @exit
+@char_loop:
+        inc_ptr ptr1
+        lda (ptr1)
+        bne @char_loop
+        inc_ptr ptr1
+        dec tmp1
+        bra @token_loop
+@exit:
+        inc_ptr sp
+        inc_ptr sp
+        ply
+        lda ptr1
+        ldx ptr1+1
         rts

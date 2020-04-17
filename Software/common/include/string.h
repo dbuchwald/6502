@@ -9,5 +9,6 @@ extern void __fastcall__ strtolower(unsigned char string[]);
 extern void __fastcall__ strtriml(unsigned char string[]);
 extern void __fastcall__ strtrimr(unsigned char string[]);
 extern unsigned char __fastcall__ strtokenize(const unsigned char string[], unsigned char buffer[]);
+extern unsigned char* __fastcall__ strgettoken(const unsigned char tokens_buffer[], unsigned char n);
 
 #endif __STRING_H

@@ -50,6 +50,7 @@
         .forceimport _syscall__strtrimr
         .forceimport _syscall__strtokenize
         .forceimport _syscall_strtokenize
+        .forceimport _syscall__strgettoken
 ; parser routines
         .forceimport _syscall__parse_onoff
         .forceimport _syscall_parse_onoff

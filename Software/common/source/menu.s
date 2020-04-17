@@ -256,7 +256,7 @@ help_loop:
         rts
 
 display_filtered_help:
-        gettoken #tokenize_buffer, 1
+        strgettoken #tokenize_buffer, 1
         copy_ptr ptr1, help_filter_pointer
         strtoupper help_filter_pointer
         ; Check default candidates

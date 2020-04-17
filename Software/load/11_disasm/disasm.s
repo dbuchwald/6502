@@ -40,7 +40,7 @@ _run_disasm:
 _disasm_address:
         sta tokens_pointer
         stx tokens_pointer+1
-        gettoken tokens_pointer, 1
+        strgettoken tokens_pointer, 1
         copy_ptr ptr1, start_address_pointer
 
         parse_hex_word start_address_pointer

@@ -37,7 +37,7 @@ process_blink:
         sta tmp1
         jsr list_params
 
-        gettoken tokens_pointer, 1
+        strgettoken tokens_pointer, 1
         copy_ptr ptr1, param_pointer
 
         parse_onoff param_pointer
@@ -64,7 +64,7 @@ process_print:
         sta tmp1
         jsr list_params
 
-        gettoken tokens_pointer, 1
+        strgettoken tokens_pointer, 1
         copy_ptr ptr1, param_pointer
 
         parse_hex_byte param_pointer
@@ -90,7 +90,7 @@ process_addr:
         sta tmp1
         jsr list_params
 
-        gettoken tokens_pointer, 1
+        strgettoken tokens_pointer, 1
         copy_ptr ptr1, param_pointer
 
         parse_hex_word param_pointer

@@ -11,6 +11,7 @@
         .import _strtrimr
         .import _strtokenize
         .import strtokenize
+        .import _strgettoken
 
 LF      = $0a   ; Line Feed
 CR      = $0d   ; Carriage Return
@@ -195,7 +196,7 @@ SPACE   = $20   ; Space character
         jsr strtokenize
         .endmacro  
 
-        .macro gettoken token_buffer, number
+        .macro strgettoken token_buffer, number
         .local @token_loop
         .local @char_loop
         .local @exit

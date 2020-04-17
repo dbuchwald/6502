@@ -54,7 +54,7 @@ _run_monitor:
 _get_address:
         sta tokens_pointer
         stx tokens_pointer+1
-        gettoken tokens_pointer, 1
+        strgettoken tokens_pointer, 1
         copy_ptr ptr1, start_address_pointer
 
         parse_hex_word start_address_pointer
@@ -81,7 +81,7 @@ _get_range:
         sta tokens_pointer
         stx tokens_pointer+1
         ; check if colon provided
-        gettoken tokens_pointer, 2
+        strgettoken tokens_pointer, 2
         copy_ptr ptr1, operator_pointer
         strcompare #colon, operator_pointer
         cmp #$00
@@ -89,7 +89,7 @@ _get_range:
         jmp @error
 @good_op:
         ; get start address
-        gettoken tokens_pointer, 1
+        strgettoken tokens_pointer, 1
         copy_ptr ptr1, start_address_pointer
 
         parse_hex_word start_address_pointer
@@ -100,7 +100,7 @@ _get_range:
         sta start_address+1
 
         ; get end address
-        gettoken tokens_pointer, 3
+        strgettoken tokens_pointer, 3
         copy_ptr ptr1, end_address_pointer
 
         parse_hex_word end_address_pointer
@@ -206,7 +206,7 @@ _put_value:
         sta tokens_pointer
         stx tokens_pointer+1
         ; check if colon provided
-        gettoken tokens_pointer, 2
+        strgettoken tokens_pointer, 2
         copy_ptr ptr1, operator_pointer
         strcompare #assign, operator_pointer
         cmp #$00
@@ -215,7 +215,7 @@ _put_value:
 
 @good_op:
         ; get address
-        gettoken tokens_pointer, 1
+        strgettoken tokens_pointer, 1
         copy_ptr ptr1, start_address_pointer
 
         parse_hex_word start_address_pointer
@@ -228,7 +228,7 @@ _put_value:
         sta start_address+1
 
         ; get value
-        gettoken tokens_pointer, 3
+        strgettoken tokens_pointer, 3
         copy_ptr ptr1, value_pointer
 
         parse_hex_byte value_pointer
@@ -278,7 +278,7 @@ _put_value:
 _disasm_address:
         sta tokens_pointer
         stx tokens_pointer+1
-        gettoken tokens_pointer, 1
+        strgettoken tokens_pointer, 1
         copy_ptr ptr1, start_address_pointer
 
         parse_hex_word start_address_pointer

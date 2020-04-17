@@ -58,7 +58,7 @@ _process_blink:
         sta tokens_pointer
         stx tokens_pointer+1
 
-        gettoken tokens_pointer, 1
+        strgettoken tokens_pointer, 1
         copy_ptr ptr1, param_pointer
 
         parse_onoff param_pointer

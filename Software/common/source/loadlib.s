@@ -52,6 +52,7 @@
         .export _strtrimr
         .export _strtokenize
         .export strtokenize
+        .export _strgettoken
 ; parser routines
         .export _parse_onoff
         .export parse_onoff
@@ -212,6 +213,9 @@ strtokenize:
 
 _strtokenize:
         jmp (_syscall__strtokenize)
+
+_strgettoken:
+        jmp (_syscall__strgettoken)
 
 ; parser routines
 _parse_onoff:

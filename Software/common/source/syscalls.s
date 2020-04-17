@@ -64,6 +64,7 @@
         .export _syscall__strtrimr
         .export _syscall__strtokenize
         .export _syscall_strtokenize
+        .export _syscall__strgettoken
 ; parser routines
         .export _syscall__parse_onoff
         .export _syscall_parse_onoff
@@ -181,6 +182,8 @@ _syscall__strtokenize:
         SYSCALL_VECTOR _strtokenize
 _syscall_strtokenize:
         SYSCALL_VECTOR strtokenize
+_syscall__strgettoken:
+        SYSCALL_VECTOR _strgettoken
 _syscall__parse_onoff:
         SYSCALL_VECTOR _parse_onoff
 _syscall_parse_onoff:
