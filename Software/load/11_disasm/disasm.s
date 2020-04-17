@@ -371,8 +371,13 @@ parseerr:
 prompt:
         .asciiz "OS/1 DISASM>"
 menu:
-        menuitem disasm, "DISASM", 2, "DISASM xxxx - disassemble code starting at address xxxx", _disasm_address
+        menuitem disasm_cmd, 2, disasm_desc, _disasm_address
         endmenu 
+
+disasm_cmd:
+        .asciiz "DISASM"
+disasm_desc:
+        .asciiz "DISASM xxxx - disassemble code starting at address xxxx"
 
 str_space:
         .asciiz "  "

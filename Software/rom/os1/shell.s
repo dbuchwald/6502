@@ -130,8 +130,25 @@ blinkerror:
 msgsystembreak:
         .asciiz "System break initiated, returning to shell..."
 menu:
-        menuitem load,    "LOAD",    1, "LOAD - load application using XMODEM/CRC protocol", _process_load
-        menuitem run,     "RUN",     1, "RUN - execute loaded application",                  _process_run
-        menuitem monitor, "MONITOR", 1, "MONITOR - run embedded monitor application",        _process_monitor
-        menuitem blink,   "BLINK",   2, "BLINK on/off - toggle onboard blink LED",           _process_blink
+        menuitem load_cmd,    1, load_desc,    _process_load
+        menuitem run_cmd,     1, run_desc,     _process_run
+        menuitem monitor_cmd, 1, monitor_desc, _process_monitor
+        menuitem blink_cmd,   2, blink_desc,   _process_blink
         endmenu 
+
+load_cmd:
+        .asciiz "LOAD"
+load_desc:
+        .asciiz "LOAD - load application using XMODEM/CRC protocol"
+run_cmd:
+        .asciiz "RUN"
+run_desc:
+        .asciiz "RUN - execute loaded application"
+monitor_cmd:
+        .asciiz "MONITOR"
+monitor_desc:
+        .asciiz "MONITOR - run embedded monitor application"
+blink_cmd:
+        .asciiz "BLINK"
+blink_desc:
+        .asciiz "BLINK on/off - toggle onboard blink LED"

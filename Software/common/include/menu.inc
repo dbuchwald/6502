@@ -1,28 +1,19 @@
         .import _run_menu
 
-        .macro menuitem id, cmd, argc, desc, function
+        .macro menuitem cmd, argc, desc, function
         .local start_item
-        .local cmd_pos
-        .local desc_pos
-        .local function_pos
         .local next_item
 start_item:
-        .byte cmd_pos - start_item
+        .word cmd
         .byte argc
-        .byte desc_pos - start_item
-        .byte function_pos - start_item
-        .byte next_item - start_item
-cmd_pos:
-        .asciiz cmd
-desc_pos:
-        .asciiz desc
-function_pos:
+        .word desc
         .word function
+        .byte next_item - start_item
 next_item:
         .endmacro
 
         .macro endmenu
-        .byte $00, $ff
+        .byte $00, $00, $ff
         .endmacro
 
         .macro run_menu menu, prompt
@@ -54,5 +45,3 @@ next_item:
         .endif
         jsr _run_menu
         .endmacro        
-
-

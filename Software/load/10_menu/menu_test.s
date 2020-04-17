@@ -148,12 +148,13 @@ param_pointer:
         .segment "RODATA"
 
 menu:
-        menuitem get2, "GET", 2, "GET xxxx - get data at the address", process_get_2
-        menuitem get4, "GET", 4, "GET xxxx:yyyy - get data between addresses", process_get_4
-        menuitem put, "PUT", 1, "PUT - put data at the address", process_put
-        menuitem blink, "BLINK", 2, "BLINK on/off - toggle onboard blink LED", process_blink
-        menuitem print, "PRINT", 2, "PRINT xx - parse and print back hex numer", process_print
-        menuitem print, "ADDR", 2, "ADDR xxxx - parse and print back hex address", process_addr
+
+        menuitem get_cmd, 2, get_2_desc, process_get_2
+        menuitem get_cmd, 4, get_4_desc, process_get_4
+        menuitem put_cmd, 4, put_desc, process_put
+        menuitem blink_cmd, 2, blink_desc, process_blink
+        menuitem print_cmd, 2, print_desc, process_print
+        menuitem addr_cmd, 2, addr_desc, process_addr
         endmenu 
 
 test_prompt:
@@ -182,4 +183,25 @@ addrplace:
         .asciiz "xxxx "
 paramval:
         .asciiz "  Parameter: "
-
+get_cmd:
+        .asciiz "GET"
+get_2_desc:
+        .asciiz "GET xxxx - get data at the address xxxx"
+get_4_desc:
+        .asciiz "GET xxxx:yyyy - get data between addresses xxxx and yyyy"
+put_cmd:
+        .asciiz "PUT"
+put_desc:
+        .asciiz "PUT xxxx=yy - put value yy at address xxxx"
+blink_cmd:
+        .asciiz "BLINK"
+blink_desc:
+        .asciiz "BLINK on/off - toggle onboard blink LED"
+print_cmd:
+        .asciiz "PRINT"
+print_desc:
+        .asciiz "PRINT xx - parse and print back hex numer"
+addr_cmd:
+        .asciiz "ADDR"
+addr_desc:
+        .asciiz "ADDR xxxx - parse and print back hex address"

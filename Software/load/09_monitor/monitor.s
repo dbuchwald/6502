@@ -281,7 +281,17 @@ assign:
 dump_template:
         .asciiz "0000xxxx                                                    "
 menu:
-        menuitem get2, "GET", 2, "GET xxxx - get data at the address xxxx", _get_address
-        menuitem get4, "GET", 4, "GET xxxx:yyyy - get data between addresses xxxx and yyyy", _get_range
-        menuitem put, "PUT", 4, "PUT xxxx=yy - put value yy at address xxxx", _put_value
+        menuitem get_cmd, 2, get_2_desc, _get_address
+        menuitem get_cmd, 4, get_4_desc, _get_range
+        menuitem put_cmd, 4, put_desc, _put_value
         endmenu 
+get_cmd:
+        .asciiz "GET"
+get_2_desc:
+        .asciiz "GET xxxx - get data at the address xxxx"
+get_4_desc:
+        .asciiz "GET xxxx:yyyy - get data between addresses xxxx and yyyy"
+put_cmd:
+        .asciiz "PUT"
+put_desc:
+        .asciiz "PUT xxxx=yy - put value yy at address xxxx"

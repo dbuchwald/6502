@@ -4,10 +4,10 @@
         .include "utils.inc"
 
 CMD_OFFSET      = $00
-ARGC_OFFSET     = $01
-DESC_OFFSET     = $02
-FUNCTION_OFFSET = $03
-NEXT_OFFSET     = $04
+ARGC_OFFSET     = $02
+DESC_OFFSET     = $03
+FUNCTION_OFFSET = $05
+NEXT_OFFSET     = $07
 
         .macro is_last_menu_item pointer
         .local @not_last
@@ -21,6 +21,9 @@ NEXT_OFFSET     = $04
         sta ptr1
         lda pointer+1
         sta ptr1+1
+        lda (ptr1)
+        bne @not_last
+        inc_ptr ptr1
         lda (ptr1)
         bne @not_last
         sec
@@ -75,32 +78,20 @@ NEXT_OFFSET     = $04
         sta ptr1+1
         ldy #(CMD_OFFSET)
         lda (ptr1),y
-        clc
-        adc ptr1
         sta cmd_pointer
-        lda ptr1+1
-        adc #$00
+        iny 
+        lda (ptr1),y
         sta cmd_pointer+1
         ldy #(ARGC_OFFSET)
         lda (ptr1),y
         sta argc
         ldy #(DESC_OFFSET)
         lda (ptr1),y
-        clc
-        adc ptr1
         sta desc_pointer
-        lda ptr1+1
-        adc #$00
+        iny
+        lda (ptr1),y
         sta desc_pointer+1
         ldy #(FUNCTION_OFFSET)
-        lda (ptr1),y
-        clc
-        adc ptr1
-        sta ptr1
-        lda ptr1+1
-        adc #$00
-        sta ptr1+1
-        ldy #$00
         lda (ptr1),y
         sta function_pointer
         iny

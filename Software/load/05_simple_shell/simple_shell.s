@@ -35,5 +35,9 @@ msgload:
 simpleprompt:
         .asciiz "OS/1 MS>"
 menu:
-        menuitem load, "LOAD", 1, "LOAD - load program", _display_load_message
+        menuitem load_cmd, 1, load_desc, _display_load_message
         endmenu 
+load_cmd:
+        .asciiz "LOAD"
+load_desc:
+        .asciiz "LOAD - load program"
