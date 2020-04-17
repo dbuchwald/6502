@@ -83,6 +83,7 @@
 ; menu routines
         .export _syscall__run_menu
         .export _syscall_run_menu
+        .export _syscall__setup_menuitem
 
         .segment "SYSCALLS"
 
@@ -214,3 +215,5 @@ _syscall__run_menu:
         SYSCALL_VECTOR _run_menu
 _syscall_run_menu:
         SYSCALL_VECTOR run_menu
+_syscall__setup_menuitem:
+        SYSCALL_VECTOR _setup_menuitem

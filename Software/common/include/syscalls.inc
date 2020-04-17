@@ -69,4 +69,5 @@
 ; menu routines
         .forceimport _syscall__run_menu
         .forceimport _syscall_run_menu
+        .forceimport _syscall__setup_menuitem
 

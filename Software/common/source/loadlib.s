@@ -71,6 +71,7 @@
 ; menu routines
         .export _run_menu
         .export run_menu
+        .export _setup_menuitem
 
         .code
 
@@ -264,3 +265,6 @@ _run_menu:
 
 run_menu:
         jmp (_syscall_run_menu)
+
+_setup_menuitem:
+        jmp (_syscall__setup_menuitem)

@@ -1,5 +1,6 @@
         .import _run_menu
         .import run_menu
+        .import _setup_menuitem
 
         .macro menuitem cmd, argc, desc, function
         .local start_item

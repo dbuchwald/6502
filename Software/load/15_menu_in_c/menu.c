@@ -6,7 +6,7 @@
 
 static menuitem menu[3];
 
-void process_cmenu(unsigned char[]) {
+void process_cmenu(unsigned char tokens_buffer[] __attribute__((unused))) {
   tty_writeln("Menu item activated!");
 }
 
@@ -23,17 +23,9 @@ void process_caddr(unsigned char tokens_buffer[]) {
 }
 
 void main(void) {
-  menu[0].cmd="CMENU";
-  menu[0].argc=1;
-  menu[0].desc="CMENU - Sample C Menu entry";
-  menu[0].function=&process_cmenu;
-  menu[0].size = sizeof(menu[0]);
-  menu[1].cmd="CADDR";
-  menu[1].argc=2;
-  menu[1].desc="CADDR xxxx - Parameterized entry";
-  menu[1].function=&process_caddr;
-  menu[1].size = sizeof(menu[0]);
-  menu[2].cmd=0x000;
+  setup_menuitem(&(menu[0]), "CMENU", 1, "CMENU - Sample C menu entry", &process_cmenu);
+  setup_menuitem(&(menu[1]), "CADDR", 2, "CADDR xxxx - Parameterized entry", &process_caddr);
+  setup_menuitem(&(menu[2]), 0x0000, 0, 0x0000, 0x0000);
 
   run_menu(menu, "OS/1 C Menu>");
 }

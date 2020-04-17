@@ -107,11 +107,79 @@ NEXT_OFFSET     = $07
 
         .export _run_menu
         .export run_menu
+        .export _setup_menuitem
 
 LINE_BUFFER_SIZE = 32
 TOKENIZE_BUFFER_SIZE = 64
 
         .code
+
+; C function to populate data structure
+; 
+_setup_menuitem:
+        ; read params from registers and stack
+        sta menu_item_function
+        stx menu_item_function+1
+        ldy #$06
+        lda (sp),y
+        sta ptr1+1
+        dey
+        lda (sp),y
+        sta ptr1
+        dey
+        lda (sp),y
+        sta menu_item_cmd+1
+        dey
+        lda (sp),y
+        sta menu_item_cmd
+        dey
+        lda (sp),y
+        sta menu_item_argc
+        dey
+        lda (sp),y
+        sta menu_item_desc+1
+        dey
+        lda (sp),y
+        sta menu_item_desc
+
+        ; save params to resulting structure
+        ldy #(CMD_OFFSET)
+        lda menu_item_cmd
+        sta (ptr1),y
+        iny
+        lda menu_item_cmd+1
+        sta (ptr1),y
+
+        ldy #(ARGC_OFFSET)
+        lda menu_item_argc
+        sta (ptr1),y
+
+        ldy #(DESC_OFFSET)
+        lda menu_item_desc
+        sta (ptr1),y
+        iny
+        lda menu_item_desc+1
+        sta (ptr1),y
+
+        ldy #(FUNCTION_OFFSET)
+        lda menu_item_function
+        sta (ptr1),y
+        iny
+        lda menu_item_function+1
+        sta (ptr1),y
+
+        ldy #(NEXT_OFFSET)
+        lda #(NEXT_OFFSET+1)
+        sta (ptr1),y
+
+        inc_ptr sp
+        inc_ptr sp
+        inc_ptr sp
+        inc_ptr sp
+        inc_ptr sp
+        inc_ptr sp
+        inc_ptr sp
+        rts
 
 ; C wrapper for run_menu instruction
 ; prompt pointer in A/X
