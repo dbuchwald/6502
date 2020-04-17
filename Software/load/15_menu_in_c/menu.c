@@ -11,7 +11,7 @@ void process_cmenu(unsigned char tokens_buffer[]) {
 void main(void) {
   menu[0].cmd="CMENU";
   menu[0].argc=1;
-  menu[0].desc="Sample C Menu entry";
+  menu[0].desc="CMENU - Sample C Menu entry";
   menu[0].function=&process_cmenu;
   menu[0].size = sizeof(menu[0]);
   menu[1].cmd=0x000;
