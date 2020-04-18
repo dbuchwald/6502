@@ -173,119 +173,137 @@ Last option will be used in (planned currently) custom debugger board.
 
 The following components are required for DB65C02 Computer
 
-| Reference | Type                   | Value         | Description                            |
-| --------- | ---------------------- | ------------- | -------------------------------------- |
-| C1        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C2        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C3        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C4        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C5        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C6        | Polarized Capacitor    | 10 uF         | Tube, 2.5mm raster, 5mm diameter       |
-| C7        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C8        | Unpolarized Capacitor  | 10 nF         | Disk, 2.5mm raster                     |
-| C9        | Unpolarized Capacitor  | 47 pF         | Disk, 2.5mm raster                     |
-| C10       | Unpolarized Capacitor  | 47 pF         | Disk, 2.5mm raster                     |
-| C11       | Polarized Capacitor    | 1000 uF       | Tube, 5mm raster, 10mm diameter        |
-| C12       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C13       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C14       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C15       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C16       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| C17       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                     |
-| D1        | LED                    | Green         | 5mm diameter (PWR)                     |
-| D2        | LED                    | Red           | 5mm diameter (TX)                      |
-| D3        | LED                    | Green         | 5mm diameter (RX)                      |
-| D4        | LED                    | Red           | 5mm diameter (BLINK)                   |
-| FB1       | Ferrite bead small     |               |                                        |
-| J1        | Pin header 3x1         |               | 2.54mm raster                          |
-| J2        | Female pin header 6x1  |               | 2.54mm raster                          |
-| J3        | USB B Micro            |               | Molex 105017-0001                      |
-| J4        | USB B                  |               | Standard THT horizontal USB B port     |
-| J5        | Barrel Jack            |               | Standard power input 2.1/5.5           |
-| J6        | Mini-Din-6             |               | Standard THT PS/2 Keyboard port        |
-| J7        | Female pin header 16x2 |               | 2.54mm raster                          |
-| J8        | Pin header 3x2         |               | AVR ISP 2.54mm raster                  |
-| J9        | Pin header 12x1        |               | 2.54mm raster                          |
-| J10       | Pin header 12x1        |               | 2.54mm raster                          |
-| J11       | Female pin header 16x1 |               | 2.54mm raster                          |
-| R1        | Resistor               | 1M            | 1/4 watt                               |
-| R2        | Resistor               | 47K           | 1/4 watt                               |
-| R3        | Resistor               | 10K           | 1/4 watt                               |
-| R4        | Resistor               | 27            | 1/4 watt                               |
-| R5        | Resistor               | 27            | 1/4 watt                               |
-| R6        | Resistor               | 4K7           | 1/4 watt                               |
-| R7        | Resistor               | 4K7           | 1/4 watt                               |
-| R8        | Resistor               | 4K7           | 1/4 watt                               |
-| R9        | Resistor               | 220           | 1/4 watt                               |
-| R10       | Resistor               | 220           | 1/4 watt                               |
-| R11       | Resistor               | 220           | 1/4 watt                               |
-| R12       | Resistor               | 220           | 1/4 watt                               |
-| R13       | Resistor               | 4K7           | 1/4 watt                               |
-| RV1       | Potentiometer          | 10K           | Piher PT10-LV10-103                    |
-| SW1       | Pushbutton             |               | Standard 6mm THT pushbutton            |
-| U1        | IC                     | 74HC21        | Add socket                             |
-| U2        | IC                     | 74HC00        | Add socket                             |
-| U3        | IC                     | 74HC02        | Add socket                             |
-| U4        | IC                     | NE555         | Add socket                             |
-| U5        | IC                     | 6551          | Add socket; ACIA chip, see notes below |
-| U6        | IC                     | FT230XS       |                                        |
-| U7        | IC                     | 65C02S        | Add socket                             |
-| U8        | IC                     | 28C256        | Add socket                             |
-| U9        | IC                     | 62256         | Add socket                             |
-| U10       | IC                     | ATtiny4313-PU | Add socket                             |
-| U11       | IC                     | 65C22S        | Add socket                             |
-| U12       | IC                     | 65C22S        | Add socket                             |
-| X1        | Crystal Oscillator     | 1MHz          |                                        |
-| X2        | Crystal Oscillator     | 1.8432MHz     |                                        |
+| Reference | Type                   | Value         | Description                        | Jameco  | DigiKey            |
+| --------- | ---------------------- | ------------- | ---------------------------------- | ------- | ------------------ |
+| C1        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C2        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C3        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C4        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C5        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C6        | Polarized Capacitor    | 10 uF         | Tube, 2.5mm raster, 5mm diameter   | 330692  | 1189-2322-ND       |
+| C7        | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C8        | Unpolarized Capacitor  | 10 nF         | Disk, 2.5mm raster                 | n/a     | 399-4150-ND        |
+| C9        | Unpolarized Capacitor  | 47 pF         | Disk, 2.5mm raster                 | 2300831 | 399-9737-ND        |
+| C10       | Unpolarized Capacitor  | 47 pF         | Disk, 2.5mm raster                 | 2300831 | 399-9737-ND        |
+| C11       | Polarized Capacitor    | 1000 uF       | Tube, 5mm raster, 10mm diameter    | 330722  | 1189-1745-ND       |
+| C12       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C13       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C14       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C15       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C16       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| C17       | Unpolarized Capacitor  | 100 nF        | Disk, 2.5mm raster                 | 151116  | 399-4151-ND        |
+| D1        | LED                    | Green         | 5mm diameter (PWR)                 | 2279199 | 754-1263-ND        |
+| D2        | LED                    | Red           | 5mm diameter (TX)                  | 333973  | 754-1264-ND        |
+| D3        | LED                    | Green         | 5mm diameter (RX)                  | 2279199 | 754-1263-ND        |
+| D4        | LED                    | Red           | 5mm diameter (BLINK)               | 333973  | 754-1264-ND        |
+| FB1       | Ferrite bead small     |               |                                    | 1844580 | 490-10997-ND       |
+| J1        | Pin header 3x1         |               | 2.54mm raster                      | n/a     | 2057-PH1-03-UA-ND  |
+| J2        | Female pin header 6x1  |               | 2.54mm raster                      | n/a     | S7004-ND           |
+| J3        | USB B Micro            |               | Molex 105017-0001                  | n/a     | WM1399CT-ND        |
+| J4        | USB B                  |               | Standard THT horizontal USB B port | 2096245 | 2057-USB-B-S-RA-ND |
+| J5        | Barrel Jack            |               | Standard power input 2.1/5.5       | 101178  | n/a                |
+| J6        | Mini-Din-6             |               | Standard THT PS/2 Keyboard port    | 119475  | CP-2260-ND         |
+| J7        | Female pin header 16x2 |               | 2.54mm raster                      | n/a     | S7049-ND           |
+| J8        | Pin header 3x2         |               | AVR ISP 2.54mm raster              | n/a     | 609-3234-ND        |
+| J9        | Pin header 12x1        |               | 2.54mm raster                      | n/a     | 2057-PH1-12-UA-ND  |
+| J10       | Pin header 12x1        |               | 2.54mm raster                      | n/a     | 2057-PH1-12-UA-ND  |
+| J11       | Female pin header 16x1 |               | 2.54mm raster                      | n/a     | S7049-ND           |
+| R1        | Resistor               | 1M            | 1/4 watt                           | 691585  | n/a                |
+| R2        | Resistor               | 47K           | 1/4 watt                           | 691260  | n/a                |
+| R3        | Resistor               | 10K           | 1/4 watt                           | 691104  | n/a                |
+| R4        | Resistor               | 27            | 1/4 watt                           | 690486  | n/a                |
+| R5        | Resistor               | 27            | 1/4 watt                           | 690486  | n/a                |
+| R6        | Resistor               | 4K7           | 1/4 watt                           | 691260  | n/a                |
+| R7        | Resistor               | 4K7           | 1/4 watt                           | 691260  | n/a                |
+| R8        | Resistor               | 4K7           | 1/4 watt                           | 691260  | n/a                |
+| R9        | Resistor               | 220           | 1/4 watt                           | 690700  | n/a                |
+| R10       | Resistor               | 220           | 1/4 watt                           | 690700  | n/a                |
+| R11       | Resistor               | 220           | 1/4 watt                           | 690700  | n/a                |
+| R12       | Resistor               | 220           | 1/4 watt                           | 690700  | n/a                |
+| R13       | Resistor               | 4K7           | 1/4 watt                           | 691260  | n/a                |
+| RV1       | Potentiometer          | 10K           | Piher PT10-LV10-103                | n/a     | 1993-1116-ND       |
+| SW1       | Pushbutton             |               | Standard 6mm THT pushbutton        | 149948  | n/a                |
+| U1        | IC                     | 74HC21        |                                    | 2285255 | 296-8266-5-ND      |
+| U1        | Socket                 | 14-pin        |                                    | 51626   | ED90048-ND         |
+| U2        | IC                     | 74HC00        |                                    | 45161   | 296-1563-5-ND      |
+| U2        | Socket                 | 14-pin        |                                    | 51626   | ED90048-ND         |
+| U3        | IC                     | 74HC02        |                                    | 45188   | 296-1564-5-ND      |
+| U3        | Socket                 | 14-pin        |                                    | 51626   | ED90048-ND         |
+| U4        | IC                     | NE555         |                                    | 27422   | 296-NE555P-ND      |
+| U1        | Socket                 | 8-pin         |                                    | 51626   | ED90048-ND         |
+| U5        | IC                     | 6551          | ACIA chip, see notes below         | 43318   | n/a                |
+| U6        | IC                     | FT230XS       |                                    | n/a     | 768-1135-1-ND      |
+| U7        | IC                     | 65C02S        |                                    | 2143638 | n/a                |
+| U7        | Socket                 | 40-pin        |                                    | 41136   | ED90059-ND         |
+| U8        | IC                     | 28C256        |                                    | 74843   | AT28C256-15PU-ND   |
+| U8        | Socket                 | 28-pin        | Order two                          | 2289583 | D90038-ND          |
+| U9        | IC                     | 62256         |                                    | 82472   | 1450-1480-ND       |
+| U9        | Socket                 | 28-pin        |                                    | 2289583 | D90038-ND          |
+| U10       | IC                     | ATtiny4313-PU | Add socket                         | n/a     | ATTINY4313-PU-ND   |
+| U10       | Socket                 | 20-pin        |                                    | 38623   | ED90036-ND         |
+| U11       | IC                     | 65C22S        |                                    | 2143591 | n/a                |
+| U11       | Socket                 | 40-pin        |                                    | 41136   | ED90059-ND         |
+| U12       | IC                     | 65C22S        |                                    | 2143591 | n/a                |
+| U12       | Socket                 | 40-pin        |                                    | 41136   | ED90059-ND         |
+| X1        | Crystal Oscillator     | 1MHz          |                                    | 27861   | X937-ND            |
+| X2        | Crystal Oscillator     | 1.8432MHz     |                                    | 27879   | X939-ND            |
 
 _Important note about the ACIA chip_: There are basically two types of chips that can be used. Modern, rated to higher frequencies WDC65C51 and older, Rockwell 6551P chips, rated only for 1MHz. The problem with former is that there is a bug with interrupt handling on transmit operation - both IRQ and status flag polling fail, you have to implement dead loop to wait long enough for the byte to be transmitted. Latter chip is probably no longer manufactured, but can be purchased online from Chinese sellers - these are cheap, but not all of them work correctly, so get more than one to be safe. For me the second chip worked correctly and both polling and IRQ-based transmit work as expected.
+
+_Notes about the resistors_: Jameco sells a [resistor assortment](https://www.jameco.com/z/ASST27-R-Resistor-Assortment-1-4-Watt-5-2700-Pieces_10664.html) that includes all the 1/4 watt resistors required for this project except for 27 ohm and will stock you with resistors for many electronics projects going forward.
 
 ### Clock Module Bill Of Materials
 
 The following components are required for building Clock Module
 
-| Reference | Type                  | Value  | Description                   |
-| --------- | --------------------- | ------ | ----------------------------- |
-| C1        | Polarized capacitor   | 1 uF   | 2.5mm raster, 5mm diameter    |
-| C2        | Polarized capacitor   | 1 uF   | 2.5mm raster, 5mm diameter    |
-| C3        | Unpolarized capacitor | 10 nF  | 2.5mm raster                  |
-| C4        | Unpolarized capacitor | 100 nF | 2.5mm raster                  |
-| C5        | Unpolarized capacitor | 100 nF | 2.5mm raster                  |
-| C6        | Unpolarized capacitor | 100 nF | 2.5mm raster                  |
-| C7        | Unpolarized capacitor | 100 nF | 2.5mm raster                  |
-| C8        | Unpolarized capacitor | 100 nF | 2.5mm raster                  |
-| C9        | Polarized capacitor   | 1 uF   | 2.5mm raster, 5mm diameter    |
-| D1        | LED                   | Yellow | 5mm diameter (Automatic tick) |
-| D2        | LED                   | Red    | 5mm diameter (Manual mode)    |
-| D3        | LED                   | Green  | 5mm diameter (Automatic mode) |
-| D4        | LED                   | Yellow | 5mm diameter (Manual tick)    |
-| D5        | LED                   | Blue   | 5mm diameter (Output tick)    |
-| J1        | Female pin header 6x1 |        | 2.54mm raster                 |
-| J2        | Barrel Jack           |        | Standard power input 2.1/5.5  |
-| R1        | Resistor              | 1K     | 1/4 watt                      |
-| R2        | Resistor              | 1K     | 1/4 watt                      |
-| R3        | Resistor              | 1K     | 1/4 watt                      |
-| R4        | Resistor              | 100K   | 1/4 watt                      |
-| R5        | Resistor              | 10K    | 1/4 watt                      |
-| R6        | Resistor              | 1K     | 1/4 watt                      |
-| R7        | Resistor              | 10K    | 1/4 watt                      |
-| R8        | Resistor              | 1K     | 1/4 watt                      |
-| R9        | Resistor              | 1M     | 1/4 watt                      |
-| R10       | Resistor              | 220    | 1/4 watt                      |
-| R11       | Resistor              | 220    | 1/4 watt                      |
-| R12       | Resistor              | 220    | 1/4 watt                      |
-| R13       | Resistor              | 220    | 1/4 watt                      |
-| R14       | Resistor              | 220    | 1/4 watt                      |
-| R15       | Resistor              | 1K     | 1/4 watt                      |
-| RV1       | Potentiometer         | 1M     | Piher PT10-LV10-105           |
-| SW1       | Pushbutton            |        | Standard 6mm THT pushbutton   |
-| SW2       | Pushbutton            |        | Standard 6mm THT pushbutton   |
-| U1        | IC                    | NE555  | Add socket                    |
-| U2        | IC                    | NE555  | Add socket                    |
-| U3        | IC                    | NE555  | Add socket                    |
-| U4        | IC                    | 74LS04 | Add socket                    |
-| U5        | IC                    | 74LS32 | Add socket                    |
-| U6        | IC                    | 74LS08 | Add socket                    |
+| Reference | Type                  | Value  | Description                   | Jameco  | DigiKey       |
+| --------- | --------------------- | ------ | ----------------------------- | ------- | ------------- |
+| C1        | Polarized capacitor   | 1 uF   | 2.5mm raster, 5mm diameter    | 330431  | 1189-1401-ND  |
+| C2        | Polarized capacitor   | 1 uF   | 2.5mm raster, 5mm diameter    | 330431  | 1189-1401-ND  |
+| C3        | Unpolarized capacitor | 10 nF  | 2.5mm raster                  | n/a     | 399-4150-ND   |
+| C4        | Unpolarized capacitor | 100 nF | 2.5mm raster                  | 151116  | 399-4151-ND   |
+| C5        | Unpolarized capacitor | 100 nF | 2.5mm raster                  | 151116  | 399-4151-ND   |
+| C6        | Unpolarized capacitor | 100 nF | 2.5mm raster                  | 151116  | 399-4151-ND   |
+| C7        | Unpolarized capacitor | 100 nF | 2.5mm raster                  | 151116  | 399-4151-ND   |
+| C8        | Unpolarized capacitor | 100 nF | 2.5mm raster                  | 151116  | 399-4151-ND   |
+| C9        | Polarized capacitor   | 1 uF   | 2.5mm raster, 5mm diameter    | 330431  | 1189-1401-ND  |
+| D1        | LED                   | Yellow | 5mm diameter (Automatic tick) | 34825   | 754-1284-ND   |
+| D2        | LED                   | Red    | 5mm diameter (Manual mode)    | 333973  | 754-1264-ND   |
+| D3        | LED                   | Green  | 5mm diameter (Automatic mode) | 2279199 | 754-1263-ND   |
+| D4        | LED                   | Yellow | 5mm diameter (Manual tick)    | 34825   | 754-1284-ND   |
+| D5        | LED                   | Blue   | 5mm diameter (Output tick)    | 2234071 | 754-1489-ND   |
+| J1        | Female pin header 6x1 |        | 2.54mm raster                 | n/a     | S7004-ND      |
+| J2        | Barrel Jack           |        | Standard power input 2.1/5.5  | 101178  | n/a           |
+| R1        | Resistor              | 1K     | 1/4 watt                      | 690865  | n/a           |
+| R2        | Resistor              | 1K     | 1/4 watt                      | 690865  | n/a           |
+| R3        | Resistor              | 1K     | 1/4 watt                      | 690865  | n/a           |
+| R4        | Resistor              | 100K   | 1/4 watt                      | 691340  | n/a           |
+| R5        | Resistor              | 10K    | 1/4 watt                      | 691260  | n/a           |
+| R6        | Resistor              | 1K     | 1/4 watt                      | 690865  | n/a           |
+| R7        | Resistor              | 10K    | 1/4 watt                      | 691260  | n/a           |
+| R8        | Resistor              | 1K     | 1/4 watt                      | 690865  | n/a           |
+| R9        | Resistor              | 1M     | 1/4 watt                      | 691585  | n/a           |
+| R10       | Resistor              | 220    | 1/4 watt                      | 690700  | n/a           |
+| R11       | Resistor              | 220    | 1/4 watt                      | 690700  | n/a           |
+| R12       | Resistor              | 220    | 1/4 watt                      | 690700  | n/a           |
+| R13       | Resistor              | 220    | 1/4 watt                      | 690700  | n/a           |
+| R14       | Resistor              | 220    | 1/4 watt                      | 690700  | n/a           |
+| R15       | Resistor              | 1K     | 1/4 watt                      | 690865  | n/a           |
+| RV1       | Potentiometer         | 1M     | Piher PT10-LV10-105           | n/a     | 1993-1117-ND  |
+| SW1       | Pushbutton            |        | Standard 6mm THT pushbutton   | 149948  | n/a           |
+| SW2       | Pushbutton            |        | Standard 6mm THT pushbutton   | 149948  | n/a           |
+| U1        | IC                    | NE555  |                               | 27422   | 296-NE555P-ND |
+| U1        | Socket                | 8-pin  |                               | 51626   | ED90048-ND    |
+| U2        | IC                    | NE555  |                               | 27422   | 296-NE555P-ND |
+| U2        | Socket                | 8-pin  |                               | 51626   | ED90048-ND    |
+| U3        | IC                    | NE555  |                               | 27422   | 296-NE555P-ND |
+| U3        | Socket                | 8-pin  |                               | 51626   | ED90048-ND    |
+| U4        | IC                    | 74LS04 |                               | 46316   | 296-1629-5-ND |
+| U4        | Socket                | 14-pin |                               | 51626   | ED90048-ND    |
+| U5        | IC                    | 74LS32 |                               | 47466   | 296-1658-5-ND |
+| U5        | Socket                | 14-pin |                               | 51626   | ED90048-ND    |
+| U6        | IC                    | 74LS08 |                               | 46375   | 296-1633-5-ND |
+| U6        | Socket                | 14-pin |                               | 51626   | ED90048-ND    |
 
 ## Building PCB
 
