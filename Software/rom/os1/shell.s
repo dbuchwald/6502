@@ -112,7 +112,7 @@ banner4:
 banner5:
         .asciiz "|   ####  ####  #      ###  |"
 msghello1: 
-        .asciiz "OS/1 Version 0.1 (Alpha)"
+        .asciiz "OS/1 Version 0.2C (Alpha+C)"
 msghello2: 
         .asciiz "Welcome to OS/1 shell for DB6502 computer"
 msghello3:
