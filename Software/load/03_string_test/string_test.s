@@ -1,6 +1,7 @@
         .include "string.inc"
         .include "acia.inc"
         .include "utils.inc"
+        .include "macros.inc"
 
         .segment "VECTORS"
 
@@ -16,7 +17,7 @@ init:
 
         write_acia #msg1
         strlength #message
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta result_val
         tya
@@ -25,7 +26,7 @@ init:
 
         write_acia #msg2
         strcompare #strc1, #strc2
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta result_val
         tya
@@ -34,7 +35,7 @@ init:
 
         write_acia #msg3
         strcompare #strc2, #strc3
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta result_val
         tya
@@ -43,7 +44,7 @@ init:
 
         write_acia #msg4
         strcompare #strc3, #strc4
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta result_val
         tya

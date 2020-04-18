@@ -8,6 +8,7 @@
         .forceimport _syscall__delay_ms
         .forceimport _syscall__delay_sec
         .forceimport _syscall__convert_to_hex
+        .forceimport _syscall_convert_to_hex
 ; Blink routines
         .forceimport _syscall__blink_led
         .forceimport _syscall__strobe_led

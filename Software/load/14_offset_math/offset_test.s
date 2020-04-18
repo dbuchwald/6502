@@ -5,6 +5,7 @@
         .include "string.inc"
         .include "blink.inc"
         .include "parse.inc"
+        .include "macros.inc"
 
         .code
 init:

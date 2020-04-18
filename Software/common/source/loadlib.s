@@ -10,6 +10,7 @@
         .export _delay_ms
         .export _delay_sec
         .export _convert_to_hex
+        .export convert_to_hex
 ; Blink routines
         .export _blink_led
         .export _strobe_led
@@ -100,6 +101,9 @@ _delay_sec:
 
 _convert_to_hex:
         jmp (_syscall__convert_to_hex)
+
+convert_to_hex:
+        jmp (_syscall_convert_to_hex)
 
 ; Blink routines
 _blink_led:

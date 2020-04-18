@@ -5,6 +5,7 @@
         .include "string.inc"
         .include "blink.inc"
         .include "parse.inc"
+        .include "macros.inc"
 
         .code
 init:
@@ -69,7 +70,7 @@ process_print:
 
         parse_hex_byte param_pointer
         bcc @error
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta printplace
         tya
@@ -96,13 +97,13 @@ process_addr:
         parse_hex_word param_pointer
         bcc @error
         phx
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta addrplace
         tya
         sta addrplace+1
         pla
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta addrplace+2
         tya

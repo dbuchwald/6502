@@ -10,7 +10,7 @@
         .word   $0000
 
         .macro hex_to_buffer
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         ldx tmp1
         sta dump_line,x

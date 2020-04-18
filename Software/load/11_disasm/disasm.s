@@ -4,6 +4,7 @@
         .include "utils.inc"
         .include "menu.inc"
         .include "parse.inc"
+        .include "macros.inc"
 
         .export _run_disasm
 
@@ -67,13 +68,13 @@ _disasm_code:
 @instruction_loop:
         ; get opcode at the address
         lda pc_pointer+1
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta address_print_buffer
         tya
         sta address_print_buffer+1
         lda pc_pointer
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta address_print_buffer+2
         tya
@@ -249,14 +250,14 @@ format_relative:
         add_offset_relative pc_pointer_original, relative_offset
 
         lda pc_pointer_original
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta operand_buffer+2
         tya
         sta operand_buffer+3
 
         lda pc_pointer_original+1
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta operand_buffer
         tya 
@@ -300,7 +301,7 @@ fetch_byte_operand:
         inc_ptr pc_pointer
         copy_ptr pc_pointer, ptr1
         lda (ptr1)
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta operand_buffer
         tya
@@ -311,7 +312,7 @@ fetch_word_operand:
         inc_ptr pc_pointer
         copy_ptr pc_pointer, ptr1
         lda (ptr1)
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta operand_buffer+2
         tya
@@ -320,7 +321,7 @@ fetch_word_operand:
         inc_ptr pc_pointer
         copy_ptr pc_pointer, ptr1
         lda (ptr1)
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta operand_buffer
         tya 

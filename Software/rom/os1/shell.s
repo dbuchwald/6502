@@ -8,6 +8,7 @@
         .include "core.inc"
         .include "menu.inc"
         .include "parse.inc"
+        .include "macros.inc"
 
         .export _run_shell
         .import _run_monitor

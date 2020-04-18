@@ -1,6 +1,7 @@
         .setcpu "65C02"
         .include "string.inc"
         .include "utils.inc"
+        .include "macros.inc"
 
         .export _parse_onoff
         .export parse_onoff

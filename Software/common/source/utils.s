@@ -1,7 +1,9 @@
       .include "zeropage.inc"
+      .include "macros.inc"
 
       .export _delay_ms
       .export _delay_sec
+      .export convert_to_hex
       .export _convert_to_hex
 
       .code
@@ -75,11 +77,27 @@ exit_delay_sec:
 ; return
       rts
 
+; C wrapper for convert_to_hex function
+; output buffer in A/X
+; input value on stack
+_convert_to_hex:
+        sta ptr1
+        stx ptr1+1
+        lda (sp)
+        jsr convert_to_hex
+        txa
+        sta (ptr1)
+        tya
+        ldy #$01
+        sta (ptr1),y
+        inc_ptr sp
+        rts
+
 ; NEGATIVE C COMPLIANT - value returned in X, Y
 ; Destroys X and Y registers - output values there
 ; Y - lsb char
 ; X - msb char
-_convert_to_hex:
+convert_to_hex:
       ; not an error, preserving input
       pha
       pha

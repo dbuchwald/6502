@@ -1,5 +1,6 @@
         .include "zeropage.inc"
         .include "utils.inc"
+        .include "macros.inc"
 
         .export _strcopy
         .export strcopy

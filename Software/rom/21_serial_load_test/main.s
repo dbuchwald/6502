@@ -41,7 +41,7 @@ main_loop:
       ldy #01
       jsr lcd_set_position      
       lda acia_tx_rptr
-      jsr _convert_to_hex
+      jsr convert_to_hex
       txa
       jsr _lcd_print_char
       tya
@@ -51,7 +51,7 @@ main_loop:
       ldy #01
       jsr lcd_set_position      
       lda acia_tx_wptr
-      jsr _convert_to_hex
+      jsr convert_to_hex
       txa
       jsr _lcd_print_char
       tya
@@ -61,7 +61,7 @@ main_loop:
       ldy #01
       jsr lcd_set_position      
       lda acia_rx_rptr
-      jsr _convert_to_hex
+      jsr convert_to_hex
       txa
       jsr _lcd_print_char
       tya
@@ -71,7 +71,7 @@ main_loop:
       ldy #01
       jsr lcd_set_position      
       lda acia_rx_wptr
-      jsr _convert_to_hex
+      jsr convert_to_hex
       txa
       jsr _lcd_print_char
       tya
@@ -81,14 +81,14 @@ main_loop:
       ldy #02
       jsr lcd_set_position      
       lda bytescount+1
-      jsr _convert_to_hex
+      jsr convert_to_hex
       txa
       jsr _lcd_print_char
       tya
       jsr _lcd_print_char
 
       lda bytescount
-      jsr _convert_to_hex
+      jsr convert_to_hex
       txa
       jsr _lcd_print_char
       tya

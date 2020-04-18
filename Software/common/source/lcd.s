@@ -3,6 +3,7 @@
         .include "utils.inc"
         .include "sys_const.inc"
         .include "sysram_map.inc"
+        .include "macros.inc"
 
         .export _lcd_init
         .export _lcd_print

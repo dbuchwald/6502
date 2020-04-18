@@ -4,11 +4,12 @@
         .include "utils.inc"
         .include "menu.inc"
         .include "parse.inc"
+        .include "macros.inc"
 
         .export _run_monitor
 
         .macro hex_to_buffer
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         ldx tmp1
         sta dump_line,x
@@ -96,26 +97,26 @@ _get_range:
 
 _print_memory_range:
         lda start_address+1
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta msgget_start
         tya
         sta msgget_start+1
         lda start_address
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta msgget_start+2
         tya
         sta msgget_start+3
 
         lda end_address+1
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta msgget_end
         tya
         sta msgget_end+1
         lda end_address
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta msgget_end+2
         tya
@@ -203,20 +204,20 @@ _put_value:
         sta value
 
         lda value
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta msgput_value
         tya
         sta msgput_value+1
 
         lda start_address+1
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta msgput_address
         tya
         sta msgput_address+1
         lda start_address
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         sta msgput_address+2
         tya

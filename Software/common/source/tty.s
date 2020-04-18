@@ -4,6 +4,7 @@
         .include "lcd.inc"
         .include "keyboard.inc"
         .include "utils.inc"
+        .include "macros.inc"
 
         .export _tty_init
         .export _tty_read_line
@@ -205,7 +206,7 @@ _tty_write_hex:
         pha
         phx
         phy
-        jsr _convert_to_hex
+        jsr convert_to_hex
         txa
         jsr tty_write_byte
         tya

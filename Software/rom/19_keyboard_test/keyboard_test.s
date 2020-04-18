@@ -99,7 +99,7 @@ program_loop:
 @regular_char:
       jsr _lcd_print_char
       write_lcd #key_part_two
-      jsr _convert_to_hex
+      jsr convert_to_hex
       txa
       jsr _lcd_print_char
       tya

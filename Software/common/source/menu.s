@@ -2,6 +2,7 @@
         .include "tty.inc"
         .include "string.inc"
         .include "utils.inc"
+        .include "macros.inc"
 
 CMD_OFFSET      = $00
 ARGC_OFFSET     = $02
