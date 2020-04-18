@@ -43,8 +43,7 @@ _tty_read_line:
         lda (sp),y
         ply
         jsr tty_read_line
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 
 ; NEGATIVE C COMPLIANT

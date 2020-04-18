@@ -32,8 +32,7 @@ _strcopy:
         lda (sp),y
         sta ptr1
         jsr strcopy
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 
         .code
@@ -69,8 +68,7 @@ _strcompare:
         sta ptr1
         jsr strcompare
         ldx #$00
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
@@ -256,8 +254,7 @@ _strtokenize:
         sta ptr1
         jsr strtokenize
         ldx #$00
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 
 ; NEGATIVE C COMPLIANT - ptr1, ptr2
@@ -403,8 +400,7 @@ _strgettoken:
         dec tmp1
         bra @token_loop
 @exit:
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         ply
         lda ptr1
         ldx ptr1+1

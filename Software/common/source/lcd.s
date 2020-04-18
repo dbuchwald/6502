@@ -192,8 +192,7 @@ _lcd_get_position:
         txa
         sta (ptr2)
         ; retrieve data from the stack
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 
 ; NEGATIVE C COMPLIANT - return values in X, Y

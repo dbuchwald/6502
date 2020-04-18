@@ -173,13 +173,7 @@ _setup_menuitem:
         lda #(NEXT_OFFSET+1)
         sta (ptr1),y
 
-        inc_ptr sp
-        inc_ptr sp
-        inc_ptr sp
-        inc_ptr sp
-        inc_ptr sp
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$07
         rts
 
 ; C wrapper for run_menu instruction
@@ -195,8 +189,7 @@ _run_menu:
         lda (sp),y
         sta ptr1
         jsr run_menu
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 
 ; NEGATIVE C COMPLIANT - using ptr1, ptr2 input

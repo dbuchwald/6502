@@ -31,13 +31,11 @@ _parse_onoff:
         copy_ptr return_buffer_pointer, ptr1
         sta (ptr1)
         lda #(PARSE_SUCCESS)
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 @error:
         lda #(PARSE_FAILED)
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 
 ; NEGATIVE C COMPLIANT - ptr1, returning value in carry
@@ -88,13 +86,11 @@ _parse_hex_byte:
         copy_ptr return_buffer_pointer, ptr1
         sta (ptr1)
         lda #(PARSE_SUCCESS)
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 @error:
         lda #(PARSE_FAILED)
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 
 ; NEGATIVE C COMPLIANT - input in ptr1, return value in carry
@@ -167,14 +163,12 @@ _parse_hex_word:
         sta (ptr1),y
         lda #(PARSE_SUCCESS)
         ldx #$00
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 @error:
         lda #(PARSE_FAILED)
         ldx #$00
-        inc_ptr sp
-        inc_ptr sp
+        inc_ptr sp, #$02
         rts
 
 ; NEGATIVE C COMPLIANT - input in ptr1, return value in carry

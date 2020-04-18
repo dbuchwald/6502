@@ -42,15 +42,30 @@
         pla
         .endmacro
 
-        .macro inc_ptr pointer
+        .macro inc_ptr pointer, offset
+        .ifblank offset
         .local @skip
         inc pointer
         bne @skip
         inc pointer+1
 @skip:
+        .else
+        php
+        pha
+        clc
+        lda pointer
+        adc offset
+        sta pointer
+        lda pointer+1
+        adc #$00
+        sta pointer+1
+        pla
+        plp 
+        .endif
         .endmacro
 
-        .macro dec_ptr pointer
+        .macro dec_ptr pointer, offset
+        .ifblank offset
         .local @skip
         pha
         lda pointer
@@ -59,6 +74,19 @@
 @skip:
         dec pointer
         pla
+        .else
+        php
+        pha
+        sec
+        lda pointer
+        sbc offset
+        sta pointer
+        lda pointer+1
+        sbc #$00
+        sta pointer+1
+        pla
+        plp
+        .endif
         .endmacro
 
         .macro cmp_ptr pointer1, pointer2
