@@ -67,6 +67,7 @@
         .forceimport _syscall__tty_writeln
         .forceimport _syscall__tty_write_hex
         .forceimport _syscall__tty_send_newline
+        .forceimport _syscall__tty_send_character
 ; menu routines
         .forceimport _syscall__run_menu
         .forceimport _syscall_run_menu

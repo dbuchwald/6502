@@ -362,11 +362,6 @@ draw_field:
 @done:
         rts
 
-_tty_send_character:
-        sta single_char_string
-        write_tty #single_char_string
-        rts
-
 draw_column_labels:
         ldx #$00
 @column_loop:
@@ -1172,5 +1167,3 @@ no_piece_on_given_field:
         .asciiz "Unable to move - there is no piece on this field"
 invalid_field_id:
         .asciiz "Unable to move - invalid field identifier (should be [0-7][0-7])"
-single_char_string:
-        .asciiz " "

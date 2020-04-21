@@ -51,7 +51,8 @@ LOADABLE_PROJECTS = 01_blink_test        \
 										12_custom_chars      \
 										13_custom_chars_c    \
 										14_offset_math       \
-										15_menu_in_c
+										15_menu_in_c         \
+										16_microchess
 
 FIRMWARE_BINARIES=$(FIRMWARE_PROJECTS:%=$(ROM_FOLDER)/%.$(ADDRESS_MODE).bin)
 

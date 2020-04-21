@@ -13,6 +13,7 @@
         .export _tty_writeln
         .export _tty_write_hex
         .export _tty_send_newline
+        .export _tty_send_character
 
 TTY_CONFIG_INPUT_SERIAL   = %00000001
 TTY_CONFIG_INPUT_KEYBOARD = %00000010
@@ -235,6 +236,33 @@ _tty_send_newline:
         jsr _lcd_newline
 @skip_lcd:
         pla
+        rts
+
+; POSITIVE C COMPLIANT
+; Sends single character to selected channels
+_tty_send_character:
+        phy
+        tay
+        lda tty_config
+        and #(TTY_CONFIG_OUTPUT_SERIAL)
+        ; Serial output disabled
+        beq @skip_serial
+        ; Send series of characters for backspace
+        ; push_ptr ptr1
+        ; write_acia #acia_newline
+        ; pull_ptr ptr1
+        tya
+        jsr _acia_write_byte
+@skip_serial:
+        lda tty_config
+        and #(TTY_CONFIG_OUTPUT_LCD)
+        ; lcd output disabled
+        beq @skip_lcd
+        tya
+        jsr _lcd_print_char
+@skip_lcd:
+        tya
+        ply
         rts
 
 ; INTERNAL

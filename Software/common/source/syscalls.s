@@ -81,6 +81,7 @@
         .export _syscall__tty_writeln
         .export _syscall__tty_write_hex
         .export _syscall__tty_send_newline
+        .export _syscall__tty_send_character
 ; menu routines
         .export _syscall__run_menu
         .export _syscall_run_menu
@@ -214,6 +215,8 @@ _syscall__tty_write_hex:
         SYSCALL_VECTOR _tty_write_hex
 _syscall__tty_send_newline:
         SYSCALL_VECTOR _tty_send_newline
+_syscall__tty_send_character:
+        SYSCALL_VECTOR _tty_send_character
 _syscall__run_menu:
         SYSCALL_VECTOR _run_menu
 _syscall_run_menu:
