@@ -54,6 +54,13 @@ ifneq ($(LOAD_LINK),static)
 	LOAD_LINK=dynamic
 endif
 
+# LCD operation - 4bit or 8bit
+ifneq ($(LCD_MODE),8bit)
+	LCD_MODULE=lcd4bit.s
+else
+	LCD_MODULE=lcd8bit.s
+endif
+
 # Include folders
 COMMON_ROOT=../../common
 COMMON_INCLUDE_FOLDER=$(COMMON_ROOT)/include
@@ -62,20 +69,21 @@ COMMON_SOURCE_FOLDER=$(COMMON_ROOT)/source
 BASE_LIBRARY=$(COMMON_ROOT)/none.lib
 
 # Common objects to be linked
-COMMON_SOURCES=sysram_map.s \
-							 syscalls.s  \
-							 acia.s      \
-               blink.s     \
-							 core.s      \
-							 keyboard.s  \
-							 lcd4bit.s   \
-							 modem.s     \
-							 string.s    \
-							 utils.s     \
-							 via.s       \
-							 via_utils.s \
-							 tty.s       \
-							 parse.s     \
+COMMON_SOURCES=sysram_map.s  \
+							 syscalls.s    \
+							 acia.s        \
+               blink.s       \
+							 core.s        \
+							 keyboard.s    \
+							 lcd.s         \
+							 $(LCD_MODULE) \
+							 modem.s       \
+							 string.s      \
+							 utils.s       \
+							 via.s         \
+							 via_utils.s   \
+							 tty.s         \
+							 parse.s       \
 							 menu.s
 
 COMMON_OBJECTS=$(COMMON_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.o)
