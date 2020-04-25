@@ -68,7 +68,7 @@ COMMON_SOURCES=sysram_map.s \
                blink.s     \
 							 core.s      \
 							 keyboard.s  \
-							 lcd.s       \
+							 lcd4bit.s   \
 							 modem.s     \
 							 string.s    \
 							 utils.s     \

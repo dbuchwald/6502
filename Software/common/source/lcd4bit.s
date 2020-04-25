@@ -68,6 +68,20 @@ LCD_READ_MODE           = %00000100
 LCD_ENABLE_FLAG         = %00001000
 
 LCD_SCROLL_DELAY_MS     = 150
+
+; Default setting compatible with PCB Rev. 001
+LCD_PORT                = VIA1_PORTB
+LCD_DDR                 = VIA1_DDRB
+
+LCD_DDR_WRITE_MASK      = %11111110
+LCD_DDR_READ_MASK       = %00001110
+
+BLINK_PORT_MASK         = %00000001 
+UPPER_NIBBLE_MASK       = %11110000
+LOWER_NIBBLE_MASK       = %00001111
+
+CHAR_DEFINE_MASK        = %00000111
+
         .code
 
 ; POSITIVE C COMPLIANT
@@ -76,9 +90,9 @@ _lcd_init:
         pha
         phx
         ; Initialize DDRB
-        lda VIA1_DDRB
-        ora #%11111110
-        sta VIA1_DDRB
+        lda LCD_DDR
+        ora #(LCD_DDR_WRITE_MASK)
+        sta LCD_DDR
         ; Initialization by instruction
         ldx #$00
 @lcd_force_reset_loop:
@@ -90,14 +104,14 @@ _lcd_init:
         ; Exit loop if $00 read
         beq @lcd_force_reset_end
 
-        lda VIA1_PORTB
-        and #%00000001
+        lda LCD_PORT
+        and #(BLINK_PORT_MASK)
         ora lcd_force_reset_sequence, x
-        sta VIA1_PORTB
+        sta LCD_PORT
         ora #(LCD_ENABLE_FLAG)
-        sta VIA1_PORTB
+        sta LCD_PORT
         eor #(LCD_ENABLE_FLAG)
-        sta VIA1_PORTB
+        sta LCD_PORT
 
         inx 
         bra @lcd_force_reset_loop
@@ -425,7 +439,7 @@ _lcd_define_char:
 ; ptr1 contains address of the first byte in char map
 lcd_define_char:
         ; ensure proper input value
-        and #%00000111
+        and #(CHAR_DEFINE_MASK)
         ; move charcode to bits 3-5
         asl
         asl
@@ -468,34 +482,34 @@ lcd_write_byte:
         sta lcd_temp_char1
 @lcd_write_mode_set:
         ; Get current value of blink led
-        lda VIA1_PORTB
-        and #%00000001
+        lda LCD_PORT
+        and #(BLINK_PORT_MASK)
         ; Concatenate with current buffer and store it there
         ora lcd_temp_char1
         sta lcd_temp_char1
         ; Set port direction (output)
-        lda VIA1_DDRB
-        ora #%11111110
-        sta VIA1_DDRB
+        lda LCD_DDR
+        ora #(LCD_DDR_WRITE_MASK)
+        sta LCD_DDR
         ; Process actual data
         lda lcd_temp_char2
         ; Most significant bits first
         ; Apply mask
-        and #%11110000
+        and #(UPPER_NIBBLE_MASK)
         ; Fetch current status from lcd_temp_char1
         ora lcd_temp_char1
         ; Send first 4 bits
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Set enable flag
         ora #(LCD_ENABLE_FLAG)
         ; send command
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Toggle pulse
         eor #(LCD_ENABLE_FLAG)
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Follow the same process with least significant bits
         lda lcd_temp_char2
-        and #%00001111
+        and #(LOWER_NIBBLE_MASK)
         asl
         asl
         asl
@@ -503,14 +517,14 @@ lcd_write_byte:
         ; Get current status
         ora lcd_temp_char1
         ; Send first 4 bits
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Set write command flags
         ora #(LCD_ENABLE_FLAG)
         ; Send command
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Toggle pulse
         eor #(LCD_ENABLE_FLAG)
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; wait for BF clear
 @lcd_wait_bf_clear:
         clc
@@ -541,43 +555,43 @@ lcd_read_byte:
 @lcd_read_mode_set:
         ; Preserve direction of last four bits of DDRB
         ; but toggle LCD data lines to input
-        lda VIA1_DDRB
-        and #%00000001
-        ora #%00001110
-        sta VIA1_DDRB
+        lda LCD_DDR
+        and #(BLINK_PORT_MASK)
+        ora #(LCD_DDR_READ_MASK)
+        sta LCD_DDR
         ; Preserve status of blink led
-        lda VIA1_PORTB
-        and #%00000001
+        lda LCD_PORT
+        and #(BLINK_PORT_MASK)
         ora lcd_temp_char3
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Give it a while
         ora #(LCD_ENABLE_FLAG)
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Read result
-        lda VIA1_PORTB
-        and #%11110000
+        lda LCD_PORT
+        and #(UPPER_NIBBLE_MASK)
         ; Store result from LCD data lines
         sta lcd_temp_char1
         ; Toggle enable
-        lda VIA1_PORTB
+        lda LCD_PORT
         eor #(LCD_ENABLE_FLAG)
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Get next four bits
-        and #%00000001
+        and #(BLINK_PORT_MASK)
         ora lcd_temp_char3
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Give it a while
         ora #(LCD_ENABLE_FLAG)
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Read and construct result
-        lda VIA1_PORTB
+        lda LCD_PORT
         sta lcd_temp_char2
         ; Toggle enable flag
         eor #(LCD_ENABLE_FLAG)
-        sta VIA1_PORTB
+        sta LCD_PORT
         ; Combine results
         lda lcd_temp_char2
-        and #%11110000
+        and #(UPPER_NIBBLE_MASK)
         lsr
         lsr
         lsr
