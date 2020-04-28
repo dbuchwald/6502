@@ -61,6 +61,8 @@
         .export parse_hex_byte
         .export _parse_hex_word
         .export parse_hex_word
+        .export _parse_dec_word
+        .export parse_dec_word
 ; tty routines
         .export _tty_init
         .export _tty_read_line
@@ -241,6 +243,12 @@ _parse_hex_word:
 
 parse_hex_word:
         jmp (_syscall_parse_hex_word)
+
+_parse_dec_word:
+        jmp (_syscall__parse_dec_word)
+
+parse_dec_word:
+        jmp (_syscall_parse_dec_word)
 
 ; tty routines
 _tty_init:

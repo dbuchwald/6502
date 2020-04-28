@@ -1,4 +1,3 @@
-
         .include "core.inc"
         .include "blink.inc"
         .include "lcd.inc"
@@ -73,6 +72,8 @@
         .export _syscall_parse_hex_byte
         .export _syscall__parse_hex_word
         .export _syscall_parse_hex_word
+        .export _syscall__parse_dec_word
+        .export _syscall_parse_dec_word
 ; tty routines
         .export _syscall__tty_init
         .export _syscall__tty_read_line
@@ -201,6 +202,10 @@ _syscall__parse_hex_word:
         SYSCALL_VECTOR _parse_hex_word
 _syscall_parse_hex_word:
         SYSCALL_VECTOR parse_hex_word
+_syscall__parse_dec_word:
+        SYSCALL_VECTOR _parse_dec_word
+_syscall_parse_dec_word:
+        SYSCALL_VECTOR parse_dec_word
 _syscall__tty_init:
         SYSCALL_VECTOR _tty_init
 _syscall__tty_read_line:

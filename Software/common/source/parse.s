@@ -9,6 +9,8 @@
         .export parse_hex_byte
         .export _parse_hex_word
         .export parse_hex_word
+        .export _parse_dec_word
+        .export parse_dec_word
 
 PARSE_SUCCESS = $01
 PARSE_FAILED  = $00
@@ -23,8 +25,7 @@ _parse_onoff:
         ldy #$01
         lda (sp),y
         tax
-        dey
-        lda (sp),y
+        lda (sp)
         jsr parse_onoff
         ldx #$00
         bcc @error
@@ -78,8 +79,7 @@ _parse_hex_byte:
         ldy #$01
         lda (sp),y
         tax
-        dey
-        lda (sp),y
+        lda (sp)
         jsr parse_hex_byte
         ldx #$00
         bcc @error
@@ -158,9 +158,9 @@ _parse_hex_word:
         bcc @error
         copy_ptr return_buffer_pointer, ptr1
         ldy #$01
-        sta (ptr1)
-        txa
         sta (ptr1),y
+        txa
+        sta (ptr1)
         lda #(PARSE_SUCCESS)
         ldx #$00
         inc_ptr sp, #$02
@@ -276,10 +276,148 @@ parse_hex_char:
         clc
         rts
 
+; C wrapper for parse_dec_word function
+; return status in A
+; buffer for result in A/X
+; data to parse on stack
+_parse_dec_word:
+        sta return_buffer_pointer
+        stx return_buffer_pointer+1
+        ldy #$01
+        lda (sp),y
+        tax
+        dey
+        lda (sp),y
+        jsr parse_dec_word
+        bcc @error
+        copy_ptr return_buffer_pointer, ptr1
+        ldy #$01
+        sta (ptr1),y
+        txa
+        sta (ptr1)
+        lda #(PARSE_SUCCESS)
+        ldx #$00
+        inc_ptr sp, #$02
+        rts
+@error:
+        lda #(PARSE_FAILED)
+        ldx #$00
+        inc_ptr sp, #$02
+        rts
+
+; NEGATIVE C COMPLIANT - status in carry
+; Return in A/X (MSB/LSB)
+parse_dec_word:
+        sta parsed_token_pointer
+        stx parsed_token_pointer+1
+        ; preserve Y
+        phy
+
+        ; check input length
+        strlength parsed_token_pointer
+        cmp #$06
+        bmi @not_too_long
+        jmp @error
+@not_too_long:
+        stz return_value
+        stz return_value+1
+        ldy #$00
+        copy_ptr parsed_token_pointer, ptr1
+@convert_loop:
+        lda (ptr1),y
+        beq @done
+        jsr parse_dec_char
+        bcc @error
+        ; multiply result by 10
+        jsr multiply_by_10
+        bcc @error
+        clc
+        adc return_value
+        sta return_value
+        lda return_value+1
+        adc #$00
+        sta return_value+1
+        bcs @error
+        iny
+        bra @convert_loop
+@error:
+        ply
+        clc
+        rts
+@done:
+        ply
+        lda return_value+1
+        ldx return_value
+        sec
+        rts
+
+
+; INTERNAL
+; Assumes char in A
+; returns status in carry (set - OK)
+; returns value in A
+parse_dec_char:
+        cmp #('0')
+        bmi @error 
+        cmp #('9'+1)
+        bpl @error
+        sec
+        sbc #('0')
+        sec
+        rts
+@error:
+        clc
+        rts
+
+; INTERNAL
+; Multiplies return_value by 10
+multiply_by_10:
+        pha
+        lda return_value
+        sta temp_value
+        lda return_value+1
+        sta temp_value+1
+        ; mul by 8
+        asl return_value
+        rol return_value+1
+        ; report error on overflow
+        bcs @error
+        asl return_value
+        rol return_value+1
+        ; report error on overflow
+        bcs @error
+        asl return_value
+        rol return_value+1
+        ; report error on overflow
+        bcs @error
+        ; mul by 2
+        asl temp_value
+        rol temp_value+1
+        bcs @error
+        clc
+        lda return_value
+        adc temp_value
+        sta return_value
+        lda return_value+1
+        adc temp_value+1
+        sta return_value+1
+        bcs @error
+        sec
+        bra @exit
+@error:
+        clc
+@exit:
+        pla
+        rts
+
         .segment "BSS"
 parsed_token_pointer:
         .res 2
 return_buffer_pointer:
+        .res 2
+return_value:
+        .res 2
+temp_value:
         .res 2
         .segment "RODATA"
 token_on:
