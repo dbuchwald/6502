@@ -53,6 +53,7 @@ _run_monitor:
         rts
 
 _get_address:
+        stz stack_flag
         sta tokens_pointer
         stx tokens_pointer+1
         strgettoken tokens_pointer, 1
@@ -79,6 +80,7 @@ _get_address:
         rts
 
 _get_range:
+        stz stack_flag
         sta tokens_pointer
         stx tokens_pointer+1
         ; check if colon provided
@@ -175,6 +177,25 @@ _print_memory_range:
         inc tmp1
         stz tmp2
 @byte_loop:
+        bit stack_flag
+        beq @not_stack_ptr
+        lda stack_ptr
+        cmp ptr3
+        bne @not_stack_ptr
+        lda ptr3+1
+        cmp #$01
+        bne @not_stack_ptr
+        ; this particular byte is at the top of stack pointer
+        ; draw two asterisks before and after the byte
+        ldx tmp1
+        dex
+        lda #('*')
+        sta dump_line, x
+        inx
+        inx
+        inx
+        sta dump_line, x
+@not_stack_ptr:
         lda (ptr3)
         hex_to_buffer
         inc tmp1
@@ -275,6 +296,37 @@ _put_value:
 @error:
         writeln_tty #parseerr
         rts
+
+_get_stack:
+        lda #$ff
+        sta stack_flag
+        lda #$00 
+        sta start_address
+        lda #$01 
+        sta start_address+1
+        lda #$ff
+        sta end_address
+        lda #$01
+        sta end_address+1
+        write_tty #str_stack_pointer
+        tsx
+        txa
+        sta stack_ptr
+        jsr _tty_write_hex
+        jsr _tty_send_newline
+        jmp _print_memory_range
+
+_get_zero:
+        stz stack_flag
+        lda #$00 
+        sta start_address
+        lda #$00 
+        sta start_address+1
+        lda #$ff
+        sta end_address
+        lda #$00
+        sta end_address+1
+        jmp _print_memory_range
 
 _disasm_address:
         sta tokens_pointer
@@ -613,6 +665,10 @@ addressing_mode:
         .res 1
 relative_offset:
         .res 1
+stack_flag:
+        .res 1
+stack_ptr:
+        .res 1
 
         .segment "RODATA"
 msghello1: 
@@ -638,9 +694,11 @@ assign:
 dump_template:
         .asciiz "xxxx                                                    "
 menu:
-        menuitem get_cmd, 2, get_2_desc, _get_address
-        menuitem get_cmd, 4, get_4_desc, _get_range
-        menuitem put_cmd, 4, put_desc, _put_value
+        menuitem get_cmd,    2, get_2_desc,  _get_address
+        menuitem get_cmd,    4, get_4_desc,  _get_range
+        menuitem put_cmd,    4, put_desc,    _put_value
+        menuitem stack_cmd,  1, stack_desc,  _get_stack
+        menuitem zero_cmd,   1, zero_desc,   _get_zero
         menuitem disasm_cmd, 2, disasm_desc, _disasm_address
         endmenu 
 
@@ -654,6 +712,14 @@ put_cmd:
         .asciiz "PUT"
 put_desc:
         .asciiz "PUT xxxx=yy - put value yy at address xxxx"
+stack_cmd:
+        .asciiz "STACK"
+stack_desc:
+        .asciiz "STACK - display current stack contents and pointer value"
+zero_cmd:
+        .asciiz "ZERO"
+zero_desc:
+        .asciiz "ZERO - display zeropage contents"
 disasm_cmd:
         .asciiz "DISASM"
 disasm_desc:
@@ -692,3 +758,6 @@ str_format_indirect:
         .asciiz "($xxxx)"
 str_format_indirect_x:
         .asciiz "($xxxx,X)"
+
+str_stack_pointer:
+        .asciiz "Current stack pointer value: 0x"

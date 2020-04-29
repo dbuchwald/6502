@@ -11,6 +11,7 @@
         .include "macros.inc"
 
         .export _run_shell
+        .import os1_version
         .import _run_monitor
 
         .code
@@ -32,6 +33,7 @@ _run_shell:
         writeln_tty #msgemptyline
 
         ; Display hello messages
+        write_tty #os1_version
         writeln_tty #msghello1
         writeln_tty #msghello2
         writeln_tty #msghello3
@@ -112,7 +114,7 @@ banner4:
 banner5:
         .asciiz "|   ####  ####  #      ###  |"
 msghello1: 
-        .asciiz "OS/1 Version 0.2C (Alpha+C)"
+        .asciiz " (Alpha+C)"
 msghello2: 
         .asciiz "Welcome to OS/1 shell for DB6502 computer"
 msghello3:

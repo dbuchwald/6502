@@ -24,9 +24,16 @@ KEYBOARD_DATA_AVAILABLE    = $01
 ; No output values
 _keyboard_init:
       pha
-      ; Assume keyboard is disconnected
+      ; Check if keyboard status makes sense (would suggest soft reboot)
+      lda keyboard_conn
+      cmp #$00
+      beq @probably_reset
+      cmp #$80
+      beq @probably_reset
+      ; Assume keyboard is disconnected otherwise
       lda #$00
       sta keyboard_conn
+@probably_reset:
       ; Reset buffer pointers
       stz keyboard_rptr
       stz keyboard_wptr
