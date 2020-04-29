@@ -7,6 +7,7 @@
       .include "syscalls.inc"
 
       .import _run_shell
+      .export os1_version
 
       .segment "VECTORS"
 
@@ -17,16 +18,19 @@
       .code
 
 init:
+      ; clean up stack
+      ldx #$00
+@clean_stack_loop:
+      stz $0100,x
+      inx
+      bne @clean_stack_loop
       ; Set up stack
       ldx #$ff
       txs
       ; Run setup routine
       jsr _system_init
-@main_loop:
-      ; Clear screen in case there are some leftovers
-      jsr _lcd_clear
       ; Display hello message
-      write_lcd #welcome_message
+      write_lcd #os1_version
       ; Display keyboard status
       ldx #$00
       ldy #$01
@@ -61,12 +65,14 @@ init:
       jsr _lcd_clear
       write_lcd #shell_connected
       jsr _run_shell
-      jmp @main_loop
+      ; Disable interrupt processing during init
+      sei 
+      jmp init
 
       .segment "RODATA"
 
-welcome_message:
-      .asciiz "OS/1 version 0.2C"
+os1_version:
+      .asciiz "OS/1 version 0.2.1C"
 keyboard_disconnected:
       .asciiz "No keyboard"
 keyboard_connected:
