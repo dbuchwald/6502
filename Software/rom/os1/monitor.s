@@ -169,6 +169,9 @@ _print_memory_range:
 
         lda #00
         sta tmp1
+        ; Offset for printable characters window
+        lda #$39
+        sta tmp3
         lda ptr3+1
         hex_to_buffer
         lda ptr3
@@ -200,7 +203,23 @@ _print_memory_range:
         hex_to_buffer
         inc tmp1
         inc tmp2
+; Put in printable characters
+        ldx tmp3
+        lda (ptr3)
+        cmp #$20
+        bmi @non_printable
+        cmp #$80
+        bpl @non_printable
+        ; printable character
+        bra @print_char
+@non_printable:
+        ; print dot instead
+        lda #('.')
+@print_char:
+        sta dump_line,x
+        inc tmp3
 
+; Check if reached end of range
         cmp_ptr end_address,ptr3
         beq @exit
 
@@ -692,7 +711,7 @@ colon:
 assign:
         .asciiz "="
 dump_template:
-        .asciiz "xxxx                                                    "
+        .asciiz "xxxx                                                    |                |"
 menu:
         menuitem get_cmd,    2, get_2_desc,  _get_address
         menuitem get_cmd,    4, get_4_desc,  _get_range
