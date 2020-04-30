@@ -5,10 +5,15 @@
         .include "string.inc"
         .include "macros.inc"
         .include "parse.inc"
+        .include "sys_const.inc"
+        .include "tokens.inc"
 
         .export parse_line
 
-TOKEN_BUFFER_LENGTH = 64
+TOKEN_BUFFER_LENGTH  = 64
+STRING_BUFFER_LENGTH = 128
+
+RETURN_BUFFER_LENGTH = 256
 
         .macro push_line_ptr
         pha
@@ -32,6 +37,14 @@ TOKEN_BUFFER_LENGTH = 64
         pla
         .endmacro
 
+        .macro parse_fail reason
+        strcopy reason, #variable_section
+        strlength reason
+        sta variable_section_size
+        lda #(TOKEN_ERROR)
+        sta command_token
+        .endmacro
+
         ; increments Y while (line_ptr),y is space or tab
         ; A contains first non-white char
         ; Y contains index
@@ -47,7 +60,7 @@ TOKEN_BUFFER_LENGTH = 64
         iny
         bra @skip_loop
 @not_space:
-        cmp #$09 ; TAB
+        cmp #(CHAR_TAB)
         bne @skip_exit
         iny
         bra @skip_loop
@@ -103,18 +116,27 @@ parse_line:
         ; need to update line_ptr
 @not_immediate_command:
         move_line_ptr_to_y
-
-        write_tty_address line_number
-        jsr _tty_send_newline
+        lda line_number
+        sta command_line_number
+        lda line_number+1
+        sta command_line_number+1
+        stz immediate_command_flag
+        ; write_tty_address line_number
+        ; jsr _tty_send_newline
 
 @parse_command:
         jsr parse_command
         bcc @error
         sec 
-        rts
+        bra @exit
 
 @error:
         clc
+        bra @exit
+
+@exit:
+        lda #<return_val_buffer
+        ldx #>return_val_buffer
         rts
 
 parse_line_number:
@@ -137,7 +159,7 @@ parse_line_number:
         ; nope
         beq @error
         ; terminate with null char
-        lda #$00
+        lda #(CHAR_END_OF_STRING)
         sta (token_ptr),y
         ; try to parse the number (might fail if too big)
         parse_dec_word #token_buffer
@@ -145,7 +167,6 @@ parse_line_number:
         ; parsed successfully
         sta line_number+1
         stx line_number
-        stz immediate_command_flag
         sec
         rts
 @error:
@@ -188,7 +209,7 @@ parse_command:
 
 @compare_commands:
         ; add null terminator
-        lda #$00
+        lda #(CHAR_END_OF_STRING)
         sta token_buffer, y
         ; convert command to uppercase
         strtoupper #token_buffer
@@ -197,8 +218,10 @@ parse_command:
         cmp #$00
         bne @not_list
         jsr parse_list
-        bcc @error
+        bcc @list_parse_error
         jmp @exit
+@list_parse_error:
+        jmp @error
 @not_list: 
         strcompare #token_buffer, #cmd_run
         cmp #$00
@@ -216,11 +239,13 @@ parse_command:
 @not_print:
         strcompare #token_buffer, #cmd_goto
         cmp #$00
-        bne @error
+        bne @unknown_command
         jsr parse_goto
         bcc @error
         jmp @exit
-
+@unknown_command:
+        parse_fail #error_invalid_command
+        bra @error
 @error:
         clc
         bra @exit
@@ -230,29 +255,128 @@ parse_command:
         rts
 
 parse_list:
-        writeln_tty #cmd_list
+        ; writeln_tty #cmd_list
+        lda immediate_command_flag
+        beq @error
+        lda #(TOKEN_LIST)
+        sta command_token
         sec
+        rts
+@error:
+        parse_fail #error_immediate_cmd
+        clc
         rts
 
 parse_run:
-        writeln_tty #cmd_run
+        ; writeln_tty #cmd_run
+        lda immediate_command_flag
+        beq @error
+        lda #(TOKEN_RUN)
+        sta command_token
         sec
+        rts
+@error:
+        parse_fail #error_immediate_cmd
+        clc
         rts
 
 parse_print:
-        writeln_tty #cmd_print
+;        writeln_tty #cmd_print
+        lda #(TOKEN_PRINT)
+        sta command_token
+        push_line_ptr
+        skip_whitespace
+        move_line_ptr_to_y
+        jsr parse_string
+        bcc @error
+        ;writeln_tty #string_buffer
+        strcopy #string_buffer, #variable_section
+        strlength #string_buffer
+        sta variable_section_size
         sec
+        bra @exit
+@error:
+        parse_fail #error_invalid_string
+        clc
+        bra @exit
+@exit:
+        pop_line_ptr
         rts
 
 parse_goto:
-        writeln_tty #cmd_goto
+;        writeln_tty #cmd_goto
+        lda immediate_command_flag
+        beq @good_mode
+        jmp @error_imm
+@good_mode:
+        lda #(TOKEN_GOTO)
+        sta command_token
         push_line_ptr
         skip_whitespace
         move_line_ptr_to_y
         jsr parse_line_number
-        bcc @error
-        write_tty_address line_number
-        jsr _tty_send_newline
+        bcc @error_num
+;        write_tty_address line_number
+;        jsr _tty_send_newline
+        lda line_number
+        sta variable_section
+        lda line_number+1
+        sta variable_section+1
+        lda #$02
+        sta variable_section_size
+        skip_whitespace
+        move_line_ptr_to_y
+        sec
+        bra @exit
+@error_imm:
+        parse_fail #error_not_immediate_cmd
+        clc
+        ; deliberately not jumping to @exit, as there is nothing to pop
+        rts
+@error_num:
+        parse_fail #error_invalid_line_num
+        clc
+        bra @exit
+@exit:
+        pop_line_ptr
+        rts
+
+parse_string:
+        push_line_ptr
+        ; String starts with " and ends with one
+        lda (line_ptr),y
+        cmp #(CHAR_DOUBLEQUOTE)
+        bne @error
+        ; Copy contents to buffer
+        inc_ptr line_ptr
+        ldy #$00
+@copy_loop:
+        lda (line_ptr),y
+        cmp #(CHAR_DOUBLEQUOTE)
+        beq @copy_done
+        cmp #(CHAR_END_OF_STRING)
+        beq @error
+        cmp #(CHAR_BACKSLASH)
+        beq @escape_char
+        ; Not special character, copy to buffer
+@copy_to_buffer:
+        sta string_buffer, y
+        iny
+        bra @copy_loop
+@escape_char:
+        ; Next char can be \ or "
+        inc_ptr line_ptr
+        lda (line_ptr),y
+        cmp #(CHAR_DOUBLEQUOTE)
+        beq @copy_to_buffer
+        cmp #(CHAR_BACKSLASH)
+        beq @copy_to_buffer
+        ; otherwise it's an error
+        bra @error
+@copy_done:
+        ; add null terminator
+        lda #(CHAR_END_OF_STRING)
+        sta string_buffer, y
         sec
         bra @exit
 @error:
@@ -261,7 +385,6 @@ parse_goto:
 @exit:
         pop_line_ptr
         rts
-
 
         .segment "BSS"
 line_buffer_ptr:
@@ -273,8 +396,20 @@ line_number:
 token_buffer:
         .res TOKEN_BUFFER_LENGTH
 
+string_buffer:
+        .res STRING_BUFFER_LENGTH
+
+return_val_buffer:
 immediate_command_flag:
         .res 1
+command_line_number:
+        .res 2
+command_token:
+        .res 1
+variable_section_size:
+        .res 1
+variable_section:
+        .res RETURN_BUFFER_LENGTH - (variable_section - return_val_buffer)
 
         .segment "RODATA"
 
@@ -289,8 +424,13 @@ cmd_run:
 cmd_quit:
         .asciiz "QUIT"
 
-err_line_num:
-        .asciiz "Unable to parse line number..."
-
-msg_line_num:
-        .asciiz "Line number is: "
+error_invalid_line_num:
+        .asciiz "Invalid line number"
+error_invalid_command:
+        .asciiz "Invalid command"
+error_invalid_string:
+        .asciiz "Invalid string"
+error_immediate_cmd:
+        .asciiz "Only immediate command"
+error_not_immediate_cmd:
+        .asciiz "Non-immediate command"

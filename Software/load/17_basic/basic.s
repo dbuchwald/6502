@@ -10,10 +10,6 @@
 
 LINE_BUFFER_SIZE=64
 
-        .zeropage
-line_ptr:
-        .res 2
-
         .code
 
 main_loop:
@@ -42,21 +38,20 @@ main_loop:
         lda #<line_buffer
         ldx #>line_buffer
 
-        jsr parse_line 
+        jsr parse_line
+        sta return_buffer_ptr
+        stx return_buffer_ptr+1
 
-        bcs main_loop
-        writeln_tty #err_line_num
-
+        bcc @parse_error
         bra main_loop
 
-; @print_line_num:
-;         stx line_number
-;         sta line_number+1
+@parse_error:
+        write_tty #err_parse_failed
+        copy_ptr return_buffer_ptr, variable_section_ptr
+        inc_ptr variable_section_ptr, #$05
+        writeln_tty variable_section_ptr 
 
-;         write_tty #msg_line_num
-;         write_tty_address line_number
-;         jsr _tty_send_newline
-;         jmp main_loop
+        jmp main_loop
 
 exit:
         rts
@@ -65,8 +60,9 @@ exit:
         .segment "BSS"
 line_buffer:
         .res LINE_BUFFER_SIZE
-
-line_number:
+return_buffer_ptr:
+        .res 2
+variable_section_ptr:
         .res 2
 
         .segment "RODATA"
@@ -74,19 +70,8 @@ line_number:
 basic_prompt:
         .asciiz "OS/1 Basic>"
 
-cmd_list:
-        .asciiz "CMD"
-cmd_print:
-        .asciiz "PRINT"
-cmd_goto:
-        .asciiz "GOTO"
-cmd_run:
-        .asciiz "RUN"
 cmd_quit:
         .asciiz "QUIT"
 
-err_line_num:
-        .asciiz "Unable to parse line number..."
-
-msg_line_num:
-        .asciiz "Line number is: "
+err_parse_failed:
+        .asciiz "Unable to parse line: "
