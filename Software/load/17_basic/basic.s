@@ -5,8 +5,14 @@
         .include "string.inc"
         .include "macros.inc"
         .include "parse.inc"
+        .include "tokens.inc"
 
         .import parse_line
+        .import get_immediate_flag
+        .import get_line_number
+        .import get_token_code
+        .import get_variable_section_size
+        .import get_variable_section_ptr
 
 LINE_BUFFER_SIZE=64
 
@@ -27,14 +33,6 @@ main_loop:
         cmp #$00
         beq main_loop
 
-        ; Compare against quit command
-        strcompare #line_buffer, #cmd_quit
-        cmp #$00
-        beq exit
-
-        ; parse_dec_word #line_buffer
-        ; bcs @print_line_num
-        ; writeln_tty #err_line_num
         lda #<line_buffer
         ldx #>line_buffer
 
@@ -43,19 +41,34 @@ main_loop:
         stx return_buffer_ptr+1
 
         bcc @parse_error
-        bra main_loop
+        copy_ptr return_buffer_ptr, ptr1
+        jsr get_immediate_flag
+        beq main_loop
+        jsr get_token_code
+        cmp #(TOKEN_PRINT)
+        bne @not_print
+        jsr get_variable_section_ptr
+        sta variable_section_ptr
+        stx variable_section_ptr+1
+        writeln_tty variable_section_ptr
+        jmp main_loop
+
+@not_print:
+        cmp #(TOKEN_QUIT)
+        beq exit
+        jmp main_loop
 
 @parse_error:
         write_tty #err_parse_failed
-        copy_ptr return_buffer_ptr, variable_section_ptr
-        inc_ptr variable_section_ptr, #$05
+        jsr get_variable_section_ptr
+        sta variable_section_ptr
+        stx variable_section_ptr+1
         writeln_tty variable_section_ptr 
 
         jmp main_loop
 
 exit:
         rts
-
 
         .segment "BSS"
 line_buffer:
@@ -69,9 +82,6 @@ variable_section_ptr:
 
 basic_prompt:
         .asciiz "OS/1 Basic>"
-
-cmd_quit:
-        .asciiz "QUIT"
 
 err_parse_failed:
         .asciiz "Unable to parse line: "

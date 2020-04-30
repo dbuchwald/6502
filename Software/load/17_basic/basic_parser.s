@@ -9,6 +9,11 @@
         .include "tokens.inc"
 
         .export parse_line
+        .export get_immediate_flag
+        .export get_line_number
+        .export get_token_code
+        .export get_variable_section_size
+        .export get_variable_section_ptr
 
 TOKEN_BUFFER_LENGTH  = 64
 STRING_BUFFER_LENGTH = 128
@@ -227,7 +232,9 @@ parse_command:
         cmp #$00
         bne @not_run
         jsr parse_run
-        bcc @error
+        bcs @run_ok
+        jmp @error
+@run_ok:
         jmp @exit
 @not_run:
         strcompare #token_buffer, #cmd_print
@@ -239,8 +246,15 @@ parse_command:
 @not_print:
         strcompare #token_buffer, #cmd_goto
         cmp #$00
-        bne @unknown_command
+        bne @not_goto
         jsr parse_goto
+        bcc @error
+        jmp @exit
+@not_goto:
+        strcompare #token_buffer, #cmd_quit
+        cmp #$00
+        bne @unknown_command
+        jsr parse_quit
         bcc @error
         jmp @exit
 @unknown_command:
@@ -279,6 +293,20 @@ parse_run:
         parse_fail #error_immediate_cmd
         clc
         rts
+
+parse_quit:
+        ; writeln_tty #cmd_run
+        lda immediate_command_flag
+        beq @error
+        lda #(TOKEN_QUIT)
+        sta command_token
+        sec
+        rts
+@error:
+        parse_fail #error_immediate_cmd
+        clc
+        rts
+
 
 parse_print:
 ;        writeln_tty #cmd_print
@@ -384,6 +412,28 @@ parse_string:
         bra @exit
 @exit:
         pop_line_ptr
+        rts
+
+get_immediate_flag:
+        lda immediate_command_flag
+        rts
+
+get_line_number:
+        lda command_line_number
+        ldx command_line_number+1
+        rts
+
+get_token_code:
+        lda command_token
+        rts
+
+get_variable_section_size:
+        lda variable_section_size
+        rts
+
+get_variable_section_ptr:
+        lda #<variable_section
+        ldx #>variable_section
         rts
 
         .segment "BSS"
