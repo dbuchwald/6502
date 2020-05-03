@@ -63,7 +63,7 @@ main_loop:
         jsr add_new_line
         jmp main_loop
 @not_print:
-        cmp #(TOKEN_QUIT)
+        cmp #(TOKEN_EXIT)
         beq exit
         jmp main_loop
 

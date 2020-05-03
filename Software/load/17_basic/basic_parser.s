@@ -238,46 +238,8 @@ parse_command:
         if_command #cmd_new, parse_new, @exit, @error
         if_command #cmd_print, parse_print, @exit, @error
         if_command #cmd_goto, parse_goto, @exit, @error
-        if_command #cmd_quit, parse_quit, @exit, @error
-;         strcompare #token_buffer, #cmd_list
-;         cmp #$00
-;         bne @not_list
-;         jsr parse_list
-;         bcc @list_parse_error
-;         jmp @exit
-; @list_parse_error:
-;         jmp @error
-; @not_list: 
-;         strcompare #token_buffer, #cmd_run
-;         cmp #$00
-;         bne @not_run
-;         jsr parse_run
-;         bcs @run_ok
-;         jmp @error
-; @run_ok:
-;         jmp @exit
-; @not_run:
-;         strcompare #token_buffer, #cmd_print
-;         cmp #$00
-;         bne @not_print
-;         jsr parse_print
-;         bcc @error
-;         jmp @exit
-; @not_print:
-;         strcompare #token_buffer, #cmd_goto
-;         cmp #$00
-;         bne @not_goto
-;         jsr parse_goto
-;         bcc @error
-;         jmp @exit
-; @not_goto:
-;         strcompare #token_buffer, #cmd_quit
-;         cmp #$00
-;         bne @unknown_command
-;         jsr parse_quit
-;         bcc @error
-;         jmp @exit
-@unknown_command:
+        if_command #cmd_exit, parse_exit, @exit, @error
+
         parse_fail #error_invalid_command
         bra @error
 @error:
@@ -314,11 +276,11 @@ parse_run:
         clc
         rts
 
-parse_quit:
+parse_exit:
         ; writeln_tty #cmd_run
         lda immediate_command_flag
         beq @error
-        lda #(TOKEN_QUIT)
+        lda #(TOKEN_EXIT)
         sta command_token
         sec
         rts
@@ -494,19 +456,6 @@ variable_section:
         .res RETURN_BUFFER_LENGTH - (variable_section - return_val_buffer)
 
         .segment "RODATA"
-
-cmd_new:
-        .asciiz "NEW"
-cmd_list:
-        .asciiz "LIST"
-cmd_print:
-        .asciiz "PRINT"
-cmd_goto:
-        .asciiz "GOTO"
-cmd_run:
-        .asciiz "RUN"
-cmd_quit:
-        .asciiz "QUIT"
 
 error_invalid_line_num:
         .asciiz "Invalid line number"
