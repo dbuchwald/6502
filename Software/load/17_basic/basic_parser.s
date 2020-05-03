@@ -89,6 +89,20 @@ RETURN_BUFFER_LENGTH = 256
 @move_not_required:
         .endmacro
 
+        .macro if_command token, parse_function, parse_ok, parse_failed
+        .local @not_this_command
+        .local @parse_failed
+        strcompare #token_buffer, token
+        cmp #$00
+        bne @not_this_command
+        jsr parse_function
+        bcc @parse_failed
+        jmp parse_ok
+@parse_failed:
+        jmp parse_failed
+@not_this_command:
+        .endmacro
+
         .zeropage
 line_ptr:
         .res 2
@@ -219,44 +233,50 @@ parse_command:
         ; convert command to uppercase
         strtoupper #token_buffer
         ; start comparison
-        strcompare #token_buffer, #cmd_list
-        cmp #$00
-        bne @not_list
-        jsr parse_list
-        bcc @list_parse_error
-        jmp @exit
-@list_parse_error:
-        jmp @error
-@not_list: 
-        strcompare #token_buffer, #cmd_run
-        cmp #$00
-        bne @not_run
-        jsr parse_run
-        bcs @run_ok
-        jmp @error
-@run_ok:
-        jmp @exit
-@not_run:
-        strcompare #token_buffer, #cmd_print
-        cmp #$00
-        bne @not_print
-        jsr parse_print
-        bcc @error
-        jmp @exit
-@not_print:
-        strcompare #token_buffer, #cmd_goto
-        cmp #$00
-        bne @not_goto
-        jsr parse_goto
-        bcc @error
-        jmp @exit
-@not_goto:
-        strcompare #token_buffer, #cmd_quit
-        cmp #$00
-        bne @unknown_command
-        jsr parse_quit
-        bcc @error
-        jmp @exit
+        if_command #cmd_list, parse_list, @exit, @error
+        if_command #cmd_run, parse_run, @exit, @error
+        if_command #cmd_new, parse_new, @exit, @error
+        if_command #cmd_print, parse_print, @exit, @error
+        if_command #cmd_goto, parse_goto, @exit, @error
+        if_command #cmd_quit, parse_quit, @exit, @error
+;         strcompare #token_buffer, #cmd_list
+;         cmp #$00
+;         bne @not_list
+;         jsr parse_list
+;         bcc @list_parse_error
+;         jmp @exit
+; @list_parse_error:
+;         jmp @error
+; @not_list: 
+;         strcompare #token_buffer, #cmd_run
+;         cmp #$00
+;         bne @not_run
+;         jsr parse_run
+;         bcs @run_ok
+;         jmp @error
+; @run_ok:
+;         jmp @exit
+; @not_run:
+;         strcompare #token_buffer, #cmd_print
+;         cmp #$00
+;         bne @not_print
+;         jsr parse_print
+;         bcc @error
+;         jmp @exit
+; @not_print:
+;         strcompare #token_buffer, #cmd_goto
+;         cmp #$00
+;         bne @not_goto
+;         jsr parse_goto
+;         bcc @error
+;         jmp @exit
+; @not_goto:
+;         strcompare #token_buffer, #cmd_quit
+;         cmp #$00
+;         bne @unknown_command
+;         jsr parse_quit
+;         bcc @error
+;         jmp @exit
 @unknown_command:
         parse_fail #error_invalid_command
         bra @error
@@ -307,6 +327,18 @@ parse_quit:
         clc
         rts
 
+parse_new:
+        ; writeln_tty #cmd_run
+        lda immediate_command_flag
+        beq @error
+        lda #(TOKEN_NEW)
+        sta command_token
+        sec
+        rts
+@error:
+        parse_fail #error_immediate_cmd
+        clc
+        rts
 
 parse_print:
 ;        writeln_tty #cmd_print
@@ -463,6 +495,8 @@ variable_section:
 
         .segment "RODATA"
 
+cmd_new:
+        .asciiz "NEW"
 cmd_list:
         .asciiz "LIST"
 cmd_print:

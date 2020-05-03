@@ -14,10 +14,15 @@
         .import get_variable_section_size
         .import get_variable_section_ptr
 
+        .import new_program
+        .import add_new_line
+        .import get_first_line
+
 LINE_BUFFER_SIZE=64
 
         .code
 
+        jsr new_program
 main_loop:
         ; Display prompt
         write_tty #basic_prompt
@@ -43,7 +48,7 @@ main_loop:
         bcc @parse_error
         copy_ptr return_buffer_ptr, ptr1
         jsr get_immediate_flag
-        beq main_loop
+        beq @add_line_to_program
         jsr get_token_code
         cmp #(TOKEN_PRINT)
         bne @not_print
@@ -52,7 +57,11 @@ main_loop:
         stx variable_section_ptr+1
         writeln_tty variable_section_ptr
         jmp main_loop
-
+@add_line_to_program:
+        lda return_buffer_ptr
+        ldx return_buffer_ptr+1
+        jsr add_new_line
+        jmp main_loop
 @not_print:
         cmp #(TOKEN_QUIT)
         beq exit
