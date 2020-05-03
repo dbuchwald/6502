@@ -314,6 +314,8 @@ parse_print:
         ;writeln_tty #string_buffer
         strcopy #string_buffer, #variable_section
         strlength #string_buffer
+        ; add one byte for null terminator
+        inc A
         sta variable_section_size
         sec
         bra @exit

@@ -62,14 +62,8 @@ add_new_line:
         copy_ptr first_line_pointer, ptr2
 @iterate:
         ; get item pointer and store in ptr3
-        ; TODO: item pointer is actually list item pointer+6
-        ; TODO: could be optimized!
-        ldy #$02
-        lda (ptr2),y
-        sta ptr3
-        iny
-        lda (ptr2),y
-        sta ptr3+1
+        copy_ptr ptr2, ptr3
+        inc_ptr ptr3, #$04
         ; load line number (at the beginning of the record)
         ldy #$00
         lda (ptr3),y
@@ -97,15 +91,13 @@ add_new_line:
         bcc @will_fit_here
         ; or the same
         beq @will_fit_here
-        ; create new node (wasting 6 bytes, but what the hell)
+        ; create new node (wasting 4 bytes, but what the hell)
         ldy #$00
         lda (ptr2),y
         sta prev_pointer
         iny
         lda (ptr2),y
         sta prev_pointer+1
-        iny
-        iny
         iny
         lda (ptr2),y
         sta next_pointer
@@ -131,6 +123,7 @@ add_new_line:
         jmp @exit
 @copy_variable_same_line:
         iny
+        dec tmp1
 @same_line_loop:
         lda (ptr1),y
         sta (ptr3),y
@@ -140,7 +133,7 @@ add_new_line:
         jmp @exit
 @greater_line_number:
         ; copy ptr2 to ptr3 temporarily
-        ldy #$04
+        ldy #$02
         lda (ptr2),y
         sta ptr3
         iny
@@ -187,23 +180,13 @@ add_new_line:
         lda prev_pointer+1
         sta (free_ptr),y
         iny
-        ; line data will be stored starting frim byte 6
-        copy_ptr free_ptr, data_pointer
-        inc_ptr data_pointer, #$06
-        ; save data pointer
-        lda data_pointer
-        sta (free_ptr),y 
-        iny
-        lda data_pointer+1
-        sta (free_ptr),y
-        iny
         lda next_pointer
         sta (free_ptr),y
         iny
         lda next_pointer+1
         sta (free_ptr),y
         ; update free_ptr to beginning of line data section
-        inc_ptr free_ptr, #$06
+        inc_ptr free_ptr, #$04
         ldy #$00
         ; copy line number
         lda new_line_num
@@ -225,6 +208,8 @@ add_new_line:
         cmp #$00
         beq @copy_completed
         ; copy variable section (size stored in tmp1)
+        ; reduce tmp1 by one
+        dec tmp1
 @copy_variable_section_loop:
         lda (ptr1),y
         sta (free_ptr),y
@@ -250,8 +235,8 @@ add_new_line:
         bra @update_next_node
 @previous_exists:
         ; copy current pointer to previous node (now pointed to by ptr1)
-        ; next pointer holder, starting at byte 4
-        ldy #$04
+        ; next pointer holder, starting at byte 2
+        ldy #$02
         lda current_pointer
         sta (ptr1),y
         iny
