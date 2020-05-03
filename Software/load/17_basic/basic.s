@@ -17,6 +17,7 @@
         .import new_program
         .import add_new_line
         .import get_first_line
+        .import list_program
 
 LINE_BUFFER_SIZE=64
 
@@ -65,6 +66,11 @@ main_loop:
 @not_print:
         cmp #(TOKEN_EXIT)
         beq exit
+@not_exit:
+        cmp #(TOKEN_LIST)
+        bne @not_list
+        jsr list_program
+@not_list:
         jmp main_loop
 
 @parse_error:

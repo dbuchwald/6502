@@ -22,6 +22,8 @@
         .export _syscall__delay_sec
         .export _syscall__convert_to_hex
         .export _syscall_convert_to_hex
+        .export _syscall__convert_hex_to_dec
+        .export _syscall_convert_hex_to_dec
 ; Blink routines
         .export _syscall__blink_led
         .export _syscall__strobe_led
@@ -116,6 +118,10 @@ _syscall__convert_to_hex:
         SYSCALL_VECTOR _convert_to_hex
 _syscall_convert_to_hex:
         SYSCALL_VECTOR convert_to_hex
+_syscall__convert_hex_to_dec:
+        SYSCALL_VECTOR _convert_hex_to_dec
+_syscall_convert_hex_to_dec:
+        SYSCALL_VECTOR convert_hex_to_dec
 _syscall__blink_led:
         SYSCALL_VECTOR _blink_led
 _syscall__strobe_led:

@@ -9,9 +9,12 @@
         .export new_program
         .export add_new_line
         .export get_first_line
+        .export list_program
 
         .zeropage
 free_ptr:
+        .res 2
+line_iterator_ptr:
         .res 2
 
         .code
@@ -261,6 +264,104 @@ add_new_line:
 @exit:
         rts
 
+list_program:
+        copy_ptr first_line_pointer, line_iterator_ptr
+@list_loop:
+        lda line_iterator_ptr
+        bne @not_done_yet
+        lda line_iterator_ptr+1
+        bne @not_done_yet
+        jmp @exit
+@not_done_yet:
+        ; get line number (offset 4)
+        ldy #$04
+        lda (line_iterator_ptr),y
+        sta current_line_num
+        iny
+        lda (line_iterator_ptr),y
+        sta current_line_num+1
+        iny
+        lda (line_iterator_ptr),y
+        sta current_command
+        iny
+        lda (line_iterator_ptr),y
+        sta current_section_size
+        sta tmp1
+        iny
+        ; if variable section is empty, skip copy loop
+        cmp #$00
+        beq @copy_completed
+        ; copy variable section (size stored in tmp1)
+        ; reduce tmp1 by one
+        dec tmp1
+        ldx #$00
+@copy_variable_section_loop:
+        lda (line_iterator_ptr),y
+        sta current_variable_section,x
+        iny
+        inx
+        dec tmp1
+        bpl @copy_variable_section_loop        
+@copy_completed:
+        jsr list_single_line
+        ; move iterator to next line
+        copy_ptr line_iterator_ptr, ptr1
+        ldy #$02
+        lda (ptr1),y
+        sta line_iterator_ptr
+        iny
+        lda (ptr1),y
+        sta line_iterator_ptr+1
+        bra @list_loop
+@exit:
+        rts
+
+list_single_line:
+        ; ; print line number (hex so far)
+        ; write_tty_address current_line_num
+        convert_hex_to_dec current_line_num, #dec_line_buffer
+        lda dec_line_buffer+2
+        jsr _tty_write_hex
+        lda dec_line_buffer+1
+        jsr _tty_write_hex
+        lda dec_line_buffer
+        jsr _tty_write_hex
+        lda #(CHAR_SPACE)
+        jsr _tty_send_character
+        ; act on command received
+        switch current_command
+        case TOKEN_PRINT, list_print
+        case TOKEN_GOTO, list_goto
+        jmp list_exit
+list_print:
+        write_tty #cmd_print
+        lda #(CHAR_SPACE)
+        jsr _tty_send_character
+        lda #(CHAR_DOUBLEQUOTE)
+        jsr _tty_send_character
+        write_tty #current_variable_section
+        lda #(CHAR_DOUBLEQUOTE)
+        jsr _tty_send_character
+        jmp list_exit
+list_goto:
+        write_tty #cmd_goto
+        lda #(CHAR_SPACE)
+        jsr _tty_send_character
+        ; write_tty_address current_variable_section
+        convert_hex_to_dec current_variable_section, #dec_line_buffer
+        lda dec_line_buffer+2
+        jsr _tty_write_hex
+        lda dec_line_buffer+1
+        jsr _tty_write_hex
+        lda dec_line_buffer
+        jsr _tty_write_hex
+
+        jmp list_exit
+list_exit:
+        jsr _tty_send_newline
+        rts
+
+
         .segment "BSS"
 
 first_line_pointer:
@@ -277,8 +378,14 @@ current_line_num:
         .res 2
 new_line_num:
         .res 2
+dec_line_buffer:
+        .res 3
+current_command:
+        .res 1
 current_section_size:
         .res 1
+current_variable_section:
+        .res 256
 program_storage:
         .res 4096
 
