@@ -55,6 +55,7 @@ _process_load:
 _process_run:
         writeln_tty #msgrun
         jsr $1000
+        jsr _deregister_user_break
         rts
 
 _process_blink:

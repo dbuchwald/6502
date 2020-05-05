@@ -17,6 +17,9 @@
         .export _syscall__lcd_init
         .export _syscall__acia_init
         .export _syscall__keyboard_init
+; Core routines
+        .export _syscall__register_user_break
+        .export _syscall__deregister_user_break
 ; Common routines
         .export _syscall__delay_ms
         .export _syscall__delay_sec
@@ -111,6 +114,10 @@ _syscall__acia_init:
         SYSCALL_VECTOR _acia_init
 _syscall__keyboard_init:
         SYSCALL_VECTOR _keyboard_init
+_syscall__register_user_break:
+        SYSCALL_VECTOR _register_user_break
+_syscall__deregister_user_break:
+        SYSCALL_VECTOR _deregister_user_break
 _syscall__delay_ms:
         SYSCALL_VECTOR _delay_ms
 _syscall__delay_sec:

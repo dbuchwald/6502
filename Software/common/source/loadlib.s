@@ -6,6 +6,9 @@
         .export _lcd_init
         .export _acia_init
         .export _keyboard_init
+; Core routines
+        .export _register_user_break
+        .export _deregister_user_break
 ; Common routines
         .export _delay_ms
         .export _delay_sec
@@ -97,6 +100,13 @@ _acia_init:
 
 _keyboard_init:
         jmp (_syscall__keyboard_init)
+
+; Core routines
+_register_user_break:
+        jmp (_syscall__register_user_break)
+
+_deregister_user_break:
+        jmp (_syscall__deregister_user_break)
 
 ; Common routines
 _delay_ms:

@@ -6,6 +6,8 @@
         .include "macros.inc"
         .include "parse.inc"
         .include "tokens.inc"
+        .include "core.inc"
+        .include "blink.inc"
 
         .import parse_line
         .import get_immediate_flag
@@ -26,6 +28,8 @@ LINE_BUFFER_SIZE=64
 
         jsr new_program
         stz exit_flag
+
+        register_user_break #user_break_handler
 main_loop:
         ; Display prompt
         write_tty #basic_prompt
@@ -81,12 +85,20 @@ main_loop:
         jmp main_loop
 
 exit:
+        jsr _deregister_user_break
         rts
 
 register_exit:
         lda #$ff
         sta exit_flag
         rts
+
+user_break_handler:
+        jsr _tty_send_newline
+        writeln_tty #msgsystembreak
+        jsr _tty_send_newline
+        jsr _strobe_led
+        jmp main_loop
 
         .segment "BSS"
 exit_flag:
@@ -107,3 +119,6 @@ basic_prompt:
 
 err_parse_failed:
         .asciiz "Unable to parse line: "
+
+msgsystembreak:
+        .asciiz "User break initiated, returing to BASIC shell..."

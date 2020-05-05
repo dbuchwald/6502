@@ -23,3 +23,6 @@
 .globalzp system_break_flag
 .globalzp system_break_address
 .globalzp system_break_sp
+.globalzp user_break_address
+.globalzp user_break_sp
+

@@ -12,6 +12,8 @@
         .export _system_init
         .export _interrupt_handler
         .export _register_system_break
+        .export _register_user_break
+        .export _deregister_user_break
 
         .code
 
@@ -31,6 +33,10 @@ _system_init:
         sta system_break_address+1
         lda #$ff
         sta system_break_sp
+        ; Set user break to null
+        stz user_break_address
+        stz user_break_address+1
+        stz user_break_sp
         ; Initialize BLINK LED
         jsr _blink_init
         ; Short BLINK LED strobe
@@ -87,6 +93,22 @@ check_via2:
         pla
         rti
 system_break_request:
+        ; Check if user break is defined
+        lda user_break_address
+        bne @user_break
+        lda user_break_address+1
+        bne @user_break
+        bra @system_break
+@user_break:
+        ; Replace return pointer with our own
+        ldx user_break_sp
+        txs
+        lda user_break_address+1
+        pha
+        lda user_break_address
+        pha
+        bra @exit_handler
+@system_break:
         ; Replace return pointer with our own
         ldx system_break_sp
         txs
@@ -94,6 +116,7 @@ system_break_request:
         pha
         lda system_break_address
         pha
+@exit_handler:
         ; Clear interrupt flag upon return
         cli
         php
@@ -113,4 +136,25 @@ _register_system_break:
         inx
         ; Save for break operation
         stx system_break_sp
+        rts
+
+; POSITIVE C COMPLIANT
+_register_user_break:
+        ; Save address provided in parameters
+        sta user_break_address
+        stx user_break_address+1
+        ; Get current stack pointer
+        tsx
+        ; Remove last address - it's our own
+        inx
+        inx
+        ; Save for break operation
+        stx user_break_sp
+        rts
+
+; POSITIVE C COMPLIANT
+_deregister_user_break:
+        stz user_break_address
+        stz user_break_address+1
+        stz user_break_sp
         rts

@@ -4,11 +4,16 @@
         .forceimport _syscall__lcd_init
         .forceimport _syscall__acia_init
         .forceimport _syscall__keyboard_init
+; Core routines
+        .forceimport _syscall__register_user_break
+        .forceimport _syscall__deregister_user_break
 ; Common routines
         .forceimport _syscall__delay_ms
         .forceimport _syscall__delay_sec
         .forceimport _syscall__convert_to_hex
         .forceimport _syscall_convert_to_hex
+        .forceimport _syscall__convert_hex_to_dec
+        .forceimport _syscall_convert_hex_to_dec
 ; Blink routines
         .forceimport _syscall__blink_led
         .forceimport _syscall__strobe_led
