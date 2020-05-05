@@ -9,6 +9,8 @@
         .export new_program
         .export add_new_line
         .export get_first_line
+        .export get_next_line
+        .export get_line
         .export list_program
 
         .zeropage
@@ -35,6 +37,66 @@ new_program:
 get_first_line:
         lda first_line_pointer
         ldx first_line_pointer+1
+        rts
+
+get_line:
+        sta new_line_num
+        stx new_line_num+1
+        copy_ptr first_line_pointer, line_iterator_ptr
+@find_loop:
+        lda line_iterator_ptr
+        bne @keep_going
+        lda line_iterator_ptr+1
+        bne @keep_going
+        ; reached end of program
+        lda #$00
+        ldx #$00
+        jmp @exit
+@keep_going:
+        ; retrieve current line number
+        ldy #$04
+        lda (line_iterator_ptr),y
+        sta current_line_num
+        iny
+        lda (line_iterator_ptr),y
+        sta current_line_num+1
+        
+        ; compare against value to find
+        cmp_ptr current_line_num, new_line_num
+        beq @the_same_number
+        bcc @greater_line_number
+        jmp @smaller_line_number
+@the_same_number:
+        ; found match, return
+        lda line_iterator_ptr
+        ldx line_iterator_ptr+1
+        jmp @exit
+@smaller_line_number:
+        ; not found
+        lda #$00
+        ldx #$00
+        jmp @exit
+@greater_line_number:
+        ; line_iterator_ptr already points to current line, move to next
+        jsr get_next_line_internal
+        sta line_iterator_ptr
+        stx line_iterator_ptr+1
+        bra @find_loop
+@exit:
+        rts
+
+get_next_line:
+        sta line_iterator_ptr
+        stx line_iterator_ptr+1
+get_next_line_internal:
+        ldy #$02
+        lda (line_iterator_ptr),y
+        pha
+        iny
+        lda (line_iterator_ptr),y
+        tax
+        pla
+        rts
 
 add_new_line:
         sta ptr1
@@ -305,27 +367,26 @@ list_program:
 @copy_completed:
         jsr list_single_line
         ; move iterator to next line
-        copy_ptr line_iterator_ptr, ptr1
-        ldy #$02
-        lda (ptr1),y
+        ; copy_ptr line_iterator_ptr, ptr1
+        ; ldy #$02
+        ; lda (ptr1),y
+        ; sta line_iterator_ptr
+        ; iny
+        ; lda (ptr1),y
+        ; sta line_iterator_ptr+1
+
+        ; line_iterator_ptr already points to current line, move to next
+        jsr get_next_line_internal
         sta line_iterator_ptr
-        iny
-        lda (ptr1),y
-        sta line_iterator_ptr+1
+        stx line_iterator_ptr+1
         bra @list_loop
 @exit:
         rts
 
 list_single_line:
-        ; ; print line number (hex so far)
-        ; write_tty_address current_line_num
-        convert_hex_to_dec current_line_num, #dec_line_buffer
-        lda dec_line_buffer+2
-        jsr _tty_write_hex
-        lda dec_line_buffer+1
-        jsr _tty_write_hex
-        lda dec_line_buffer
-        jsr _tty_write_hex
+        lda current_line_num
+        ldx current_line_num+1
+        jsr _tty_write_dec
         lda #(CHAR_SPACE)
         jsr _tty_send_character
         ; act on command received
@@ -347,14 +408,9 @@ list_goto:
         write_tty #cmd_goto
         lda #(CHAR_SPACE)
         jsr _tty_send_character
-        ; write_tty_address current_variable_section
-        convert_hex_to_dec current_variable_section, #dec_line_buffer
-        lda dec_line_buffer+2
-        jsr _tty_write_hex
-        lda dec_line_buffer+1
-        jsr _tty_write_hex
-        lda dec_line_buffer
-        jsr _tty_write_hex
+        lda current_variable_section
+        ldx current_variable_section+1
+        jsr _tty_write_dec
 
         jmp list_exit
 list_exit:

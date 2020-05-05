@@ -12,6 +12,7 @@
         .export _tty_write
         .export _tty_writeln
         .export _tty_write_hex
+        .export _tty_write_dec
         .export _tty_send_newline
         .export _tty_send_character
 
@@ -217,6 +218,47 @@ _tty_write_hex:
         rts
 
 ; POSITIVE C COMPLIANT
+; Hex number is A/X
+_tty_write_dec:
+        sta hex_to_dec_in_buffer
+        stx hex_to_dec_in_buffer+1
+        convert_hex_to_dec hex_to_dec_in_buffer, #hex_to_dec_out_buffer
+        copy_ptr #hex_to_dec_out_buffer, ptr1
+        ldy #$02
+        ldx #$00
+@byte_loop:
+        lda (ptr1),y
+        phy
+        phx
+        jsr convert_to_hex
+        txa
+        plx 
+        sta hex_to_dec_print_buffer,x
+        inx
+        tya
+        sta hex_to_dec_print_buffer,x
+        inx
+        ply
+        dey
+        bpl @byte_loop
+        ldx #$ff
+@skip_leading_zeros_loop:
+        inx 
+        cpx #$05
+        beq @print_rest
+        lda hex_to_dec_print_buffer,x
+        cmp #('0')
+        bne @print_rest
+        bra @skip_leading_zeros_loop
+@print_rest:
+        lda hex_to_dec_print_buffer,x
+        jsr _tty_send_character
+        inx
+        cpx #$06
+        bne @print_rest
+        rts
+
+; POSITIVE C COMPLIANT
 ; Sends newline instruction to selected channels
 _tty_send_newline:
         pha
@@ -318,6 +360,12 @@ line_buffer_pointer:
         .res 2
 line_buffer_length:
         .res 1
+hex_to_dec_in_buffer:
+        .res 2
+hex_to_dec_out_buffer:
+        .res 3
+hex_to_dec_print_buffer:
+        .res 6
 
         .segment "RODATA"
 acia_newline:

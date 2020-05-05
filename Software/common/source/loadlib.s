@@ -72,6 +72,7 @@
         .export _tty_write
         .export _tty_writeln
         .export _tty_write_hex
+        .export _tty_write_dec
         .export _tty_send_newline
         .export _tty_send_character
 ; menu routines
@@ -276,6 +277,9 @@ _tty_writeln:
 
 _tty_write_hex:
         jmp (_syscall__tty_write_hex)
+
+_tty_write_dec:
+        jmp (_syscall__tty_write_dec)
 
 _tty_send_newline:
         jmp (_syscall__tty_send_newline)
