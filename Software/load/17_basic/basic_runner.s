@@ -35,23 +35,23 @@ run_command_internal:
         inc_ptr current_variable_section_ptr, #$02
 
         switch current_command
-        case TOKEN_LIST,  run_list
-        case TOKEN_RUN,   run_run
-        case TOKEN_PRINT, run_print
-        case TOKEN_GOTO,  run_goto
-        case TOKEN_EXIT,  run_exit
-        case TOKEN_NEW,   run_new
-        jmp exit_run_command
-run_list:
+        case #(TOKEN_LIST),  @run_list
+        case #(TOKEN_RUN),   @run_run
+        case #(TOKEN_PRINT), @run_print
+        case #(TOKEN_GOTO),  @run_goto
+        case #(TOKEN_EXIT),  @run_exit
+        case #(TOKEN_NEW),   @run_new
+        jmp @exit
+@run_list:
         jsr list_program
-        jmp exit_run_command
-run_run:
+        jmp @exit
+@run_run:
         jsr run_program
-        jmp exit_run_command
-run_print:
+        jmp @exit
+@run_print:
         writeln_tty current_variable_section_ptr
-        jmp exit_run_command
-run_goto:
+        jmp @exit
+@run_goto:
         copy_ptr current_variable_section_ptr, ptr1
         ldy #$01
         lda (ptr1),y
@@ -67,18 +67,18 @@ run_goto:
         lda #$ff
         sta current_command_failed
         writeln_tty #goto_find_failed
-        jmp exit_run_command
+        jmp @exit
 @ok_jump:
         lda #$ff
         sta line_pointer_moved
-        jmp exit_run_command
-run_exit:
+        jmp @exit
+@run_exit:
         jsr register_exit
-        jmp exit_run_command
-run_new:
+        jmp @exit
+@run_new:
         jsr new_program
-        jmp exit_run_command
-exit_run_command:
+        jmp @exit
+@exit:
         rts
 
 run_program:

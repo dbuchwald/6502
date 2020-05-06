@@ -169,22 +169,22 @@ format_operand:
         stz operand_print_buffer,x
 
         switch addressing_mode
-        case ACCUMULATOR, format_accumulator
-        case ABSOLUTE,    format_absolute
-        case ABSOLUTE_X,  format_absolute_x
-        case ABSOLUTE_Y,  format_absolute_y
-        case IMMEDIATE,   format_immediate
-        case IMPLIED,     format_implied
-        case X_INDIRECT,  format_x_indirect
-        case INDIRECT_Y,  format_indirect_y
-        case RELATIVE,    format_relative
-        case ZEROPAGE,    format_zeropage
-        case ZEROPAGE_X,  format_zeropage_x
-        case ZEROPAGE_Y,  format_zeropage_y
-        case ZEROPAGE_R,  format_zeropage_r
-        case ZEROPAGE_I,  format_zeropage_i
-        case INDIRECT,    format_indirect
-        case INDIRECT_X,  format_indirect_x
+        case #(ACCUMULATOR), format_accumulator
+        case #(ABSOLUTE),    format_absolute
+        case #(ABSOLUTE_X),  format_absolute_x
+        case #(ABSOLUTE_Y),  format_absolute_y
+        case #(IMMEDIATE),   format_immediate
+        case #(IMPLIED),     format_implied
+        case #(X_INDIRECT),  format_x_indirect
+        case #(INDIRECT_Y),  format_indirect_y
+        case #(RELATIVE),    format_relative
+        case #(ZEROPAGE),    format_zeropage
+        case #(ZEROPAGE_X),  format_zeropage_x
+        case #(ZEROPAGE_Y),  format_zeropage_y
+        case #(ZEROPAGE_R),  format_zeropage_r
+        case #(ZEROPAGE_I),  format_zeropage_i
+        case #(INDIRECT),    format_indirect
+        case #(INDIRECT_X),  format_indirect_x
         rts
 
         .macro format_byte_operand format, offset

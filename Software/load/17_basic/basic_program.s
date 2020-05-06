@@ -391,10 +391,10 @@ list_single_line:
         jsr _tty_send_character
         ; act on command received
         switch current_command
-        case TOKEN_PRINT, list_print
-        case TOKEN_GOTO, list_goto
-        jmp list_exit
-list_print:
+        case #(TOKEN_PRINT), @list_print
+        case #(TOKEN_GOTO), @list_goto
+        jmp @exit
+@list_print:
         write_tty #cmd_print
         lda #(CHAR_SPACE)
         jsr _tty_send_character
@@ -403,8 +403,8 @@ list_print:
         write_tty #current_variable_section
         lda #(CHAR_DOUBLEQUOTE)
         jsr _tty_send_character
-        jmp list_exit
-list_goto:
+        jmp @exit
+@list_goto:
         write_tty #cmd_goto
         lda #(CHAR_SPACE)
         jsr _tty_send_character
@@ -412,8 +412,8 @@ list_goto:
         ldx current_variable_section+1
         jsr _tty_write_dec
 
-        jmp list_exit
-list_exit:
+        jmp @exit
+@exit:
         jsr _tty_send_newline
         rts
 

@@ -4,10 +4,11 @@
         .endmacro
         
         .macro case value, vector
-        cmp #(value)
-        bne .ident(.concat("@not_", .string(vector)))
+        .local @skip
+        cmp value
+        bne @skip 
         jmp vector
-.ident(.concat("@not_", .string(vector))):
+@skip:
         .endmacro
 
         .macro push_ptr address
