@@ -108,6 +108,8 @@ line_ptr:
         .res 2
 token_ptr:
         .res 2
+variable_section_ptr:
+        .res 2
 
         .code
 
@@ -121,6 +123,9 @@ parse_line:
         stx line_ptr+1
 
         strtriml line_buffer_ptr
+
+        copy_ptr #variable_section, variable_section_ptr
+        stz variable_section_size
 
         ; try to parse line number
         jsr parse_line_number
@@ -288,13 +293,8 @@ parse_print:
         push_line_ptr
         skip_whitespace
         move_line_ptr_to_y
-        jsr parse_string
+        jsr parse_string_expression
         bcc @error
-        strcopy #string_buffer, #variable_section
-        strlength #string_buffer
-        ; add one byte for null terminator
-        inc A
-        sta variable_section_size
         sec
         bra @exit
 @error:
@@ -318,10 +318,13 @@ parse_goto:
         jsr parse_line_number
         bcc @error_num
         lda line_number
-        sta variable_section
+        sta (variable_section_ptr)
+        inc_ptr variable_section_ptr
         lda line_number+1
-        sta variable_section+1
+        sta (variable_section_ptr)
+        clc
         lda #$02
+        adc variable_section_size
         sta variable_section_size
         skip_whitespace
         move_line_ptr_to_y
@@ -334,6 +337,28 @@ parse_goto:
         rts
 @error_num:
         parse_fail #error_invalid_line_num
+        clc
+        bra @exit
+@exit:
+        pop_line_ptr
+        rts
+
+parse_string_expression:
+        push_line_ptr
+
+        jsr parse_string
+        bcc @error
+        
+        strcopy #string_buffer, variable_section_ptr
+        strlength #string_buffer
+        ; add one byte for null terminator
+        inc A
+        clc
+        adc variable_section_size
+        sta variable_section_size
+        sec
+        bra @exit
+@error:
         clc
         bra @exit
 @exit:
