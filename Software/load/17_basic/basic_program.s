@@ -351,23 +351,32 @@ list_program:
         iny
         lda (line_iterator_ptr),y
         sta current_section_size
-        sta tmp1
         iny
-        ; if variable section is empty, skip copy loop
-        cmp #$00
-        beq @copy_completed
-        ; copy variable section (size stored in tmp1)
-        ; reduce tmp1 by one
-        dec tmp1
-        ldx #$00
-@copy_variable_section_loop:
-        lda (line_iterator_ptr),y
-        sta current_variable_section,x
-        iny
-        inx
-        dec tmp1
-        bpl @copy_variable_section_loop        
-@copy_completed:
+        sty tmp1
+        copy_ptr line_iterator_ptr, current_variable_section_ptr
+        clc
+        lda current_variable_section_ptr
+        adc tmp1
+        sta current_variable_section_ptr
+        lda current_variable_section_ptr+1
+        adc #$00
+        sta current_variable_section_ptr+1
+
+;         ; if variable section is empty, skip copy loop
+;         cmp #$00
+;         beq @copy_completed
+;         ; copy variable section (size stored in tmp1)
+;         ; reduce tmp1 by one
+;         dec tmp1
+;         ldx #$00
+; @copy_variable_section_loop:
+;         lda (line_iterator_ptr),y
+;         sta current_variable_section,x
+;         iny
+;         inx
+;         dec tmp1
+;         bpl @copy_variable_section_loop        
+; @copy_completed:
         jsr list_single_line
         ; move iterator to next line
         ; copy_ptr line_iterator_ptr, ptr1
@@ -403,7 +412,7 @@ list_single_line:
         jsr _tty_send_character
         lda #(CHAR_DOUBLEQUOTE)
         jsr _tty_send_character
-        write_tty #current_variable_section
+        write_tty current_variable_section_ptr
         lda #(CHAR_DOUBLEQUOTE)
         jsr _tty_send_character
         jmp @exit
@@ -411,8 +420,11 @@ list_single_line:
         write_tty #cmd_goto
         lda #(CHAR_SPACE)
         jsr _tty_send_character
-        lda current_variable_section
-        ldx current_variable_section+1
+        copy_ptr current_variable_section_ptr, ptr1
+        ldy #$01
+        lda (ptr1),y
+        tax
+        lda (ptr1)
         jsr _tty_write_dec
 
         jmp @exit
@@ -468,8 +480,8 @@ current_command:
         .res 1
 current_section_size:
         .res 1
-current_variable_section:
-        .res 256
+current_variable_section_ptr:
+        .res 2
 program_storage:
         .res PROGAM_STORAGE_SIZE
 
