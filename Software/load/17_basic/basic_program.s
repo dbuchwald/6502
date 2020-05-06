@@ -12,6 +12,9 @@
         .export get_next_line
         .export get_line
         .export list_program
+        .export get_mem_stats
+
+PROGAM_STORAGE_SIZE  = $1000
 
         .zeropage
 free_ptr:
@@ -418,6 +421,31 @@ list_single_line:
         rts
 
 
+get_mem_stats:
+        sec
+        lda free_ptr
+        sbc #<(program_storage)
+        sta current_pointer
+        lda free_ptr+1
+        sbc #>(program_storage)
+        sta current_pointer+1
+
+        write_tty #program_storage_msg1
+
+        lda current_pointer
+        ldx current_pointer+1
+        jsr _tty_write_dec
+
+        write_tty #program_storage_msg2
+
+        lda #<(PROGAM_STORAGE_SIZE)
+        ldx #>(PROGAM_STORAGE_SIZE)
+        jsr _tty_write_dec
+
+        writeln_tty #program_storage_msg3
+
+        rts
+
         .segment "BSS"
 
 first_line_pointer:
@@ -443,9 +471,16 @@ current_section_size:
 current_variable_section:
         .res 256
 program_storage:
-        .res 4096
+        .res PROGAM_STORAGE_SIZE
 
         .segment "RODATA"
 
 new_program_message:
         .asciiz "New program will be stored at location 0x"
+
+program_storage_msg1:
+        .asciiz "Current memory usage "
+program_storage_msg2:
+        .asciiz " bytes out of "
+program_storage_msg3:
+        .asciiz " available."

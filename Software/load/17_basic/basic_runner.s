@@ -11,6 +11,7 @@
         .import new_program
         .import get_first_line
         .import get_line
+        .import get_mem_stats
         .import register_exit
 
         .zeropage
@@ -41,6 +42,7 @@ run_command_internal:
         case #(TOKEN_GOTO),  @run_goto
         case #(TOKEN_EXIT),  @run_exit
         case #(TOKEN_NEW),   @run_new
+        case #(TOKEN_MEM),   @run_mem
         jmp @exit
 @run_list:
         jsr list_program
@@ -77,6 +79,9 @@ run_command_internal:
         jmp @exit
 @run_new:
         jsr new_program
+        jmp @exit
+@run_mem:
+        jsr get_mem_stats
         jmp @exit
 @exit:
         rts

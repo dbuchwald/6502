@@ -4,6 +4,7 @@
         .export cmd_goto
         .export cmd_run
         .export cmd_exit
+        .export cmd_mem
 
         .segment "RODATA"
 
@@ -19,3 +20,5 @@ cmd_run:
         .asciiz "RUN"
 cmd_exit:
         .asciiz "EXIT"
+cmd_mem:
+        .asciiz "MEM"

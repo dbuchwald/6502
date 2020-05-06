@@ -239,6 +239,7 @@ parse_command:
         if_command #cmd_print, parse_print, @exit, @error
         if_command #cmd_goto, parse_goto, @exit, @error
         if_command #cmd_exit, parse_exit, @exit, @error
+        if_command #cmd_mem, parse_mem, @exit, @error
 
         parse_fail #error_invalid_command
         bra @error
@@ -251,50 +252,29 @@ parse_command:
         rts
 
 parse_list:
-        ; writeln_tty #cmd_list
-        lda immediate_command_flag
-        beq @error
         lda #(TOKEN_LIST)
-        sta command_token
-        sec
-        rts
-@error:
-        parse_fail #error_immediate_cmd
-        clc
-        rts
+        jmp parse_immediate_command
 
 parse_run:
-        ; writeln_tty #cmd_run
-        lda immediate_command_flag
-        beq @error
         lda #(TOKEN_RUN)
-        sta command_token
-        sec
-        rts
-@error:
-        parse_fail #error_immediate_cmd
-        clc
-        rts
+        jmp parse_immediate_command
 
 parse_exit:
-        ; writeln_tty #cmd_run
-        lda immediate_command_flag
-        beq @error
         lda #(TOKEN_EXIT)
-        sta command_token
-        sec
-        rts
-@error:
-        parse_fail #error_immediate_cmd
-        clc
-        rts
+        jmp parse_immediate_command
 
 parse_new:
-        ; writeln_tty #cmd_run
+        lda #(TOKEN_NEW)
+        jmp parse_immediate_command
+
+parse_mem:
+        lda #(TOKEN_MEM)
+        jmp parse_immediate_command
+
+parse_immediate_command:
+        sta command_token
         lda immediate_command_flag
         beq @error
-        lda #(TOKEN_NEW)
-        sta command_token
         sec
         rts
 @error:
@@ -303,7 +283,6 @@ parse_new:
         rts
 
 parse_print:
-;        writeln_tty #cmd_print
         lda #(TOKEN_PRINT)
         sta command_token
         push_line_ptr
@@ -311,7 +290,6 @@ parse_print:
         move_line_ptr_to_y
         jsr parse_string
         bcc @error
-        ;writeln_tty #string_buffer
         strcopy #string_buffer, #variable_section
         strlength #string_buffer
         ; add one byte for null terminator
@@ -328,7 +306,6 @@ parse_print:
         rts
 
 parse_goto:
-;        writeln_tty #cmd_goto
         lda immediate_command_flag
         beq @good_mode
         jmp @error_imm
@@ -340,8 +317,6 @@ parse_goto:
         move_line_ptr_to_y
         jsr parse_line_number
         bcc @error_num
-;        write_tty_address line_number
-;        jsr _tty_send_newline
         lda line_number
         sta variable_section
         lda line_number+1
