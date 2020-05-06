@@ -329,7 +329,10 @@ add_new_line:
 @exit:
         rts
 
+; A/X contain line number - if both 0000, all lines will be listed
 list_program:
+        sta new_line_num
+        stx new_line_num+1
         copy_ptr first_line_pointer, line_iterator_ptr
 @list_loop:
         lda line_iterator_ptr
@@ -362,31 +365,25 @@ list_program:
         adc #$00
         sta current_variable_section_ptr+1
 
-;         ; if variable section is empty, skip copy loop
-;         cmp #$00
-;         beq @copy_completed
-;         ; copy variable section (size stored in tmp1)
-;         ; reduce tmp1 by one
-;         dec tmp1
-;         ldx #$00
-; @copy_variable_section_loop:
-;         lda (line_iterator_ptr),y
-;         sta current_variable_section,x
-;         iny
-;         inx
-;         dec tmp1
-;         bpl @copy_variable_section_loop        
-; @copy_completed:
-        jsr list_single_line
-        ; move iterator to next line
-        ; copy_ptr line_iterator_ptr, ptr1
-        ; ldy #$02
-        ; lda (ptr1),y
-        ; sta line_iterator_ptr
-        ; iny
-        ; lda (ptr1),y
-        ; sta line_iterator_ptr+1
+        ; decide whether line should be listed
+        lda new_line_num
+        bne @line_specified
+        lda new_line_num+1
+        bne @line_specified
+        ; since no line has been specified, all should be listed
+        bra @list_current_line
 
+@line_specified:
+        ; otherwise check equality 
+        cmp_ptr current_line_num, new_line_num
+        beq @list_current_line
+        bcs @exit
+        bra @skip_current_line
+        
+@list_current_line:
+        jsr list_single_line
+
+@skip_current_line:
         ; line_iterator_ptr already points to current line, move to next
         jsr get_next_line_internal
         sta line_iterator_ptr

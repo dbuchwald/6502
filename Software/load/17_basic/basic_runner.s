@@ -45,6 +45,8 @@ run_command_internal:
         case #(TOKEN_MEM),   @run_mem
         jmp @exit
 @run_list:
+        lda #$00
+        ldx #$00
         jsr list_program
         jmp @exit
 @run_run:
@@ -60,19 +62,16 @@ run_command_internal:
         tax
         lda (ptr1)
         jsr get_line
-        sta line_ptr
-        stx line_ptr+1
-        lda line_ptr
-        bne @ok_jump
-        lda line_ptr
-        bne @ok_jump
+        sta next_line_ptr
+        stx next_line_ptr+1
+        lda next_line_ptr
+        bne @exit
+        lda next_line_ptr+1
+        bne @exit
+        ; goto target not found
         lda #$ff
         sta current_command_failed
         writeln_tty #goto_find_failed
-        jmp @exit
-@ok_jump:
-        lda #$ff
-        sta line_pointer_moved
         jmp @exit
 @run_exit:
         jsr register_exit
@@ -98,24 +97,30 @@ run_program:
         sec
         bra @exit
 @keep_going:
-        stz line_pointer_moved
+        ldy #$02
+        lda (line_ptr),y
+        sta next_line_ptr
+        iny
+        lda (line_ptr),y
+        sta next_line_ptr+1
+
         copy_ptr line_ptr, command_ptr
         inc_ptr command_ptr, #$06
         jsr run_command_internal
         bit current_command_failed
         beq @next_line
+        ; list failed line after indent
+        write_tty #indent
+        ldy #$05
+        lda (line_ptr),y
+        tax
+        dey
+        lda (line_ptr),y
+        jsr list_program
         clc
         bra @exit
 @next_line:
-        lda line_pointer_moved
-        bne @line_loop
-        ldy #$02
-        lda (line_ptr),y
-        tax
-        iny
-        lda (line_ptr),y
-        stx line_ptr
-        sta line_ptr+1
+        copy_ptr next_line_ptr, line_ptr
         bra @line_loop
 @exit:
         rts
@@ -125,8 +130,8 @@ current_command:
         .res 1
 current_command_failed:
         .res 1
-line_pointer_moved:
-        .res 1
+next_line_ptr:
+        .res 2
 current_variable_section_size:
         .res 1
 current_variable_section_ptr:
@@ -134,5 +139,7 @@ current_variable_section_ptr:
 
         .segment "RODATA"
 goto_find_failed:
-        .asciiz "GOTO command failed to locate target line!"
+        .asciiz "GOTO command failed to locate target line:"
+indent:
+        .asciiz "  "
 
