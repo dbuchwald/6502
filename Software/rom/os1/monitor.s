@@ -208,7 +208,7 @@ _print_memory_range:
         lda (ptr3)
         cmp #$20
         bmi @non_printable
-        cmp #$80
+        cmp #$7f
         bpl @non_printable
         ; printable character
         bra @print_char
