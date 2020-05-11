@@ -1,6 +1,7 @@
         .include "zeropage.inc"
         .include "sys_const.inc"
         .include "sysram_map.inc"
+        .include "utils.inc"
         
         .import __ACIA_START__
         .export ACIA_DATA
@@ -107,6 +108,8 @@ _handle_acia_irq:
         asl
         ; ignore DCD
         asl
+        ; Ignore the following code for ACIA chips that don't support TX IRQ (WDC65C51)
+        .if acia_tx_irq=1
         ; TX buffer empty
         bpl tx_empty_exit
         ; Preserve accumulator
@@ -144,6 +147,8 @@ tx_send_character:
 tx_data_left_to_send:
         pla
 tx_empty_exit:
+        ; End of R6551 specific code
+        .endif
         ; Test the RX bit now
         asl
         ; Receive buffer full
@@ -234,6 +239,8 @@ still_rx_overflow:
 ; Write one byte to TX buffer
 ; Assume input in accumulator
 _acia_write_byte:
+        ; below code works only for R6551 and compatibles
+        .if acia_tx_irq=1
         ; Preserve x register
         phx
         ; Preserve input value
@@ -262,6 +269,17 @@ _acia_write_byte:
         pla
 
         plx
+        .else
+        ; code below works for non-IRQ compliant devices, like WDC65C51
+        ; store data in data register
+        sta ACIA_DATA
+        pha
+        ; wait 1ms (more than 520us for 19200 baud)
+        lda #$01
+        jsr _delay_ms
+        pla
+        ; done, sent
+        .endif
         rts
 
 ; POSITIVE C COMPLIANT
