@@ -24,6 +24,10 @@ _delay_ms:
 
       ldy #190
 loop1:
+      .repeat (clock_mhz-1)
+      nop
+      nop
+      .endrepeat
       dey
       bne loop1
 
@@ -34,6 +38,10 @@ loop2:
       nop
       ldy #198
 loop3:
+      .repeat (clock_mhz-1)
+      nop
+      nop
+      .endrepeat
       dey
       bne loop3
 

@@ -6,6 +6,13 @@
         .export lcd_read_byte
         .export lcd_write_byte
 
+        .macro very_fast_clock_delay
+        .if clock_mhz>1
+        ; delay for high frequencies
+        jsr lcd_hifreq_delay
+        .endif
+        .endmacro
+
 ; LCD Commands list
 LCD_CMD_CLEAR           = %00000001
 LCD_CMD_HOME            = %00000010
@@ -88,15 +95,19 @@ _lcd_init:
         and #(LCD_CTRL_PRESERVE_MASK)
         ora #(LCD_COMMAND_MODE | LCD_WRITE_MODE)
         sta LCD_CONTROL_PORT
+        very_fast_clock_delay
 
         lda lcd_force_reset_sequence, x
         sta LCD_DATA_PORT
+        very_fast_clock_delay
         
         lda LCD_CONTROL_PORT
         ora #(LCD_ENABLE_FLAG)
         sta LCD_CONTROL_PORT
+        very_fast_clock_delay
         eor #(LCD_ENABLE_FLAG)
         sta LCD_CONTROL_PORT
+        very_fast_clock_delay
 
         inx 
         bra @lcd_force_reset_loop
@@ -145,6 +156,7 @@ lcd_write_byte:
         ; Concatenate with current buffer and store it there
         ora lcd_temp_char1
         sta LCD_CONTROL_PORT
+        very_fast_clock_delay
         ; Set port direction (output)
         lda LCD_DATA_DDR
         ora #(LCD_DATA_DDR_WRITE_MASK)
@@ -152,15 +164,18 @@ lcd_write_byte:
         ; Process actual data
         lda lcd_temp_char2
         sta LCD_DATA_PORT
+        very_fast_clock_delay
         ; Ping
         lda LCD_CONTROL_PORT
         ; Set enable flag
         ora #(LCD_ENABLE_FLAG)
         ; send command
         sta LCD_CONTROL_PORT
+        very_fast_clock_delay
         ; Toggle pulse
         eor #(LCD_ENABLE_FLAG)
         sta LCD_CONTROL_PORT
+        very_fast_clock_delay
         ; wait for BF clear
 @lcd_wait_bf_clear:
         clc
@@ -198,9 +213,11 @@ lcd_read_byte:
         and #(LCD_CTRL_PRESERVE_MASK)
         ora lcd_temp_char3
         sta LCD_CONTROL_PORT
+        very_fast_clock_delay
         ; Give it a while
         ora #(LCD_ENABLE_FLAG)
         sta LCD_CONTROL_PORT
+        very_fast_clock_delay
         ; Read result
         lda LCD_DATA_PORT
         sta lcd_temp_char1
@@ -208,7 +225,21 @@ lcd_read_byte:
         lda LCD_CONTROL_PORT
         eor #(LCD_ENABLE_FLAG)
         sta LCD_CONTROL_PORT
+        very_fast_clock_delay
         lda lcd_temp_char1
+        rts
+
+lcd_hifreq_delay:
+        pha
+        lda #(clock_mhz)
+        asl
+        asl
+@hifreq_loop:
+        dec A
+        beq @exit
+        bra @hifreq_loop
+@exit:
+        pla
         rts
 
         .SEGMENT "RODATA"

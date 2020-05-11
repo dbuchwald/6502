@@ -6,7 +6,7 @@ AR65_BINARY=ar65
 
 CPU_FLAG=--cpu 65C02
 ARCH_FLAG=-t none
-CLOCK_FLAG=-Dfastclock=$(FASTCLOCK) -Dacia_tx_irq=$(ACIA_TX_IRQ)
+CLOCK_FLAG=-Dfastclock=$(FASTCLOCK) -Dacia_tx_irq=$(ACIA_TX_IRQ) -Dclock_mhz=$(CLOCK_MHZ)
 
 CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) -O
 CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG)
@@ -66,6 +66,9 @@ endif
 # WDC65C51 - use 0
 # R6551 - use 1 or 0 (both are supported, but 1 is "better")
 ACIA_TX_IRQ=0
+
+# Higher MHz support
+CLOCK_MHZ=1
 
 # Include folders
 COMMON_ROOT=../../common
