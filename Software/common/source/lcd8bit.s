@@ -6,13 +6,6 @@
         .export lcd_read_byte
         .export lcd_write_byte
 
-        .macro very_fast_clock_delay
-        .if clock_mhz>1
-        ; delay for high frequencies
-        jsr lcd_hifreq_delay
-        .endif
-        .endmacro
-
 ; LCD Commands list
 LCD_CMD_CLEAR           = %00000001
 LCD_CMD_HOME            = %00000010
@@ -95,19 +88,13 @@ _lcd_init:
         and #(LCD_CTRL_PRESERVE_MASK)
         ora #(LCD_COMMAND_MODE | LCD_WRITE_MODE)
         sta LCD_CONTROL_PORT
-        very_fast_clock_delay
-
         lda lcd_force_reset_sequence, x
         sta LCD_DATA_PORT
-        very_fast_clock_delay
-        
         lda LCD_CONTROL_PORT
         ora #(LCD_ENABLE_FLAG)
         sta LCD_CONTROL_PORT
-        very_fast_clock_delay
         eor #(LCD_ENABLE_FLAG)
         sta LCD_CONTROL_PORT
-        very_fast_clock_delay
 
         inx 
         bra @lcd_force_reset_loop
@@ -139,6 +126,11 @@ _lcd_init:
 ; lcd_temp_char1 - buffer for mode and blink flag
 ; lcd_temp_char2 - buffer for data
 lcd_write_byte:
+        pha
+        php
+        jsr lcd_wait_bf_clear
+        plp
+        pla
         sta lcd_temp_char2
         bcs @lcd_write_data
         ; Set flags
@@ -156,7 +148,6 @@ lcd_write_byte:
         ; Concatenate with current buffer and store it there
         ora lcd_temp_char1
         sta LCD_CONTROL_PORT
-        very_fast_clock_delay
         ; Set port direction (output)
         lda LCD_DATA_DDR
         ora #(LCD_DATA_DDR_WRITE_MASK)
@@ -164,24 +155,15 @@ lcd_write_byte:
         ; Process actual data
         lda lcd_temp_char2
         sta LCD_DATA_PORT
-        very_fast_clock_delay
         ; Ping
         lda LCD_CONTROL_PORT
         ; Set enable flag
         ora #(LCD_ENABLE_FLAG)
         ; send command
         sta LCD_CONTROL_PORT
-        very_fast_clock_delay
         ; Toggle pulse
         eor #(LCD_ENABLE_FLAG)
         sta LCD_CONTROL_PORT
-        very_fast_clock_delay
-        ; wait for BF clear
-@lcd_wait_bf_clear:
-        clc
-        jsr lcd_read_byte
-        ; Repeat read if BF is still set
-        bmi @lcd_wait_bf_clear
         rts
 
 ; INTERNAL
@@ -194,6 +176,9 @@ lcd_write_byte:
 ; lcd_temp_char2 - buffer for data LSB
 ; lcd_temp_char3 - buffer for operation mode
 lcd_read_byte:
+        php
+        jsr lcd_wait_bf_clear
+        plp
         bcs @lcd_read_data
         ; Set flags
         lda #(LCD_READ_MODE | LCD_COMMAND_MODE)
@@ -213,11 +198,9 @@ lcd_read_byte:
         and #(LCD_CTRL_PRESERVE_MASK)
         ora lcd_temp_char3
         sta LCD_CONTROL_PORT
-        very_fast_clock_delay
         ; Give it a while
         ora #(LCD_ENABLE_FLAG)
         sta LCD_CONTROL_PORT
-        very_fast_clock_delay
         ; Read result
         lda LCD_DATA_PORT
         sta lcd_temp_char1
@@ -225,21 +208,33 @@ lcd_read_byte:
         lda LCD_CONTROL_PORT
         eor #(LCD_ENABLE_FLAG)
         sta LCD_CONTROL_PORT
-        very_fast_clock_delay
         lda lcd_temp_char1
         rts
 
-lcd_hifreq_delay:
-        pha
-        lda #(clock_mhz)
-        asl
-        asl
-@hifreq_loop:
-        dec A
-        beq @exit
-        bra @hifreq_loop
-@exit:
-        pla
+lcd_wait_bf_clear:
+        ; Set flags
+        lda #(LCD_READ_MODE | LCD_COMMAND_MODE)
+        ; Change DDR to input
+        lda LCD_DATA_DDR
+        and #(LCD_DATA_DDR_READ_MASK)
+        sta LCD_DATA_DDR
+@wait_loop:
+        ; Preserve status of remaining via pins
+        lda LCD_CONTROL_PORT
+        and #(LCD_CTRL_PRESERVE_MASK)
+        ora #(LCD_READ_MODE | LCD_COMMAND_MODE)
+        sta LCD_CONTROL_PORT
+        ora #(LCD_ENABLE_FLAG)
+        sta LCD_CONTROL_PORT
+        ; Read result
+        lda LCD_DATA_PORT
+        sta lcd_temp_char1
+        ; Toggle enable
+        lda LCD_CONTROL_PORT
+        eor #(LCD_ENABLE_FLAG)
+        sta LCD_CONTROL_PORT
+        lda lcd_temp_char1
+        bmi @wait_loop
         rts
 
         .SEGMENT "RODATA"
