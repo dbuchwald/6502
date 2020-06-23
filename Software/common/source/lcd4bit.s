@@ -253,6 +253,7 @@ lcd_wait_bf_clear:
         ora #(LCD_DDR_READ_MASK)
         sta LCD_DDR
         ; Preserve status of blink led
+@wait_loop:
         lda LCD_PORT
         and #(BLINK_PORT_MASK)
         ora #(LCD_READ_MODE | LCD_COMMAND_MODE)
@@ -270,7 +271,7 @@ lcd_wait_bf_clear:
         eor #(LCD_ENABLE_FLAG)
         sta LCD_PORT
         lda lcd_temp_char1
-        bmi lcd_wait_bf_clear
+        bmi @wait_loop
         rts
 
         .SEGMENT "RODATA"
