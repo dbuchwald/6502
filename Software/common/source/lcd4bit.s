@@ -55,6 +55,7 @@ LCD_DDR_READ_MASK       = %00001110
 BLINK_PORT_MASK         = %00000001 
 UPPER_NIBBLE_MASK       = %11110000
 LOWER_NIBBLE_MASK       = %00001111
+BUSY_FLAG_MASK          = %10000000
 
         .code
 
@@ -117,6 +118,11 @@ _lcd_init:
 ; lcd_temp_char1 - buffer for mode and blink flag
 ; lcd_temp_char2 - buffer for data
 lcd_write_byte:
+        pha
+        php
+        jsr lcd_wait_bf_clear
+        plp
+        pla
         sta lcd_temp_char2
         bcs @lcd_write_data
         ; Set flags
@@ -172,12 +178,6 @@ lcd_write_byte:
         ; Toggle pulse
         eor #(LCD_ENABLE_FLAG)
         sta LCD_PORT
-        ; wait for BF clear
-@lcd_wait_bf_clear:
-        clc
-        jsr lcd_read_byte
-        ; Repeat read if BF is still set
-        bmi @lcd_wait_bf_clear
         rts
 
 ; INTERNAL
@@ -190,6 +190,10 @@ lcd_write_byte:
 ; lcd_temp_char2 - buffer for data LSB
 ; lcd_temp_char3 - buffer for operation mode
 lcd_read_byte:
+        ; Wait for BF flag to clear before running
+        php
+        jsr lcd_wait_bf_clear
+        plp
         bcs @lcd_read_data
         ; Set flags
         lda #(LCD_READ_MODE | LCD_COMMAND_MODE)
@@ -231,10 +235,6 @@ lcd_read_byte:
         ; Toggle enable flag
         eor #(LCD_ENABLE_FLAG)
         sta LCD_PORT
-        .if clock_mhz >= 4
-        ; read delay for high frequencies
-        jsr lcd_hifreq_delay
-        .endif
         ; Combine results
         lda lcd_temp_char2
         and #(UPPER_NIBBLE_MASK)
@@ -245,18 +245,32 @@ lcd_read_byte:
         ora lcd_temp_char1
         rts
 
-lcd_hifreq_delay:
-        pha
-        lda #(clock_mhz-3)
-        asl
-        asl
-@hifreq_loop:
-        nop
-        dec A
-        beq @exit
-        bra @hifreq_loop
-@exit:
-        pla
+lcd_wait_bf_clear:
+        ; Preserve direction of last four bits of DDRB
+        ; but toggle LCD data lines to input
+        lda LCD_DDR
+        and #(BLINK_PORT_MASK)
+        ora #(LCD_DDR_READ_MASK)
+        sta LCD_DDR
+        ; Preserve status of blink led
+        lda LCD_PORT
+        and #(BLINK_PORT_MASK)
+        ora #(LCD_READ_MODE | LCD_COMMAND_MODE)
+        sta LCD_PORT
+        ora #(LCD_ENABLE_FLAG)
+        sta LCD_PORT
+        lda LCD_PORT
+        ; Store result from LCD data lines
+        sta lcd_temp_char1
+        ; Toggle enable
+        eor #(LCD_ENABLE_FLAG)
+        sta LCD_PORT
+        eor #(LCD_ENABLE_FLAG)
+        sta LCD_PORT
+        eor #(LCD_ENABLE_FLAG)
+        sta LCD_PORT
+        lda lcd_temp_char1
+        bmi lcd_wait_bf_clear
         rts
 
         .SEGMENT "RODATA"

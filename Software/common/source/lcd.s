@@ -400,6 +400,10 @@ lcd_define_char:
 lcd_wrap_line:
         pha
         phx
+        ; read current position
+        clc
+        jsr lcd_read_byte
+        ; iterate over table and compare
         ldx #$00
 @lcd_wrap_loop:
         ; read margin values and compare against current position
