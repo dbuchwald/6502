@@ -68,7 +68,7 @@ endif
 ACIA_TX_IRQ=0
 
 # Higher MHz support
-CLOCK_MHZ=1
+CLOCK_MHZ=8
 
 # Include folders
 COMMON_ROOT=../../common

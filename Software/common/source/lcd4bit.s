@@ -6,13 +6,6 @@
         .export lcd_read_byte
         .export lcd_write_byte
 
-        .macro very_fast_clock_delay
-        .if clock_mhz>1
-        ; delay for high frequencies
-        jsr lcd_hifreq_delay
-        .endif
-        .endmacro
-
 ; LCD Commands list
 LCD_CMD_CLEAR           = %00000001
 LCD_CMD_HOME            = %00000010
@@ -154,16 +147,13 @@ lcd_write_byte:
         ora lcd_temp_char1
         ; Send first 4 bits
         sta LCD_PORT
-        very_fast_clock_delay
         ; Set enable flag
         ora #(LCD_ENABLE_FLAG)
         ; send command
         sta LCD_PORT
-        very_fast_clock_delay
         ; Toggle pulse
         eor #(LCD_ENABLE_FLAG)
         sta LCD_PORT
-        very_fast_clock_delay
         ; Follow the same process with least significant bits
         lda lcd_temp_char2
         and #(LOWER_NIBBLE_MASK)
@@ -175,16 +165,13 @@ lcd_write_byte:
         ora lcd_temp_char1
         ; Send first 4 bits
         sta LCD_PORT
-        very_fast_clock_delay
         ; Set write command flags
         ora #(LCD_ENABLE_FLAG)
         ; Send command
         sta LCD_PORT
-        very_fast_clock_delay
         ; Toggle pulse
         eor #(LCD_ENABLE_FLAG)
         sta LCD_PORT
-        very_fast_clock_delay
         ; wait for BF clear
 @lcd_wait_bf_clear:
         clc
@@ -224,12 +211,8 @@ lcd_read_byte:
         and #(BLINK_PORT_MASK)
         ora lcd_temp_char3
         sta LCD_PORT
-        very_fast_clock_delay
-        ; Give it a while
         ora #(LCD_ENABLE_FLAG)
         sta LCD_PORT
-        very_fast_clock_delay
-        ; Read result
         lda LCD_PORT
         and #(UPPER_NIBBLE_MASK)
         ; Store result from LCD data lines
@@ -238,23 +221,20 @@ lcd_read_byte:
         lda LCD_PORT
         eor #(LCD_ENABLE_FLAG)
         sta LCD_PORT
-        very_fast_clock_delay
-        ; Get next four bits
         and #(BLINK_PORT_MASK)
         ora lcd_temp_char3
         sta LCD_PORT
-        very_fast_clock_delay
-        ; Give it a while
         ora #(LCD_ENABLE_FLAG)
         sta LCD_PORT
-        very_fast_clock_delay
-        ; Read and construct result
         lda LCD_PORT
         sta lcd_temp_char2
         ; Toggle enable flag
         eor #(LCD_ENABLE_FLAG)
         sta LCD_PORT
-        very_fast_clock_delay
+        .if clock_mhz >= 4
+        ; read delay for high frequencies
+        jsr lcd_hifreq_delay
+        .endif
         ; Combine results
         lda lcd_temp_char2
         and #(UPPER_NIBBLE_MASK)
@@ -267,10 +247,11 @@ lcd_read_byte:
 
 lcd_hifreq_delay:
         pha
-        lda #(clock_mhz)
+        lda #(clock_mhz-3)
         asl
         asl
 @hifreq_loop:
+        nop
         dec A
         beq @exit
         bra @hifreq_loop
