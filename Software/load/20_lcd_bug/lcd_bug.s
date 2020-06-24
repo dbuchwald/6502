@@ -13,11 +13,6 @@ init:
         lda #100
         jsr _delay_ms
         jsr _lcd_scroll_down
-        ; jsr _lcd_init
-        ; write_lcd #message
-        ; lda #$03
-        ; jsr _delay_sec
-        ; jsr _lcd_clear
         rts
 
         .segment "RODATA"
