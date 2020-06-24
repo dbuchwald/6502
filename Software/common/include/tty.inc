@@ -86,6 +86,23 @@
         pla
         .endmacro
 
+        .macro write_tty_dec value
+        pha
+        phx
+        .if (.match (.left (1, {value}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({value})-1, {value}))
+            ldx #>(.right (.tcount ({value})-1, {value}))
+        .else
+            ; assume absolute or zero page
+            lda value
+            ldx 1+(value)
+        .endif
+        jsr _tty_write_dec
+        plx
+        pla
+        .endmacro
+
 TTY_CONFIG_INPUT_SERIAL   = %00000001
 TTY_CONFIG_INPUT_KEYBOARD = %00000010
 TTY_CONFIG_OUTPUT_SERIAL  = %00000100

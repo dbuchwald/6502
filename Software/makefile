@@ -56,7 +56,8 @@ LOADABLE_PROJECTS = 01_blink_test        \
 										17_basic						 \
 										18_hello_world       \
 										19_hello_world_c     \
-										20_lcd_bug
+										20_lcd_bug           \
+										21_sysinfo
 
 FIRMWARE_BINARIES=$(FIRMWARE_PROJECTS:%=$(ROM_FOLDER)/%.$(ADDRESS_MODE).bin)
 
