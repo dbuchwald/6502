@@ -39,7 +39,7 @@ L2329:
         jsr     OUTDO
 .ifdef CONFIG_SMALL
         lda     ERROR_MESSAGES+1,x
-  .ifdef KBD
+  .if .def(KBD) || .def(DB6502)
         and     #$7F
   .endif
         jsr     OUTDO

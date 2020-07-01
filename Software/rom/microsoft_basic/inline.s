@@ -5,6 +5,9 @@ L2420:
   .ifdef OSI
         jsr     OUTDO
   .endif
+  .ifdef DB6502
+        jsr SEND_BACKSPACE
+  .endif
         dex
         bpl     INLIN2
 L2423:
@@ -48,7 +51,7 @@ INLIN2:
     .ifndef CONFIG_NO_LINE_EDITING
         cmp     #$20
         bcc     INLIN2
-      .ifdef MICROTAN
+      .if .def(MICROTAN) || .def(DB6502)
         cmp     #$80
       .else
         cmp     #$7D
@@ -56,7 +59,7 @@ INLIN2:
         bcs     INLIN2
         cmp     #$40 ; @
         beq     L2423
-      .ifdef MICROTAN
+      .if .def(MICROTAN) || .def(DB6502)
         cmp     #$7F ; DEL
       .else
         cmp     #$5F ; _
@@ -72,7 +75,7 @@ L2443:
     .endif
         sta     INPUTBUFFER,x
         inx
-    .ifdef OSI
+    .if .def(OSI) || .def(DB6502)
         .byte   $2C
     .else
         bne     INLIN2
