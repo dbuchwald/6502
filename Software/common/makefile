@@ -65,10 +65,10 @@ endif
 # Possible values below
 # WDC65C51 - use 0
 # R6551 - use 1 or 0 (both are supported, but 1 is "better")
-ACIA_TX_IRQ=0
+ACIA_TX_IRQ=1
 
 # Higher MHz support
-CLOCK_MHZ=8
+CLOCK_MHZ=1
 
 # Include folders
 COMMON_ROOT=../../common
