@@ -19,3 +19,7 @@
 .ifdef MICROTAN
 .include "microtan_extra.s"
 .endif
+
+.ifdef DB6502
+.include "db6502_extra.s"
+.endif

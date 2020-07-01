@@ -19,6 +19,9 @@ KBD := 1
 .elseif .def(microtan)
 MICROTAN := 1
 .include "defines_microtan.s"
+.elseif .def(db6502)
+DB6502 := 1
+.include "defines_db6502.s"
 .endif
 
 .ifdef CONFIG_2C

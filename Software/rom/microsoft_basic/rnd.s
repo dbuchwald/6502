@@ -112,7 +112,7 @@ GOMOVMF:
         jmp     STORE_FAC_AT_YX_ROUNDED
 .endif
 
-.segment "CHRGET"
+.segment "RODATA"
 ; ----------------------------------------------------------------------------
 ; INITIAL VALUE FOR RANDOM NUMBER, ALSO COPIED
 ; IN ALONG WITH CHRGET, BUT ERRONEOUSLY:

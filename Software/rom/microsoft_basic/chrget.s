@@ -1,4 +1,4 @@
-.segment "CHRGET"
+.segment "RODATA"
 RAMSTART1:
 GENERIC_CHRGET:
         inc     TXTPTR
