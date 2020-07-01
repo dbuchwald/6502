@@ -35,7 +35,8 @@ FIRMWARE_PROJECTS = 01_nop_fill          \
                     22_modem_test        \
                     23_blink_test        \
                     minimal_bootloader   \
-                    os1
+                    os1                  \
+										microsoft_basic
 
 LOADABLE_PROJECTS = 01_blink_test        \
                     02_hello_world       \
