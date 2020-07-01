@@ -370,6 +370,8 @@ L4192:
         jmp     (GORESTART+1)
 .endif
 
+.segment "RODATA"
+
   .if .def(CONFIG_RAM) || .def(OSI)
 ; OSI is compiled for ROM, but includes
 ; this unused string
@@ -409,6 +411,9 @@ QT_BYTES_FREE:
         .byte   CR,LF,CR,LF
   .endif
 QT_BASIC:
+  .ifdef DB6502
+        .byte   "DB6502 BASIC VERSION 2C"
+  .endif
   .ifdef OSI
         .byte   "OSI 6502 BASIC VERSION 1.0 REV 3.2"
   .endif
