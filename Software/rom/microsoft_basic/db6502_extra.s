@@ -39,7 +39,7 @@ init:
 
 ; Display startup message
 ShowStartMsg:
-      tty_writeln #StartupMessage
+      writeln_tty #StartupMessage
 	; LDA	StartupMessage,Y
 	; BEQ	WaitForKeypress
 	; JSR	MONCOUT
