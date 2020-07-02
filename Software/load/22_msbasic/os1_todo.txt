@@ -1,0 +1,6 @@
+1. Remove self-modyfying code
+2. Remove dependency on custom memory segments
+3. Add Exit keyword
+4. Case-insensitive comparison for tokens
+5. Disable clear at startup
+6. Reduce ZP footprint (optional)
