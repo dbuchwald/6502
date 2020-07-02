@@ -38,13 +38,13 @@ init:
       ; sta ACIA_CONTROL
 
 ; Display startup message
-	LDY #0
 ShowStartMsg:
-	LDA	StartupMessage,Y
-	BEQ	WaitForKeypress
-	JSR	MONCOUT
-	INY
-	BNE	ShowStartMsg
+      tty_writeln #StartupMessage
+	; LDA	StartupMessage,Y
+	; BEQ	WaitForKeypress
+	; JSR	MONCOUT
+	; INY
+	; BNE	ShowStartMsg
 
 ; Wait for a cold/warm start selection
 WaitForKeypress:
@@ -56,7 +56,7 @@ WaitForKeypress:
 	BEQ	WarmStart
 
 	CMP	#'C'			; compare with [C]old start
-	BNE	init
+	BNE	ShowStartMsg
 
 	JMP	COLD_START	; BASIC cold start
 

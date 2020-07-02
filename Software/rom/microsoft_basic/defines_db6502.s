@@ -19,7 +19,7 @@ ZP_START4 = $65
 USR             := $000A
 
 ; inputbuffer
-INPUTBUFFER     := $0400
+INPUTBUFFER     := $0900
 
 ; constants
 STACK_TOP		:= $FC
