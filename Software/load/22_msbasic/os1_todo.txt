@@ -4,3 +4,7 @@
 4. Case-insensitive comparison for tokens
 5. Disable clear at startup
 6. Reduce ZP footprint (optional)
+7. Correct segment alignment
+8. Fix issue with non-page aligned INPUTBUFFER
+9. Make INPUTBUFFER allocation by linker
+
