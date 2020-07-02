@@ -18,6 +18,9 @@ ZP_START4 = $65
 ;extra ZP variables
 USR             := $000A
 
+; inputbuffer
+;INPUTBUFFER     := $0300
+
 ; constants
 STACK_TOP		:= $FC
 SPACE_FOR_GOSUB := $33

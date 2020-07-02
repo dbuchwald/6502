@@ -65,9 +65,9 @@
 ; * Thanks to Joe Zbicak for help with Intellision Keyboard BASIC
 ; * This work is dedicated to the memory of my dear hacking pal Michael "acidity" Kollmann.
 
-.debuginfo +
+;.debuginfo +
 
-.setcpu "6502"
+.setcpu "65C02"
 .macpack longbranch
 
 .include "defines.s"

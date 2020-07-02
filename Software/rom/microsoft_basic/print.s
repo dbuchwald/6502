@@ -84,7 +84,7 @@ L29B9:
   .else
     .ifndef APPLE
         ldy     #$00
-        sty     INPUTBUFFER,x
+        stz     INPUTBUFFER,x
         ldx     #LINNUM+1
     .endif
     .ifdef MICROTAN
