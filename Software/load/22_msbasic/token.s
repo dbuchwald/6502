@@ -16,6 +16,9 @@
 		keyword_rts "LET", LET
 .endif
 		keyword_rts "GOTO", GOTO, TOKEN_GOTO
+.ifdef DB6502
+    keyword_rts "EXIT", EXIT_BASIC
+.endif
 		keyword_rts "RUN", RUN
 		keyword_rts "IF", IF
 		keyword_rts "RESTORE", RESTORE

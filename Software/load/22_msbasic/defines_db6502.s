@@ -22,7 +22,7 @@ USR             := $000A
 INPUTBUFFER     := $0900
 
 ; constants
-STACK_TOP		:= $FC
+; STACK_TOP		:= $FC
 SPACE_FOR_GOSUB := $33
 NULL_MAX		:= $0A
 WIDTH			:= 72

@@ -35,7 +35,12 @@ COLD_START:
   .ifdef CONFIG_NO_INPUTBUFFER_ZP
         ldx     #$FB
   .endif
+  .ifdef DB6502
+        tsx 
+        stx INIT_STACK
+  .else
         txs
+  .endif
   .ifndef CONFIG_CBM_ALL
         lda     #<COLD_START
         ldy     #>COLD_START

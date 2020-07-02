@@ -68,6 +68,12 @@ PRINT_ERROR_LINNUM:
 ; WARM RESTART ENTRY
 ; ----------------------------------------------------------------------------
 RESTART:
+.ifdef DB6502
+        bit EXITFLAG
+        beq KeepGoing
+        rts
+KeepGoing:
+.endif
 .ifdef KBD
         jsr     CRDO
         nop
@@ -577,7 +583,11 @@ STKINI:
 .ifndef CONFIG_2
         sta     STACK+STACK_TOP+2
 .endif
+.ifdef DB6502
+        ldx     INIT_STACK
+.else
         ldx     #STACK_TOP
+.endif
         txs
 .ifdef CONFIG_2
         pha

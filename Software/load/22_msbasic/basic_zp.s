@@ -36,7 +36,12 @@ TXPSV:
 .ifndef INPUTBUFFER; allow override
 INPUTBUFFER:
 .endif
-
+.ifdef DB6502
+EXITFLAG:
+  .res 1
+INIT_STACK:
+  .res 1
+.endif
 ;.org ZP_START3
 
 CHARAC:

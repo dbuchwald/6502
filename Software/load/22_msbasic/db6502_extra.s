@@ -22,6 +22,7 @@ ISCNTC:
 
 init:
 
+      stz EXITFLAG
       ; ldx #$ff
       ; txs
 
