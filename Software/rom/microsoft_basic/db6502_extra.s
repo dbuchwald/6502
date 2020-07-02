@@ -4,7 +4,6 @@
       .include "acia.inc"
       .include "keyboard.inc"
       .include "syscalls.inc"
-      .include "tty.inc"
 
 .segment "CODE"
 ; ISCNTC:
@@ -106,20 +105,20 @@ NotCTRLC:
 	CLC		; Carry clear if control C not pressed
 	RTS
 
-SEND_BACKSPACE:
-  PHA
-  PHX
-  LDX #$FF
-BackspaceLoop:
-  INX
-  LDA Backspace,X
-  BEQ BackspaceLoopEnd
-  JSR MONCOUT
-  BNE BackspaceLoop
-BackspaceLoopEnd:
-  PLX
-  PLA
-  RTS
+; SEND_BACKSPACE:
+;   PHA
+;   PHX
+;   LDX #$FF
+; BackspaceLoop:
+;   INX
+;   LDA Backspace,X
+;   BEQ BackspaceLoopEnd
+;   JSR MONCOUT
+;   BNE BackspaceLoop
+; BackspaceLoopEnd:
+;   PLX
+;   PLA
+;   RTS
 
 StartupMessage:
 	.byte	$0C,"Cold [C] or warm [W] start?",$0D,$0A,$00

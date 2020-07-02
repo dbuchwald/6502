@@ -1,10 +1,10 @@
-; .ifdef DB6502
-;         .include "tty.inc"
-; .endif
+.ifdef DB6502
+        .include "tty.inc"
+.endif
 
 .segment "CODE"
 
-;.ifndef CONFIG_NO_INPUTBUFFER_ZP
+.ifndef CONFIG_NO_INPUTBUFFER_ZP
 L2420:
   .ifdef OSI
         jsr     OUTDO
@@ -19,7 +19,7 @@ L2423:
         jsr     OUTDO
   .endif
         jsr     CRDO
-;.endif
+.endif
 
 ; ----------------------------------------------------------------------------
 ; READ A LINE, AND STRIP OFF SIGN BITS
@@ -41,12 +41,15 @@ L0C32:
         ldy     #>INPUTBUFFER-1
         rts
   .endif
-  ; .ifdef DB6502
-  ;       tty_read_line #INPUTBUFFER, 80
-  ; .endif
+  .ifdef DB6502
+        tty_read_line #INPUTBUFFER, 80
+        ldx     #<(INPUTBUFFER-1)
+        ldy     #>(INPUTBUFFER-1)
+        rts
+  .endif
 
-  ; .if (!.def(APPLE)) && (!.def(DB6502))
-  .ifndef APPLE
+  .if (!.def(APPLE)) && (!.def(DB6502))
+  ;.ifndef APPLE
         ldx     #$00
 INLIN2:
         jsr     GETLN
