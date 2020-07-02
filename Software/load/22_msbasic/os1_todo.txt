@@ -1,10 +1,10 @@
 1. Remove self-modyfying code
-2. Remove dependency on custom memory segments
-3. Add Exit keyword
+2. (POSTPONED) Remove dependency on custom memory segments
+3. (DONE) Add Exit keyword
 4. Case-insensitive comparison for tokens
-5. Disable clear at startup
+5. (DONE) Disable clear at startup
 6. Reduce ZP footprint (optional)
-7. Correct segment alignment
+7. (DONE) Correct segment alignment
 8. Fix issue with non-page aligned INPUTBUFFER
 9. Make INPUTBUFFER allocation by linker
 

@@ -2,7 +2,7 @@
 ; ----------------------------------------------------------------------------
 ; SEE IF CONTROL-C TYPED
 ; ----------------------------------------------------------------------------
-.ifndef CONFIG_CBM_ALL
+.ifdef CONFIG_CBM_ALL
 .include "cbm_iscntc.s"
 .endif
 .ifdef KBD
