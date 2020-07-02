@@ -240,7 +240,7 @@ PUT_NEW_LINE:
 L23D6:
         sty     HIGHDS+1
         jsr     BLTU
-.ifdef CONFIG_INPUTBUFFER_0200
+.if .def(CONFIG_NO_INPUTBUFFER_ZP) && (!.def(KBD))
         lda     LINNUM
         ldy     LINNUM+1
         sta     INPUTBUFFER-2
