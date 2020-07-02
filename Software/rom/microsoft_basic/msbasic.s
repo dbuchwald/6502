@@ -72,7 +72,7 @@
 
 .include "defines.s"
 .include "macros.s"
-.include "zeropage.s"
+.include "basic_zp.s"
 
 .include "header.s"
 .include "token.s"
