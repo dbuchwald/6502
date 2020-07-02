@@ -123,8 +123,8 @@ NotCTRLC:
 StartupMessage:
 	.byte	$0C,"Cold [C] or warm [W] start?",$0D,$0A,$00
 
-Backspace:
-  .byte $1B,"[D ",$1B,"[D",$00
+; Backspace:
+;   .byte $1B,"[D ",$1B,"[D",$00
 
 ms_basic:
   .asciiz "Microsoft BASIC"

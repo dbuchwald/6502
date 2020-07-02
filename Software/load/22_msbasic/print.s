@@ -74,7 +74,7 @@ LE878:
 
 
 
-.ifndef KBD
+.if (!.def(KBD)) && (!.def(DB6502))
 L29B9:
   .ifdef CBM2
         lda     #$00
@@ -99,55 +99,63 @@ L29B9:
 
 
 CRDO:
-.if .def(CONFIG_PRINTNULLS) && .def(CONFIG_FILE)
-        lda     CURDVC
-        bne     LC9D8
-        sta     POSX
-LC9D8:
-.endif
-        lda     #CRLF_1
-.ifndef CONFIG_CBM_ALL
-        sta     POSX
-.endif
-        jsr     OUTDO
-CRDO2:
-        lda     #CRLF_2
-        jsr     OUTDO
-
+.ifdef DB6502
+  jsr _tty_send_newline
 PRINTNULLS:
-.ifdef KBD
-        lda     #$00
-        sta     POSX
-        eor     #$FF
+          lda     #$00
+          sta     POSX
+          eor     #$FF
 .else
-  .if .def(CONFIG_NULL) || .def(CONFIG_PRINTNULLS)
-    .ifdef CONFIG_FILE
-    ; Although there is no statement for it,
-    ; CBM1 had NULL support and ignores
-    ; it when not targeting the screen,
-    ; CBM2 dropped it completely.
-        lda     CURDVC
-        bne     L29DD
-    .endif
-        txa
-        pha
-        ldx     Z15
-        beq     L29D9
-        lda     #$00
-L29D3:
-        jsr     OUTDO
-        dex
-        bne     L29D3
-L29D9:
-        stx     POSX
-        pla
-        tax
+  .if .def(CONFIG_PRINTNULLS) && .def(CONFIG_FILE)
+          lda     CURDVC
+          bne     LC9D8
+          sta     POSX
+  LC9D8:
+  .endif
+          lda     #CRLF_1
+  .ifndef CONFIG_CBM_ALL
+          sta     POSX
+  .endif
+          jsr     OUTDO
+  CRDO2:
+          lda     #CRLF_2
+          jsr     OUTDO
+
+  PRINTNULLS:
+  .ifdef KBD
+          lda     #$00
+          sta     POSX
+          eor     #$FF
   .else
-    .ifndef CONFIG_2
-        lda     #$00
-        sta     POSX
+    .if .def(CONFIG_NULL) || .def(CONFIG_PRINTNULLS)
+      .ifdef CONFIG_FILE
+      ; Although there is no statement for it,
+      ; CBM1 had NULL support and ignores
+      ; it when not targeting the screen,
+      ; CBM2 dropped it completely.
+          lda     CURDVC
+          bne     L29DD
+      .endif
+          txa
+          pha
+          ldx     Z15
+          beq     L29D9
+          lda     #$00
+  L29D3:
+          jsr     OUTDO
+          dex
+          bne     L29D3
+  L29D9:
+          stx     POSX
+          pla
+          tax
+    .else
+      .ifndef CONFIG_2
+          lda     #$00
+          sta     POSX
+      .endif
+          eor     #$FF
     .endif
-        eor     #$FF
   .endif
 .endif
 L29DD:

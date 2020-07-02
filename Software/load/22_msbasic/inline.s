@@ -102,7 +102,7 @@ L2453:
   .endif
 .endif
 
-.ifndef KBD
+.if (!.def(KBD)) && (!.def(DB6502))
   .ifndef APPLE
 GETLN:
     .ifdef CONFIG_FILE
