@@ -18,10 +18,11 @@
       .code
 
 init:
-      ; clean up stack
+      ; clean up stack and zeropage
       ldx #$00
 @clean_stack_loop:
       stz $0100,x
+      stz $00,x
       inx
       bne @clean_stack_loop
       ; Set up stack
