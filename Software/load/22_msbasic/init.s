@@ -105,6 +105,7 @@ COLD_START:
 ; the number of bytes by adding 3 - this
 ; copies four bytes too many, which is no
 ; problem.
+.ifndef DB6502
 .ifdef CONFIG_SMALL
   .ifdef KBD
         ldx     #GENERIC_CHRGET_END-GENERIC_CHRGET+4
@@ -119,6 +120,14 @@ L4098:
         sta     CHRGET-1,x
         dex
         bne     L4098
+.else
+        ldx     #(GENERIC_CHRGET_END-GENERIC_RNDSEED)
+L4098:
+        lda     GENERIC_RNDSEED-1, x
+        sta     RNDSEED-1,x
+        dex
+        bne     L4098
+.endif
 .ifdef CONFIG_2
         lda     #$03
         sta     DSCLEN

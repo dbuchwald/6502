@@ -1,4 +1,5 @@
 .segment "RODATA"
+.ifndef DB6502
 RAMSTART1:
 GENERIC_CHRGET:
         inc     TXTPTR
@@ -21,3 +22,22 @@ GENERIC_CHRGOT2:
         sbc     #$D0
 L4058:
         rts
+.else
+CHRGET:
+        inc     TXTPTR
+        bne     CHRGOT
+        inc     TXTPTR+1
+CHRGOT:
+        lda     (TXTPTR)
+        cmp     #$3A
+        bcs     L4058
+CHRGOT2:
+        cmp     #$20
+        beq     CHRGET
+        sec
+        sbc     #$30
+        sec
+        sbc     #$D0
+L4058:
+        rts
+.endif

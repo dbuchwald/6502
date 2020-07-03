@@ -1,4 +1,4 @@
-1. Remove self-modyfying code
+1. (DONE) Remove self-modyfying code
 2. (POSTPONED) Remove dependency on custom memory segments
 3. (DONE) Add Exit keyword
 4. Case-insensitive comparison for tokens
