@@ -13,6 +13,6 @@ int main(void)
         PINB = _BV(PINB7);
 
         // Wait 500ms
-        _delay_ms(200);
+        _delay_ms(500);
     }
 }

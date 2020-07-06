@@ -10,7 +10,10 @@ OBJECTS := $(patsubst %.c,$(BUILD_FOLDER)/%.o,$(SOURCES))
 MCU := atmega2560
 MCU_AVRDUDE := m2560
 PARTNO := wiring
-DEVICE := \\.\COM5
+# Windows
+#DEVICE := COM5 
+# MacOS
+DEVICE := /dev/tty.usbmodem14201
 BAUDRATE := 115200
 AVRDUDE_FLAGS := -F -V -D -v
 
