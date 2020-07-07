@@ -1,4 +1,4 @@
-NAME := main
+NAME := usart_m8535
 BUILD_FOLDER=build
 HEX := $(BUILD_FOLDER)/$(NAME).hex
 OUT := $(BUILD_FOLDER)/$(NAME).out
