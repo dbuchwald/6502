@@ -1,10 +1,10 @@
 #include <avr/io.h>
 #include <stdio.h>
 
-void uart_init()
+void uart_init(unsigned long baud)
 {
     unsigned int ubrr;
-    ubrr = (((F_CPU / (115200UL * 16UL))) - 1);
+    ubrr = (((F_CPU / (baud * 16UL))) - 1);
     UBRRH = (unsigned char)(ubrr >> 8);
     UBRRL = (unsigned char)ubrr;
 

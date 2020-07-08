@@ -15,12 +15,11 @@
 
 #include <stdio.h>
 #include <avr/io.h>
-
 #include "main.h"
 #include "uart.h"
 
 // circular buffer size
-#define BUFFER_SIZE 128
+#define BUFFER_SIZE 64
 // circular buffer index
 unsigned char bufferIndex;
 // actual buffer
@@ -37,8 +36,12 @@ unsigned char currentReadWrite;
 
 int main(void)
 {
+    // init serial interface
+    uart_init(57600);
 
-    uart_init();
+    // redirect standard output
+    stdout = &uart_output;
+    stdin = &uart_input;
 
     // Init variables
     bufferIndex = 0;
@@ -68,7 +71,10 @@ int main(void)
         currentReadWrite = PORTD & _BV(PORTD5);
         // pull clock line low
         PORTD &= ~_BV(PORTD4);
-        // copy current data to buffer
+
+        //printf("%02X%02X %c %02X\n", currentAddrMSB, currentAddrLSB, currentReadWrite ? 'r' : 'W', currentData);
+
+        //copy current data to buffer
         addrMSB[bufferIndex] = currentAddrMSB;
         addrLSB[bufferIndex] = currentAddrLSB;
         data[bufferIndex] = currentData;
