@@ -1,18 +1,3 @@
-/*
- * Demonstration on how to redirect stdio to UART. 
- *
- * http://appelsiini.net/2011/simple-usart-with-avr-libc
- *
- * To compile and upload run: make clean; make; make program;
- * Connect to serial with: screen /dev/tty.usbserial-*
- *
- * Copyright 2011 Mika Tuupola
- *
- * Licensed under the MIT license:
- *   http://www.opensource.org/licenses/mit-license.php
- *
- */
-
 #include <stdio.h>
 #include <avr/io.h>
 #include "main.h"
@@ -33,6 +18,8 @@ unsigned char currentAddrMSB;
 unsigned char currentAddrLSB;
 unsigned char currentData;
 unsigned char currentReadWrite;
+// counter used to check for input
+unsigned char cycleCounterForUI;
 
 int main(void)
 {
@@ -45,6 +32,7 @@ int main(void)
 
     // Init variables
     bufferIndex = 0;
+    cycleCounterForUI = 0;
 
     // Init port direction registers
     // port A and C are inputs for Address Bus
@@ -79,22 +67,30 @@ int main(void)
         // pull clock line low
         PORTD &= ~_BV(PORTD4);
 
-        //printf("%02X%02X %c %02X\n", currentAddrMSB, currentAddrLSB, currentReadWrite ? 'r' : 'W', currentData);
-
         //copy current data to buffer
         addrMSB[bufferIndex] = currentAddrMSB;
         addrLSB[bufferIndex] = currentAddrLSB;
         data[bufferIndex] = currentData;
         readWrite[bufferIndex] = currentReadWrite;
         ++bufferIndex;
-        if (bufferIndex == BUFFER_SIZE)
-        {
+        if (bufferIndex == BUFFER_SIZE) {
             bufferIndex = 0;
             // for (int i=0; i<BUFFER_SIZE; i++) {
             //     printf("%02X%02X %c %02X\n", addrMSB[i], addrLSB[i], readWrite[i] ? 'r' : 'W', data[i]);
             // }
         }
+        ++cycleCounterForUI;
+        // execute code only every 256 cycles (to avoid unnecessary slowdown due to constant UART register polling)
+        if (!cycleCounterForUI) {
+          // check if any data is available in UART input buffer
+          if (UCSRA & _BV(RXC)) {
+            processUserInput();
+          }
+        }
     }
 
     return 0;
+}
+
+void processUserInput(void) {
 }
