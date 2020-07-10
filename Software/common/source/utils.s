@@ -1,5 +1,6 @@
       .include "zeropage.inc"
       .include "macros.inc"
+      .include "clock.inc"
 
       .export _delay_ms
       .export _delay_sec
@@ -22,12 +23,18 @@ _delay_ms:
       pha
       ldx tmp1
 
+      .if clock_divider=0
       ldy #190
+      .else
+      ldy #46
+      .endif
 loop1:
+      .if clock_mhz>1
       .repeat (clock_mhz-1)
       nop ; two cycles
       adc $00 ; three cycles
       .endrepeat
+      .endif
       dey
       bne loop1
 
@@ -36,12 +43,18 @@ loop2:
       beq return
 
       nop
+      .if clock_divider=0
       ldy #198
+      .else
+      ldy #49
+      .endif
 loop3:
+      .if clock_mhz>1
       .repeat (clock_mhz-1)
       nop ; two cycles
       adc $00 ; three cycles
       .endrepeat
+      .endif
       dey
       bne loop3
 

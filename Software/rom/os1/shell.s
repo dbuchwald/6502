@@ -1,3 +1,4 @@
+        .include "clock.inc"
         .include "string.inc"
         .include "utils.inc"
         .include "zeropage.inc"

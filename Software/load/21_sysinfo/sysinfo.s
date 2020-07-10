@@ -1,4 +1,5 @@
         .include "tty.inc"
+        .include "clock.inc"
         .import __ROM_START__
         .import __ROM_LAST__
         .import __ROM_SIZE__

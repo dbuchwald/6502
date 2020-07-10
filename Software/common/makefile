@@ -6,11 +6,12 @@ AR65_BINARY=ar65
 
 CPU_FLAG=--cpu 65C02
 ARCH_FLAG=-t none
-CLOCK_FLAG=-Dfastclock=$(FASTCLOCK) -Dacia_tx_irq=$(ACIA_TX_IRQ) -Dclock_mhz=$(CLOCK_MHZ)
+CLOCK_FLAG=-Dclock_mode_flag=$(CLOCK_MODE_FLAG) 
+ACIA_FLAG=-Dacia_tx_irq=$(ACIA_TX_IRQ) 
 BUILD_FLAG=-Ddb6502
 
-CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) -O
-CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG) $(BUILD_FLAG)
+CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) $(ACIA_FLAG) -O
+CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG) $(ACIA_FLAG) $(BUILD_FLAG)
 LD65_FLAGS=
 AR65_FLAGS=r
 
@@ -68,8 +69,28 @@ endif
 # R6551 - use 1 or 0 (both are supported, but 1 is "better")
 ACIA_TX_IRQ=0
 
-# Higher MHz support
-CLOCK_MHZ=1
+# Default address mode (basic/ext/.. )
+ADDRESS_MODE=ext
+
+# Default clock mode (supported are: slow, 250k, 1m, 2m, 4m, 8m)
+CLOCK_MODE=slow
+
+# Clock mode translation (for CA65 preprocessor) - see common/include/clock.inc
+ifeq ($(CLOCK_MODE), slow)
+	CLOCK_MODE_FLAG=0
+else ifeq ($(CLOCK_MODE), 250k)
+	CLOCK_MODE_FLAG=1
+else ifeq ($(CLOCK_MODE), 1m)
+	CLOCK_MODE_FLAG=2
+else ifeq ($(CLOCK_MODE), 2m)
+	CLOCK_MODE_FLAG=3
+else ifeq ($(CLOCK_MODE), 4m)
+	CLOCK_MODE_FLAG=4
+else ifeq ($(CLOCK_MODE), 8m)
+	CLOCK_MODE_FLAG=5
+else
+	$(error Incorrect clock mode selected: $(CLOCK_MODE))
+endif
 
 # Include folders
 COMMON_ROOT=../../common
@@ -125,12 +146,6 @@ COMMON_C_LIBRARY=$(COMMON_LIB_FOLDER)/common.c.lib
 # C_SOURCES = main.c
 # Object files to be generated
 OBJECTS = $(ASM_SOURCES:%.s=$(BUILD_FOLDER)/%.o) $(C_SOURCES:%.c=$(BUILD_FOLDER)/%.o)
-
-# Default address mode (basic/ext/.. )
-ADDRESS_MODE=ext
-
-# Default clock mode (slow/fast)
-FASTCLOCK=1
 
 ifeq ($(BUILD_TYPE),load)
 # Choose configuration file for firmware (determines addressing mode)
