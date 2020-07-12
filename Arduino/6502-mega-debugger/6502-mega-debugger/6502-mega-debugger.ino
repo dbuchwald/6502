@@ -36,6 +36,13 @@ void showHelp(void);
 int processUserInput(void);
 void dumpBuffer(void);
 
+void uart_init(unsigned int baud);
+
+void uart_print(const char string[]);
+void uart_putchar(char c);
+char uart_getchar(void);
+int uart_available(void);
+
 // circular buffer size
 #define BUFFER_SIZE 256
 // circular buffer index
@@ -51,19 +58,16 @@ unsigned char currentAddrMSB;
 unsigned char currentAddrLSB;
 unsigned char currentData;
 unsigned char currentCycleParams;
-// counter used to check for input
-unsigned char cycleCounterForUI;
 
 char textBuffer[64];
 
 int main(void)
 {
   initPorts();
-  Serial.begin(57600);
+  uart_init(57600);
 
   // Init variables
   bufferIndex = 0;
-  cycleCounterForUI = 0;
 
   // start by pulling clock line low
   CONTROL_PORT &= ~_BV(CLOCK_PIN_PORT);
@@ -71,8 +75,7 @@ int main(void)
   // start user interface shell
   startShell();
 
-  Serial.println("Done!");
-  Serial.flush();
+  uart_print("Done!\n");
 
   return 0;
 }
@@ -98,18 +101,15 @@ void initPorts(void) {
 }
 
 void startShell(void) {
-  int command;
+  char command;
   // Say hello
-  Serial.println("Welcome to BE6502 advanced debugger program");
+  uart_print("Welcome to BE6502 advanced debugger program\n");
   showHelp();
   while (1) {
-    Serial.print("Debug>");
-    Serial.flush();
+    uart_print("Debug>");
     while (1) {
-      command=Serial.read();
-      switch(command) {
-        case -1:
-          break;
+      command = uart_getchar();
+      switch (command) {
         case 'a':
         case 'A':
           defineBreakpoint();
@@ -144,8 +144,8 @@ void startShell(void) {
           showHelp();
           break;
         default:
-          Serial.println("");
-          Serial.println("Invalid command, press h for help");
+          uart_print("\n");
+          uart_print("Invalid command, press h for help\n");
           break;
       }
     }
@@ -154,7 +154,7 @@ void startShell(void) {
 
 void defineBreakpoint(void) {
 }
-void listBreakpoints(void){
+void listBreakpoints(void) {
 }
 void deleteBreakpoint(void) {
 }
@@ -171,15 +171,15 @@ void singleStep(void) {
   currentCycleParams = CONTROL_PIN & _BV(RW_PIN_PIN);
   // pull clock line low
   CONTROL_PORT &= ~_BV(CLOCK_PIN_PORT);
-  sprintf(textBuffer, "%02X%02X %c %02X", currentAddrMSB, currentAddrLSB, currentCycleParams & _BV(RW_PIN_PIN) ? 'r' : 'W', currentData);
-  Serial.println(textBuffer);
+  sprintf(textBuffer, "%02X%02X %c %02X\n", currentAddrMSB, currentAddrLSB, currentCycleParams & _BV(RW_PIN_PIN) ? 'r' : 'W', currentData);
+  uart_print(textBuffer);
 }
 void goLoop(void) {
-  while(1) {
+  while (1) {
     singleStep();
-    if (Serial.available()) {
-      int command=Serial.read();
-      if (command == 's' || command=='S') {
+    if (uart_available()) {
+      char command = uart_getchar();
+      if (command == 's' || command == 'S') {
         return;
       }
     }
@@ -208,48 +208,83 @@ void runLoop(void) {
     if (bufferIndex == BUFFER_SIZE) {
       bufferIndex = 0;
     }
-    ++cycleCounterForUI;
-    // execute code only every 256 cycles (to avoid unnecessary slowdown due to constant UART register polling)
-    if (!cycleCounterForUI) {
-      // check if any data is available in UART input buffer
-      if (Serial.available()) {
-        if (processUserInput()) {
-          return;
-        }
+
+    if (UCSR0A & _BV(RXC0)) {
+      char command = UDR0;
+      if (command == 's' || command == 'S') {
+        return;
       }
     }
   }
 }
 
 int processUserInput(void) {
-  int command=Serial.read();
-  if (command=='s' || command=='S') {
+  char command = uart_getchar();
+  if (command == 's' || command == 'S') {
     return 1;
   }
   return 0;
 }
 
 void dumpBuffer(void) {
-  unsigned int dumpIndex=bufferIndex;
+  unsigned int dumpIndex = bufferIndex;
   do {
-    ++dumpIndex;    
+    ++dumpIndex;
     if (dumpIndex == BUFFER_SIZE) {
-      dumpIndex=0;
+      dumpIndex = 0;
     }
-    sprintf(textBuffer, "%02X%02X %c %02X", addrMSB[dumpIndex], addrLSB[dumpIndex], cycleParams[dumpIndex] & _BV(RW_PIN_PIN) ? 'r' : 'W', data[dumpIndex]);
-    Serial.println(textBuffer);
+    sprintf(textBuffer, "%02X%02X %c %02X\n", addrMSB[dumpIndex], addrLSB[dumpIndex], cycleParams[dumpIndex] & _BV(RW_PIN_PIN) ? 'r' : 'W', data[dumpIndex]);
+    uart_print(textBuffer);
   } while (dumpIndex != bufferIndex);
 }
 
 void showHelp(void) {
-  Serial.println("Use following keys while in shell mode:");
-  Serial.println("  [a]dd breakpoint - adds new breakpoint");
-  Serial.println("  [l]ist breakpoints - list all defined breakpoints");
-  Serial.println("  [d]elete breakpoint - delete breakpoint");
-  Serial.println("  d[i]sable breakpoint - disable breakpoint temporarily");
-  Serial.println("  [s]tep - execute next cycle");
-  Serial.println("  [g]o - execute step by step");
-  Serial.println("  [r]un program - keep going until next breakpoint");
-  Serial.println("  [h]elp - list commands");
-  Serial.println("");
+  uart_print("Use following keys while in shell mode:\n");
+  uart_print("  [a]dd breakpoint - adds new breakpoint\n");
+  uart_print("  [l]ist breakpoints - list all defined breakpoints\n");
+  uart_print("  [d]elete breakpoint - delete breakpoint\n");
+  uart_print("  d[i]sable breakpoint - disable breakpoint temporarily\n");
+  uart_print("  [s]tep - execute next cycle\n");
+  uart_print("  [g]o - execute step by step\n");
+  uart_print("  [r]un program - keep going until next breakpoint\n");
+  uart_print("  [h]elp - list commands\n");
+  uart_print("\n");
+}
+
+void uart_init(unsigned int baud)
+{
+  unsigned int ubrr;
+  ubrr = (((F_CPU / (baud * 16UL))) - 1);
+  UBRR0H = (unsigned char)(ubrr >> 8);
+  UBRR0L = (unsigned char)ubrr;
+
+  UCSR0C = _BV(UCSZ01) | _BV(UCSZ00);
+  UCSR0B = _BV(RXEN0) | _BV(TXEN0);
+}
+
+int uart_available(void) {
+  return UCSR0A & _BV(RXC0);
+}
+
+void uart_print(const char string[]) {
+  while (*string) {
+    uart_putchar(*string);
+    string++;
+  }
+}
+
+void uart_putchar(char c)
+{
+  if (c == '\n')
+  {
+    uart_putchar('\r');
+  }
+  loop_until_bit_is_set(UCSR0A, UDRE0);
+  UDR0 = c;
+}
+
+char uart_getchar()
+{
+  loop_until_bit_is_set(UCSR0A, RXC0);
+  return UDR0;
 }
