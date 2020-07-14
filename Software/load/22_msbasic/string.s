@@ -9,9 +9,9 @@ STR:
         pla
         pla
 LD353:
-        lda     #$FF
-        ldy     #$00
-        beq     STRLIT
+        lda     #<(STACK-1)
+        ldy     #>(STACK-1)
+        bra     STRLIT
 
 ; ----------------------------------------------------------------------------
 ; GET SPACE AND MAKE DESCRIPTOR FOR STRING WHOSE

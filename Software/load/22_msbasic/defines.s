@@ -62,7 +62,11 @@ FOR_STACK2		:= BYTES_FP+4
 MAX_EXPON = 10
 .endif
 
+.ifndef DB6502
 STACK           := $0100
+.else
+STACK           := $0e00
+.endif
 
 .ifdef INPUTBUFFER
   .if INPUTBUFFER >= $0100
