@@ -64,8 +64,10 @@ MAX_EXPON = 10
 
 .ifndef DB6502
 STACK           := $0100
+TXTBUFFER       := $0100
 .else
-STACK           := $0e00
+STACK           := $0100
+TXTBUFFER       := $0E00
 .endif
 
 .ifdef INPUTBUFFER

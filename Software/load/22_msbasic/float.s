@@ -1428,7 +1428,7 @@ FOUT1:
         bpl     L3C73
         lda     #$2D
 L3C73:
-        sta     STACK-1,y
+        sta     TXTBUFFER-1,y
         sta     FACSIGN
         sty     STRNG2
         iny
@@ -1509,12 +1509,12 @@ L3CDF:
         ldy     STRNG2
         lda     #$2E
         iny
-        sta     STACK-1,y
+        sta     TXTBUFFER-1,y
         txa
         beq     L3CF0
         lda     #$30
         iny
-        sta     STACK-1,y
+        sta     TXTBUFFER-1,y
 L3CF0:
         sty     STRNG2
 ; ----------------------------------------------------------------------------
@@ -1564,12 +1564,12 @@ L3D23:
         iny
         tax
         and     #$7F
-        sta     STACK-1,y
+        sta     TXTBUFFER-1,y
         dec     INDX
         bne     L3D3E
         lda     #$2E
         iny
-        sta     STACK-1,y
+        sta     TXTBUFFER-1,y
 L3D3E:
         sty     STRNG2
         ldy     VARPNT
@@ -1591,7 +1591,7 @@ L3D3E:
 LDD96:
         ldy     STRNG2
 L3D4E:
-        lda     STACK-1,y
+        lda     TXTBUFFER-1,y
         dey
         cmp     #$30
         beq     L3D4E
@@ -1609,9 +1609,9 @@ L3D5B:
         tax
         lda     #$2D
 L3D6B:
-        sta     STACK+1,y
+        sta     TXTBUFFER+1,y
         lda     #$45
-        sta     STACK,y
+        sta     TXTBUFFER,y
         txa
         ldx     #$2F
         sec
@@ -1620,20 +1620,20 @@ L3D77:
         sbc     #$0A
         bcs     L3D77
         adc     #$3A
-        sta     STACK+3,y
+        sta     TXTBUFFER+3,y
         txa
-        sta     STACK+2,y
+        sta     TXTBUFFER+2,y
         lda     #$00
-        sta     STACK+4,y
+        sta     TXTBUFFER+4,y
         beq     L3D94
 FOUT4:
-        sta     STACK-1,y
+        sta     TXTBUFFER-1,y
 L3D8F:
         lda     #$00
-        sta     STACK,y
+        sta     TXTBUFFER,y
 L3D94:
-        lda     #<STACK
-        ldy     #>STACK
+        lda     #<TXTBUFFER
+        ldy     #>TXTBUFFER
         rts
 
 ; ----------------------------------------------------------------------------

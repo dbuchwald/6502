@@ -9,8 +9,8 @@ STR:
         pla
         pla
 LD353:
-        lda     #<(STACK-1)
-        ldy     #>(STACK-1)
+        lda     #<(TXTBUFFER-1)
+        ldy     #>(TXTBUFFER-1)
         bra     STRLIT
 
 ; ----------------------------------------------------------------------------
