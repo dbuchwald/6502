@@ -1428,7 +1428,7 @@ FOUT1:
         bpl     L3C73
         lda     #$2D
 L3C73:
-        sta     $FF,y
+        sta     STACK-1,y
         sta     FACSIGN
         sty     STRNG2
         iny
@@ -1509,12 +1509,12 @@ L3CDF:
         ldy     STRNG2
         lda     #$2E
         iny
-        sta     $FF,y
+        sta     STACK-1,y
         txa
         beq     L3CF0
         lda     #$30
         iny
-        sta     $FF,y
+        sta     STACK-1,y
 L3CF0:
         sty     STRNG2
 ; ----------------------------------------------------------------------------
@@ -1564,12 +1564,12 @@ L3D23:
         iny
         tax
         and     #$7F
-        sta     $FF,y
+        sta     STACK-1,y
         dec     INDX
         bne     L3D3E
         lda     #$2E
         iny
-        sta     $FF,y
+        sta     STACK-1,y
 L3D3E:
         sty     STRNG2
         ldy     VARPNT
@@ -1591,7 +1591,7 @@ L3D3E:
 LDD96:
         ldy     STRNG2
 L3D4E:
-        lda     $FF,y
+        lda     STACK-1,y
         dey
         cmp     #$30
         beq     L3D4E
@@ -1627,7 +1627,7 @@ L3D77:
         sta     STACK+4,y
         beq     L3D94
 FOUT4:
-        sta     $FF,y
+        sta     STACK-1,y
 L3D8F:
         lda     #$00
         sta     STACK,y
