@@ -67,7 +67,6 @@ STACK           := $0100
 TXTBUFFER       := $0100
 .else
 STACK           := $0100
-TXTBUFFER       := $0E00
 .endif
 
 .ifdef INPUTBUFFER

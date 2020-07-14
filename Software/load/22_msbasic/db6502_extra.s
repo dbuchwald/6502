@@ -70,3 +70,7 @@ SAVE:
 
 .segment "STARTUP"
   jmp init
+
+.segment "SYSRAM"
+TXTBUFFER:
+  .res 64

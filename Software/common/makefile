@@ -100,8 +100,7 @@ COMMON_SOURCE_FOLDER=$(COMMON_ROOT)/source
 BASE_LIBRARY=$(COMMON_ROOT)/none.lib
 
 # Common objects to be linked
-COMMON_SOURCES=sysram_map.s  \
-							 syscalls.s    \
+COMMON_SOURCES=syscalls.s    \
 							 acia.s        \
                blink.s       \
 							 core.s        \
@@ -122,13 +121,12 @@ COMMON_OBJECTS=$(COMMON_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.o)
 COMMON_LIBRARY=$(COMMON_LIB_FOLDER)/common.lib
 
 # Common library for loadable modules
-COMMON_LOAD_SOURCES=sysram_map.s \
-                    syscalls.s \
+COMMON_LOAD_SOURCES=syscalls.s \
                     loadlib.s
 
 # ZEROPAGE map
 # Must be defined separately and forced to link against the objects to ensure memory reservation
-SYSTEM_ZEROPAGE_MAP_OBJECT=$(COMMON_BUILD_FOLDER)/zeropage.o
+SYSTEM_MEMORY_MAP_OBJECT=$(COMMON_BUILD_FOLDER)/zeropage.o $(COMMON_BUILD_FOLDER)/sysram_map.o
 
 COMMON_LOAD_OBJECTS=$(COMMON_LOAD_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.load.o)
 
@@ -214,14 +212,14 @@ all: $(FIRMWARE_BINARY)
 
 # Linking process
 ifeq ($(BUILD_TYPE),load)
-$(FIRMWARE_RAW): $(SYSTEM_ZEROPAGE_MAP_OBJECT) $(OBJECTS) $(LOAD_LINK_LIBRARY) $(COMMON_C_LIBRARY)
+$(FIRMWARE_RAW): $(SYSTEM_MEMORY_MAP_OBJECT) $(OBJECTS) $(LOAD_LINK_LIBRARY) $(COMMON_C_LIBRARY)
 	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(ROM_FOLDER)
 	$(LD65_BINARY) $(LD65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_MAP) -o $(FIRMWARE_RAW) $^
 
 $(FIRMWARE_BINARY): $(FIRMWARE_RAW)
 	$(PYTHON_BINARY) $(PYTHON_PROGRAM) $^ $@
 else
-$(FIRMWARE_BINARY): $(SYSTEM_ZEROPAGE_MAP_OBJECT) $(OBJECTS) $(COMMON_LIBRARY) $(COMMON_C_LIBRARY)
+$(FIRMWARE_BINARY): $(SYSTEM_MEMORY_MAP_OBJECT) $(OBJECTS) $(COMMON_LIBRARY) $(COMMON_C_LIBRARY)
 	@$(MKDIR_BINARY) $(MKDIR_FLAGS) $(ROM_FOLDER)
 	$(LD65_BINARY) $(LD65_FLAGS) -C $(FIRMWARE_CFG) -m $(FIRMWARE_MAP) -o $@ $^
 endif
