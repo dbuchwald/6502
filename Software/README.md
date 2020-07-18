@@ -287,19 +287,26 @@ General rule is simple: `make` should be sufficient for all the build/installati
 Beside the targets, there are three very important build flags:
 
 - `ADDRESS_MODE` - with acceptable values `basic` and `ext` (the latter being default if omitted) that drives target addressing model. To build for Ben Eater's machine, use `basic` mode; for my build, use `ext` mode. If you want to support your own model, create additional configuration file, as explained in common sources section below,
-- `FASTCLOCK` - with acceptable values `0` and `1` (the latter being default if omitted) enables build time selection of runtime clock variant. Basically, certain operations (like LCD initialization) require delays when working at 1MHz clock speed, and the delays are implemented as dead loops. Each 1ms delay translates to 1000 clock cycles. Now, if you want to run the code with external clock module or in emulator, it will take literally hours to clock through single delay loop. To mitigate this issue and prevent necessity to change code each time, this flag was added. **Please note: to enable detection of possible stack related issues in code using delay operations, these routines are not fully disabled, jump to subroutine still happens, it just results in immediate return.**
-- `LCD_MODE` - with acceptable values `8bit` and `4bit` (the latter being default if omitted) enables build time selection of LCD interface. If your own build of 6502 computer uses 8-bit interface towards LCD, this will let you use provided software with it. The only thing you might want to check is the LCD data and port definitions at the beginning of `common/source/lcd8bit.s` (or, if you are using your own build with 4-bit mode `common/source/lcd4bit.s`) for symbols `LCD_DATA_PORT` and `LCD_CONTROL_PORT`, as well as their DDR counterparts. The same is possible with 4-bit mode, but there is just one symbol - `LCD_PORT` accompanied by DDR counterpart. Default configuration is obviously immediately compatible with 4-bit onboard LCD connector, and 8-bit interface connected to VIA2 PA for control and PB for data (like in BE6502).
+- `CLOCK_MODE` - used to control internal delay routines to work with different clock setups. The following modes are supported:
+  - `slow` - to be used with external clock module, all delays are basically disabled,
+  - `250k` - to be used with Arduino Mega Debugger (my own variant running at approx. 275kHz),
+  - `1m` - to be used with 1MHz oscillator,
+  - `2m` - to be used with 2MHz oscillator,
+  - `4m` - to be used with 4MHz oscillator,
+  - `8m` - to be used with 8MHz oscillator.
+- `LCD_MODE` - with acceptable values `8bit` and `4bit` (the latter being default if omitted) enables build time selection of LCD interface. If your own build of 6502 computer uses 8-bit interface towards LCD, this will let you use provided software with it. The only thing you might want to check is the LCD data and port definitions at the beginning of `common/source/lcd8bit.s` (or, if you are using your own build with 4-bit mode `common/source/lcd4bit.s`) for symbols `LCD_DATA_PORT` and `LCD_CONTROL_PORT`, as well as their DDR counterparts. The same is possible with 4-bit mode, but there is just one symbol - `LCD_PORT` accompanied by DDR counterpart. Default configuration is obviously immediately compatible with 4-bit onboard LCD connector, and 8-bit interface connected to VIA2 PA for control and PB for data (like in BE6502),
+- `ACIA_TX_IRQ` - flag was introduced to enable compatibility with WDC65C51 ACIA chip and acceptable values are `0` and `1`. It controls usage of IRQ request to indicate that transmit operation was completed. When disabled (value `0`), fixed time delay is used to wait for the transmit operation to complete. Rockwell R6551 chips can work with both settings, but `1` is recommended.
 
 Build examples:
 
 ```shell
-make ADDRESS_MODE=basic FASTCLOCK=0 clean all test install
+make ADDRESS_MODE=basic CLOCK_MODE=slow clean all test install
 ```
 
 This will build sources with Ben's addressing scheme (16K RAM, 32K ROM, VIA at 0x6000), with support for slow clocking - any delay routines will be skipped. First, all the binaries will be removed, then built from scratch, hexdump of the resulting binary will be displayed and the binary uploaded to the EEPROM, assuming it's connected via minipro-compatible programmer.
 
 ```shell
-make FASTCLOCK=1 all test
+make CLOCK_MODE=1m all test
 ```
 
 This command will rebuild only modified modules with support for my own addressing scheme (32K RAM, 24K ROM, VIA at 0x9000) and suitable for 1MHz execution - all delays will be enabled.
@@ -335,6 +342,7 @@ In the `rom` folder you will find the following ROM images:
 - `21_serial_load_test` - attempt to implement testing program for high serial load, counting incoming characters,
 - `22_modem_test` - barebone modem testing application, sort of bootloader without user interface,
 - `23_blink_test` - copy of `load/01_blink_test` to show how simple `makefile` change can be used to build the same source either as ROM image or bootloader-compatible loadable module,
+- `microsoft_basic` - standalone version of MS Basic interpreter working over serial connection,
 - `minimal_bootloader` - simplest possible bootloader application that can be used to simplify software development thanks to making ROM flashing unnecessary for each code change,
 - `os1` - **work in progress** - basic operating system.
 
@@ -365,6 +373,7 @@ The following table summarizes compatibility of each program with different vers
 | `rom/21_serial_load_test` | Not supported                     | Works out of the box                                               |
 | `rom/22_modem_test`       | ACIA chip needs to be added       | Works out of the box                                               |
 | `rom/23_blink_test`       | ADDRESS_MODE=basic, LED on PB0    | Works out of the box                                               |
+| `rom/microsoft_basic`     | Not supported                     | Works out of the box                                               |
 | `rom/minimal_bootloader`  | Not supported                     | Works out of the box                                               |
 | `rom/os1`                 | Not supported                     | Works out of the box                                               |
 
@@ -381,7 +390,20 @@ All the programs in the `load` folder are to be uploaded to the 6502 computer ov
 - `load/07_keyboard_test` - modified version of the ROM keyboard test application, implemented mostly to test new key binding (CTRL+X) and required changes in the keyboard controller firmware,
 - `load/08_system_break_test` - very simple application: when started, it runs infinite loop. That's all. It was created to demonstrate new OS/1 feature - system break,
 - `load/09_monitor` - work in progress implementation of the monitor program (moved to OS/1 image),
-- `load/10_menu` - simple application used to test drive common menu library (now included in OS/1 image).
+- `load/10_menu` - simple application used to test drive common menu library (now included in OS/1 image),
+- `load/11_disasm` - simple disassembler application, now included in OS/1 monitor application,
+- `load/12_custom_chars` - simple program that defines custom characters for LCD screen,
+- `load/13_custom_chars_c` - the same as above, but written using C library bindings,
+- `load/14_offset_math` - program written to test offset math operations (used to troubleshoot disassembly issues with relative addressing),
+- `load/15_menu_in_c` - another program to illustrate C bindings for OS/1 library functions,
+- `load/16_microchess` - original KIM-1 microchess program, ported to work in OS/1 environment, and with slightly improved user interface,
+- `load/17_basic` - my own implementation of BASIC interpreter, incomplete and still in progress. Might never be completed (see program `22_msbasic` below),
+- `load/18_hello_world` - simple program to illustrate difference between assembly and C code,
+- `load/19_hello_world_c` - as above, but written in C,
+- `load/20_lcd_bug` - program used to troubleshoot issues with LCD interface running at 8MHz clock,
+- `load/21_sysinfo` - simple program to display system information, now embedded in OS/1 image,
+- `load/22_msbasic` - port of original Microsoft BASIC code, updated to work as OS/1 loadable module. When all the bugs are solved, it will be embedded in OS/1 image,
+- `load/23_t1_test` - simple program demonstrating WDC 65C22 VIA timer operation.
 
 As for software compatibility - all the loadable modules require bootloader, and this one, in turn, requires ACIA for operation, so by design these are not compatible with vanilla BE6502.
 

@@ -82,6 +82,10 @@ And, last but not least, full set of sample programs to follow Ben's videos on D
 
 There are several sketches there, and their full description is available is [separate README](Arduino/README.md).
 
+### `AVR` folder
+
+There are several projects there, used to experiment with pure `avr-gcc` development for Atmel AVR chips. While it has been interesting adventure that I plan to explore further in the future, it was easier to stick to standard Arduino tools for now and simply restructure code to work there.
+
 ### `Datasheets` folder
 
 All the datasheets I used when designing DB6502, attached for reference.
