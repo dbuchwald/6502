@@ -208,7 +208,7 @@ If it works correctly, follow with `Software/rom/07_mem_test` and `Software/rom/
 
 ### Initiate warp speed
 
-Now it's time to go a bit faster and test the more complex features. Please note: you could keep using the analyzer and external clock with these programs, you just have to remember to build them with `FASTCLOCK=0` flag. More details can be found in [building software section](#building-software).
+Now it's time to go a bit faster and test the more complex features. Please note: you could keep using the analyzer and external clock with these programs, you just have to remember to build them with `CLOCK_MODE=slow` flag. More details can be found in [building software section](#building-software).
 
 For now let's assume we move to 1MHz clock. To do it, put jumper on two leftmost pins of clock connector (J1). Disconnect external clock and bus analyzer - first one is not needed, second one will not work with high frequencies anyway. Connect your LCD to onboard LCD port and upload `Software/rom/13_4bit_lcd` to your ROM. Upon boot you expect to see message "Hello 4-bit! Chars!" on your screen. If it works, it means that the primary VIA works just fine and clock is OK.
 
