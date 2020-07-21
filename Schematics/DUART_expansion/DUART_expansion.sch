@@ -14,10 +14,10 @@ Comment3 ""
 Comment4 "Created by Dawid Buchwald"
 $EndDescr
 $Comp
-L Connector_Generic:Conn_02x16_Odd_Even J?
+L Connector_Generic:Conn_02x16_Odd_Even J1
 U 1 1 5F15BD0D
 P 1400 1650
-F 0 "J?" H 1450 2567 50  0000 C CNN
+F 0 "J1" H 1450 2567 50  0000 C CNN
 F 1 "Expansion bus" H 1450 2476 50  0000 C CNN
 F 2 "" H 1400 1650 50  0001 C CNN
 F 3 "~" H 1400 1650 50  0001 C CNN
@@ -212,10 +212,10 @@ GND
 Wire Wire Line
 	3550 1850 3550 1750
 $Comp
-L Oscillator:CXO_DIP8 X?
+L Oscillator:CXO_DIP8 X1
 U 1 1 5F1792E7
 P 3550 1450
-F 0 "X?" H 3894 1496 50  0000 L CNN
+F 0 "X1" H 3894 1496 50  0000 L CNN
 F 1 "CXO_DIP8" H 3894 1405 50  0000 L CNN
 F 2 "Oscillator:Oscillator_DIP-8" H 4000 1100 50  0001 C CNN
 F 3 "http://cdn-reichelt.de/documents/datenblatt/B400/OSZI.pdf" H 3450 1450 50  0001 C CNN
@@ -232,30 +232,26 @@ DUART_CLK
 Wire Wire Line
 	3850 1450 4300 1450
 $Comp
-L 74xx:74AHC04 U?
+L 74xx:74HC04 U1
 U 7 1 5F17BEEB
 P 1100 3800
-F 0 "U?" H 1330 3846 50  0000 L CNN
-F 1 "74AHC04" H 1330 3755 50  0000 L CNN
+F 0 "U1" H 1330 3846 50  0000 L CNN
+F 1 "74HC04" H 1330 3755 50  0000 L CNN
 F 2 "" H 1100 3800 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74AHC_AHCT04.pdf" H 1100 3800 50  0001 C CNN
 	7    1100 3800
 	1    0    0    -1  
 $EndComp
-Text GLabel 1100 3200 1    50   Input ~ 0
-GND
 Wire Wire Line
 	1100 3200 1100 3300
-Text GLabel 1100 4400 3    50   Input ~ 0
-+5V
 Wire Wire Line
 	1100 4400 1100 4300
 $Comp
-L 74xx:74AHC04 U?
+L 74xx:74HC04 U1
 U 1 1 5F17F7FF
 P 3500 2700
-F 0 "U?" H 3500 3017 50  0000 C CNN
-F 1 "74AHC04" H 3500 2926 50  0000 C CNN
+F 0 "U1" H 3500 3017 50  0000 C CNN
+F 1 "74HC04" H 3500 2926 50  0000 C CNN
 F 2 "" H 3500 2700 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74AHC_AHCT04.pdf" H 3500 2700 50  0001 C CNN
 	1    3500 2700
@@ -270,21 +266,21 @@ DUART_RES
 Wire Wire Line
 	3800 2700 3900 2700
 $Comp
-L 74xx:74AHC04 U?
+L 74xx:74HC04 U1
 U 2 1 5F185D8B
 P 3500 3900
-F 0 "U?" H 3500 4217 50  0000 C CNN
-F 1 "74AHC04" H 3500 4126 50  0000 C CNN
+F 0 "U1" H 3500 4217 50  0000 C CNN
+F 1 "74HC04" H 3500 4126 50  0000 C CNN
 F 2 "" H 3500 3900 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74AHC_AHCT04.pdf" H 3500 3900 50  0001 C CNN
 	2    3500 3900
 	1    0    0    -1  
 $EndComp
 $Comp
-L 74xx:74HC00 U?
+L 74xx:74HC00 U2
 U 1 1 5F187D21
 P 3500 3250
-F 0 "U?" H 3500 3575 50  0000 C CNN
+F 0 "U2" H 3500 3575 50  0000 C CNN
 F 1 "74HC00" H 3500 3484 50  0000 C CNN
 F 2 "" H 3500 3250 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74hc00" H 3500 3250 50  0001 C CNN
@@ -304,22 +300,18 @@ CLK
 Wire Wire Line
 	3100 3350 3200 3350
 $Comp
-L 74xx:74HC00 U?
+L 74xx:74HC00 U2
 U 5 1 5F18B90B
 P 1950 3800
-F 0 "U?" H 2180 3846 50  0000 L CNN
+F 0 "U2" H 2180 3846 50  0000 L CNN
 F 1 "74HC00" H 2180 3755 50  0000 L CNN
 F 2 "" H 1950 3800 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74hc00" H 1950 3800 50  0001 C CNN
 	5    1950 3800
 	1    0    0    -1  
 $EndComp
-Text GLabel 1950 3200 1    50   Input ~ 0
-GND
 Wire Wire Line
 	1950 3200 1950 3300
-Text GLabel 1950 4400 3    50   Input ~ 0
-+5V
 Wire Wire Line
 	1950 4400 1950 4300
 Text GLabel 3100 3900 0    50   Input ~ 0
@@ -327,10 +319,10 @@ R~W
 Wire Wire Line
 	3100 3900 3200 3900
 $Comp
-L 74xx:74HC00 U?
+L 74xx:74HC00 U2
 U 2 1 5F19297E
 P 4200 4000
-F 0 "U?" H 4200 4325 50  0000 C CNN
+F 0 "U2" H 4200 4325 50  0000 C CNN
 F 1 "74HC00" H 4200 4234 50  0000 C CNN
 F 2 "" H 4200 4000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74hc00" H 4200 4000 50  0001 C CNN
@@ -348,11 +340,11 @@ CLK
 Wire Wire Line
 	3100 4100 3900 4100
 $Comp
-L 74xx:74AHC04 U?
+L 74xx:74HC04 U1
 U 3 1 5F197B7F
 P 3500 4600
-F 0 "U?" H 3500 4917 50  0000 C CNN
-F 1 "74AHC04" H 3500 4826 50  0000 C CNN
+F 0 "U1" H 3500 4917 50  0000 C CNN
+F 1 "74HC04" H 3500 4826 50  0000 C CNN
 F 2 "" H 3500 4600 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74AHC_AHCT04.pdf" H 3500 4600 50  0001 C CNN
 	3    3500 4600
@@ -363,10 +355,10 @@ Text GLabel 3100 4600 0    50   Input ~ 0
 Wire Wire Line
 	3100 4600 3200 4600
 $Comp
-L 74xx:74HC00 U?
+L 74xx:74HC00 U2
 U 3 1 5F199FB8
 P 4200 4700
-F 0 "U?" H 4200 5025 50  0000 C CNN
+F 0 "U2" H 4200 5025 50  0000 C CNN
 F 1 "74HC00" H 4200 4934 50  0000 C CNN
 F 2 "" H 4200 4700 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74hc00" H 4200 4700 50  0001 C CNN
@@ -383,15 +375,15 @@ Entry Wire Line
 	3000 4900 3100 4800
 Wire Bus Line
 	3000 4900 3000 4950
-Text GLabel 4600 4700 2    50   Output ~ 0
+Text GLabel 6000 4800 2    50   Output ~ 0
 DUART_CEN
 Wire Wire Line
 	4500 4700 4600 4700
 $Comp
-L DUART:SC26C92 U?
+L DUART:SC26C92 U3
 U 1 1 5F1A2B31
 P 6500 2400
-F 0 "U?" H 6450 2500 50  0000 L CNN
+F 0 "U3" H 6450 2500 50  0000 L CNN
 F 1 "SC26C92" H 6500 2300 50  0000 C CNN
 F 2 "" H 6500 2400 50  0001 C CNN
 F 3 "" H 6500 2400 50  0001 C CNN
@@ -489,7 +481,7 @@ d3
 Text Label 6200 3300 1    50   ~ 0
 d5
 Text Label 6300 3300 1    50   ~ 0
-d6
+d7
 Wire Wire Line
 	6000 3200 6000 3300
 Wire Wire Line
@@ -530,6 +522,64 @@ Wire Wire Line
 	7400 2300 7300 2300
 Wire Wire Line
 	7400 2500 7300 2500
+Text GLabel 1100 4400 3    50   Input ~ 0
+GND
+Text GLabel 1950 4400 3    50   Input ~ 0
+GND
+Text GLabel 1100 3200 1    50   Input ~ 0
++5V
+Text GLabel 1950 3200 1    50   Input ~ 0
++5V
+$Comp
+L 74xx:74HC04 U1
+U 5 1 5F188CDA
+P 4900 4700
+F 0 "U1" H 4900 5017 50  0000 C CNN
+F 1 "74HC04" H 4900 4926 50  0000 C CNN
+F 2 "" H 4900 4700 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74AHC_AHCT04.pdf" H 4900 4700 50  0001 C CNN
+	5    4900 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74HC00 U2
+U 4 1 5F189A33
+P 5600 4800
+F 0 "U2" H 5600 5125 50  0000 C CNN
+F 1 "74HC00" H 5600 5034 50  0000 C CNN
+F 2 "" H 5600 4800 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74hc00" H 5600 4800 50  0001 C CNN
+	4    5600 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5200 4700 5300 4700
+Text GLabel 3100 5050 0    50   Input ~ 0
+CLK
+Wire Wire Line
+	3100 5050 5200 5050
+Wire Wire Line
+	5200 5050 5200 4900
+Wire Wire Line
+	5200 4900 5300 4900
+Wire Wire Line
+	5900 4800 6000 4800
+$Comp
+L 74xx:74HC04 U1
+U 6 1 5F19385D
+P 1500 5100
+F 0 "U1" H 1500 5417 50  0000 C CNN
+F 1 "74HC04" H 1500 5326 50  0000 C CNN
+F 2 "" H 1500 5100 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74AHC_AHCT04.pdf" H 1500 5100 50  0001 C CNN
+	6    1500 5100
+	1    0    0    -1  
+$EndComp
+Text GLabel 1100 5100 0    50   Input ~ 0
+GND
+Wire Wire Line
+	1100 5100 1200 5100
+NoConn ~ 1800 5100
 Wire Bus Line
 	5500 1400 6300 1400
 Wire Bus Line
