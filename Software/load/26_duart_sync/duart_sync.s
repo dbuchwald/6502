@@ -78,8 +78,8 @@ init:
         ; RxINT on at least one byte in FIFO (b6=00)
         ; TxINT on empty FIFO (b5:4=00)
         ; b3=0
-        ; Normal mode (b2:0=000)
-        lda #%00000000
+        ; Extended mode (b2:0=001)
+        lda #%00000001
         sta DUART_W_MR0A
         ; Write to MR1A
         lda #$10
@@ -103,9 +103,11 @@ init:
         lda #%00000111
         sta DUART_W_MR2A
         ; Select BRG
-        lda #%11100000
+        lda #%10000000
         sta DUART_W_ACR
-        ; Select clock (19200 baud) on Tx and Rx
+        ; ; Select clock (19200 baud) on Tx and Rx
+        ; lda #%11001100
+        ; Let's go much faster - 115200
         lda #%11001100
         sta DUART_W_CSRA
 
@@ -143,19 +145,6 @@ write_char:
         pha
 @txrdya:
         lda DUART_R_SRA
-        ; pha
-        ; jsr _tty_write_hex
-        ; lda #25
-        ; jsr _delay_ms
-        ; ; lda #200
-        ; ; jsr _delay_ms
-        ; ; lda #$55
-        ; ; sta DUART_W_SOP12
-        ; ; lda #200
-        ; ; jsr _delay_ms
-        ; ; lda #$55
-        ; ; sta DUART_W_ROP12
-        ; pla
         and #%00000100
         beq @txrdya
 
