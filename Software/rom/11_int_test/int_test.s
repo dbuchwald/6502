@@ -1,5 +1,6 @@
       .setcpu "65C02"
       .include "via.inc"
+      .include "via_const.inc"
 
 COMMAND_MODE  = %00000000
 DATA_MODE     = %00100000

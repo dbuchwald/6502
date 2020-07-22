@@ -7,6 +7,8 @@
 ; Core routines
         .forceimport _syscall__register_user_break
         .forceimport _syscall__deregister_user_break
+        .forceimport _syscall__register_user_irq
+        .forceimport _syscall__deregister_user_irq
 ; Common routines
         .forceimport _syscall__delay_ms
         .forceimport _syscall__delay_sec
@@ -17,6 +19,11 @@
 ; Blink routines
         .forceimport _syscall__blink_led
         .forceimport _syscall__strobe_led
+; VIA routines
+        .forceimport _syscall_via2_get_register
+        .forceimport _syscall__via2_get_register
+        .forceimport _syscall_via2_set_register
+        .forceimport _syscall__via2_set_register
 ; ACIA routines 
         .forceimport _syscall__acia_is_data_available
         .forceimport _syscall__acia_read_byte

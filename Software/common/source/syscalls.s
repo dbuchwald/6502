@@ -10,6 +10,7 @@
         .include "tty.inc"
         .include "parse.inc"
         .include "menu.inc"
+        .include "via_utils.inc"
 
 ; Init routines
         .export _syscall__system_init
@@ -20,6 +21,8 @@
 ; Core routines
         .export _syscall__register_user_break
         .export _syscall__deregister_user_break
+        .export _syscall__register_user_irq
+        .export _syscall__deregister_user_irq
 ; Common routines
         .export _syscall__delay_ms
         .export _syscall__delay_sec
@@ -30,6 +33,11 @@
 ; Blink routines
         .export _syscall__blink_led
         .export _syscall__strobe_led
+; VIA routines
+        .export _syscall_via2_get_register
+        .export _syscall__via2_get_register
+        .export _syscall_via2_set_register
+        .export _syscall__via2_set_register
 ; ACIA routines 
         .export _syscall__acia_is_data_available
         .export _syscall__acia_read_byte
@@ -118,6 +126,10 @@ _syscall__register_user_break:
         SYSCALL_VECTOR _register_user_break
 _syscall__deregister_user_break:
         SYSCALL_VECTOR _deregister_user_break
+_syscall__register_user_irq:
+        SYSCALL_VECTOR _register_user_irq
+_syscall__deregister_user_irq:
+        SYSCALL_VECTOR _deregister_user_irq
 _syscall__delay_ms:
         SYSCALL_VECTOR _delay_ms
 _syscall__delay_sec:
@@ -134,6 +146,14 @@ _syscall__blink_led:
         SYSCALL_VECTOR _blink_led
 _syscall__strobe_led:
         SYSCALL_VECTOR _strobe_led
+_syscall_via2_get_register:
+        SYSCALL_VECTOR via2_get_register
+_syscall__via2_get_register:
+        SYSCALL_VECTOR _via2_get_register
+_syscall_via2_set_register:
+        SYSCALL_VECTOR via2_set_register
+_syscall__via2_set_register:
+        SYSCALL_VECTOR _via2_set_register
 _syscall__acia_is_data_available:
         SYSCALL_VECTOR _acia_is_data_available
 _syscall__acia_read_byte:

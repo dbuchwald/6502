@@ -1,12 +1,11 @@
-        .include "via.inc"
+        .include "via_const.inc"
+        .include "via_utils.inc"
 
         .code
 init:
-        lda #(VIA_ACR_T1_CONT_SQUARE_PB7)
-        sta VIA2_ACR
-        lda #$ff
-        sta VIA2_T1CL
-        sta VIA2_T1CH
+        via2_set_register VIA_REGISTER_ACR, #(VIA_ACR_T1_CONT_SQUARE_PB7)
+        via2_set_register VIA_REGISTER_T1CL, #$ff
+        via2_set_register VIA_REGISTER_T1CH, #$ff 
 
 loop:
         nop

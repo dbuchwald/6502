@@ -1,26 +1,70 @@
-      .include "via.inc"
+        .include "via_const.inc"
+        .include "macros.inc"
+        .include "zeropage.inc"
 
-      .export _via1_init
-      .export _via2_init
-      .export _via1_output_portb
-      .export _via2_output_portb
+        .import __VIA2_START__
+        .export via2_get_register
+        .export _via2_get_register
+        .export via2_set_register
+        .export _via2_set_register
 
-      .code
+        .code
 
-_via1_init:
-      lda #$ff
-      sta VIA1_DDRB
-      rts
+; NEGATIVE C COMPLIANT
+via2_get_register:
+; ; DUMB Code left here for reference. This is possibly the
+; ; most idiotic code I have written in years
+;       pha
+;       lda #<__VIA2_START__
+;       sta ptr1
+;       lda #>__VIA2_START__
+;       sta ptr1+1
+;       pla
+;       clc
+;       adc ptr1
+;       sta ptr1
+;       lda #$00
+;       adc ptr1+1
+;       sta ptr1+1
+;       lda (ptr1)
+;       rts
+        lda __VIA2_START__,X
+        rts
 
-_via2_init:
-      lda #$ff
-      sta VIA2_DDRB
-      rts
+; C version of the set register routine
+_via2_get_register:
+        tax
+        lda __VIA2_START__,X
+        rts
 
-_via1_output_portb:
-      sta VIA1_PORTB
-      rts
+; NEGATIVE C COMPLIANT
+via2_set_register:
+; ; DUMB Code left here for reference. This is possibly the
+; ; most idiotic code I have written in years
+;       pha
+;       lda #<__VIA2_START__
+;       sta ptr1
+;       lda #>__VIA2_START__
+;       sta ptr1+1
+;       pla
+;       clc
+;       adc ptr1
+;       sta ptr1
+;       lda #$00
+;       adc ptr1+1
+;       sta ptr1+1
+;       txa
+;       sta (ptr1)
+;       rts
+        sta __VIA2_START__,X
+        rts
 
-_via2_output_portb:
-      sta VIA2_PORTB
-      rts
+; C version of the set register routine
+_via2_set_register:
+        pha
+        lda (sp)
+        tax
+        pla
+        sta __VIA2_START__,X
+        inc_ptr sp
+        rts

@@ -73,7 +73,7 @@ ACIA_TX_IRQ=0
 ADDRESS_MODE=ext
 
 # Default clock mode (supported are: slow, 250k, 1m, 2m, 4m, 8m)
-CLOCK_MODE=1m
+CLOCK_MODE=8m
 
 # Clock mode translation (for CA65 preprocessor) - see common/include/clock.inc
 ifeq ($(CLOCK_MODE), slow)

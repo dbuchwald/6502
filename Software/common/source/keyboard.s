@@ -1,4 +1,5 @@
       .include "via.inc"
+      .include "via_const.inc"
       .include "zeropage.inc"
       .include "sys_const.inc"
       .include "sysram_map.inc"

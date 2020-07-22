@@ -1,7 +1,7 @@
-PROJECT_NAME=23_t1_test
+PROJECT_NAME=24_user_irq_test
 BUILD_TYPE=load
 
-ASM_SOURCES=t1_test.s
+ASM_SOURCES=user_irq_test.s
 C_SOURCES=
 
 include ../../common/makefile
