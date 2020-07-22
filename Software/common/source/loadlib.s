@@ -21,6 +21,9 @@
 ; Blink routines
         .export _blink_led
         .export _strobe_led
+; VIA routines
+        .export _via2_get_register
+        .export _via2_set_register
 ; ACIA routines 
         .export _acia_is_data_available
         .export _acia_read_byte
@@ -141,6 +144,13 @@ _blink_led:
         
 _strobe_led:
         jmp (_syscall__strobe_led)
+
+; VIA routines
+_via2_get_register:
+        jmp (_syscall__via2_get_register)
+        
+_via2_set_register:
+        jmp (_syscall__via2_set_register)
 
 ; ACIA routines 
 _acia_is_data_available:

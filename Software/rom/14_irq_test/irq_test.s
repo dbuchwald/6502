@@ -1,5 +1,6 @@
       .setcpu "65C02"
       .include "via.inc"
+      .include "via_const.inc"
       .segment "VECTORS"
 
       .word   $0000

@@ -1,26 +1,56 @@
-      .include "via.inc"
+        .include "via_const.inc"
 
-      .export _via1_init
-      .export _via2_init
-      .export _via1_output_portb
-      .export _via2_output_portb
+        .import __VIA2_START__
+        .export _via2_set_register
+        .export _via2_get_register
 
-      .code
+        .code
 
-_via1_init:
-      lda #$ff
-      sta VIA1_DDRB
-      rts
+_via2_get_register:
+; ; DUMB Code left here for reference. This is possibly the
+; ; most idiotic code I have written in years
+;       pha
+;       lda #<__VIA2_START__
+;       sta ptr1
+;       lda #>__VIA2_START__
+;       sta ptr1+1
+;       pla
+;       clc
+;       adc ptr1
+;       sta ptr1
+;       lda #$00
+;       adc ptr1+1
+;       sta ptr1+1
+;       lda (ptr1)
+;       rts
+        phx
+        tax
+        lda __VIA2_START__,X
+        plx
+        rts
 
-_via2_init:
-      lda #$ff
-      sta VIA2_DDRB
-      rts
-
-_via1_output_portb:
-      sta VIA1_PORTB
-      rts
-
-_via2_output_portb:
-      sta VIA2_PORTB
-      rts
+_via2_set_register:
+; ; DUMB Code left here for reference. This is possibly the
+; ; most idiotic code I have written in years
+;       pha
+;       lda #<__VIA2_START__
+;       sta ptr1
+;       lda #>__VIA2_START__
+;       sta ptr1+1
+;       pla
+;       clc
+;       adc ptr1
+;       sta ptr1
+;       lda #$00
+;       adc ptr1+1
+;       sta ptr1+1
+;       txa
+;       sta (ptr1)
+;       rts
+; Order of parameters intentionally reversed, I just prefer C
+; convention of via2_set_register(register, value)
+        pha
+        txa
+        plx
+        sta __VIA2_START__,X
+        rts

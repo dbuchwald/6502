@@ -1,6 +1,5 @@
       .setcpu "65C02"
       .include "utils.inc"
-      .include "via.inc"
       .include "lcd.inc"
       .include "keyboard.inc"
       .include "blink.inc"

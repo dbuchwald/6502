@@ -19,6 +19,9 @@
 ; Blink routines
         .forceimport _syscall__blink_led
         .forceimport _syscall__strobe_led
+; VIA routines
+        .forceimport _syscall__via2_get_register
+        .forceimport _syscall__via2_set_register
 ; ACIA routines 
         .forceimport _syscall__acia_is_data_available
         .forceimport _syscall__acia_read_byte

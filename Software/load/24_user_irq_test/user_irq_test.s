@@ -1,4 +1,5 @@
-        .include "via.inc"
+        .include "via_const.inc"
+        .include "via_utils.inc"
         .include "core.inc"
         .include "blink.inc"
         .include "utils.inc"
@@ -9,30 +10,28 @@ init:
 
         register_user_irq #service_irq
 
-        lda #(VIA_ACR_T1_CONT_NO_PB7 | VIA_ACR_T2_TIMED | VIA_ACR_SR_DISABLED | VIA_ACR_PB_LATCH_DISABLE | VIA_ACR_PA_LATCH_DISABLE) ; T1 continuous, disable PB7
-        sta VIA2_ACR
-        lda #(VIA_IER_SET_FLAGS | VIA_IER_TIMER1_FLAG) ; Enable T1 interrupt
-        sta VIA2_IER
-        lda #250                 ; Every 65535 clocks
-        sta VIA2_T1CL
-        lda #200
-        sta VIA2_T1CH            ; Enable timer
+        via2_set_register VIA_REGISTER_ACR, #(VIA_ACR_T1_CONT_NO_PB7 | VIA_ACR_T2_TIMED | VIA_ACR_SR_DISABLED | VIA_ACR_PB_LATCH_DISABLE | VIA_ACR_PA_LATCH_DISABLE) 
+        via2_set_register VIA_REGISTER_IER, #(VIA_IER_SET_FLAGS | VIA_IER_TIMER1_FLAG)
+        via2_set_register VIA_REGISTER_T1CL, #250
+        via2_set_register VIA_REGISTER_T1CH, #200 
 
         lda #5
         jsr _delay_sec
         ; disable interrupt
-        lda #(VIA_IER_CLEAR_FLAGS | VIA_IER_TIMER1_FLAG) ; Enable T1 interrupt
-        sta VIA2_IER
+        via2_set_register VIA_REGISTER_IER, #(VIA_IER_CLEAR_FLAGS | VIA_IER_TIMER1_FLAG)
         rts
 
 service_irq:
-        bit VIA2_IFR
-        bpl @exit
-        lda VIA2_T1CL
+        pha
+        via2_get_register VIA_REGISTER_IFR
+        and #%10000000
+        beq @exit
+        via2_get_register VIA_REGISTER_T1CL
         inc irq_counter
         bne @exit
         jsr _strobe_led
 @exit:
+        pla
         rts
 
         .segment "BSS"
