@@ -47,6 +47,9 @@ DUART_W_OPCR  = DUART_START + $0d
 DUART_W_SOP12 = DUART_START + $0e
 DUART_W_ROP12 = DUART_START + $0f
 
+LF      = $0a   ; Line Feed
+CR      = $0d   ; Carriage Return
+
         .code
 init:
         ; disable powerdown
@@ -162,4 +165,4 @@ write_char:
 
         .segment "RODATA"
 message:
-        .asciiz "Hello from DUART!"
+        .byte "Hello from DUART!", CR, LF, $00
