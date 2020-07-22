@@ -423,7 +423,7 @@ draw_last_move:
         lda cph,x
         cmp #('K')
         bne @not_king
-        write_tty #knight_label
+        write_tty #king_label
         jmp @move
 @not_king:
         cmp #('Q')
@@ -432,20 +432,20 @@ draw_last_move:
         jmp @move
 @not_queen:
         cmp #('C')
-        bne @not_knight
-        write_tty #knight_label
+        bne @not_rook
+        write_tty #rook_label
         jmp @move
-@not_knight:
+@not_rook:
         cmp #('B')
         bne @not_bishop
         write_tty #bishop_label
         jmp @move
 @not_bishop:
         cmp #('R')
-        bne @not_rook
-        write_tty #rook_label
+        bne @not_knight
+        write_tty #knight_label
         jmp @move
-@not_rook:
+@not_knight:
         write_tty #pawn_label
         jmp @move
 @move:
