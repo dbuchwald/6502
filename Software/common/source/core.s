@@ -14,6 +14,8 @@
         .export _register_system_break
         .export _register_user_break
         .export _deregister_user_break
+        .export _register_user_irq
+        .export _deregister_user_irq
 
         .code
 
@@ -37,6 +39,9 @@ _system_init:
         stz user_break_address
         stz user_break_address+1
         stz user_break_sp
+        ; user IRQ to null
+        stz user_irq_address
+        stz user_irq_address+1
         ; Initialize BLINK LED
         jsr _blink_init
         ; Short BLINK LED strobe
@@ -85,17 +90,26 @@ check_via1:
 not_keyboard:
         pla
 check_via2:
-        bit VIA2_IFR
+        ; bit VIA2_IFR
+        ; TODO: Missing VIA2 IRQ handler
+        ; Check if user IRQ handler is defined
+test_user_irq:
+        ; It's definitely not on zeropage, so
+        ; use MSB as indicator whether it's
+        ; defined or not
+        bit user_irq_address+1
+        beq no_user_handler
+        jsr service_user_irq
+no_user_handler:
         ; Test for system break flag
-        pha
-        lda system_break_flag
+        ;pha
+        bit system_break_flag
         bne system_break_request
-        pla
+        ;pla
         rti
 system_break_request:
         ; Check if user break is defined
-        lda user_break_address
-        bne @user_break
+        ; Checking MSB only as it's not on ZP
         lda user_break_address+1
         bne @user_break
         bra @system_break
@@ -158,3 +172,28 @@ _deregister_user_break:
         stz user_break_address+1
         stz user_break_sp
         rts
+
+; POSITIVE C COMPLIANT
+_register_user_irq:
+        ; disable IRQ processing for a sec
+        ; to ensure this update is atomic
+        sei
+        sta user_irq_address
+        stx user_irq_address+1
+        ; reenable IRQ processing
+        cli
+        rts
+
+; POSITIVE C COMPLIANT
+_deregister_user_irq:
+        ; disable IRQ processing
+        sei
+        stz user_irq_address+1
+        stz user_irq_address
+        ; reenable
+        cli
+        rts
+
+; INTERNAL
+service_user_irq:
+        jmp (user_irq_address)

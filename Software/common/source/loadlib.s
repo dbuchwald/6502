@@ -9,6 +9,8 @@
 ; Core routines
         .export _register_user_break
         .export _deregister_user_break
+        .export _register_user_irq
+        .export _deregister_user_irq
 ; Common routines
         .export _delay_ms
         .export _delay_sec
@@ -107,6 +109,12 @@ _register_user_break:
 
 _deregister_user_break:
         jmp (_syscall__deregister_user_break)
+
+_register_user_irq:
+        jmp (_syscall__register_user_irq)
+
+_deregister_user_irq:
+        jmp (_syscall__deregister_user_irq)
 
 ; Common routines
 _delay_ms:

@@ -20,6 +20,8 @@
 ; Core routines
         .export _syscall__register_user_break
         .export _syscall__deregister_user_break
+        .export _syscall__register_user_irq
+        .export _syscall__deregister_user_irq
 ; Common routines
         .export _syscall__delay_ms
         .export _syscall__delay_sec
@@ -118,6 +120,10 @@ _syscall__register_user_break:
         SYSCALL_VECTOR _register_user_break
 _syscall__deregister_user_break:
         SYSCALL_VECTOR _deregister_user_break
+_syscall__register_user_irq:
+        SYSCALL_VECTOR _register_user_irq
+_syscall__deregister_user_irq:
+        SYSCALL_VECTOR _deregister_user_irq
 _syscall__delay_ms:
         SYSCALL_VECTOR _delay_ms
 _syscall__delay_sec:

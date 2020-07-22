@@ -7,6 +7,8 @@
 ; Core routines
         .forceimport _syscall__register_user_break
         .forceimport _syscall__deregister_user_break
+        .forceimport _syscall__register_user_irq
+        .forceimport _syscall__deregister_user_irq
 ; Common routines
         .forceimport _syscall__delay_ms
         .forceimport _syscall__delay_sec

@@ -29,3 +29,4 @@ system_break_address:  .res 2
 system_break_sp:       .res 1
 user_break_address:    .res 2
 user_break_sp:         .res 1
+user_irq_address:      .res 2
