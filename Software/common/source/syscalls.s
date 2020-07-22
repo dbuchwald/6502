@@ -34,7 +34,9 @@
         .export _syscall__blink_led
         .export _syscall__strobe_led
 ; VIA routines
+        .export _syscall_via2_get_register
         .export _syscall__via2_get_register
+        .export _syscall_via2_set_register
         .export _syscall__via2_set_register
 ; ACIA routines 
         .export _syscall__acia_is_data_available
@@ -144,8 +146,12 @@ _syscall__blink_led:
         SYSCALL_VECTOR _blink_led
 _syscall__strobe_led:
         SYSCALL_VECTOR _strobe_led
+_syscall_via2_get_register:
+        SYSCALL_VECTOR via2_get_register
 _syscall__via2_get_register:
         SYSCALL_VECTOR _via2_get_register
+_syscall_via2_set_register:
+        SYSCALL_VECTOR via2_set_register
 _syscall__via2_set_register:
         SYSCALL_VECTOR _via2_set_register
 _syscall__acia_is_data_available:

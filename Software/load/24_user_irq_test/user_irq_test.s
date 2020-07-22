@@ -22,16 +22,18 @@ init:
         rts
 
 service_irq:
-        pha
+        ; No need to save registers, it's done automatically
+        ; phx
+        ; pha
         via2_get_register VIA_REGISTER_IFR
-        and #%10000000
-        beq @exit
+        bpl @exit
         via2_get_register VIA_REGISTER_T1CL
         inc irq_counter
         bne @exit
         jsr _strobe_led
 @exit:
-        pla
+        ; pla
+        ; plx
         rts
 
         .segment "BSS"

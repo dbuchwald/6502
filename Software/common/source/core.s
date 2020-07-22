@@ -100,7 +100,15 @@ test_user_irq:
         pha
         lda user_irq_address+1
         beq no_user_handler
+        ; prevent register overwrite in user routine
+        ; will actually happen with C code!
+        pha
+        phx
+        phy
         jsr service_user_irq
+        ply
+        plx
+        pla
 no_user_handler:
         ; Test for system break flag
         lda system_break_flag
