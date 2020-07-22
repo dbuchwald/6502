@@ -97,15 +97,15 @@ test_user_irq:
         ; It's definitely not on zeropage, so
         ; use MSB as indicator whether it's
         ; defined or not
-        bit user_irq_address+1
+        pha
+        lda user_irq_address+1
         beq no_user_handler
         jsr service_user_irq
 no_user_handler:
         ; Test for system break flag
-        ;pha
-        bit system_break_flag
+        lda system_break_flag
         bne system_break_request
-        ;pla
+        pla
         rti
 system_break_request:
         ; Check if user break is defined
