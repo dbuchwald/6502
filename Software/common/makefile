@@ -122,7 +122,8 @@ COMMON_LIBRARY=$(COMMON_LIB_FOLDER)/common.lib
 
 # Common library for loadable modules
 COMMON_LOAD_SOURCES=syscalls.s \
-                    loadlib.s
+                    loadlib.s  \
+										via.s
 
 # ZEROPAGE map
 # Must be defined separately and forced to link against the objects to ensure memory reservation
