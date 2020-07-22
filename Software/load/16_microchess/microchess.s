@@ -48,6 +48,7 @@ USER_CMD_QUIT    = $10
 ; zeropage variables
 
         .zeropage
+        .res 1
 BOARD:  .res 16 
 BK:     .res 16
 PIECE:  .res 1
