@@ -262,30 +262,30 @@ _serial_read_byte:
 ; NEGATIVE C COMPLIANT
 ; Write one byte to TX buffer
 ; Assume input in accumulator
-; Assume channel in Y
+; Assume channel in X
 serial_write_byte:
         ; below code works only for R6551 and compatibles
         .if acia_tx_irq=1
-        ; Preserve x register
-        phx
+        ; Preserve y register
+        phy
         ; Preserve input value
         pha
         ; Check if TX buffer full - if so, keep polling until more space available
 @compare_with_read_pointer:
         ; Load current value of write pointer
-        lda serial_tx_wptr,y
+        lda serial_tx_wptr,x
         sec
-        sbc serial_tx_rptr,y
+        sbc serial_tx_rptr,x
         cmp #$ff
         beq @compare_with_read_pointer
         ; Restore input value
         pla
         ; Write data to the TX buffer
-        ldx serial_tx_wptr,y
+        ldy serial_tx_wptr,x
         ; TODO: Single buffer
-        sta serial_tx_buffer,x
+        sta serial_tx_buffer,y
         ; Increase pointer
-        inc serial_tx_wptr,y
+        inc serial_tx_wptr,x
         ; Enable interrupt after tx buffer is empty
         pha
         lda ACIA_COMMAND
@@ -293,7 +293,7 @@ serial_write_byte:
         ora #(ACIA_TX_INT_ENABLE_RTS_LOW)
         sta ACIA_COMMAND
         pla
-        plx
+        ply
         .else
         ; code below works for non-IRQ compliant devices, like WDC65C51
         ; store data in data register
@@ -311,7 +311,7 @@ serial_write_byte:
 _serial_write_byte:
         pha
         lda (sp)
-        tay
+        tax
         pla
         jsr serial_write_byte
         inc_ptr sp
@@ -324,7 +324,9 @@ _serial_write_byte:
 serial_write_string:
         sta ptr1
         stx ptr1+1
-        sty tmp1
+        ; move Y to X for serial_write_byte
+        tya
+        tax
         ; init index
         ldy #$00
 @string_loop:
@@ -333,10 +335,7 @@ serial_write_string:
         ; stop if null
         beq @end_loop
         ; send char to buffer
-        phy
-        ldy tmp1
         jsr serial_write_byte
-        ply
         ; increase index
         iny 
         ; prevent infinite loop

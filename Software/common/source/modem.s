@@ -63,8 +63,10 @@ _modem_receive:
 @enable_crc:
         ; Request CRC mode
         lda #('C')
-        ldy channel
+        phx
+        ldx channel
         jsr serial_write_byte
+        plx
 @read_block_loop:
         ; Poll for first character
         jsr @wait_for_next_char
@@ -135,8 +137,10 @@ _modem_receive:
         jsr @flush_input
         ; Send negative acknowledgement
         lda #(NAK)
-        ldy channel
+        phx
+        ldx channel
         jsr serial_write_byte
+        plx
         ; Try the package again
         jmp @read_block_loop
 @correct_crc:
@@ -182,15 +186,19 @@ _modem_receive:
         ; Block completed
         inc block_number
         lda #(ACK)
-        ldy channel
+        phx
+        ldx channel
         jsr serial_write_byte
+        plx
         jmp @read_block_loop
 
 @receive_complete:
         ; Acknowledge transfer completion
         lda #(ACK)
-        ldy channel
+        phx
+        ldx channel
         jsr serial_write_byte
+        plx
         ; Flush any input pending (should be none)
         jsr @flush_input
         ; Send nice completion message
@@ -253,49 +261,49 @@ _modem_receive:
         bra @one_second_wait
 
 @send_prompt:
-        ldx #$00
+        ldy #$00
 @prompt_loop:
-        lda prompt,x
+        lda prompt,y
         beq @prompt_done
-        ldy channel
+        ldx channel
         jsr serial_write_byte
-        inx
+        iny
         bra @prompt_loop
 @prompt_done:
         rts
 
 @send_completion_message:
-        ldx #$00
+        ldy #$00
 @success_loop:
-        lda success_message,x
+        lda success_message,y
         beq @success_done
-        ldy channel
+        ldx channel
         jsr serial_write_byte
-        inx
+        iny
         bra @success_loop
 @success_done:
         rts
 
 @send_error_message:
-        ldx #$00
+        ldy #$00
 @error_loop:
-        lda error_message,x
+        lda error_message,y
         beq @error_done
-        ldy channel
+        ldx channel
         jsr serial_write_byte
-        inx
+        iny
         bra @error_loop
 @error_done:
         rts
 
 @send_abort_message:
-        ldx #$00
+        ldy #$00
 @abort_loop:
-        lda abort_message,x
+        lda abort_message,y
         beq @abort_done
-        ldy channel
+        ldx channel
         jsr serial_write_byte
-        inx
+        iny
         bra @abort_loop
 @abort_done:
         rts

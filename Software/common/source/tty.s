@@ -292,6 +292,7 @@ _tty_send_newline:
 ; POSITIVE C COMPLIANT
 ; Sends single character to selected channels
 _tty_send_character:
+        phx
         phy
         tay
         lda tty_config
@@ -299,7 +300,7 @@ _tty_send_character:
         ; Serial output disabled
         beq @skip_serial
         tya
-        ldy channel
+        ldx channel
         jsr serial_write_byte
 @skip_serial:
         lda tty_config
@@ -311,6 +312,7 @@ _tty_send_character:
 @skip_lcd:
         tya
         ply
+        plx
         rts
 
 ; INTERNAL

@@ -31,13 +31,13 @@ wait_for_serial_input:
       cmp #(SERIAL_NO_DATA_AVAILABLE)
       beq wait_for_serial_input
 
-      ldx #00
+      ldy #00
 prompt_loop:
-      lda prompt,x
+      lda prompt,y
       beq main_loop
-      ldy #CHANNEL
+      ldx #CHANNEL
       jsr serial_write_byte
-      inx
+      iny
       bra prompt_loop
 
 main_loop:
