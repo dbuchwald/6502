@@ -4,7 +4,7 @@
         .export _system_init
         .export _blink_init
         .export _lcd_init
-        .export _acia_init
+        .export _serial_init
         .export _keyboard_init
 ; Core routines
         .export _register_user_break
@@ -26,11 +26,13 @@
         .export _via2_get_register
         .export via2_set_register
         .export _via2_set_register
-; ACIA routines 
-        .export _acia_is_data_available
-        .export _acia_read_byte
-        .export _acia_write_byte
-        .export _acia_write_string
+; Serial routines 
+        .export _serial_is_data_available
+        .export _serial_read_byte
+        .export _serial_write_byte
+        .export serial_write_byte
+        .export _serial_write_string
+        .export serial_write_string
 ; Keyboard routines
         .export _keyboard_is_connected
         .export _keyboard_is_data_available
@@ -160,18 +162,24 @@ via2_set_register:
 _via2_set_register:
         jmp (_syscall__via2_set_register)
 
-; ACIA routines 
-_acia_is_data_available:
-        jmp (_syscall__acia_is_data_available)
+; Serial routines 
+_serial_is_data_available:
+        jmp (_syscall__serial_is_data_available)
 
-_acia_read_byte:
-        jmp (_syscall__acia_read_byte)
+_serial_read_byte:
+        jmp (_syscall__serial_read_byte)
 
-_acia_write_byte:
-        jmp (_syscall__acia_write_byte)
+_serial_write_byte:
+        jmp (_syscall__serial_write_byte)
 
-_acia_write_string:
-        jmp (_syscall__acia_write_string)
+serial_write_byte:
+        jmp (_syscall_serial_write_byte)
+
+_serial_write_string:
+        jmp (_syscall__serial_write_string)
+
+serial_write_string:
+        jmp (_syscall_serial_write_string)
 
 ; Keyboard routines
 _keyboard_is_connected:

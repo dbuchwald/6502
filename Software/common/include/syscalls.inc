@@ -24,11 +24,13 @@
         .forceimport _syscall__via2_get_register
         .forceimport _syscall_via2_set_register
         .forceimport _syscall__via2_set_register
-; ACIA routines 
-        .forceimport _syscall__acia_is_data_available
-        .forceimport _syscall__acia_read_byte
-        .forceimport _syscall__acia_write_byte
-        .forceimport _syscall__acia_write_string
+; Serial routines 
+        .forceimport _syscall__serial_is_data_available
+        .forceimport _syscall__serial_read_byte
+        .forceimport _syscall__serial_write_byte
+        .forceimport _syscall_serial_write_byte
+        .forceimport _syscall__serial_write_string
+        .forceimport _syscall_serial_write_string
 ; Keyboard routines
         .forceimport _syscall__keyboard_is_connected
         .forceimport _syscall__keyboard_is_data_available

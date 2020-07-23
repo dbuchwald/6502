@@ -1,7 +1,7 @@
         .include "core.inc"
         .include "blink.inc"
         .include "lcd.inc"
-        .include "acia.inc"
+        .include "serial.inc"
         .include "keyboard.inc"
         .include "modem.inc"
         .include "zeropage.inc"
@@ -16,7 +16,7 @@
         .export _syscall__system_init
         .export _syscall__blink_init
         .export _syscall__lcd_init
-        .export _syscall__acia_init
+        .export _syscall__serial_init
         .export _syscall__keyboard_init
 ; Core routines
         .export _syscall__register_user_break
@@ -38,11 +38,13 @@
         .export _syscall__via2_get_register
         .export _syscall_via2_set_register
         .export _syscall__via2_set_register
-; ACIA routines 
-        .export _syscall__acia_is_data_available
-        .export _syscall__acia_read_byte
-        .export _syscall__acia_write_byte
-        .export _syscall__acia_write_string
+; Serial routines 
+        .export _syscall__serial_is_data_available
+        .export _syscall__serial_read_byte
+        .export _syscall__serial_write_byte
+        .export _syscall_serial_write_byte
+        .export _syscall__serial_write_string
+        .export _syscall_serial_write_string
 ; Keyboard routines
         .export _syscall__keyboard_is_connected
         .export _syscall__keyboard_is_data_available
@@ -154,14 +156,18 @@ _syscall_via2_set_register:
         SYSCALL_VECTOR via2_set_register
 _syscall__via2_set_register:
         SYSCALL_VECTOR _via2_set_register
-_syscall__acia_is_data_available:
-        SYSCALL_VECTOR _acia_is_data_available
-_syscall__acia_read_byte:
-        SYSCALL_VECTOR _acia_read_byte
-_syscall__acia_write_byte:
-        SYSCALL_VECTOR _acia_write_byte
-_syscall__acia_write_string:
-        SYSCALL_VECTOR _acia_write_string
+_syscall__serial_is_data_available:
+        SYSCALL_VECTOR _serial_is_data_available
+_syscall__serial_read_byte:
+        SYSCALL_VECTOR _serial_read_byte
+_syscall__serial_write_byte:
+        SYSCALL_VECTOR _serial_write_byte
+_syscall_serial_write_byte:
+        SYSCALL_VECTOR serial_write_byte
+_syscall__serial_write_string:
+        SYSCALL_VECTOR _serial_write_string
+_syscall_serial_write_string:
+        SYSCALL_VECTOR serial_write_string
 _syscall__keyboard_is_connected:
         SYSCALL_VECTOR _keyboard_is_connected
 _syscall__keyboard_is_data_available:

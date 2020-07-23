@@ -12,10 +12,12 @@
 .globalzp lcd_temp_char1
 .globalzp lcd_temp_char2
 .globalzp lcd_temp_char3
-.globalzp acia_rx_rptr
-.globalzp acia_rx_wptr
-.globalzp acia_tx_rptr
-.globalzp acia_tx_wptr
+.globalzp serial_rx_rptr
+.globalzp serial_rx_wptr
+.globalzp serial_tx_rptr
+.globalzp serial_tx_wptr
+.globalzp serial_rx_buffer_ptr
+.globalzp serial_tx_buffer_ptr
 .globalzp keyboard_conn
 .globalzp keyboard_rptr
 .globalzp keyboard_wptr
