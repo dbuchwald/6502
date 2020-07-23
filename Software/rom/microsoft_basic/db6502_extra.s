@@ -1,9 +1,11 @@
       .include "utils.inc"
       .include "lcd.inc"
       .include "core.inc"
-      .include "acia.inc"
+      .include "serial.inc"
       .include "keyboard.inc"
       .include "syscalls.inc"
+
+CHANNEL = 0
 
 .segment "CODE"
 ; ISCNTC:
@@ -83,11 +85,13 @@ MONRDKEY:
 ; 	RTS
 ; NoDataIn:
 ; 	CLC		; Carry clear if no key pressed
-  jsr _acia_is_data_available
+  lda #CHANNEL
+  jsr _serial_is_data_available
   ; skip, no data available at this point
   cmp #(ACIA_NO_DATA_AVAILABLE)
   beq NoDataIn
-  jsr _acia_read_byte
+  lda #CHANNEL
+  jsr _serial_read_byte
   sec
   rts
 NoDataIn:

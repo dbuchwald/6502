@@ -1,6 +1,6 @@
         .include "zeropage.inc"
         .include "string.inc"
-        .include "acia.inc"
+        .include "serial.inc"
         .include "lcd.inc"
         .include "keyboard.inc"
         .include "utils.inc"
@@ -31,6 +31,8 @@ ESC                     = $1b
 ; Assumes configuration in A register
 _tty_init:
         sta tty_config
+        lda #CHANNEL0
+        sta channel
         rts
 
 ; C wrapper for tty_read_line
@@ -124,7 +126,8 @@ _tty_write:
         beq @skip_serial
         ; Send series of characters for backspace
         tya
-        jsr _acia_write_string
+        ldy channel
+        jsr serial_write_string
 @skip_serial:
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_LCD)
@@ -151,12 +154,14 @@ tty_read_byte:
         and #(TTY_CONFIG_INPUT_SERIAL)
         ; Serial input disabled
         beq @skip_serial
-        jsr _acia_is_data_available
+        lda channel
+        jsr _serial_is_data_available
         ; skip, no data available at this point
         cmp #(ACIA_NO_DATA_AVAILABLE)
         beq @skip_serial
         ; read and send back
-        jsr _acia_read_byte
+        lda channel
+        jsr _serial_read_byte
         rts
 @skip_serial:
         lda tty_config
@@ -187,7 +192,10 @@ tty_write_byte:
         beq @skip_serial
         ; get char code back from storage
         txa
-        jsr _acia_write_byte
+        phy
+        ldy channel
+        jsr _serial_write_byte
+        ply
 @skip_serial:
         ; do the same for LCD
         lda tty_config
@@ -268,7 +276,7 @@ _tty_send_newline:
         beq @skip_serial
         ; Send series of characters for backspace
         push_ptr ptr1
-        write_acia #acia_newline
+        serial_write_string channel, #serial_newline
         pull_ptr ptr1
 @skip_serial:
         lda tty_config
@@ -289,12 +297,9 @@ _tty_send_character:
         and #(TTY_CONFIG_OUTPUT_SERIAL)
         ; Serial output disabled
         beq @skip_serial
-        ; Send series of characters for backspace
-        ; push_ptr ptr1
-        ; write_acia #acia_newline
-        ; pull_ptr ptr1
         tya
-        jsr _acia_write_byte
+        ldy channel
+        jsr serial_write_byte
 @skip_serial:
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_LCD)
@@ -317,7 +322,7 @@ tty_send_backspace:
         beq @skip_serial
         ; Send series of characters for backspace
         push_ptr ptr1
-        write_acia #acia_backspace
+        serial_write_string channel, #serial_backspace
         pull_ptr ptr1
 @skip_serial:
         lda tty_config
@@ -356,6 +361,8 @@ tty_disable_cursor:
         rts
 
         .segment "BSS"
+channel:
+        .res 1
 line_buffer_pointer:
         .res 2
 line_buffer_length:
@@ -368,7 +375,7 @@ hex_to_dec_print_buffer:
         .res 6
 
         .segment "RODATA"
-acia_newline:
+serial_newline:
         .byte CR, LF, $00
-acia_backspace:
+serial_backspace:
         .byte ESC,"[D ",ESC,"[D",$00

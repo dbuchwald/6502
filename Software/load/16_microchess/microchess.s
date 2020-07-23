@@ -1,6 +1,5 @@
         .setcpu "65C02"
         .include "zeropage.inc"
-        .include "acia.inc"
         .include "utils.inc"
         .include "tty.inc"
         .include "parse.inc"

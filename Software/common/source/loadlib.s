@@ -104,8 +104,8 @@ _blink_init:
 _lcd_init:
         jmp (_syscall__lcd_init)
 
-_acia_init:
-        jmp (_syscall__acia_init)
+_serial_init:
+        jmp (_syscall__serial_init)
 
 _keyboard_init:
         jmp (_syscall__keyboard_init)

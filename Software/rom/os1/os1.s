@@ -2,7 +2,7 @@
       .include "utils.inc"
       .include "lcd.inc"
       .include "core.inc"
-      .include "acia.inc"
+      .include "serial.inc"
       .include "keyboard.inc"
       .include "syscalls.inc"
 
@@ -51,16 +51,18 @@ init:
       jsr _lcd_newline
 
       write_lcd #instruction
-@wait_for_acia_input:
-      jsr _acia_is_data_available
+@wait_for_serial_input:
+      lda #CHANNEL
+      jsr _serial_is_data_available
       cmp #(ACIA_NO_DATA_AVAILABLE)
       beq @check_keyboard
-      jsr _acia_read_byte
+      lda #CHANNEL
+      jsr _serial_read_byte
       bra @run_shell
 @check_keyboard:
       jsr _keyboard_is_data_available
       cmp #(KEYBOARD_NO_DATA_AVAILABLE)
-      beq @wait_for_acia_input
+      beq @wait_for_serial_input
       jsr _keyboard_read_char
 @run_shell:
       jsr _lcd_clear

@@ -2,7 +2,7 @@
         .forceimport _syscall__system_init
         .forceimport _syscall__blink_init
         .forceimport _syscall__lcd_init
-        .forceimport _syscall__acia_init
+        .forceimport _syscall__serial_init
         .forceimport _syscall__keyboard_init
 ; Core routines
         .forceimport _syscall__register_user_break

@@ -3,6 +3,8 @@ SERIAL_TX_BUFFER_SIZE     = 256
 KEYBOARD_BUFFER_SIZE      = 64
 
 SERIAL_CHANNELS_COUNT     = 2
+CHANNEL0                  = 0
+CHANNEL1                  = 1
 
 LCD_COLUMNS               = 20
 LCD_ROWS                  = 4

@@ -1,5 +1,5 @@
         .include "zeropage.inc"
-        .include "acia.inc"
+        .include "serial.inc"
         .include "utils.inc"
         .export _modem_send
         .export _modem_receive
@@ -43,6 +43,9 @@ _modem_send:
 
 ; NEGATIVE C COMPLIANT - uses carry flag for result
 _modem_receive:
+        ; Initialize channel number
+        lda #CHANNEL0
+        sta channel
         ; Send prompt to terminal
         jsr @send_prompt
         ; Initialize block number
@@ -59,15 +62,12 @@ _modem_receive:
 @enable_crc:
         ; Request CRC mode
         lda #('C')
-        jsr _acia_write_byte
+        ldy #channel
+        jsr serial_write_byte
 @read_block_loop:
         ; Poll for first character
         jsr @wait_for_next_char
         bcc @enable_crc
-        ; jsr _acia_is_data_available
-        ; bcc @read_block_loop
-        ; Read data
-        ; jsr _acia_read_byte
         ; Check control characters
         cmp #(ESC)
         bne @not_quitting_yet
@@ -134,7 +134,8 @@ _modem_receive:
         jsr @flush_input
         ; Send negative acknowledgement
         lda #(NAK)
-        jsr _acia_write_byte
+        ldy #channel
+        jsr serial_write_byte
         ; Try the package again
         jmp @read_block_loop
 @correct_crc:
@@ -180,13 +181,15 @@ _modem_receive:
         ; Block completed
         inc block_number
         lda #(ACK)
-        jsr _acia_write_byte
+        ldy #channel
+        jsr serial_write_byte
         jmp @read_block_loop
 
 @receive_complete:
         ; Acknowledge transfer completion
         lda #(ACK)
-        jsr _acia_write_byte
+        ldy #channel
+        jsr serial_write_byte
         ; Flush any input pending (should be none)
         jsr @flush_input
         ; Send nice completion message
@@ -201,7 +204,8 @@ _modem_receive:
         sta delay_counter
 @three_second_wait:
         ; Is there any data available?
-        jsr _acia_is_data_available
+        lda #channel
+        jsr _serial_is_data_available
         cmp #(ACIA_NO_DATA_AVAILABLE)
         ; Yes it is
         bne @three_read_data
@@ -216,7 +220,8 @@ _modem_receive:
         clc
         rts
 @three_read_data:
-        jsr _acia_read_byte
+        lda #channel
+        jsr _serial_read_byte
         ; Data loaded, set carry
         sec
         rts
@@ -227,7 +232,8 @@ _modem_receive:
         sta delay_counter
 @one_second_wait:
         ; Is there any data available?
-        jsr _acia_is_data_available
+        lda #channel
+        jsr _serial_is_data_available
         cmp #(ACIA_NO_DATA_AVAILABLE)
         ; Yes it is
         bne @one_read_data
@@ -240,7 +246,8 @@ _modem_receive:
         bne @one_second_wait
         rts
 @one_read_data:
-        jsr _acia_read_byte
+        lda #channel
+        jsr _serial_read_byte
         ; Data loaded, ignore, repeat
         bra @one_second_wait
 
@@ -249,7 +256,8 @@ _modem_receive:
 @prompt_loop:
         lda prompt,x
         beq @prompt_done
-        jsr _acia_write_byte
+        ldy #channel
+        jsr serial_write_byte
         inx
         bra @prompt_loop
 @prompt_done:
@@ -260,7 +268,8 @@ _modem_receive:
 @success_loop:
         lda success_message,x
         beq @success_done
-        jsr _acia_write_byte
+        ldy #channel
+        jsr serial_write_byte
         inx
         bra @success_loop
 @success_done:
@@ -271,7 +280,8 @@ _modem_receive:
 @error_loop:
         lda error_message,x
         beq @error_done
-        jsr _acia_write_byte
+        ldy #channel
+        jsr serial_write_byte
         inx
         bra @error_loop
 @error_done:
@@ -282,7 +292,8 @@ _modem_receive:
 @abort_loop:
         lda abort_message,x
         beq @abort_done
-        jsr _acia_write_byte
+        ldy #channel
+        jsr serial_write_byte
         inx
         bra @abort_loop
 @abort_done:
@@ -309,6 +320,8 @@ _modem_receive:
         .segment "BSS"
 recv_buffer: 
         .res RECEIVE_BUFFER_SIZE
+channel:
+        .res 1
 
         .segment "RODATA"
 prompt:

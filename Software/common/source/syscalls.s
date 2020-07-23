@@ -120,8 +120,8 @@ _syscall__blink_init:
         SYSCALL_VECTOR _blink_init
 _syscall__lcd_init:
         SYSCALL_VECTOR _lcd_init
-_syscall__acia_init:
-        SYSCALL_VECTOR _acia_init
+_syscall__serial_init:
+        SYSCALL_VECTOR _serial_init
 _syscall__keyboard_init:
         SYSCALL_VECTOR _keyboard_init
 _syscall__register_user_break:

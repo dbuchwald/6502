@@ -2,13 +2,15 @@
       .include "utils.inc"
       .include "lcd.inc"
       .include "core.inc"
-      .include "acia.inc"
+      .include "serial.inc"
 
       .segment "VECTORS"
 
       .word   $0000
       .word   init
       .word   _interrupt_handler
+
+CHANNEL = 0
 
       .code
 
@@ -22,16 +24,18 @@ init:
       stz bytescount
       stz bytescount+1
 
-wait_for_acia_input:
-      jsr _acia_is_data_available
+wait_for_serial_input:
+      lda #CHANNEL
+      jsr _serial_is_data_available
       cmp #(ACIA_NO_DATA_AVAILABLE)
-      beq wait_for_acia_input
+      beq wait_for_serial_input
 
       ldx #00
 prompt_loop:
       lda prompt,x
       beq main_loop
-      jsr _acia_write_byte
+      ldy #CHANNEL
+      jsr serial_write_byte
       inx
       bra prompt_loop
 
@@ -39,8 +43,9 @@ main_loop:
 
       ldx #00
       ldy #01
-      jsr lcd_set_position      
-      lda acia_tx_rptr
+      jsr lcd_set_position
+      ldy #CHANNEL
+      lda serial_tx_rptr,y
       jsr convert_to_hex
       txa
       jsr _lcd_print_char
@@ -50,7 +55,8 @@ main_loop:
       ldx #03
       ldy #01
       jsr lcd_set_position      
-      lda acia_tx_wptr
+      ldy #CHANNEL
+      lda serial_tx_wptr,y
       jsr convert_to_hex
       txa
       jsr _lcd_print_char
@@ -60,7 +66,8 @@ main_loop:
       ldx #06
       ldy #01
       jsr lcd_set_position      
-      lda acia_rx_rptr
+      ldy #CHANNEL
+      lda serial_rx_rptr,y
       jsr convert_to_hex
       txa
       jsr _lcd_print_char
@@ -70,7 +77,8 @@ main_loop:
       ldx #09
       ldy #01
       jsr lcd_set_position      
-      lda acia_rx_wptr
+      ldy #CHANNEL
+      lda serial_rx_wptr,y
       jsr convert_to_hex
       txa
       jsr _lcd_print_char
@@ -94,10 +102,12 @@ main_loop:
       tya
       jsr _lcd_print_char
 
-      jsr _acia_is_data_available
+      lda #CHANNEL
+      jsr _serial_is_data_available
       cmp #(ACIA_NO_DATA_AVAILABLE)
       beq main_loop
-      jsr _acia_read_byte
+      lda #CHANNEL
+      jsr _serial_read_byte
       ldx #08
       ldy #00
       jsr lcd_set_position      

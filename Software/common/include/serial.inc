@@ -25,7 +25,7 @@ SERIAL_NO_DATA_AVAILABLE = $00
             lda string
             ldx 1+(string)
         .endif
-        ldy #channel
+        ldy channel
         jsr serial_write_string
         ply
         plx
