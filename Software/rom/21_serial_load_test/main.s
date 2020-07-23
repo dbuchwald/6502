@@ -3,6 +3,7 @@
       .include "lcd.inc"
       .include "core.inc"
       .include "serial.inc"
+      .include "sys_const.inc"
 
       .segment "VECTORS"
 
@@ -10,7 +11,7 @@
       .word   init
       .word   _interrupt_handler
 
-CHANNEL = 0
+CHANNEL = CHANNEL0
 
       .code
 
@@ -27,7 +28,7 @@ init:
 wait_for_serial_input:
       lda #CHANNEL
       jsr _serial_is_data_available
-      cmp #(ACIA_NO_DATA_AVAILABLE)
+      cmp #(SERIAL_NO_DATA_AVAILABLE)
       beq wait_for_serial_input
 
       ldx #00
@@ -104,8 +105,10 @@ main_loop:
 
       lda #CHANNEL
       jsr _serial_is_data_available
-      cmp #(ACIA_NO_DATA_AVAILABLE)
-      beq main_loop
+      cmp #(SERIAL_NO_DATA_AVAILABLE)
+      bne @next
+      jmp main_loop
+@next:
       lda #CHANNEL
       jsr _serial_read_byte
       ldx #08

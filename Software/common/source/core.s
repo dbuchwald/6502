@@ -5,6 +5,7 @@
         .include "serial.inc"
         .include "blink.inc"
         .include "keyboard.inc"
+        .include "sys_const.inc"
 
         .import __USERRAM_START__
         .import __USERRAM_SIZE__

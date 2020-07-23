@@ -5,6 +5,7 @@
       .include "serial.inc"
       .include "keyboard.inc"
       .include "syscalls.inc"
+      .include "sys_const.inc"
 
       .import _run_shell
       .export os1_version
@@ -14,6 +15,8 @@
       .word   $0000
       .word   init
       .word   _interrupt_handler
+
+CHANNEL = CHANNEL0
 
       .code
 
@@ -54,7 +57,7 @@ init:
 @wait_for_serial_input:
       lda #CHANNEL
       jsr _serial_is_data_available
-      cmp #(ACIA_NO_DATA_AVAILABLE)
+      cmp #(SERIAL_NO_DATA_AVAILABLE)
       beq @check_keyboard
       lda #CHANNEL
       jsr _serial_read_byte
@@ -75,7 +78,7 @@ init:
       .segment "RODATA"
 
 os1_version:
-      .asciiz "OS/1 version 0.3.0C"
+      .asciiz "OS/1 version 0.3.5C"
 keyboard_disconnected:
       .asciiz "No keyboard"
 keyboard_connected:

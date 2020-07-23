@@ -5,6 +5,7 @@
         .include "keyboard.inc"
         .include "utils.inc"
         .include "macros.inc"
+        .include "sys_const.inc"
 
         .export _tty_init
         .export _tty_read_line
@@ -157,7 +158,7 @@ tty_read_byte:
         lda channel
         jsr _serial_is_data_available
         ; skip, no data available at this point
-        cmp #(ACIA_NO_DATA_AVAILABLE)
+        cmp #(SERIAL_NO_DATA_AVAILABLE)
         beq @skip_serial
         ; read and send back
         lda channel

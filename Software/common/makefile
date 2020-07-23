@@ -69,6 +69,15 @@ endif
 # R6551 - use 1 or 0 (both are supported, but 1 is "better")
 ACIA_TX_IRQ=0
 
+# Serial interface
+# Possible values are
+# - wdc65c51
+# - r6551
+# - sc26c92
+SERIAL_INTERFACE=r6551
+
+SERIAL=serial_$(SERIAL_INTERFACE).s
+
 # Default address mode (basic/ext/.. )
 ADDRESS_MODE=ext
 
@@ -101,7 +110,7 @@ BASE_LIBRARY=$(COMMON_ROOT)/none.lib
 
 # Common objects to be linked
 COMMON_SOURCES=syscalls.s    \
-							 acia.s        \
+							 $(SERIAL)     \
                blink.s       \
 							 core.s        \
 							 keyboard.s    \

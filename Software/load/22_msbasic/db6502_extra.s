@@ -1,4 +1,5 @@
       .include "serial.inc"
+      .include "sys_const.inc"
 
 
 .segment "CODE"
@@ -40,7 +41,7 @@ MONRDKEY:
   lda #CHANNEL0
   jsr _serial_is_data_available
   ; skip, no data available at this point
-  cmp #(ACIA_NO_DATA_AVAILABLE)
+  cmp #(SERIAL_NO_DATA_AVAILABLE)
   beq NoDataIn
   lda #CHANNEL0
   jsr _serial_read_byte

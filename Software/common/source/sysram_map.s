@@ -9,9 +9,9 @@
         .align 256
 
 serial_rx_buffer:
-        .res ACIA_RX_BUFFER_SIZE
+        .res SERIAL_RX_BUFFER_SIZE
 serial_tx_buffer:
-        .res ACIA_TX_BUFFER_SIZE
+        .res SERIAL_TX_BUFFER_SIZE
 keyboard_buffer:
         .res KEYBOARD_BUFFER_SIZE
 lcd_line_buffer:

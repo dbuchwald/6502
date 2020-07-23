@@ -1,7 +1,9 @@
+        .setcpu "65C02"
         .include "zeropage.inc"
         .include "sys_const.inc"
         .include "sysram_map.inc"
         .include "utils.inc"
+        .include "macros.inc"
         
         .import __ACIA_START__
         .export _serial_init
@@ -12,6 +14,7 @@
         .export serial_write_string
         .export _serial_write_byte
         .export _serial_write_string
+        .export ACIA_STATUS
 
 ACIA_DATA    = __ACIA_START__ + $00
 ACIA_STATUS  = __ACIA_START__ + $01
@@ -83,18 +86,18 @@ ACIA_NO_DATA_AVAILABLE = $00
 _serial_init:
         ; preserve registers
         pha
-        phy
+        phx
         ; calculate channel offset by multiplication
-        tay
+        tax
         lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_ENABLE | ACIA_DTR_LOW)
         sta ACIA_COMMAND
         lda #(ACIA_STOP_BITS_1 | ACIA_DATA_BITS_8 | ACIA_CLOCK_INT | ACIA_BAUD_19200)
         sta ACIA_CONTROL
-        stz serial_rx_rptr,y
-        stz serial_rx_wptr,y
-        stz serial_tx_rptr,y
-        stz serial_tx_wptr,y
-        ply
+        stz serial_rx_rptr,x
+        stz serial_rx_wptr,x
+        stz serial_tx_rptr,x
+        stz serial_tx_wptr,x
+        plx
         pla
         rts
 
@@ -104,8 +107,8 @@ _handle_serial_irq:
         pha
         phx
         phy
-        ; store channel offset in Y
-        tay
+        ; store channel offset in X
+        tax
         ; Load current ACIA status
         lda ACIA_STATUS
         ; Stop processing if only CTS is high
@@ -124,8 +127,8 @@ _handle_serial_irq:
         ; Preserve accumulator
         pha
         ; Compare TX write and read buffer pointers
-        lda serial_tx_rptr,y
-        cmp serial_tx_wptr,y
+        lda serial_tx_rptr,x
+        cmp serial_tx_wptr,x
         bne @tx_send_character
         ; Both equal - nothing to send in buffer
         lda ACIA_COMMAND
@@ -138,15 +141,15 @@ _handle_serial_irq:
         bra @tx_empty_exit
 @tx_send_character:
         ; Otherwise, send new character
-        tax
+        tay
         ; TODO: single buffer now
-        lda serial_tx_buffer,x
+        lda serial_tx_buffer,y
         sta ACIA_DATA
         ; Increase read buffer pointer
-        inc serial_tx_rptr,y
+        inc serial_tx_rptr,x
         ; Compare pointers - is there any data
-        lda serial_tx_rptr,y
-        cmp serial_tx_wptr,y
+        lda serial_tx_rptr,x
+        cmp serial_tx_wptr,x
         bne @tx_data_left_to_send
         ; Both equal - nothing to send in buffer
         lda ACIA_COMMAND
@@ -168,16 +171,16 @@ _handle_serial_irq:
         pha
         ; Read byte from RX
         lda ACIA_DATA
-        ldx serial_rx_wptr,y
+        ldy serial_rx_wptr,x
         ; Store in rx buffer
         ; TODO: Single buffer here 
-        sta serial_rx_buffer,x
+        sta serial_rx_buffer,y
         ; Increase write buffer pointer
-        inc serial_rx_wptr,y
+        inc serial_rx_wptr,x
         ; Check for receive buffer overflow condition
-        lda serial_rx_wptr,y
+        lda serial_rx_wptr,x
         sec
-        sbc serial_rx_rptr,y
+        sbc serial_rx_rptr,x
         ; We have more than 128 characters to service in queue - overflow
         cmp #$80
         bcc @no_rx_overflow
@@ -219,25 +222,25 @@ _serial_is_data_available:
 ; POSITIVE C COMPLIANT
 ; Return one byte from RX buffer
 _serial_read_byte:
-        phy
-        tay
+        phx
+        tax
         ; block until data available
-        lda serial_rx_wptr,y
-        cmp serial_rx_rptr,y
+        lda serial_rx_wptr,x
+        cmp serial_rx_rptr,x
         beq _serial_read_byte
         ; proceed
-        phx
-        ldx serial_rx_rptr,y
+        phy
+        ldy serial_rx_rptr,x
         ; TODO: Single buffer here
-        lda serial_rx_buffer,x
+        lda serial_rx_buffer,y
         ; Increase read buffer pointer
-        inc serial_rx_rptr,y
-        ; Store result in X for a while now
-        tax
+        inc serial_rx_rptr,x
+        ; Store result in Y for a while now
+        tay
         ; Check how many characters are to be serviced
-        lda serial_rx_wptr,y
+        lda serial_rx_wptr,x
         sec
-        sbc serial_rx_rptr,y
+        sbc serial_rx_rptr,x
         ; More than 64 - still overflow
         cmp #$40
         bcs @still_rx_overflow
@@ -251,9 +254,9 @@ _serial_read_byte:
         sta ACIA_COMMAND
 @still_rx_overflow:
         ; Transfer result back to A
-        txa
-        plx
+        tya
         ply
+        plx
         rts
 
 ; NEGATIVE C COMPLIANT
@@ -321,15 +324,19 @@ _serial_write_byte:
 serial_write_string:
         sta ptr1
         stx ptr1+1
+        sty tmp1
         ; init index
-        ldx #$00
+        ldy #$00
 @string_loop:
         ; load character
-        lda (ptr1),x
+        lda (ptr1),y
         ; stop if null
         beq @end_loop
         ; send char to buffer
-        jsr _acia_write_byte
+        phy
+        ldy tmp1
+        jsr serial_write_byte
+        ply
         ; increase index
         iny 
         ; prevent infinite loop

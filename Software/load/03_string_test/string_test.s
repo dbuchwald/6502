@@ -2,6 +2,7 @@
         .include "serial.inc"
         .include "utils.inc"
         .include "macros.inc"
+        .include "sys_const.inc"
 
         .segment "VECTORS"
 
@@ -10,7 +11,7 @@
         .word   $0000
 
 TOKENIZE_BUFFER_SIZE = 64
-CHANNEL              = 0
+CHANNEL              = CHANNEL0
 
         .code
 init:

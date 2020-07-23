@@ -4,8 +4,9 @@
       .include "serial.inc"
       .include "keyboard.inc"
       .include "syscalls.inc"
+      .include "sys_const.inc"
 
-CHANNEL = 0
+CHANNEL = CHANNEL0
 
 .segment "CODE"
 ; ISCNTC:
@@ -88,7 +89,7 @@ MONRDKEY:
   lda #CHANNEL
   jsr _serial_is_data_available
   ; skip, no data available at this point
-  cmp #(ACIA_NO_DATA_AVAILABLE)
+  cmp #(SERIAL_NO_DATA_AVAILABLE)
   beq NoDataIn
   lda #CHANNEL
   jsr _serial_read_byte

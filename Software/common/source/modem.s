@@ -1,6 +1,7 @@
         .include "zeropage.inc"
         .include "serial.inc"
         .include "utils.inc"
+        .include "sys_const.inc"
         .export _modem_send
         .export _modem_receive
 
@@ -62,7 +63,7 @@ _modem_receive:
 @enable_crc:
         ; Request CRC mode
         lda #('C')
-        ldy #channel
+        ldy channel
         jsr serial_write_byte
 @read_block_loop:
         ; Poll for first character
@@ -134,7 +135,7 @@ _modem_receive:
         jsr @flush_input
         ; Send negative acknowledgement
         lda #(NAK)
-        ldy #channel
+        ldy channel
         jsr serial_write_byte
         ; Try the package again
         jmp @read_block_loop
@@ -181,14 +182,14 @@ _modem_receive:
         ; Block completed
         inc block_number
         lda #(ACK)
-        ldy #channel
+        ldy channel
         jsr serial_write_byte
         jmp @read_block_loop
 
 @receive_complete:
         ; Acknowledge transfer completion
         lda #(ACK)
-        ldy #channel
+        ldy channel
         jsr serial_write_byte
         ; Flush any input pending (should be none)
         jsr @flush_input
@@ -204,9 +205,9 @@ _modem_receive:
         sta delay_counter
 @three_second_wait:
         ; Is there any data available?
-        lda #channel
+        lda channel
         jsr _serial_is_data_available
-        cmp #(ACIA_NO_DATA_AVAILABLE)
+        cmp #(SERIAL_NO_DATA_AVAILABLE)
         ; Yes it is
         bne @three_read_data
         ; Nope, it's not, wait 20ms
@@ -220,7 +221,7 @@ _modem_receive:
         clc
         rts
 @three_read_data:
-        lda #channel
+        lda channel
         jsr _serial_read_byte
         ; Data loaded, set carry
         sec
@@ -232,9 +233,9 @@ _modem_receive:
         sta delay_counter
 @one_second_wait:
         ; Is there any data available?
-        lda #channel
+        lda channel
         jsr _serial_is_data_available
-        cmp #(ACIA_NO_DATA_AVAILABLE)
+        cmp #(SERIAL_NO_DATA_AVAILABLE)
         ; Yes it is
         bne @one_read_data
         ; Nope, it's not, wait 20ms
@@ -246,7 +247,7 @@ _modem_receive:
         bne @one_second_wait
         rts
 @one_read_data:
-        lda #channel
+        lda channel
         jsr _serial_read_byte
         ; Data loaded, ignore, repeat
         bra @one_second_wait
@@ -256,7 +257,7 @@ _modem_receive:
 @prompt_loop:
         lda prompt,x
         beq @prompt_done
-        ldy #channel
+        ldy channel
         jsr serial_write_byte
         inx
         bra @prompt_loop
@@ -268,7 +269,7 @@ _modem_receive:
 @success_loop:
         lda success_message,x
         beq @success_done
-        ldy #channel
+        ldy channel
         jsr serial_write_byte
         inx
         bra @success_loop
@@ -280,7 +281,7 @@ _modem_receive:
 @error_loop:
         lda error_message,x
         beq @error_done
-        ldy #channel
+        ldy channel
         jsr serial_write_byte
         inx
         bra @error_loop
@@ -292,7 +293,7 @@ _modem_receive:
 @abort_loop:
         lda abort_message,x
         beq @abort_done
-        ldy #channel
+        ldy channel
         jsr serial_write_byte
         inx
         bra @abort_loop
