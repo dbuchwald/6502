@@ -193,10 +193,10 @@ tty_write_byte:
         beq @skip_serial
         ; get char code back from storage
         txa
-        phy
+        phx
         ldx channel
         jsr serial_write_byte
-        ply
+        plx
 @skip_serial:
         ; do the same for LCD
         lda tty_config
