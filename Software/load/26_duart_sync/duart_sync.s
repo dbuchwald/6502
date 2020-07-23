@@ -1,5 +1,4 @@
             .include "utils.inc"
-            .include "blink.inc"
             .include "tty.inc"
 
 DUART_START = $8200
@@ -85,7 +84,7 @@ init:
         lda #$10
         sta DUART_W_CRA
         ; No RTS (b7=0)
-        ; RxINT on at least one byte in FIFO (b6=00)
+        ; RxINT on at least one byte in FIFO (b6=0)
         ; Char error mode (b5=0)
         ; No parity (b4:3=10)
         ; Odd parity (b2=1)
@@ -103,7 +102,7 @@ init:
         lda #%00000111
         sta DUART_W_MR2A
         ; Select BRG
-        lda #%10000000
+        lda #%11100000
         sta DUART_W_ACR
         ; ; Select clock (19200 baud) on Tx and Rx
         ; lda #%11001100
@@ -130,12 +129,10 @@ loop:
         inx
         bra @send_msg
 @msg_sent:
-        jsr _strobe_led
         iny
         cpy #$0a
         beq @exit
-        lda #$01
-        jsr _delay_sec
+        jsr read_char
         bra loop
 @exit:
         rts
@@ -147,9 +144,16 @@ write_char:
         lda DUART_R_SRA
         and #%00000100
         beq @txrdya
-
         pla
         sta DUART_W_TxA
+        rts
+
+read_char:
+        ; wait for the character in Rx buffer to show up
+        lda DUART_R_SRA
+        and #%00000001
+        beq read_char
+        lda DUART_R_RxA
         rts
 
         .segment "RODATA"
