@@ -1,7 +1,7 @@
-PROJECT_NAME=26_duart_sync
+PROJECT_NAME=27_duart_async
 BUILD_TYPE=load
 
-ASM_SOURCES=duart_sync.s
+ASM_SOURCES=duart_async.s
 C_SOURCES=
 
 include ../../common/makefile

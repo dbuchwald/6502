@@ -1,3 +1,5 @@
+        .include "core.inc"
+
 DUART_START = $8200
 
 ; READ:
@@ -46,8 +48,32 @@ DUART_W_ROP12 = DUART_START + $0f
 LF      = $0a   ; Line Feed
 CR      = $0d   ; Carriage Return
 
+BUFFER_SIZE = 256
+
+        .zeropage
+rxr_idx: .res 1
+rxw_idx: .res 1
+txr_idx: .res 1
+txw_idx: .res 1
+
         .code
 init:
+        ; init buffer index variables
+        stz rxr_idx
+        stz rxw_idx
+        stz txr_idx
+        stz txw_idx
+        ; clear buffer area
+        ldx #$00
+@clear_buffer:
+        stz rxbuffer,X
+        stz txbuffer,X
+        inx
+        beq @exit_clear
+        bra @clear_buffer
+@exit_clear:
+
+        register_user_irq #service_duart_irq
         ; disable powerdown
         lda #$f0
         sta DUART_W_CRA
@@ -71,11 +97,11 @@ init:
         lda #$b0
         sta DUART_W_CRA
         ; No watchdog (b7=0)
-        ; RxINT on at least one byte in FIFO (b6=00)
-        ; TxINT on empty FIFO (b5:4=00)
+        ; RxINT on at least one byte in FIFO (b6=0)
+        ; TxINT on ready FIFO (b5:4=11)
         ; b3=0
         ; Extended mode (b2:0=001)
-        lda #%00000001
+        lda #%00110001
         sta DUART_W_MR0A
         ; Write to MR1A
         lda #$10
@@ -106,14 +132,11 @@ init:
         ; Let's go much faster - 115200
         lda #%11001100
         sta DUART_W_CSRA
-
-        
-
         ; ; Enable both transmitter and receiver
         lda #%00000101
         sta DUART_W_CRA
-        ; Disable all interrupt masks
-        lda #%00000000
+        ; Enable Channel A Tx/Rx interrupts
+        lda #%00000011
         sta DUART_W_IMR
 
         ldy #$0
@@ -132,26 +155,86 @@ loop:
         jsr read_char
         bra loop
 @exit:
+        ; Wait until all characters are sent out
+@flush_loop:
+        lda DUART_R_SRA
+        and #%00001000
+        beq @flush_loop
+        ; Disable all interrupts
+        lda #%00000000
+        sta DUART_W_IMR
         rts
 
 write_char:
-        ; write char to TxFIFO
+        phx
         pha
-@txrdya:
-        lda DUART_R_SRA
-        and #%00000100
-        beq @txrdya
+        ; check txbuffer state
+@check_buffer_full:
+        lda txw_idx
+        sec
+        sbc txr_idx
+        cmp #$ff
+        beq @check_buffer_full
         pla
-        sta DUART_W_TxA
+        ldx txw_idx
+        sta txbuffer,X
+        inc txw_idx
+        lda #%00000011
+        sta DUART_W_IMR
+        plx
         rts
 
 read_char:
-        ; wait for the character in Rx buffer to show up
-        lda DUART_R_SRA
-        and #%00000001
+        ; block until data available
+        lda rxw_idx
+        cmp rxr_idx
         beq read_char
-        lda DUART_R_RxA
+        phx
+        ldx rxr_idx
+        lda rxbuffer,X
+        inc rxr_idx
+        plx
         rts
+
+service_duart_irq:
+        lda DUART_R_ISR
+        asl
+        asl
+        asl
+        asl
+        asl
+        asl
+        ; check for Rx IRQ
+        bpl @not_rx_irq
+        pha
+        lda DUART_R_RxA
+        ldx rxw_idx
+        sta rxbuffer,X
+        inc rxw_idx
+        pla
+@not_rx_irq:
+        asl
+        bpl @not_tx_irq
+        ; compare buffer indexes to see if there is anything to send
+        ldx txr_idx
+        cpx txw_idx
+        bne @transmit_char
+        ; nothing to send, disable tx interrupt temporarily
+        lda #%00000010
+        sta DUART_W_IMR
+        bra @not_tx_irq       
+@transmit_char:
+        lda txbuffer,X
+        sta DUART_W_TxA
+        inc txr_idx
+@not_tx_irq:
+        rts
+
+        .segment "BSS"
+rxbuffer:
+        .res BUFFER_SIZE
+txbuffer:
+        .res BUFFER_SIZE
 
         .segment "RODATA"
 message:
