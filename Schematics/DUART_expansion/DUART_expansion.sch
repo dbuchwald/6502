@@ -50,82 +50,16 @@ Entry Wire Line
 	900  1150 1000 1250
 Text Label 1000 1850 0    50   ~ 0
 a9
-Text Label 1000 1350 0    50   ~ 0
-a4
-Text Label 1000 1450 0    50   ~ 0
-a5
-Text Label 1000 1550 0    50   ~ 0
-a6
-Text Label 1000 1650 0    50   ~ 0
-a7
-Text Label 1000 1750 0    50   ~ 0
-a8
-Text Label 1000 1950 0    50   ~ 0
-a10
-Text Label 1000 2050 0    50   ~ 0
-a11
-Text Label 1000 2150 0    50   ~ 0
-a12
-Text Label 1000 2250 0    50   ~ 0
-a13
-Text Label 1000 2350 0    50   ~ 0
-a14
-Text Label 1000 2450 0    50   ~ 0
-a15
-Wire Wire Line
-	1000 1350 1200 1350
-Wire Wire Line
-	1000 1450 1200 1450
-Wire Wire Line
-	1000 1550 1200 1550
-Wire Wire Line
-	1000 1650 1200 1650
-Wire Wire Line
-	1000 1750 1200 1750
 Wire Wire Line
 	1000 1850 1200 1850
-Wire Wire Line
-	1000 1950 1200 1950
-Wire Wire Line
-	1000 2050 1200 2050
-Wire Wire Line
-	1000 2150 1200 2150
-Wire Wire Line
-	1000 2250 1200 2250
-Wire Wire Line
-	1000 2350 1200 2350
-Wire Wire Line
-	1000 2450 1200 2450
-Entry Wire Line
-	900  1250 1000 1350
-Entry Wire Line
-	900  1350 1000 1450
-Entry Wire Line
-	900  1450 1000 1550
-Entry Wire Line
-	900  1550 1000 1650
-Entry Wire Line
-	900  1650 1000 1750
 Entry Wire Line
 	900  1750 1000 1850
-Entry Wire Line
-	900  1850 1000 1950
-Entry Wire Line
-	900  1950 1000 2050
-Entry Wire Line
-	900  2050 1000 2150
-Entry Wire Line
-	900  2150 1000 2250
-Entry Wire Line
-	900  2250 1000 2350
-Entry Wire Line
-	900  2350 1000 2450
 Text GLabel 1900 2350 2    50   Input ~ 0
 GND
 Text GLabel 1900 2450 2    50   Input ~ 0
 +5V
 Wire Wire Line
-	1900 2450 1700 2450
+	1900 2450 1800 2450
 Wire Wire Line
 	1700 2350 1900 2350
 NoConn ~ 1700 2250
@@ -207,30 +141,6 @@ Wire Wire Line
 	2750 1650 2750 2150
 Wire Wire Line
 	2750 2150 1700 2150
-Text GLabel 3550 1850 3    50   Input ~ 0
-GND
-Wire Wire Line
-	3550 1850 3550 1750
-$Comp
-L Oscillator:CXO_DIP8 X1
-U 1 1 5F1792E7
-P 3550 1450
-F 0 "X1" H 3894 1496 50  0000 L CNN
-F 1 "CXO_DIP8" H 3894 1405 50  0000 L CNN
-F 2 "Oscillator:Oscillator_DIP-8" H 4000 1100 50  0001 C CNN
-F 3 "http://cdn-reichelt.de/documents/datenblatt/B400/OSZI.pdf" H 3450 1450 50  0001 C CNN
-	1    3550 1450
-	1    0    0    -1  
-$EndComp
-Text GLabel 3550 1050 1    50   Input ~ 0
-+5V
-Wire Wire Line
-	3550 1050 3550 1150
-NoConn ~ 3250 1450
-Text GLabel 4300 1450 2    50   Output ~ 0
-DUART_CLK
-Wire Wire Line
-	3850 1450 4300 1450
 $Comp
 L 74xx:74HC04 U1
 U 7 1 5F17BEEB
@@ -379,21 +289,8 @@ Text GLabel 6000 4800 2    50   Output ~ 0
 DUART_CEN
 Wire Wire Line
 	4500 4700 4600 4700
-$Comp
-L DUART:SC26C92 U3
-U 1 1 5F1A2B31
-P 6500 2400
-F 0 "U3" H 6450 2500 50  0000 L CNN
-F 1 "SC26C92" H 6500 2300 50  0000 C CNN
-F 2 "" H 6500 2400 50  0001 C CNN
-F 3 "" H 6500 2400 50  0001 C CNN
-	1    6500 2400
-	1    0    0    -1  
-$EndComp
-Text GLabel 6400 3650 3    50   Input ~ 0
+Text GLabel 5550 3300 0    50   Input ~ 0
 GND
-Wire Wire Line
-	6400 3650 6400 3200
 Text GLabel 6600 1500 1    50   Input ~ 0
 +5V
 Wire Wire Line
@@ -406,11 +303,6 @@ Text GLabel 7400 2000 2    50   Input ~ 0
 DUART_RES
 Wire Wire Line
 	7400 2000 7300 2000
-Text GLabel 7400 2200 2    50   Input ~ 0
-DUART_CLK
-Wire Wire Line
-	7400 2200 7300 2200
-NoConn ~ 7300 2100
 Text GLabel 7400 1900 2    50   Input ~ 0
 DUART_CEN
 Wire Wire Line
@@ -463,57 +355,56 @@ NoConn ~ 5700 2900
 NoConn ~ 5700 2800
 NoConn ~ 5700 2700
 NoConn ~ 5700 2600
-NoConn ~ 6600 3200
 NoConn ~ 5700 2300
 NoConn ~ 5700 2500
-Text Label 7000 3300 1    50   ~ 0
+Text Label 7000 3500 1    50   ~ 0
 d0
-Text Label 6900 3300 1    50   ~ 0
+Text Label 6900 3500 1    50   ~ 0
 d2
-Text Label 6800 3300 1    50   ~ 0
+Text Label 6800 3500 1    50   ~ 0
 d4
-Text Label 6700 3300 1    50   ~ 0
+Text Label 6700 3500 1    50   ~ 0
 d6
-Text Label 6000 3300 1    50   ~ 0
+Text Label 6000 3500 1    50   ~ 0
 d1
-Text Label 6100 3300 1    50   ~ 0
+Text Label 6100 3500 1    50   ~ 0
 d3
-Text Label 6200 3300 1    50   ~ 0
+Text Label 6200 3500 1    50   ~ 0
 d5
-Text Label 6300 3300 1    50   ~ 0
+Text Label 6300 3500 1    50   ~ 0
 d7
 Wire Wire Line
-	6000 3200 6000 3300
+	6000 3200 6000 3500
 Wire Wire Line
-	6100 3200 6100 3300
+	6100 3200 6100 3500
 Wire Wire Line
-	6200 3200 6200 3300
+	6200 3200 6200 3500
 Wire Wire Line
-	6300 3200 6300 3300
+	6300 3200 6300 3500
 Wire Wire Line
-	6700 3200 6700 3300
+	6700 3200 6700 3500
 Wire Wire Line
-	6800 3200 6800 3300
+	6800 3200 6800 3500
 Wire Wire Line
-	6900 3200 6900 3300
+	6900 3200 6900 3500
 Wire Wire Line
-	7000 3200 7000 3300
+	7000 3200 7000 3500
 Entry Wire Line
-	5900 3400 6000 3300
+	5900 3600 6000 3500
 Entry Wire Line
-	6000 3400 6100 3300
+	6000 3600 6100 3500
 Entry Wire Line
-	6100 3400 6200 3300
+	6100 3600 6200 3500
 Entry Wire Line
-	6200 3400 6300 3300
+	6200 3600 6300 3500
 Entry Wire Line
-	6600 3400 6700 3300
+	6600 3600 6700 3500
 Entry Wire Line
-	6700 3400 6800 3300
+	6700 3600 6800 3500
 Entry Wire Line
-	6800 3400 6900 3300
+	6800 3600 6900 3500
 Entry Wire Line
-	6900 3400 7000 3300
+	6900 3600 7000 3500
 Text GLabel 7400 2500 2    50   Output ~ 0
 USB_UART_TxD
 Text GLabel 7400 2300 2    50   Input ~ 0
@@ -580,12 +471,117 @@ GND
 Wire Wire Line
 	1100 5100 1200 5100
 NoConn ~ 1800 5100
+Text GLabel 5550 3400 0    50   Output ~ 0
+IRQX
+Wire Wire Line
+	5550 3400 6600 3400
+Wire Wire Line
+	6600 3400 6600 3200
+Wire Wire Line
+	5550 3300 6400 3300
+Wire Wire Line
+	6400 3300 6400 3200
+$Comp
+L DUART:SC26C92 U3
+U 1 1 5F1A2B31
+P 6500 2400
+F 0 "U3" H 6450 2500 50  0000 L CNN
+F 1 "SC26C92" H 6500 2300 50  0000 C CNN
+F 2 "" H 6500 2400 50  0001 C CNN
+F 3 "" H 6500 2400 50  0001 C CNN
+	1    6500 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Crystal Y1
+U 1 1 5F1DF768
+P 8200 2150
+F 0 "Y1" V 8154 2281 50  0000 L CNN
+F 1 "Crystal" V 8245 2281 50  0000 L CNN
+F 2 "" H 8200 2150 50  0001 C CNN
+F 3 "~" H 8200 2150 50  0001 C CNN
+	1    8200 2150
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	7300 2100 8050 2100
+Wire Wire Line
+	8050 2100 8050 2000
+Wire Wire Line
+	8050 2000 8200 2000
+Wire Wire Line
+	7300 2200 8050 2200
+Wire Wire Line
+	8050 2200 8050 2300
+Wire Wire Line
+	8050 2300 8200 2300
+Wire Wire Line
+	8200 2400 8200 2300
+Connection ~ 8200 2300
+Wire Wire Line
+	8200 2000 8200 1900
+Connection ~ 8200 2000
+$Comp
+L Device:C C1
+U 1 1 5F1EB8DE
+P 8200 1750
+F 0 "C1" H 8315 1796 50  0000 L CNN
+F 1 "22pF" H 8315 1705 50  0000 L CNN
+F 2 "" H 8238 1600 50  0001 C CNN
+F 3 "~" H 8200 1750 50  0001 C CNN
+	1    8200 1750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C2
+U 1 1 5F1EC246
+P 8200 2550
+F 0 "C2" H 8315 2596 50  0000 L CNN
+F 1 "22pF" H 8315 2505 50  0000 L CNN
+F 2 "" H 8238 2400 50  0001 C CNN
+F 3 "~" H 8200 2550 50  0001 C CNN
+	1    8200 2550
+	1    0    0    -1  
+$EndComp
+Text GLabel 8200 1500 1    50   Input ~ 0
+GND
+Text GLabel 8200 2800 3    50   Input ~ 0
+GND
+Wire Wire Line
+	8200 2800 8200 2700
+Wire Wire Line
+	8200 1600 8200 1500
+$Comp
+L power:PWR_FLAG #FLG0101
+U 1 1 5F1F24E0
+P 1800 2450
+F 0 "#FLG0101" H 1800 2525 50  0001 C CNN
+F 1 "PWR_FLAG" H 1800 2623 50  0000 C CNN
+F 2 "" H 1800 2450 50  0001 C CNN
+F 3 "~" H 1800 2450 50  0001 C CNN
+	1    1800 2450
+	-1   0    0    1   
+$EndComp
+Connection ~ 1800 2450
+Wire Wire Line
+	1800 2450 1700 2450
+NoConn ~ 1200 1350
+NoConn ~ 1200 1450
+NoConn ~ 1200 1550
+NoConn ~ 1200 1650
+NoConn ~ 1200 1750
+NoConn ~ 1200 1950
+NoConn ~ 1200 2050
+NoConn ~ 1200 2150
+NoConn ~ 1200 2250
+NoConn ~ 1200 2350
+NoConn ~ 1200 2450
 Wire Bus Line
 	5500 1400 6300 1400
 Wire Bus Line
+	900  850  900  1750
+Wire Bus Line
 	2000 850  2000 1550
 Wire Bus Line
-	5900 3400 6900 3400
-Wire Bus Line
-	900  850  900  2350
+	5900 3600 6900 3600
 $EndSCHEMATC
