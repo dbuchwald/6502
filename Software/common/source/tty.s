@@ -194,8 +194,8 @@ tty_write_byte:
         ; get char code back from storage
         txa
         phy
-        ldy channel
-        jsr _serial_write_byte
+        ldx channel
+        jsr serial_write_byte
         ply
 @skip_serial:
         ; do the same for LCD
