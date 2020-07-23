@@ -155,4 +155,4 @@ read_char:
 
         .segment "RODATA"
 message:
-        .byte "Hello from DUART!", CR, LF, $00
+        .byte "Hello from SC26C92 (sync)!", CR, LF, $00

@@ -238,4 +238,4 @@ txbuffer:
 
         .segment "RODATA"
 message:
-        .byte "Hello from DUART!", CR, LF, $00
+        .byte "Hello from SC26C92 (async)!", CR, LF, $00
