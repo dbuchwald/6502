@@ -312,10 +312,12 @@ _serial_read_byte:
         ; Otherwise accept more characters
         lda ACIA_COMMAND
         and #%11110011
+        .if acia_tx_irq=1
         ; We might enable the TX empty interrupt without any data to write
         ; but there is no way of checking it, and the interrupt will 
         ; correct the setting if it should not be enabled
         ora #(ACIA_TX_INT_ENABLE_RTS_LOW)
+        .endif
         sta ACIA_COMMAND
 @still_rx_overflow:
         ; Transfer result back to A
