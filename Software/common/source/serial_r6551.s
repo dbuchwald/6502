@@ -6,15 +6,11 @@
         .include "macros.inc"
         
         .import __ACIA_START__
-        .export _serial_init
+
         .export _handle_serial_irq
-        .export _serial_is_data_available
-        .export _serial_read_byte
-        .export serial_write_byte
-        .export serial_write_string
-        .export _serial_write_byte
-        .export _serial_write_string
-;        .export ACIA_STATUS
+        .export _serial_init_controller
+        .export _serial_notify_read
+        .export _serial_notify_write
 
 ACIA_DATA    = __ACIA_START__ + $00
 ACIA_STATUS  = __ACIA_START__ + $01
@@ -76,61 +72,15 @@ ACIA_STATUS_OVERRUN    = 1 << 2
 ACIA_STATUS_FRAME_ERR  = 1 << 1
 ACIA_STATUS_PARITY_ERR = 1 << 0
 
-ACIA_DATA_AVAILABLE    = $01
-ACIA_NO_DATA_AVAILABLE = $00
-
         .code
 
 ; POSITIVE C COMPLIANT
 ; channel number in A        
-_serial_init:
-        ; preserve registers
-        pha
-        phx
-        ; calculate channel offset by multiplication
-        tax
+_serial_init_controller:
         lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_ENABLE | ACIA_DTR_LOW)
         sta ACIA_COMMAND
         lda #(ACIA_STOP_BITS_1 | ACIA_DATA_BITS_8 | ACIA_CLOCK_INT | ACIA_BAUD_19200)
         sta ACIA_CONTROL
-        stz serial_rx_rptr,x
-        stz serial_rx_wptr,x
-        stz serial_tx_rptr,x
-        stz serial_tx_wptr,x
-        ; init pointers
-        lda #<(serial_rx_buffer)
-        sta serial_rx_buffer_ptr,x
-        lda #>(serial_rx_buffer)
-        sta serial_rx_buffer_ptr+1,x
-        lda #<(serial_tx_buffer)
-        sta serial_tx_buffer_ptr,x
-        lda #>(serial_tx_buffer)
-        sta serial_tx_buffer_ptr+1,x
-        ; preserve channel number
-        stx tmp1
-        ; keep adding buffer size to offset
-@pointer_loop:
-        lda tmp1
-        beq @done
-        clc
-        lda #<(SERIAL_RX_BUFFER_SIZE)
-        adc serial_rx_buffer_ptr,x
-        sta serial_rx_buffer_ptr,x
-        lda #>(SERIAL_RX_BUFFER_SIZE)
-        adc serial_rx_buffer_ptr+1,x
-        sta serial_rx_buffer_ptr+1,x
-        clc
-        lda #<(SERIAL_TX_BUFFER_SIZE)
-        adc serial_tx_buffer_ptr,x
-        sta serial_tx_buffer_ptr,x
-        lda #>(SERIAL_TX_BUFFER_SIZE)
-        adc serial_tx_buffer_ptr+1,x
-        sta serial_tx_buffer_ptr+1,x
-        dec tmp1
-        bra @pointer_loop
-@done:
-        plx
-        pla
         rts
 
 ; TENTATIVE C COMPLIANT
@@ -259,49 +209,9 @@ _handle_serial_irq:
         pla
         rts
 
-; POSITIVE C COMPLIANT - return value A
-; Check if there is anything to receive and return in A
-; 0 - data not available
-; 1 - data available
-_serial_is_data_available:
-        phy
-        tay
-        lda serial_rx_wptr,y
-        cmp serial_rx_rptr,y
-        beq @no_data_found
-        ply
-        lda #(ACIA_DATA_AVAILABLE)
-        rts
-@no_data_found:
-        ply
-        lda #(ACIA_NO_DATA_AVAILABLE)
-        rts
-
-; POSITIVE C COMPLIANT
-; Return one byte from RX buffer
-_serial_read_byte:
-        phx
-        tax
-@wait_for_data:
-        ; block until data available
-        lda serial_rx_wptr,x
-        cmp serial_rx_rptr,x
-        beq @wait_for_data
-        ; proceed
-        phy
-        ldy serial_rx_rptr,x
-        ; Copy selected buffer pointer
-        ; to temporary one for indirect
-        ; access
-        lda serial_rx_buffer_ptr,x
-        sta serial_buffer_tmp_ptr
-        lda serial_rx_buffer_ptr+1,x
-        sta serial_buffer_tmp_ptr+1
-        lda (serial_buffer_tmp_ptr),y
-        ; Increase read buffer pointer
-        inc serial_rx_rptr,x
-        ; Store result in Y for a while now
-        tay
+; X contains channel number
+_serial_notify_read:
+        pha
         ; Check how many characters are to be serviced
         lda serial_rx_wptr,x
         sec
@@ -317,48 +227,20 @@ _serial_read_byte:
         ; but there is no way of checking it, and the interrupt will 
         ; correct the setting if it should not be enabled
         ora #(ACIA_TX_INT_ENABLE_RTS_LOW)
+        .else
+        ora #(ACIA_TX_INT_DISABLE_RTS_LOW)
         .endif
         sta ACIA_COMMAND
 @still_rx_overflow:
         ; Transfer result back to A
-        tya
-        ply
-        plx
+        pla
         rts
 
-; NEGATIVE C COMPLIANT
-; Write one byte to TX buffer
-; Assume input in accumulator
-; Assume channel in X
-serial_write_byte:
+; A contains written character
+; X contains channel number
+_serial_notify_write:
         ; below code works only for R6551 and compatibles
         .if acia_tx_irq=1
-        ; Preserve y register
-        phy
-        ; Preserve input value
-        pha
-        ; Check if TX buffer full - if so, keep polling until more space available
-@compare_with_read_pointer:
-        ; Load current value of write pointer
-        lda serial_tx_wptr,x
-        sec
-        sbc serial_tx_rptr,x
-        cmp #$ff
-        beq @compare_with_read_pointer
-        ; Copy selected buffer pointer
-        ; to temporary one for indirect
-        ; access
-        lda serial_tx_buffer_ptr,x
-        sta serial_buffer_tmp_ptr
-        lda serial_tx_buffer_ptr+1,x
-        sta serial_buffer_tmp_ptr+1
-        ; Restore input value
-        pla
-        ; Write data to the TX buffer
-        ldy serial_tx_wptr,x
-        sta (serial_buffer_tmp_ptr),y
-        ; Increase pointer
-        inc serial_tx_wptr,x
         ; Enable interrupt after tx buffer is empty
         pha
         lda ACIA_COMMAND
@@ -366,11 +248,12 @@ serial_write_byte:
         ora #(ACIA_TX_INT_ENABLE_RTS_LOW)
         sta ACIA_COMMAND
         pla
-        ply
         .else
         ; code below works for non-IRQ compliant devices, like WDC65C51
         ; store data in data register
         sta ACIA_DATA
+        ; Increase read buffer pointer
+        inc serial_tx_rptr,x
         pha
         ; wait 1ms (more than 520us for 19200 baud)
         lda #$01
@@ -378,53 +261,4 @@ serial_write_byte:
         pla
         ; done, sent
         .endif
-        rts
-
-; C Wrapper
-_serial_write_byte:
-        pha
-        lda (sp)
-        tax
-        pla
-        jsr serial_write_byte
-        inc_ptr sp
-        rts
-
-; NEGATIVE C COMPLIANT
-; Write null terminated string to TX buffer
-; Assume input pointer in A,X
-; Assume channel number in Y
-serial_write_string:
-        sta ptr1
-        stx ptr1+1
-        ; move Y to X for serial_write_byte
-        tya
-        tax
-        ; init index
-        ldy #$00
-@string_loop:
-        ; load character
-        lda (ptr1),y
-        ; stop if null
-        beq @end_loop
-        ; send char to buffer
-        jsr serial_write_byte
-        ; increase index
-        iny 
-        ; prevent infinite loop
-        beq @end_loop
-        ; repeat
-        bra @string_loop
-@end_loop:
-        ; return
-        rts
-
-; C Wrapper
-_serial_write_string:
-        pha
-        lda (sp)
-        tay
-        pla
-        jsr serial_write_string
-        inc_ptr sp
         rts

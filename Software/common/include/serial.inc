@@ -8,10 +8,6 @@
         .import serial_write_string
         .import _serial_write_byte
         .import _serial_write_string
-        .import ACIA_STATUS
-
-SERIAL_DATA_AVAILABLE    = $01
-SERIAL_NO_DATA_AVAILABLE = $00
 
         .macro serial_write_string channel, string
         pha

@@ -6,6 +6,9 @@ SERIAL_CHANNELS_COUNT     = 2
 CHANNEL0                  = 0
 CHANNEL1                  = 1
 
+SERIAL_DATA_AVAILABLE    = $01
+SERIAL_NO_DATA_AVAILABLE = $00
+
 LCD_COLUMNS               = 20
 LCD_ROWS                  = 4
 

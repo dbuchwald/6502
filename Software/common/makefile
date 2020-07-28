@@ -67,7 +67,7 @@ endif
 # Possible values below
 # WDC65C51 - use 0
 # R6551 - use 1 or 0 (both are supported, but 1 is "better")
-ACIA_TX_IRQ=0
+ACIA_TX_IRQ=1
 
 # Serial interface
 # Possible values are
@@ -76,13 +76,13 @@ ACIA_TX_IRQ=0
 # - sc26c92
 SERIAL_INTERFACE=r6551
 
-SERIAL=serial_$(SERIAL_INTERFACE).s
+SERIAL_DRIVER=serial_$(SERIAL_INTERFACE).s
 
 # Default address mode (basic/ext/.. )
 ADDRESS_MODE=ext
 
 # Default clock mode (supported are: slow, 250k, 1m, 2m, 4m, 8m)
-CLOCK_MODE=8m
+CLOCK_MODE=1m
 
 # Clock mode translation (for CA65 preprocessor) - see common/include/clock.inc
 ifeq ($(CLOCK_MODE), slow)
@@ -109,20 +109,21 @@ COMMON_SOURCE_FOLDER=$(COMMON_ROOT)/source
 BASE_LIBRARY=$(COMMON_ROOT)/none.lib
 
 # Common objects to be linked
-COMMON_SOURCES=syscalls.s    \
-							 $(SERIAL)     \
-               blink.s       \
-							 core.s        \
-							 keyboard.s    \
-							 lcd.s         \
-							 $(LCD_MODULE) \
-							 modem.s       \
-							 string.s      \
-							 utils.s       \
-							 via.s         \
-							 via_utils.s   \
-							 tty.s         \
-							 parse.s       \
+COMMON_SOURCES=syscalls.s       \
+               serial.s         \
+							 $(SERIAL_DRIVER) \
+               blink.s          \
+							 core.s           \
+							 keyboard.s       \
+							 lcd.s            \
+							 $(LCD_MODULE)    \
+							 modem.s          \
+							 string.s         \
+							 utils.s          \
+							 via.s            \
+							 via_utils.s      \
+							 tty.s            \
+							 parse.s          \
 							 menu.s
 
 COMMON_OBJECTS=$(COMMON_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.o)
