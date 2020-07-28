@@ -8,6 +8,8 @@
         .import serial_write_string
         .import _serial_write_byte
         .import _serial_write_string
+        .import _serial_flush
+        .import _serial_disable
 
         .macro serial_write_string channel, string
         pha

@@ -31,6 +31,8 @@
         .forceimport _syscall_serial_write_byte
         .forceimport _syscall__serial_write_string
         .forceimport _syscall_serial_write_string
+        .forceimport _syscall__serial_flush
+        .forceimport _syscall__serial_disable
 ; Keyboard routines
         .forceimport _syscall__keyboard_is_connected
         .forceimport _syscall__keyboard_is_data_available

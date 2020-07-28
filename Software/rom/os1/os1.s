@@ -71,6 +71,7 @@ init:
       jsr _lcd_clear
       write_lcd #shell_connected
       jsr _run_shell
+      jsr _serial_disable
       ; Disable interrupt processing during init
       sei 
       jmp init

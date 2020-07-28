@@ -45,6 +45,8 @@
         .export _syscall_serial_write_byte
         .export _syscall__serial_write_string
         .export _syscall_serial_write_string
+        .export _syscall__serial_flush
+        .export _syscall__serial_disable
 ; Keyboard routines
         .export _syscall__keyboard_is_connected
         .export _syscall__keyboard_is_data_available
@@ -168,6 +170,10 @@ _syscall__serial_write_string:
         SYSCALL_VECTOR _serial_write_string
 _syscall_serial_write_string:
         SYSCALL_VECTOR serial_write_string
+_syscall__serial_flush:
+        SYSCALL_VECTOR _serial_flush
+_syscall__serial_disable:
+        SYSCALL_VECTOR _serial_disable
 _syscall__keyboard_is_connected:
         SYSCALL_VECTOR _keyboard_is_connected
 _syscall__keyboard_is_data_available:

@@ -12,8 +12,11 @@
         .export serial_write_string
         .export _serial_write_byte
         .export _serial_write_string
+        .export _serial_flush
+        .export _serial_disable
 
         .import _serial_init_controller
+        .import _serial_disable_controller
         .import _serial_notify_read
         .import _serial_notify_write
 
@@ -198,4 +201,23 @@ _serial_write_string:
         pla
         jsr serial_write_string
         inc_ptr sp
+        rts
+
+; Positive C compliant
+; Assumes channel number in A
+_serial_flush:
+        phx
+        tax
+@flush_loop:
+        lda serial_tx_wptr,x
+        cmp serial_tx_rptr,x
+        bne @flush_loop
+        plx
+        rts
+
+; Positive C compliant
+; Assumes channel number in A
+_serial_disable:
+        jsr _serial_flush
+        jsr _serial_disable_controller
         rts

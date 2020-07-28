@@ -33,6 +33,8 @@
         .export serial_write_byte
         .export _serial_write_string
         .export serial_write_string
+        .export _serial_flush
+        .export _serial_disable
 ; Keyboard routines
         .export _keyboard_is_connected
         .export _keyboard_is_data_available
@@ -180,6 +182,12 @@ _serial_write_string:
 
 serial_write_string:
         jmp (_syscall_serial_write_string)
+
+_serial_flush:
+        jmp (_syscall__serial_flush)
+
+_serial_disable:
+        jmp (_syscall__serial_disable)
 
 ; Keyboard routines
 _keyboard_is_connected:
