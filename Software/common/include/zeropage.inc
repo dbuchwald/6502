@@ -18,6 +18,7 @@
 .globalzp serial_tx_wptr
 .globalzp serial_rx_buffer_ptr
 .globalzp serial_tx_buffer_ptr
+.globalzp serial_buffer_tmp_ptr
 .globalzp keyboard_conn
 .globalzp keyboard_rptr
 .globalzp keyboard_wptr

@@ -9,9 +9,9 @@
         .align 256
 
 serial_rx_buffer:
-        .res SERIAL_RX_BUFFER_SIZE
+        .res SERIAL_RX_BUFFER_SIZE*SERIAL_CHANNELS_COUNT
 serial_tx_buffer:
-        .res SERIAL_TX_BUFFER_SIZE
+        .res SERIAL_TX_BUFFER_SIZE*SERIAL_CHANNELS_COUNT
 keyboard_buffer:
         .res KEYBOARD_BUFFER_SIZE
 lcd_line_buffer:

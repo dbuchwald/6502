@@ -14,7 +14,7 @@
         .export serial_write_string
         .export _serial_write_byte
         .export _serial_write_string
-        .export ACIA_STATUS
+;        .export ACIA_STATUS
 
 ACIA_DATA    = __ACIA_START__ + $00
 ACIA_STATUS  = __ACIA_START__ + $01
@@ -97,16 +97,58 @@ _serial_init:
         stz serial_rx_wptr,x
         stz serial_tx_rptr,x
         stz serial_tx_wptr,x
+        ; init pointers
+        lda #<(serial_rx_buffer)
+        sta serial_rx_buffer_ptr,x
+        lda #>(serial_rx_buffer)
+        sta serial_rx_buffer_ptr+1,x
+        lda #<(serial_tx_buffer)
+        sta serial_tx_buffer_ptr,x
+        lda #>(serial_tx_buffer)
+        sta serial_tx_buffer_ptr+1,x
+        ; preserve channel number
+        stx tmp1
+        ; keep adding buffer size to offset
+@pointer_loop:
+        lda tmp1
+        beq @done
+        clc
+        lda #<(SERIAL_RX_BUFFER_SIZE)
+        adc serial_rx_buffer_ptr,x
+        sta serial_rx_buffer_ptr,x
+        lda #>(SERIAL_RX_BUFFER_SIZE)
+        adc serial_rx_buffer_ptr+1,x
+        sta serial_rx_buffer_ptr+1,x
+        clc
+        lda #<(SERIAL_TX_BUFFER_SIZE)
+        adc serial_tx_buffer_ptr,x
+        sta serial_tx_buffer_ptr,x
+        lda #>(SERIAL_TX_BUFFER_SIZE)
+        adc serial_tx_buffer_ptr+1,x
+        sta serial_tx_buffer_ptr+1,x
+        dec tmp1
+        bra @pointer_loop
+@done:
         plx
         pla
         rts
 
 ; TENTATIVE C COMPLIANT
 _handle_serial_irq:
-        ; Preserve accumulator, x and y register
+        ; Preserve accumulator
         pha
+        bit ACIA_STATUS
+        bmi @process_irq
+        jmp @no_irq
+@process_irq:
+        ; Process, preserve x and y register 
         phx
         phy
+        ; Preserve temporary buffer pointer
+        ldx serial_buffer_tmp_ptr
+        phx
+        ldx serial_buffer_tmp_ptr+1
+        phx
         ; store channel offset in X
         tax
         ; Load current ACIA status
@@ -142,8 +184,14 @@ _handle_serial_irq:
 @tx_send_character:
         ; Otherwise, send new character
         tay
-        ; TODO: single buffer now
-        lda serial_tx_buffer,y
+        ; Copy selected buffer pointer
+        ; to temporary one for indirect
+        ; access
+        lda serial_tx_buffer_ptr,x
+        sta serial_buffer_tmp_ptr
+        lda serial_tx_buffer_ptr+1,x
+        sta serial_buffer_tmp_ptr+1
+        lda (serial_buffer_tmp_ptr),y
         sta ACIA_DATA
         ; Increase read buffer pointer
         inc serial_tx_rptr,x
@@ -169,12 +217,17 @@ _handle_serial_irq:
         bpl @rx_full_exit
         ; Preserve accumulator again
         pha
+        ; Copy buffer pointer to temporary
+        ; pointer for indirection
+        lda serial_rx_buffer_ptr,x
+        sta serial_buffer_tmp_ptr
+        lda serial_rx_buffer_ptr+1,x
+        sta serial_buffer_tmp_ptr+1
         ; Read byte from RX
         lda ACIA_DATA
         ldy serial_rx_wptr,x
         ; Store in rx buffer
-        ; TODO: Single buffer here 
-        sta serial_rx_buffer,y
+        sta (serial_buffer_tmp_ptr),y
         ; Increase write buffer pointer
         inc serial_rx_wptr,x
         ; Check for receive buffer overflow condition
@@ -196,8 +249,13 @@ _handle_serial_irq:
         ; Ignore framing error
         ; Ignore parity error
 @cts_high:
+        pla
+        sta serial_buffer_tmp_ptr+1
+        pla
+        sta serial_buffer_tmp_ptr
         ply
         plx
+@no_irq:
         pla
         rts
 
@@ -224,15 +282,22 @@ _serial_is_data_available:
 _serial_read_byte:
         phx
         tax
+@wait_for_data:
         ; block until data available
         lda serial_rx_wptr,x
         cmp serial_rx_rptr,x
-        beq _serial_read_byte
+        beq @wait_for_data
         ; proceed
         phy
         ldy serial_rx_rptr,x
-        ; TODO: Single buffer here
-        lda serial_rx_buffer,y
+        ; Copy selected buffer pointer
+        ; to temporary one for indirect
+        ; access
+        lda serial_rx_buffer_ptr,x
+        sta serial_buffer_tmp_ptr
+        lda serial_rx_buffer_ptr+1,x
+        sta serial_buffer_tmp_ptr+1
+        lda (serial_buffer_tmp_ptr),y
         ; Increase read buffer pointer
         inc serial_rx_rptr,x
         ; Store result in Y for a while now
@@ -278,12 +343,18 @@ serial_write_byte:
         sbc serial_tx_rptr,x
         cmp #$ff
         beq @compare_with_read_pointer
+        ; Copy selected buffer pointer
+        ; to temporary one for indirect
+        ; access
+        lda serial_tx_buffer_ptr,x
+        sta serial_buffer_tmp_ptr
+        lda serial_tx_buffer_ptr+1,x
+        sta serial_buffer_tmp_ptr+1
         ; Restore input value
         pla
         ; Write data to the TX buffer
         ldy serial_tx_wptr,x
-        ; TODO: Single buffer
-        sta serial_tx_buffer,y
+        sta (serial_buffer_tmp_ptr),y
         ; Increase pointer
         inc serial_tx_wptr,x
         ; Enable interrupt after tx buffer is empty

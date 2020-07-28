@@ -23,6 +23,7 @@ serial_tx_rptr:        .res SERIAL_CHANNELS_COUNT
 serial_tx_wptr:        .res SERIAL_CHANNELS_COUNT
 serial_rx_buffer_ptr:  .res SERIAL_CHANNELS_COUNT*2
 serial_tx_buffer_ptr:  .res SERIAL_CHANNELS_COUNT*2
+serial_buffer_tmp_ptr: .res 2
 keyboard_conn:         .res 1
 keyboard_rptr:         .res 1
 keyboard_wptr:         .res 1
