@@ -7,11 +7,10 @@ AR65_BINARY=ar65
 CPU_FLAG=--cpu 65C02
 ARCH_FLAG=-t none
 CLOCK_FLAG=-Dclock_mode_flag=$(CLOCK_MODE_FLAG) 
-ACIA_FLAG=-Dacia_tx_irq=$(ACIA_TX_IRQ) 
 BUILD_FLAG=-Ddb6502
 
-CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) $(ACIA_FLAG) -O
-CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG) $(ACIA_FLAG) $(BUILD_FLAG)
+CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) -O
+CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG) $(BUILD_FLAG)
 LD65_FLAGS=
 AR65_FLAGS=r
 
@@ -63,18 +62,12 @@ else
 	LCD_MODULE=lcd8bit.s
 endif
 
-# ACIA TX IRQ support
-# Possible values below
-# WDC65C51 - use 0
-# R6551 - use 1 or 0 (both are supported, but 1 is "better")
-ACIA_TX_IRQ=1
-
 # Serial interface
 # Possible values are
 # - wdc65c51
 # - r6551
 # - sc26c92
-SERIAL_INTERFACE=r6551
+SERIAL_INTERFACE=wdc65c51
 
 SERIAL_DRIVER=serial_$(SERIAL_INTERFACE).s
 
@@ -82,7 +75,7 @@ SERIAL_DRIVER=serial_$(SERIAL_INTERFACE).s
 ADDRESS_MODE=ext
 
 # Default clock mode (supported are: slow, 250k, 1m, 2m, 4m, 8m)
-CLOCK_MODE=1m
+CLOCK_MODE=8m
 
 # Clock mode translation (for CA65 preprocessor) - see common/include/clock.inc
 ifeq ($(CLOCK_MODE), slow)

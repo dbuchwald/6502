@@ -77,8 +77,6 @@ _system_init:
 ; Uses ACIA and keyboard handling routines
 _interrupt_handler:
         ; Test ACIA first
-        ; bit ACIA_STATUS
-        ; bpl check_via1
         pha
         lda #CHANNEL0
         jsr _handle_serial_irq

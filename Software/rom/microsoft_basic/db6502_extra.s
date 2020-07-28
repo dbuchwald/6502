@@ -35,19 +35,9 @@ init:
       lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL)
       jsr _tty_init      
 
-      ; lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_DISABLE | ACIA_DTR_LOW)
-      ; sta ACIA_COMMAND
-      ; lda #(ACIA_STOP_BITS_1 | ACIA_DATA_BITS_8 | ACIA_CLOCK_INT | ACIA_BAUD_19200)
-      ; sta ACIA_CONTROL
-
 ; Display startup message
 ShowStartMsg:
       writeln_tty #StartupMessage
-	; LDA	StartupMessage,Y
-	; BEQ	WaitForKeypress
-	; JSR	MONCOUT
-	; INY
-	; BNE	ShowStartMsg
 
 ; Wait for a cold/warm start selection
 WaitForKeypress:
@@ -67,25 +57,10 @@ WarmStart:
 	JMP	RESTART		; BASIC warm start
 
 MONCOUT:
-;	PHA
-; SerialOutWait:
-; 	LDA	ACIA_STATUS
-; 	AND	#ACIA_STATUS_TX_EMPTY
-; 	BEQ	SerialOutWait
-; 	PLA
-; 	STA	ACIA_DATA
     jsr _tty_send_character
 	RTS
 
 MONRDKEY:
-; 	LDA	ACIA_STATUS
-; 	AND	#ACIA_STATUS_RX_FULL
-; 	BEQ	NoDataIn
-; 	LDA	ACIA_DATA
-; 	SEC		; Carry set if key available
-; 	RTS
-; NoDataIn:
-; 	CLC		; Carry clear if no key pressed
   lda #CHANNEL
   jsr _serial_is_data_available
   ; skip, no data available at this point
@@ -109,21 +84,6 @@ MONISCNTC:
 NotCTRLC:
 	CLC		; Carry clear if control C not pressed
 	RTS
-
-; SEND_BACKSPACE:
-;   PHA
-;   PHX
-;   LDX #$FF
-; BackspaceLoop:
-;   INX
-;   LDA Backspace,X
-;   BEQ BackspaceLoopEnd
-;   JSR MONCOUT
-;   BNE BackspaceLoop
-; BackspaceLoopEnd:
-;   PLX
-;   PLA
-;   RTS
 
 StartupMessage:
 	.byte	$0C,"Cold [C] or warm [W] start?",$0D,$0A,$00

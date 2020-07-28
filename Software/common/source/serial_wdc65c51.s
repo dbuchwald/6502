@@ -112,51 +112,6 @@ _handle_serial_irq:
         asl
         ; ignore DCD
         asl
-        ; TX buffer empty
-        bpl @tx_empty_exit
-        ; Preserve accumulator
-        pha
-        ; Compare TX write and read buffer pointers
-        lda serial_tx_rptr,x
-        cmp serial_tx_wptr,x
-        bne @tx_send_character
-        ; Both equal - nothing to send in buffer
-        lda ACIA_COMMAND
-        ; Disable TX interrupt now until new data sent
-        and #%11110011
-        ora #(ACIA_TX_INT_DISABLE_RTS_LOW)
-        sta ACIA_COMMAND
-        ; Restore value of accumulator (rolled ACIA STATUS)
-        pla
-        bra @tx_empty_exit
-@tx_send_character:
-        ; Otherwise, send new character
-        tay
-        ; Copy selected buffer pointer
-        ; to temporary one for indirect
-        ; access
-        lda serial_tx_buffer_ptr,x
-        sta serial_buffer_tmp_ptr
-        lda serial_tx_buffer_ptr+1,x
-        sta serial_buffer_tmp_ptr+1
-        lda (serial_buffer_tmp_ptr),y
-        sta ACIA_DATA
-        ; Increase read buffer pointer
-        inc serial_tx_rptr,x
-        ; Compare pointers - is there any data
-        lda serial_tx_rptr,x
-        cmp serial_tx_wptr,x
-        bne @tx_data_left_to_send
-        ; Both equal - nothing to send in buffer
-        lda ACIA_COMMAND
-        ; Disable TX interrupt now until new data sent
-        and #%11110011
-        ora #(ACIA_TX_INT_DISABLE_RTS_LOW)
-        sta ACIA_COMMAND
-        ; Restore value of accumulator (rolled ACIA STATUS)
-@tx_data_left_to_send:
-        pla
-@tx_empty_exit:
         ; Test the RX bit now
         asl
         ; Receive buffer full
@@ -218,10 +173,7 @@ _serial_notify_read:
         ; Otherwise accept more characters
         lda ACIA_COMMAND
         and #%11110011
-        ; We might enable the TX empty interrupt without any data to write
-        ; but there is no way of checking it, and the interrupt will 
-        ; correct the setting if it should not be enabled
-        ora #(ACIA_TX_INT_ENABLE_RTS_LOW)
+        ora #(ACIA_TX_INT_DISABLE_RTS_LOW)
         sta ACIA_COMMAND
 @still_rx_overflow:
         ; Transfer result back to A
@@ -231,11 +183,14 @@ _serial_notify_read:
 ; A contains written character
 ; X contains channel number
 _serial_notify_write:
-        ; Enable interrupt after tx buffer is empty
+        ; store data in data register
+        sta ACIA_DATA
+        ; Increase read buffer pointer
+        inc serial_tx_rptr,x
         pha
-        lda ACIA_COMMAND
-        and #%11110011
-        ora #(ACIA_TX_INT_ENABLE_RTS_LOW)
-        sta ACIA_COMMAND
+        ; wait 1ms (more than 520us for 19200 baud)
+        lda #$01
+        jsr _delay_ms
         pla
+        ; done, sent
         rts
