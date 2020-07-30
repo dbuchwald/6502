@@ -4,6 +4,7 @@
         .include "sysram_map.inc"
         .include "utils.inc"
         .include "macros.inc"
+        .include "clock.inc"
         
         .import __ACIA_START__
 
@@ -188,11 +189,33 @@ _serial_notify_write:
         sta ACIA_DATA
         ; Increase read buffer pointer
         inc serial_tx_rptr,x
+        ; arbitrary delay
+        .if fastclock <> 0
         pha
-        ; wait 1ms (more than 520us for 19200 baud)
-        lda #$01
-        jsr _delay_ms
+        .if clock_divider = 0
+        lda #60
+        .else
+        lda #5
+        .endif
+@delay_loop:
+        nop
+        .if clock_mhz>1
+        pha
+        lda #clock_mhz
+@inner_loop:
+        nop
+        dec A
+        beq @end_inner
+        bra @inner_loop
+@end_inner:
         pla
+        .endif
+        dec A
+        beq @end_delay
+        bra @delay_loop
+@end_delay:
+        pla
+        .endif
         ; done, sent
         rts
 

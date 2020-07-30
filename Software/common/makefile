@@ -66,8 +66,7 @@ endif
 # Possible values are
 # - wdc65c51
 # - r6551
-# - sc26c92
-SERIAL_INTERFACE=r6551
+SERIAL_INTERFACE=wdc65c51
 
 SERIAL_DRIVER=serial_$(SERIAL_INTERFACE).s
 
@@ -245,7 +244,7 @@ emu: $(FIRMWARE_BINARY)
 	$(X6502_BINARY) $<
 
 terminal:
-	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) /dev/tty.usbserial-DN4QHYAP
+	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) /dev/tty.usbserial-DN4KYF7O
 
 # Clean generated files
 clean:
