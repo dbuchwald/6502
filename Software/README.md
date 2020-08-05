@@ -222,7 +222,7 @@ When you get "Terminal ready" message, press any key - you should get a response
 
 ### Keyboard connection
 
-Even if you don't intend to use keyboard just yet, you still need to upload the controller sketch to ATtiny4313. Recommended way of doing that is to use onboard AVR-ISP connector and some kind of AVR programmer. I used USBASP programmer and it works lovely directly from Arduino IDE. The sketch to upload is in `Arduino/keyboard-4313` folder.
+Even if you don't intend to use keyboard just yet, you still need to upload the controller sketch to ATtiny4313. Recommended way of doing that is to use onboard AVR-ISP connector and some kind of AVR programmer. I used USBasp programmer and it works lovely directly from Arduino IDE. The sketch to upload is in `Arduino/keyboard-4313` folder. **PLEASE NOTE:** by default, Arduino IDE will not set fuses of your ATtiny4313 to reflect your clock settings. This can result in unpredictable behavior and/or failure of keyboard connection. Make sure you invoke "Tools->Burn bootloader" before uploading the sketch to ensure correct operation. See [issue #50](https://github.com/dbuchwald/6502/issues/50) for additional details.
 
 After successful sketch upload, flash your rom with `Software/rom/19_keyboard_test`. Connect your PS/2 keyboard to the port and try pressing some keys - you should see messages on the LCD with confirmation.
 
