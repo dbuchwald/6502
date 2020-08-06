@@ -1,6 +1,5 @@
       .include "acia.inc"
 
-
 .segment "CODE"
 ISCNTC:
           jmp MONISCNTC

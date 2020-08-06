@@ -1,5 +1,16 @@
 .segment "CODE"
 
+.ifdef AIM65
+PRINT:
+        lda     PRIFLG
+        sta     ZBE
+        jsr     L297E
+LB8B1:
+        lda     ZBE
+        sta     PRIFLG
+        rts
+.endif
+
 PRSTRING:
         jsr     STRPRT
 L297E:
@@ -8,10 +19,16 @@ L297E:
 ; ----------------------------------------------------------------------------
 ; "PRINT" STATEMENT
 ; ----------------------------------------------------------------------------
+.ifndef AIM65
 PRINT:
+.endif
         beq     CRDO
 PRINT2:
         beq     L29DD
+.ifdef AIM65
+        jsr     LB89D
+        beq     L29DD
+.endif
         cmp     #TOKEN_TAB
         beq     L29F5
         cmp     #TOKEN_SPC
@@ -83,11 +100,17 @@ L29B9:
         ldy     #>(INPUTBUFFER-1)
   .else
     .ifndef APPLE
+      .ifdef DB6502
         stz     INPUTBUFFER,x
         ldx     #<(INPUTBUFFER-1)
         ldy     #>(INPUTBUFFER-1)
+      .else
+        ldy     #$00
+        sty     INPUTBUFFER,x
+        ldx     #LINNUM+1
+      .endif
     .endif
-    .ifdef MICROTAN
+    .if .def(MICROTAN) || .def(SYM1)
         bne     CRDO2
 	.endif
   .endif
@@ -99,64 +122,68 @@ L29B9:
 
 
 CRDO:
-.ifdef DB6502
+.ifndef DB6502
+.if .def(CONFIG_PRINTNULLS) && .def(CONFIG_FILE)
+        lda     CURDVC
+        bne     LC9D8
+        sta     POSX
+LC9D8:
+.endif
+        lda     #CRLF_1
+.ifndef CONFIG_CBM_ALL
+        sta     POSX
+.endif
+        jsr     OUTDO
+CRDO2:
+        lda     #CRLF_2
+        jsr     OUTDO
+
+PRINTNULLS:
+.if .def(KBD) || .def(AIM65)
+        lda     #$00
+        sta     POSX
+        eor     #$FF
+.else
+  .if .def(CONFIG_NULL) || .def(CONFIG_PRINTNULLS)
+    .ifdef CONFIG_FILE
+    ; Although there is no statement for it,
+    ; CBM1 had NULL support and ignores
+    ; it when not targeting the screen,
+    ; CBM2 dropped it completely.
+        lda     CURDVC
+        bne     L29DD
+    .endif
+        txa
+        pha
+        ldx     Z15
+        beq     L29D9
+      .ifdef SYM1
+        lda     #$FF
+      .else
+        lda     #$00
+      .endif
+L29D3:
+        jsr     OUTDO
+        dex
+        bne     L29D3
+L29D9:
+        stx     POSX
+        pla
+        tax
+  .else
+    .ifndef CONFIG_2
+        lda     #$00
+        sta     POSX
+    .endif
+        eor     #$FF
+  .endif
+.endif
+.else
   jsr _tty_send_newline
 PRINTNULLS:
           lda     #$00
           sta     POSX
           eor     #$FF
-.else
-  .if .def(CONFIG_PRINTNULLS) && .def(CONFIG_FILE)
-          lda     CURDVC
-          bne     LC9D8
-          sta     POSX
-  LC9D8:
-  .endif
-          lda     #CRLF_1
-  .ifndef CONFIG_CBM_ALL
-          sta     POSX
-  .endif
-          jsr     OUTDO
-  CRDO2:
-          lda     #CRLF_2
-          jsr     OUTDO
-
-  PRINTNULLS:
-  .ifdef KBD
-          lda     #$00
-          sta     POSX
-          eor     #$FF
-  .else
-    .if .def(CONFIG_NULL) || .def(CONFIG_PRINTNULLS)
-      .ifdef CONFIG_FILE
-      ; Although there is no statement for it,
-      ; CBM1 had NULL support and ignores
-      ; it when not targeting the screen,
-      ; CBM2 dropped it completely.
-          lda     CURDVC
-          bne     L29DD
-      .endif
-          txa
-          pha
-          ldx     Z15
-          beq     L29D9
-          lda     #$00
-  L29D3:
-          jsr     OUTDO
-          dex
-          bne     L29D3
-  L29D9:
-          stx     POSX
-          pla
-          tax
-    .else
-      .ifndef CONFIG_2
-          lda     #$00
-          sta     POSX
-      .endif
-          eor     #$FF
-    .endif
-  .endif
 .endif
 L29DD:
         rts
@@ -175,7 +202,7 @@ L29EA:
 .endif
         sec
 L29EB:
-.ifdef CONFIG_CBM_ALL
+.if .def(CONFIG_CBM_ALL) || .def(AIM65)
         sbc     #$0A
 .else
   .ifdef KBD
@@ -335,7 +362,10 @@ LCA6A:
         lda     POSX
         cmp     Z17
         bne     L2A4C
-  .ifdef APPLE
+  .ifdef AIM65
+        lda #$00
+        sta POSX
+  .elseif .def(APPLE)
         nop ; PATCH!
         nop ; don't print CR
         nop

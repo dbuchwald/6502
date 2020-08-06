@@ -32,12 +32,12 @@ LC366:
         jsr     OUTQUES
 L2329:
         lda     ERROR_MESSAGES,x
-.ifndef CONFIG_SMALL
+.ifndef CONFIG_SMALL_ERROR
         pha
         and     #$7F
 .endif
         jsr     OUTDO
-.ifdef CONFIG_SMALL
+.ifdef CONFIG_SMALL_ERROR
         lda     ERROR_MESSAGES+1,x
   .if .def(KBD) || .def(DB6502)
         and     #$7F
@@ -85,6 +85,7 @@ LE28E:
         bpl     RESTART
 .else
         lsr     Z14
+ .ifndef AIM65
         lda     #<QT_OK
         ldy     #>QT_OK
   .ifdef CONFIG_CBM_ALL
@@ -92,6 +93,9 @@ LE28E:
   .else
         jsr     GOSTROUT
   .endif
+ .else
+        jsr     GORESTART
+ .endif
 L2351:
         jsr     INLIN
 .endif
@@ -649,9 +653,20 @@ LIST:
 L25A6:
         jsr     CRDO
 .else
+    .ifdef AIM65
+        pha
+        lda     #$00
+LB4BF:
+        sta     INPUTFLG
+        pla
+    .endif
   .ifdef MICROTAN
         php
         jmp     LE21C ; patch
+LC57E:
+   .elseif .def(AIM65) || .def(SYM1)
+        php
+        jsr     LINGET
 LC57E:
   .else
         bcc     L2581
@@ -662,12 +677,12 @@ L2581:
         jsr     LINGET
   .endif
         jsr     FNDLIN
-  .ifdef MICROTAN
+  .if .def(MICROTAN) || .def(AIM65) || .def(SYM1)
         plp
         beq     L2598
   .endif
         jsr     CHRGOT
-  .ifdef MICROTAN
+  .if .def(MICROTAN) || .def(AIM65) || .def(SYM1)
         beq     L25A6
   .else
         beq     L2598
@@ -675,7 +690,7 @@ L2581:
         cmp     #TOKEN_MINUS
         bne     L2520
         jsr     CHRGET
-  .ifdef MICROTAN
+  .if .def(MICROTAN) || .def(AIM65) || .def(SYM1)
         beq     L2598
         jsr     LINGET
         beq     L25A6
@@ -685,7 +700,7 @@ L2581:
         bne     L2520
   .endif
 L2598:
-  .ifndef MICROTAN
+  .if !(.def(MICROTAN) || .def(AIM65) || .def(SYM1))
         pla
         pla
         lda     LINNUM
@@ -696,7 +711,7 @@ L2598:
         sta     LINNUM
         sta     LINNUM+1
 L25A6:
-  .ifdef MICROTAN
+  .if .def(MICROTAN) || .def(AIM65) || .def(SYM1)
         pla
         pla
   .endif
@@ -759,12 +774,22 @@ LA519:
         lda     (LOWTRX),y
         stx     LOWTRX
         sta     LOWTRX+1
-.ifdef MICROTAN
+.if .def(MICROTAN) || .def(AIM65) || .def(SYM1)
         bne     L25A6X
 .else
         bne     L25A6
 .endif
 L25E5:
+.ifdef AIM65
+        lda     INPUTFLG
+        beq     L25E5a
+        jsr     CRDO
+        jsr     CRDO
+        lda     #$1a
+        jsr     OUTDO
+        jsr     $e50a
+L25E5a:
+.endif
         jmp     RESTART
 L25E8:
         bpl     L25CE

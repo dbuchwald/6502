@@ -19,6 +19,12 @@ KBD := 1
 .elseif .def(microtan)
 MICROTAN := 1
 .include "defines_microtan.s"
+.elseif .def(aim65)
+AIM65 := 1
+.include "defines_aim65.s"
+.elseif .def(sym1)
+SYM1 := 1
+.include "defines_sym1.s"
 .elseif .def(db6502)
 DB6502 := 1
 .include "defines_db6502.s"
@@ -45,6 +51,7 @@ CONFIG_10A := 1
 
 .ifdef CONFIG_SMALL
 BYTES_FP		:= 4
+CONFIG_SMALL_ERROR := 1
 .else
 BYTES_FP		:= 5
 .endif
@@ -62,11 +69,9 @@ FOR_STACK2		:= BYTES_FP+4
 MAX_EXPON = 10
 .endif
 
-.ifndef DB6502
 STACK           := $0100
-TXTBUFFER       := $0100
-.else
-STACK           := $0100
+.ifndef STACK2
+STACK2          := STACK
 .endif
 
 .ifdef INPUTBUFFER
