@@ -4,6 +4,7 @@
 #include "uart.h"
 #include "28c256.h"
 #include "pinout.h"
+#include "shell.h"
 
 static uint8_t control_register;
 
@@ -42,10 +43,7 @@ void initSystem(void) {
   stdout = &uart_output;
   stdin = &uart_input;
 
-  while (1) {
-    uart_getchar(NULL);
-    printf("Hello World!\n");   
-  }
+  runShell();
 }
 
 void assumeBusControl(void) {
@@ -54,6 +52,8 @@ void assumeBusControl(void) {
   updateControlRegister();
   // master clock and rw are output now
   CONTROL_DDR  |= (CLK_BIT | RW_BIT);
+  // lower the clock, we will raise it only when needed
+  CONTROL_POUT &= ~CLK_BIT;
   // address and data buses are all output
   ADDRMSB_DDR  = ALL_OUTPUT;
   ADDRLSB_DDR  = ALL_OUTPUT;

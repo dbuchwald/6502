@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <avr/io.h>
+#include <util/delay_basic.h>
 #include "28c256.h"
 #include "pinout.h"
 
@@ -11,14 +12,17 @@ uint8_t readSingleByte(const uint16_t address) {
   uint8_t addr_lsb = (address & 0xff);
   uint8_t data;
 
+  CONTROL_POUT &= ~CLK_BIT;
+
   ADDRMSB_POUT = addr_msb;
   ADDRLSB_POUT = addr_lsb;
   DATA_DDR     = ALL_INPUT;
   DATA_POUT    = ALL_PULL_UP;
 
-  CONTROL_POUT &= ~CLK_BIT;
   CONTROL_POUT |= RW_BIT;
   CONTROL_POUT |= CLK_BIT;
+
+  _delay_loop_1(1);
 
   data = DATA_PIN;
 
