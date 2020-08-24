@@ -1,7 +1,7 @@
 int uart_putchar(char c, FILE *stream);
 int uart_getchar(FILE *stream);
 
-void uart_init(unsigned long baud);
+void uart_init();
 
 /* http://www.ermicro.com/blog/?p=325 */
 

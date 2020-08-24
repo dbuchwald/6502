@@ -1,12 +1,18 @@
 #include <avr/io.h>
 #include <stdio.h>
 
-void uart_init(unsigned long baud)
+#define BAUD 115200
+#include <util/setbaud.h>
+
+void uart_init()
 {
-  unsigned int ubrr;
-  ubrr = (((F_CPU / (baud * 16UL))) - 1);
-  UBRR0H = (unsigned char)(ubrr >> 8);
-  UBRR0L = (unsigned char)ubrr;
+  UBRR0H = UBRRH_VALUE;
+  UBRR0L = UBRRL_VALUE;
+  #if USE_2X
+  UCSR0A |= (1 << U2X0);
+  #else
+  UCSR0A &= ~(1 << U2X0);
+  #endif
 
   UCSR0C = _BV(UCSZ01) | _BV(UCSZ00); /* 8-bit data, async, no parity, 1 stop bit */
   UCSR0B = _BV(RXEN0) | _BV(TXEN0);   /* Enable RX and TX */

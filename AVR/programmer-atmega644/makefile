@@ -9,8 +9,9 @@ OBJECTS := $(patsubst %.c,$(BUILD_FOLDER)/%.o,$(SOURCES))
 
 MCU := atmega644pa
 MCU_AVRDUDE := m644p
-PARTNO := usbasp
-DEVICE := usb
+PARTNO := stk500v1
+DEVICE := /dev/cu.usbserial-14120
+BAUDRATE := 19200
 AVRDUDE_FLAGS := -F -v
 
 CC := avr-gcc

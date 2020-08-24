@@ -5,8 +5,6 @@
 #include "28c256.h"
 #include "pinout.h"
 
-#define BAUD_RATE    115200
-
 static uint8_t control_register;
 
 int main(void)
@@ -38,13 +36,17 @@ void initSystem(void) {
   updateControlRegister();
 
   // init serial interface
-  uart_init(BAUD_RATE);
+  uart_init();
 
   // redirect standard output
   stdout = &uart_output;
   stdin = &uart_input;
-}
 
+  while (1) {
+    uart_getchar(NULL);
+    printf("Hello World!\n");   
+  }
+}
 
 void assumeBusControl(void) {
   // start by stopping clock and 
