@@ -4,6 +4,9 @@
 
 void displayHelp(void);
 void dumpEEPROM(void);
+void showSDPStatus(void);
+void enableSDP(void);
+void disableSDP(void);
 void writeEEPROM(void);
 void writeEEPROMPage(void);
 
@@ -26,6 +29,18 @@ void runShell(void) {
       case 'D':
         dumpEEPROM();
         break;
+      case 's':
+      case 'S':
+        showSDPStatus();
+        break;
+      case 'e':
+      case 'E':
+        enableSDP();
+        break;
+      case 'i':
+      case 'I':
+        disableSDP();
+        break;
       case 'w':
       case 'W':
         writeEEPROM();
@@ -43,6 +58,9 @@ void runShell(void) {
 void displayHelp(void) {
   printf("Please select one of the options:\n");
   printf(" [d]ump - dump EEPROM contents\n");
+  printf(" [s]how - display current SDP status\n");
+  printf(" [e]nable - enable data protection\n");
+  printf(" d[i]sable - disable data protection\n");
   printf(" [w]rite - write data to EEPROM\n");
   printf(" [p]age write - write page of data\n");
   printf(" [h]elp - display this information\n");
@@ -68,6 +86,108 @@ void dumpEEPROM(void) {
   returnBusControl();
 }
 
+void showSDPStatus(void) {
+  uint8_t status;
+  printf("Checking SDP status\n");
+  assumeBusControl();
+  status = checkDataProtection();
+  switch (status) {
+    case SDP_DISABLED:
+      printf(" - Software data protection is disabled\n");
+      break;
+    case SDP_ENABLED:
+      printf(" - Software data protection is enabled\n");
+      break;
+    case SDP_FAILED:
+      printf(" - Software data protection check failed! Please verify EEPROM state!\n");
+      break;
+    default:
+      printf(" - Unknown error occurred!\n");
+  }
+  returnBusControl();
+}
+
+void enableSDP(void) {
+  uint8_t status;
+  printf("Enabling Software Data Protection\n");
+  assumeBusControl();
+  status = checkDataProtection();
+  switch (status) {
+    case SDP_DISABLED:
+      printf(" - Software data protection is disabled, enabling...\n");
+      break;
+    case SDP_ENABLED:
+      printf(" - Software data protection is already enabled, exiting\n");
+      break;
+    case SDP_FAILED:
+      printf(" - Software data protection check failed! Please verify EEPROM state!\n");
+      break;
+    default:
+      printf(" - Unknown error occurred!\n");
+      break;
+  }
+  if (status == SDP_DISABLED) {
+    enableDataProtection();
+    status = checkDataProtection();
+    switch (status) {
+      case SDP_DISABLED:
+        printf(" - Software data protection is still disabled!\n");
+        break;
+      case SDP_ENABLED:
+        printf(" - Software data protection successfully enabled\n");
+        break;
+      case SDP_FAILED:
+        printf(" - Software data protection check failed! Please verify EEPROM state!\n");
+        break;
+      default:
+        printf(" - Unknown error occurred!\n");
+        break;
+    }
+  }
+  returnBusControl();
+}
+
+void disableSDP(void) {
+  uint8_t status;
+  printf("Disabling Software Data Protection\n");
+  assumeBusControl();
+  status = checkDataProtection();
+  switch (status) {
+    case SDP_DISABLED:
+      printf(" - Software data protection is already disabled, exiting\n");
+      break;
+    case SDP_ENABLED:
+      printf(" - Software data protection is enabled, disabling...\n");
+      break;
+    case SDP_FAILED:
+      printf(" - Software data protection check failed! Please verify EEPROM state!\n");
+      break;
+    default:
+      printf(" - Unknown error occurred!\n");
+      break;
+  }
+  if (status == SDP_ENABLED) {
+    disableDataProtection();
+    status = checkDataProtection();
+    switch (status) {
+      case SDP_DISABLED:
+        printf(" - Software data protection successfully disabled!\n");
+        break;
+      case SDP_ENABLED:
+        printf(" - Software data protection still enabled!\n");
+        break;
+      case SDP_FAILED:
+        printf(" - Software data protection check failed! Please verify EEPROM state!\n");
+        break;
+      default:
+        printf(" - Unknown error occurred!\n");
+        break;
+    }
+  }
+  returnBusControl();
+}
+
+
 void writeEEPROM(void) {
   uint16_t address=0x8000;
   uint8_t old_data, new_data, result;
@@ -91,13 +211,11 @@ void writeEEPROM(void) {
   printf(" - Reading data again\n");
   new_data = readSingleByte(address);
   printf(" - Data read: %02x\n", new_data);
-  printf(" - Testing data protection\n");
+  printf(" - Testing data protection by writing %02x\n", ~new_data);
   result = writeSingleByte(address, ~new_data);
-  if (result) {
-    printf(" - Data protection seems to have failed\n");
-  } else {
-    printf(" - Data protection worked correctly\n");
-  }
+  if (!result) {
+    printf(" - Write seems to have failed\n");
+  } 
   new_data = readSingleByte(address);
   printf(" - Data read: %02x\n", new_data);
   returnBusControl();
@@ -129,13 +247,11 @@ void writeEEPROMPage(void) {
   printf(" - Reading data again\n");
   new_data[0] = readSingleByte(address);
   printf(" - Data read: %02x\n", new_data[0]);
-  printf(" - Testing data protection\n");
+  printf(" - Testing data protection by writing %02x\n", (~new_data[0]) & 0xff);
   result = writeSingleByte(address, ~new_data[0]);
-  if (result) {
-    printf(" - Data protection seems to have failed\n");
-  } else {
-    printf(" - Data protection worked correctly\n");
-  }
+   if (!result) {
+    printf(" - Write seems to have failed\n");
+  } 
   new_data[0] = readSingleByte(address);
   printf(" - Data read: %02x\n", new_data[0]);
   returnBusControl();
