@@ -111,13 +111,13 @@ void enableSDP(void) {
   uint8_t status;
   printf("Enabling Software Data Protection\n");
   assumeBusControl();
-  status = checkDataProtection();
+  status = enableDataProtection();
   switch (status) {
     case SDP_DISABLED:
-      printf(" - Software data protection is disabled, enabling...\n");
+      printf(" - Software data protection is still disabled!\n");
       break;
     case SDP_ENABLED:
-      printf(" - Software data protection is already enabled, exiting\n");
+      printf(" - Software data protection successfully enabled\n");
       break;
     case SDP_FAILED:
       printf(" - Software data protection check failed! Please verify EEPROM state!\n");
@@ -125,24 +125,6 @@ void enableSDP(void) {
     default:
       printf(" - Unknown error occurred!\n");
       break;
-  }
-  if (status == SDP_DISABLED) {
-    enableDataProtection();
-    status = checkDataProtection();
-    switch (status) {
-      case SDP_DISABLED:
-        printf(" - Software data protection is still disabled!\n");
-        break;
-      case SDP_ENABLED:
-        printf(" - Software data protection successfully enabled\n");
-        break;
-      case SDP_FAILED:
-        printf(" - Software data protection check failed! Please verify EEPROM state!\n");
-        break;
-      default:
-        printf(" - Unknown error occurred!\n");
-        break;
-    }
   }
   returnBusControl();
 }
@@ -151,13 +133,13 @@ void disableSDP(void) {
   uint8_t status;
   printf("Disabling Software Data Protection\n");
   assumeBusControl();
-  status = checkDataProtection();
+  status = disableDataProtection();
   switch (status) {
     case SDP_DISABLED:
-      printf(" - Software data protection is already disabled, exiting\n");
+      printf(" - Software data protection successfully disabled!\n");
       break;
     case SDP_ENABLED:
-      printf(" - Software data protection is enabled, disabling...\n");
+      printf(" - Software data protection still enabled!\n");
       break;
     case SDP_FAILED:
       printf(" - Software data protection check failed! Please verify EEPROM state!\n");
@@ -166,27 +148,8 @@ void disableSDP(void) {
       printf(" - Unknown error occurred!\n");
       break;
   }
-  if (status == SDP_ENABLED) {
-    disableDataProtection();
-    status = checkDataProtection();
-    switch (status) {
-      case SDP_DISABLED:
-        printf(" - Software data protection successfully disabled!\n");
-        break;
-      case SDP_ENABLED:
-        printf(" - Software data protection still enabled!\n");
-        break;
-      case SDP_FAILED:
-        printf(" - Software data protection check failed! Please verify EEPROM state!\n");
-        break;
-      default:
-        printf(" - Unknown error occurred!\n");
-        break;
-    }
-  }
   returnBusControl();
 }
-
 
 void writeEEPROM(void) {
   uint16_t address=0x8000;

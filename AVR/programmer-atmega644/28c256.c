@@ -76,7 +76,7 @@ uint8_t writePage(const uint16_t address, uint8_t* data_ptr) {
     ADDRLSB_POUT = page_lsb | page_offset;
     CONTROL_POUT |= CLK_BIT;
     DATA_POUT = *data_ptr++;
-    // TODO: Delay? Shouldn't be needed
+    // no delay needed here, probably thanks to the dereference operation above
     CONTROL_POUT &= ~CLK_BIT;
   }
   // keep polling until write complete
@@ -116,21 +116,31 @@ uint8_t waitForWriteEnd() {
   return WRITE_FAIL;
 }
 
-void disableDataProtection(void) {
-  writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
-  writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
-  writeSingleByteInternal(0x5555+ROM_OFFSET, 0x80);
-  writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
-  writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
-  writeSingleByteInternal(0x5555+ROM_OFFSET, 0x20);
-  waitForWriteEnd();
+uint8_t disableDataProtection(void) {
+  uint8_t status = checkDataProtection();
+  if (status == SDP_ENABLED) {
+    writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
+    writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
+    writeSingleByteInternal(0x5555+ROM_OFFSET, 0x80);
+    writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
+    writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
+    writeSingleByteInternal(0x5555+ROM_OFFSET, 0x20);
+    waitForWriteEnd();
+    return checkDataProtection();
+  } 
+  return status;
 }
 
-void enableDataProtection(void) {
-  writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
-  writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
-  writeSingleByteInternal(0x5555+ROM_OFFSET, 0xa0);
-  waitForWriteEnd();
+uint8_t enableDataProtection(void) {
+  uint8_t status = checkDataProtection();
+  if (status == SDP_DISABLED) {
+    writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
+    writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
+    writeSingleByteInternal(0x5555+ROM_OFFSET, 0xa0);
+    waitForWriteEnd();
+    return checkDataProtection();
+  }
+  return status;
 }
 
 uint8_t checkDataProtection(void) {
