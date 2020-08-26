@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <util/delay.h>
 #include "main.h"
 #include "28c256.h"
+#include "xmodem.h"
+#include "uart.h"
 
 void displayHelp(void);
 void dumpEEPROM(void);
@@ -9,6 +12,9 @@ void enableSDP(void);
 void disableSDP(void);
 void writeEEPROM(void);
 void writeEEPROMPage(void);
+void receive(void);
+
+uint8_t packet_callback(uint8_t packet_no, uint8_t *buffer, uint16_t size);
 
 void runShell(void) {
   unsigned char keep_going=1;
@@ -49,6 +55,10 @@ void runShell(void) {
       case 'P':
         writeEEPROMPage();
         break;
+      case 'r':
+      case 'R':
+        receive();
+        break;
       default:
         printf("ERROR: Unrecognized command %c [%02x], type 'h' for help...\n", c, c);
     }
@@ -63,6 +73,7 @@ void displayHelp(void) {
   printf(" d[i]sable - disable data protection\n");
   printf(" [w]rite - write data to EEPROM\n");
   printf(" [p]age write - write page of data\n");
+  printf(" [r]eceive - receive file using XMODEM protocol\n");
   printf(" [h]elp - display this information\n");
   printf(" [q]uit - leave shell\n");
 }
@@ -164,7 +175,7 @@ void writeEEPROM(void) {
   disableDataProtection();
   printf(" - Writing %02x to location %04x\n", new_data, address);
   result = writeSingleByte(address, new_data);
-  if (result) {
+  if (result == WRITE_OK) {
     printf(" - Data written successfully\n");
   } else {
     printf(" - Write has failed\n");
@@ -176,7 +187,7 @@ void writeEEPROM(void) {
   printf(" - Data read: %02x\n", new_data);
   printf(" - Testing data protection by writing %02x\n", ~new_data);
   result = writeSingleByte(address, ~new_data);
-  if (!result) {
+  if (result == WRITE_FAIL) {
     printf(" - Write seems to have failed\n");
   } 
   new_data = readSingleByte(address);
@@ -200,7 +211,7 @@ void writeEEPROMPage(void) {
   disableDataProtection();
   printf(" - Writing %02x at location %04x\n", new_data[0], address);
   result = writePage(address, new_data);
-  if (result) {
+  if (result == WRITE_OK) {
     printf(" - Data written successfully\n");
   } else {
     printf(" - Write has failed\n");
@@ -212,10 +223,34 @@ void writeEEPROMPage(void) {
   printf(" - Data read: %02x\n", new_data[0]);
   printf(" - Testing data protection by writing %02x\n", (~new_data[0]) & 0xff);
   result = writeSingleByte(address, ~new_data[0]);
-   if (!result) {
+   if (result == WRITE_FAIL) {
     printf(" - Write seems to have failed\n");
   } 
   new_data[0] = readSingleByte(address);
   printf(" - Data read: %02x\n", new_data[0]);
   returnBusControl();
+}
+
+void receive(void) {
+  printf("Preparing to receive file, initiate file transfer now...\n");
+  uint8_t result = receiveFile(&packet_callback);
+  uint8_t data_remaining;
+  do {
+    data_remaining=0;
+    _delay_ms(10);
+    while (uart_peek() == UART_DATA_AVAILABLE) {
+      data_remaining=1;
+      uart_recv();
+    }
+  } while (data_remaining);
+
+  if (result) {
+    printf(" - File received successfully\n");
+  } else {
+    printf(" - File receive failed\n");
+  }
+}
+
+uint8_t packet_callback(uint8_t packet_no, uint8_t *buffer, uint16_t size) {
+  return 1;
 }

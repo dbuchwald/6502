@@ -8,6 +8,9 @@
 
 static uint8_t control_register;
 
+FILE uart_output = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
+FILE uart_input = FDEV_SETUP_STREAM(NULL, uart_getchar, _FDEV_SETUP_READ);
+
 int main(void)
 {
   initSystem();
