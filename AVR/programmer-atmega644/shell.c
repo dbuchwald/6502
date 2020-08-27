@@ -13,16 +13,22 @@ void disableSDP(void);
 void writeEEPROM(void);
 void writeEEPROMPage(void);
 void receive(void);
+void flashEEPROM(void);
 
-uint8_t packet_callback(uint8_t packet_no, uint8_t *buffer, uint16_t size);
+uint8_t packet_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size);
+uint8_t upload_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size);
 
 void runShell(void) {
   unsigned char keep_going=1;
   printf("Welcome to ATmega644PA programmer\n");
   displayHelp();
   while (keep_going) {
+    printf("Prg >");
     unsigned char c = getc(stdin);
+    printf("\n");
     switch (c) {
+      case 0x0d:
+        break;
       case 'h':
       case 'H':
         displayHelp();
@@ -59,6 +65,10 @@ void runShell(void) {
       case 'R':
         receive();
         break;
+      case 'f':
+      case 'F':
+        flashEEPROM();
+        break;
       default:
         printf("ERROR: Unrecognized command %c [%02x], type 'h' for help...\n", c, c);
     }
@@ -74,6 +84,7 @@ void displayHelp(void) {
   printf(" [w]rite - write data to EEPROM\n");
   printf(" [p]age write - write page of data\n");
   printf(" [r]eceive - receive file using XMODEM protocol\n");
+  printf(" [f]lash - write EEPROM with bin file sent over XMODEM protocol\n");
   printf(" [h]elp - display this information\n");
   printf(" [q]uit - leave shell\n");
 }
@@ -234,15 +245,6 @@ void writeEEPROMPage(void) {
 void receive(void) {
   printf("Preparing to receive file, initiate file transfer now...\n");
   uint8_t result = receiveFile(&packet_callback);
-  uint8_t data_remaining;
-  do {
-    data_remaining=0;
-    _delay_ms(10);
-    while (uart_peek() == UART_DATA_AVAILABLE) {
-      data_remaining=1;
-      uart_recv();
-    }
-  } while (data_remaining);
 
   if (result) {
     printf(" - File received successfully\n");
@@ -251,6 +253,33 @@ void receive(void) {
   }
 }
 
-uint8_t packet_callback(uint8_t packet_no, uint8_t *buffer, uint16_t size) {
+void flashEEPROM(void) {
+  printf("Preparing to flash EEPROM\n");
+  assumeBusControl();
+  printf(" - disabling SDP...");
+  disableDataProtection();
+  printf("done!\n");
+  printf(" - ready to receive file, initiate file transfer now...\n");
+  uint8_t result = receiveFile(&upload_callback);
+  if (result) {
+    printf(" - File received and uploaded successfully\n");
+  } else {
+    printf(" - File receive and/or upload failed\n");
+  }
+  printf(" - enabling SDP...");
+  enableDataProtection();
+  printf("done!\n");
+}
+
+uint8_t packet_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size) {
+  return 1;
+}
+
+
+uint8_t upload_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size) {
+  uint16_t address = 0x8000 + packet_no * size;
+  for (uint8_t page_no=0; page_no<(size >> 6); page_no++) {
+    writePage(address+(page_no << 6), buffer+(page_no << 6));
+  }
   return 1;
 }

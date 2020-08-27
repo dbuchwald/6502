@@ -10,7 +10,10 @@ OBJECTS := $(patsubst %.c,$(BUILD_FOLDER)/%.o,$(SOURCES))
 MCU := atmega644pa
 MCU_AVRDUDE := m644p
 PARTNO := stk500v1
-DEVICE := /dev/cu.usbserial-14120
+# MacOS
+# DEVICE := /dev/cu.usbserial-14120
+# Windows10/CygWin
+DEVICE := COM8
 BAUDRATE := 19200
 AVRDUDE_FLAGS := -F -v
 
