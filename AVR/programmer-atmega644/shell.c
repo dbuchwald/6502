@@ -90,6 +90,7 @@ void displayHelp(void) {
 }
 
 void dumpEEPROM(void) {
+  uint8_t line_buf[17];
   printf("Dumping EEPROM contents:\n");
   assumeBusControl();
   uint16_t line_start=0x8000;
@@ -101,8 +102,15 @@ void dumpEEPROM(void) {
       if (item == 7) {
         printf(" ");
       }
+      // copy printable characters into line buffer
+      if (data < 0x20 || data >= 0x7f) {
+        line_buf[item]='.';
+      } else {
+        line_buf[item]=data;
+      }
+      line_buf[16]=0x00;
     }
-    printf("\n");
+    printf(" |%s|\n", line_buf);
     line_start+=16;
   }
   returnBusControl();
