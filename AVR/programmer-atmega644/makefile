@@ -11,9 +11,9 @@ MCU := atmega644pa
 MCU_AVRDUDE := m644p
 PARTNO := stk500v1
 # MacOS
-# DEVICE := /dev/cu.usbserial-14120
+DEVICE := /dev/cu.usbserial-14120
 # Windows10/CygWin
-DEVICE := COM8
+# DEVICE := COM8
 BAUDRATE := 19200
 AVRDUDE_FLAGS := -F -v
 
@@ -33,6 +33,9 @@ $(BUILD_FOLDER):
 
 flash: $(HEX)
 	avrdude $(AVRDUDE_FLAGS) -c $(PARTNO) -p $(MCU_AVRDUDE) -P $(DEVICE) -b $(BAUDRATE) -U flash:w:$(HEX)
+
+bridge:
+	socat -v -x /dev/cu.usbserial-DN5B2BNG,ispeed=230400,ospeed=230400,raw,echo=0 PTY,link=/tmp/ttyV0,raw,echo=0 2>~/serial.log
 
 $(HEX): $(OUT)
 	$(OBJCOPY) -R .eeprom -O ihex $< $@

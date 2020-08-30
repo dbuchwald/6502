@@ -70,6 +70,7 @@ uint8_t verifyPacket(xmodem_packet *packet, uint8_t expected_block) {
     return 1;
   } else if (packet->type_code != PACKET_SOH &&
              packet->type_code != PACKET_STX) {
+//    printf("%c", 0xf1);
     return 0;
   }
 
@@ -81,13 +82,16 @@ uint8_t verifyPacket(xmodem_packet *packet, uint8_t expected_block) {
   }
   if ((crc >> 8) != packet->crc_msb ||
       (crc & 0xff) != packet->crc_lsb) {
+//    printf("%c%c%c", 0xf2, (crc >> 8), (crc & 0xff));
     return 0;
   }
   if (packet->packet_no != expected_block &&
      (packet->packet_no != (expected_block-1))) {
+//    printf("%c%c", 0xf3, expected_block);
     return 0;
   }
   if (packet->packet_no_neg != (0xff-packet->packet_no)) {
+//    printf("%c%c", 0xf4, (0xff-packet->packet_no));
     return 0;
   }
   return 1;
@@ -157,6 +161,7 @@ uint8_t receiveFile(packet_func packet_callback) {
 
     if (!verifyPacket(&packet, expected_block)) {
       // respond with NAK
+      flushInput();
       uart_send(RESPONSE_NAK);
       error_counter++;
     } else {
@@ -181,6 +186,7 @@ uint8_t receiveFile(packet_func packet_callback) {
         result = packet_callback(packet_counter, packet.data, size);
       }
       if (!result) {
+        flushInput();
         uart_send(RESPONSE_NAK);
         error_counter++;
       } else {

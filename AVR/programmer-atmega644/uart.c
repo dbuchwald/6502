@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "uart.h"
 
-#define BAUD 115200
+#define BAUD 230400
 #include <util/setbaud.h>
 
 void uart_init()
