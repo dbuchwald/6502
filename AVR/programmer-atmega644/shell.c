@@ -10,10 +10,14 @@ void dumpEEPROM(void);
 void showSDPStatus(void);
 void enableSDP(void);
 void disableSDP(void);
+/*
 void writeEEPROM(void);
 void writeEEPROMPage(void);
 void receive(void);
+*/
 void flashEEPROM(void);
+void zeroEEPROM(void);
+void eraseEEPROM(void);
 
 uint8_t packet_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size);
 uint8_t upload_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size);
@@ -53,6 +57,7 @@ void runShell(void) {
       case 'I':
         disableSDP();
         break;
+/*
       case 'w':
       case 'W':
         writeEEPROM();
@@ -65,9 +70,18 @@ void runShell(void) {
       case 'R':
         receive();
         break;
+*/
       case 'f':
       case 'F':
         flashEEPROM();
+        break;
+      case 'z':
+      case 'Z':
+        zeroEEPROM();
+        break;
+      case 'r':
+      case 'R':
+        eraseEEPROM();
         break;
       default:
         printf("ERROR: Unrecognized command %c [%02x], type 'h' for help...\n", c, c);
@@ -81,10 +95,14 @@ void displayHelp(void) {
   printf(" [s]how - display current SDP status\n");
   printf(" [e]nable - enable data protection\n");
   printf(" d[i]sable - disable data protection\n");
+/*
   printf(" [w]rite - write data to EEPROM\n");
   printf(" [p]age write - write page of data\n");
   printf(" [r]eceive - receive file using XMODEM protocol\n");
+*/
   printf(" [f]lash - write EEPROM with bin file sent over XMODEM protocol\n");
+  printf(" [z]ero - fill EEPROM with nulls\n");
+  printf(" e[r]ase - erase EEPROM using 6-byte code\n");
   printf(" [h]elp - display this information\n");
   printf(" [q]uit - leave shell\n");
 }
@@ -180,7 +198,7 @@ void disableSDP(void) {
   }
   returnBusControl();
 }
-
+/*
 void writeEEPROM(void) {
   uint16_t address=0x8000;
   uint8_t old_data, new_data, result;
@@ -260,7 +278,7 @@ void receive(void) {
     printf(" - File receive failed\n");
   }
 }
-
+*/
 void flashEEPROM(void) {
   printf("Preparing to flash EEPROM\n");
   assumeBusControl();
@@ -276,6 +294,7 @@ void flashEEPROM(void) {
   }
   printf(" - enabling SDP...");
   enableDataProtection();
+  returnBusControl();
   printf("done!\n");
 }
 
@@ -283,11 +302,59 @@ uint8_t packet_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size) {
   return 1;
 }
 
-
 uint8_t upload_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size) {
   uint16_t address = 0x8000 + packet_no * size;
   for (uint8_t page_no=0; page_no<(size >> 6); page_no++) {
     writePage(address+(page_no << 6), buffer+(page_no << 6));
   }
   return 1;
+}
+
+void zeroEEPROM(void) {
+  uint16_t address=0x8000;
+  uint8_t new_data[64];
+  uint8_t result;
+  for (uint8_t i=0; i<64; i++) {
+    new_data[i] = 0x00;
+  }
+  printf("Filling EEPROM with nulls\n");
+  assumeBusControl();
+  printf(" - Disabling write protection...");
+  disableDataProtection();
+  printf("done!\n");
+  printf(" - Erasing EEPROM...");
+  for (uint16_t offset=0x0000; offset<0x8000; offset+=64) {
+    result = writePage(address+offset, new_data);
+    if (result != WRITE_OK) {
+      printf("failed!\n");
+      break;
+    }
+  }
+  if (result == WRITE_OK) {
+    printf("done!\n");
+  }
+  printf(" - Enabling data protection...");
+  enableDataProtection();
+  printf("done!\n");
+  returnBusControl();
+}
+
+void eraseEEPROM(void) {
+  uint8_t result;
+  printf("Filling EEPROM with 0xff\n");
+  assumeBusControl();
+  // printf(" - Disabling write protection...");
+  // disableDataProtection();
+  // printf("done!\n");
+  printf(" - Erasing EEPROM...");
+  result=eraseChip();
+  if (result == WRITE_OK) {
+    printf("done!\n");
+  } else {
+    printf("failed!\n");
+  }
+  // printf(" - Enabling data protection...");
+  // enableDataProtection();
+  // printf("done!\n");
+  returnBusControl();
 }

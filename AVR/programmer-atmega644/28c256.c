@@ -116,6 +116,17 @@ uint8_t waitForWriteEnd() {
   return WRITE_FAIL;
 }
 
+uint8_t eraseChip(void) {
+  writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
+  writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
+  writeSingleByteInternal(0x5555+ROM_OFFSET, 0x80);
+  writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
+  writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
+  writeSingleByteInternal(0x5555+ROM_OFFSET, 0x10);
+  waitForWriteEnd();
+  return WRITE_OK;
+}
+
 uint8_t disableDataProtection(void) {
   uint8_t status = checkDataProtection();
   if (status == SDP_ENABLED) {
