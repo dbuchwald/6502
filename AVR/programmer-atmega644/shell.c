@@ -6,6 +6,8 @@
 #include "xmodem.h"
 #include "uart.h"
 
+#define LINE_LENGTH 16
+
 void displayHelp(void);
 void dumpEEPROM(void);
 void showSDPStatus(void);
@@ -75,27 +77,54 @@ void displayHelp(void) {
 }
 
 void dumpEEPROM(void) {
-  uint8_t line_buf[17];
+  uint8_t last_line_data[LINE_LENGTH];
+  uint8_t line_data[LINE_LENGTH];
+  uint8_t print_line;
+  uint8_t previous_print_line;
+  uint8_t item;
   printf("Dumping EEPROM contents:\n");
   assumeBusControl();
   uint16_t line_start=0x8000;
   for (uint16_t line=0; line<(0x8000 >> 4); line++) {
-    printf("%08x  ", line_start);
-    for (uint8_t item=0; item<16; item++) {
-      uint8_t data = readSingleByte(line_start+item);
-      printf("%02x ", data);
-      if (item == 7) {
-        printf(" ");
-      }
-      // copy printable characters into line buffer
-      if (data < 0x20 || data >= 0x7f) {
-        line_buf[item]='.';
-      } else {
-        line_buf[item]=data;
-      }
-      line_buf[16]=0x00;
+    for (item=0; item<LINE_LENGTH; item++) {
+      line_data[item] = readSingleByte(line_start+item);
     }
-    printf(" |%s|\n", line_buf);
+    print_line = 1;
+    if (line>0) {
+      for (item=0; item<LINE_LENGTH; item++) {
+        if (line_data[item] != last_line_data[item]) {
+          break;
+        }
+      }
+      if (item == LINE_LENGTH) {
+        print_line=0;
+      }
+    }
+    if (print_line) {
+      printf("%08x  ", line_start);
+      for (item=0; item<LINE_LENGTH; item++) {
+        printf("%02x ", line_data[item]);
+        last_line_data[item]=line_data[item];
+        if ((item & 0x07) == 7) {
+          printf(" ");
+        }
+      }
+      printf("|");
+      for (item=0; item<LINE_LENGTH; item++) {
+        if (line_data[item] < 0x20 || line_data[item] >= 0x7f) {
+          printf(".");
+        } else {
+          printf("%c", line_data[item]);
+        }
+      }
+      printf("|\n");
+    } else {
+      if (previous_print_line) {
+        printf("*\n");
+      }
+    }
+    previous_print_line=print_line;
+
     line_start+=16;
   }
   returnBusControl();
