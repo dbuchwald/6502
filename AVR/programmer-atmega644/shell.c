@@ -84,8 +84,8 @@ void dumpEEPROM(void) {
   uint8_t item;
   printf("Dumping EEPROM contents:\n");
   assumeBusControl();
-  uint16_t line_start=0x8000;
-  for (uint16_t line=0; line<(0x8000 >> 4); line++) {
+  uint16_t line_start=ROM_START;
+  for (uint16_t line=0; line<(ROM_SIZE / LINE_LENGTH); line++) {
     for (item=0; item<LINE_LENGTH; item++) {
       line_data[item] = readSingleByte(line_start+item);
     }
@@ -125,7 +125,7 @@ void dumpEEPROM(void) {
     }
     previous_print_line=print_line;
 
-    line_start+=16;
+    line_start+=LINE_LENGTH;
   }
   returnBusControl();
 }
@@ -222,18 +222,18 @@ void flashEEPROM(void) {
 }
 
 uint8_t upload_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size) {
-  uint16_t address = 0x8000 + packet_no * size;
-  for (uint8_t page_no=0; page_no<(size >> 6); page_no++) {
-    writePage(address+(page_no << 6), buffer+(page_no << 6));
+  uint16_t address = ROM_START + packet_no * size;
+  for (uint8_t page_no=0; page_no<(size / PAGE_SIZE); page_no++) {
+    writePage(address+(page_no * PAGE_SIZE), buffer+(page_no * PAGE_SIZE));
   }
   return 1;
 }
 
 void zeroEEPROM(void) {
-  uint16_t address=0x8000;
-  uint8_t new_data[64];
+  uint16_t address=ROM_START;
+  uint8_t new_data[PAGE_SIZE];
   uint8_t result;
-  for (uint8_t i=0; i<64; i++) {
+  for (uint8_t i=0; i<PAGE_SIZE; i++) {
     new_data[i] = 0x00;
   }
   printf("Filling EEPROM with nulls\n");
@@ -242,7 +242,7 @@ void zeroEEPROM(void) {
   disableDataProtection();
   printf("done!\n");
   printf(" - Erasing EEPROM...");
-  for (uint16_t offset=0x0000; offset<0x8000; offset+=64) {
+  for (uint16_t offset=0x0000; offset<ROM_SIZE; offset+=PAGE_SIZE) {
     result = writePage(address+offset, new_data);
     if (result != WRITE_OK) {
       printf("failed!\n");

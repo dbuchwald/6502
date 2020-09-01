@@ -5,7 +5,6 @@
 #include "28c256.h"
 #include "pinout.h"
 
-#define ROM_OFFSET   0x8000
 #define WAIT_CYCLES  0x4000
 // defined in chip datasheet
 #define TOGGLE_BIT    _BV(6)
@@ -72,7 +71,7 @@ uint8_t writePage(const uint16_t address, uint8_t* data_ptr) {
   DATA_DDR     = ALL_OUTPUT;
 
   CONTROL_POUT &= ~(CLK_BIT | RW_BIT);
-  for (uint8_t page_offset=0; page_offset<64; page_offset++) {
+  for (uint8_t page_offset=0; page_offset<PAGE_SIZE; page_offset++) {
     ADDRLSB_POUT = page_lsb | page_offset;
     CONTROL_POUT |= CLK_BIT;
     DATA_POUT = *data_ptr++;
@@ -117,12 +116,12 @@ uint8_t waitForWriteEnd() {
 }
 
 uint8_t eraseChip(void) {
-  writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
-  writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
-  writeSingleByteInternal(0x5555+ROM_OFFSET, 0x80);
-  writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
-  writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
-  writeSingleByteInternal(0x5555+ROM_OFFSET, 0x10);
+  writeSingleByteInternal(0x5555+ROM_START, 0xaa);
+  writeSingleByteInternal(0x2aaa+ROM_START, 0x55);
+  writeSingleByteInternal(0x5555+ROM_START, 0x80);
+  writeSingleByteInternal(0x5555+ROM_START, 0xaa);
+  writeSingleByteInternal(0x2aaa+ROM_START, 0x55);
+  writeSingleByteInternal(0x5555+ROM_START, 0x10);
   waitForWriteEnd();
   return WRITE_OK;
 }
@@ -130,12 +129,12 @@ uint8_t eraseChip(void) {
 uint8_t disableDataProtection(void) {
   uint8_t status = checkDataProtection();
   if (status == SDP_ENABLED) {
-    writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
-    writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
-    writeSingleByteInternal(0x5555+ROM_OFFSET, 0x80);
-    writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
-    writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
-    writeSingleByteInternal(0x5555+ROM_OFFSET, 0x20);
+    writeSingleByteInternal(0x5555+ROM_START, 0xaa);
+    writeSingleByteInternal(0x2aaa+ROM_START, 0x55);
+    writeSingleByteInternal(0x5555+ROM_START, 0x80);
+    writeSingleByteInternal(0x5555+ROM_START, 0xaa);
+    writeSingleByteInternal(0x2aaa+ROM_START, 0x55);
+    writeSingleByteInternal(0x5555+ROM_START, 0x20);
     waitForWriteEnd();
     return checkDataProtection();
   } 
@@ -145,9 +144,9 @@ uint8_t disableDataProtection(void) {
 uint8_t enableDataProtection(void) {
   uint8_t status = checkDataProtection();
   if (status == SDP_DISABLED) {
-    writeSingleByteInternal(0x5555+ROM_OFFSET, 0xaa);
-    writeSingleByteInternal(0x2aaa+ROM_OFFSET, 0x55);
-    writeSingleByteInternal(0x5555+ROM_OFFSET, 0xa0);
+    writeSingleByteInternal(0x5555+ROM_START, 0xaa);
+    writeSingleByteInternal(0x2aaa+ROM_START, 0x55);
+    writeSingleByteInternal(0x5555+ROM_START, 0xa0);
     waitForWriteEnd();
     return checkDataProtection();
   }
@@ -157,22 +156,22 @@ uint8_t enableDataProtection(void) {
 uint8_t checkDataProtection(void) {
   uint8_t old_value, new_value;
   // read old value (to restore it later if SDP is disabled)
-  old_value = readSingleByte(ROM_OFFSET);
+  old_value = readSingleByte(ROM_START);
   new_value = ~old_value;
   // try to write new value
-  if (writeSingleByte(ROM_OFFSET, new_value) == WRITE_FAIL) {
+  if (writeSingleByte(ROM_START, new_value) == WRITE_FAIL) {
     // write operation failed - result uncertain here!
     return SDP_FAILED;
   }
   // check if the value has changed or not
-  new_value = readSingleByte(ROM_OFFSET);
+  new_value = readSingleByte(ROM_START);
   if (new_value == old_value) {
     // no change, so SDP is enabled
     return SDP_ENABLED;
   } else {
     // data changed, so SDP must be disabled
     // start with writing the original value first
-    if (writeSingleByte(ROM_OFFSET, old_value) == WRITE_FAIL) {
+    if (writeSingleByte(ROM_START, old_value) == WRITE_FAIL) {
       // write operation failed - result uncertain here!
       return SDP_FAILED;
     }
