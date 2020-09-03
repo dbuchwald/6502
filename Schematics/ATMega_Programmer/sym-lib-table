@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name 74LVC1G157)(type Legacy)(uri ${KIPRJMOD}/74LVC1G157.lib)(options "")(descr "")(disabled))
+  (lib (name 74LVC1G126)(type Legacy)(uri ${KIPRJMOD}/74LVC1G126.lib)(options "")(descr "")(disabled))
+  (lib (name 74LVC1G)(type Legacy)(uri ${KIPRJMOD}/74LVC1G.lib)(options "")(descr ""))
+)

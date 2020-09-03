@@ -1,7 +1,6 @@
       .include "serial.inc"
       .include "sys_const.inc"
 
-
 .segment "CODE"
 ISCNTC:
           jmp MONISCNTC

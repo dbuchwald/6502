@@ -13,7 +13,15 @@ L2420:
         jsr SEND_BACKSPACE
   .endif
         dex
+  .ifdef AIM65
+        bmi     L2423
+        jsr     PSLS
+        jmp     INLIN2
+LB35F:
+        jsr     OUTDO
+  .else
         bpl     INLIN2
+  .endif
 L2423:
   .ifdef OSI
         jsr     OUTDO
@@ -37,8 +45,8 @@ INLIN1:
 L0C32:
         lda     #$00
         sta     INPUTBUFFER,x
-        ldx     #<INPUTBUFFER-1
-        ldy     #>INPUTBUFFER-1
+        ldx     #<(INPUTBUFFER-1)
+        ldy     #>(INPUTBUFFER-1)
         rts
   .endif
   .ifdef DB6502
@@ -49,10 +57,16 @@ L0C32:
   .endif
 
   .if (!.def(APPLE)) && (!.def(DB6502))
-  ;.ifndef APPLE
         ldx     #$00
 INLIN2:
         jsr     GETLN
+    .ifdef AIM65
+        cmp     #$1A
+        bne     INLINAIM
+        jsr     DU13
+        jmp     INLIN
+INLINAIM:
+    .endif
     .ifndef CONFIG_NO_LINE_EDITING
         cmp     #$07
         beq     L2443
@@ -61,14 +75,25 @@ INLIN2:
         beq     L2453
     .ifndef CONFIG_NO_LINE_EDITING
         cmp     #$20
+      .ifdef AIM65
+        bcc     L244E
+      .else
         bcc     INLIN2
+      .endif
       .if .def(MICROTAN) || .def(DB6502)
         cmp     #$80
       .else
+        .ifdef AIM65
+        cmp     #$7F
+        beq     L2420
+        .endif
         cmp     #$7D
       .endif
         bcs     INLIN2
         cmp     #$40 ; @
+      .ifdef AIM65
+        beq     LB35F
+      .else
         beq     L2423
       .if .def(MICROTAN) || .def(DB6502)
         cmp     #$7F ; DEL
@@ -76,6 +101,7 @@ INLIN2:
         cmp     #$5F ; _
       .endif
         beq     L2420
+      .endif
 L2443:
       .ifdef MICROTAN
         cpx     #$4F
@@ -86,7 +112,7 @@ L2443:
     .endif
         sta     INPUTBUFFER,x
         inx
-    .if .def(OSI) || .def(DB6502)
+    .if .def(OSI) || .def(AIM65) || .def(DB6502)
         .byte   $2C
     .else
         bne     INLIN2
@@ -94,6 +120,7 @@ L2443:
 L244C:
     .ifndef CONFIG_NO_LINE_EDITING
         lda     #$07 ; BEL
+L244E:
         jsr     OUTDO
         bne     INLIN2
     .endif
@@ -129,13 +156,17 @@ GETLN:
         nop
         and     #$7F
     .endif
-  .endif ;/* APPLE */
+  .endif
   .ifdef APPLE
 RDKEY:
         jsr     LFD0C
         and     #$7F
   .endif
+    .ifdef SYM1
+        cmp     #$14
+    .else
         cmp     #$0F
+    .endif
         bne     L2465
         pha
         lda     Z14
@@ -144,4 +175,4 @@ RDKEY:
         pla
 L2465:
         rts
-.endif ;/* KBD */
+.endif

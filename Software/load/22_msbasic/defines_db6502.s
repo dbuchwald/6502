@@ -20,7 +20,7 @@ USR             := $000A
 
 ; inputbuffer
 INPUTBUFFER     := $0900
-
+STACK2          := TXTBUFFER
 ; constants
 ; STACK_TOP		:= $FC
 SPACE_FOR_GOSUB := $33

@@ -20,6 +20,14 @@
 .include "microtan_extra.s"
 .endif
 
+.ifdef AIM65
+.include "aim65_extra.s"
+.endif
+
+.ifdef SYM1
+        .byte   0,0,0
+.endif
+
 .ifdef DB6502
 .include "db6502_extra.s"
 .endif

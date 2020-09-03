@@ -106,7 +106,11 @@
 		keyword	"=", TOKEN_EQUAL
 		keyword	"<"
 
+.ifndef DB6502
+        .segment "VECTORS"
+.else
         .segment "BAS_VEC"
+.endif
 UNFNC:
 
 		keyword_addr "SGN", SGN, TOKEN_SGN
@@ -119,7 +123,7 @@ UNFNC:
   .ifdef CONFIG_RAM
 		keyword_addr "USR", IQERR
   .else
-		keyword_addr "USR", USR
+		keyword_addr "USR", USR, TOKEN_USR
   .endif
 .endif
 		keyword_addr "FRE", FRE
@@ -128,16 +132,32 @@ UNFNC:
 		keyword_addr "RND", RND
 		keyword_addr "LOG", LOG
 		keyword_addr "EXP", EXP
+.ifndef DB6502
+.segment "VECTORS"
+.else
 .segment "BAS_VEC"
+.endif
 UNFNC_COS:
 		keyword_addr "COS", COS
+.ifndef DB6502
+.segment "VECTORS"
+.else
 .segment "BAS_VEC"
+.endif
 UNFNC_SIN:
 		keyword_addr "SIN", SIN
+.ifndef DB6502
+.segment "VECTORS"
+.else
 .segment "BAS_VEC"
+.endif
 UNFNC_TAN:
 		keyword_addr "TAN", TAN
+.ifndef DB6502
+.segment "VECTORS"
+.else
 .segment "BAS_VEC"
+.endif
 UNFNC_ATN:
 		keyword_addr "ATN", ATN
 .ifdef KBD
@@ -157,10 +177,18 @@ UNFNC_ATN:
 .ifdef CONFIG_2
 		keyword	"GO", TOKEN_GO
 .endif
+.ifndef DB6502
+        .segment "KEYWORDS"
+.else
         .segment "BAS_KEY"
+.endif
 		.byte   0
 
+.ifndef DB6502
+        .segment "VECTORS"
+.else
         .segment "BAS_VEC"
+.endif
 MATHTBL:
         .byte   $79
         .word   FADDT-1
