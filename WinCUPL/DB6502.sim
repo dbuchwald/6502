@@ -1,0 +1,63 @@
+%SIGNAL
+PIN  11 =  A08 
+PIN  10 =  A09 
+PIN   9 =  A10 
+PIN   8 =  A11 
+PIN   7 =  A12 
+PIN   6 =  A13 
+PIN   5 =  A14 
+PIN   4 =  A15 
+PIN   1 =  CLK 
+PIN   3 =  EXRAM 
+PIN  18 =  IOCS 
+PIN  22 =  OE 
+PIN  21 =  RAM1 
+PIN  20 =  RAM2 
+PIN  19 =  ROM 
+PIN   2 =  RW 
+PIN  23 =  WE 
+%END
+
+%FIELD
+%END
+
+%EQUATION
+IOCS =>
+    !A08 & A09 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
+
+OE =>
+    CLK & RW
+
+RAM1 =>
+    A15
+  # !A08 & A09 & !A10 & !A11 & !A12 & !A13 & !A14
+
+RAM2 =>
+    !A14 & A15 & EXRAM
+
+ROM =>
+    !A15
+  # !A14 & EXRAM
+
+WE =>
+    CLK & !RW
+
+IOCS.oe  =>
+    1 
+
+OE.oe  =>
+    1 
+
+RAM1.oe  =>
+    1 
+
+RAM2.oe  =>
+    1 
+
+ROM.oe  =>
+    1 
+
+WE.oe  =>
+    1 
+
+%END
