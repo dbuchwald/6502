@@ -30,10 +30,10 @@ Device          p22v10;
 CLK   |1     24| Vcc
 RW    |2     23| /WE
 EXRAM |3     22| /OE
-A15   |4     21| /RAM1
-A14   |5     20| /RAM2
-A13   |6     19| /ROM
-A12   |7     18| IOCS
+A15   |4     21| /RAM1_CS
+A14   |5     20| /RAM2_CS
+A13   |6     19| /ROM_CS
+A12   |7     18| IO_CS
 A11   |8     17| --
 A10   |9     16| --
 A9    |10    15| --
@@ -55,25 +55,36 @@ Pin 6  =  A13;
 Pin 7  =  A12;
 Pin 8  =  A11;
 Pin 9  =  A10;
-Pin 10 =  A09;
-Pin 11 =  A08;
+Pin 10 =  A9;
+Pin 11 =  A8;
 /*
  * Outputs:  define outputs - all are simple combinatorial
  */
-Pin 23 = WE;     /* to RAM and ROM chips */
-Pin 22 = OE;     /* to RAM and ROM chips */
-Pin 21 = RAM1;   /* to RAM1 /CS pin */
-Pin 20 = RAM2;   /* to RAM2 /CS pin */
-Pin 19 = ROM;    /* to ROM  /CS pin */
-Pin 18 = IOCS;   /* to IOCS pin */
+Pin 23 = WE;      /* to RAM and ROM chips */
+Pin 22 = OE;      /* to RAM and ROM chips */
+Pin 21 = RAM1_CS; /* to RAM1 /CS pin */
+Pin 20 = RAM2_CS; /* to RAM2 /CS pin */
+Pin 19 = ROM_CS;  /* to ROM  /CS pin */
+Pin 18 = IO_CS;   /* to IOCS pin */
+
+/*
+ * Local variables
+ */
+
+FIELD Address = [A15..A00];
 
 /*
  * Logic:
  */
 
-WE   = !(CLK & !RW);
-OE   = !(CLK & RW);
-RAM1 = A15 # (!A14 & !A13 & !A12 & !A11 & !A10 & A09 & !A08);
-RAM2 = !(A15 & !A14 & EXRAM);
-ROM  = !A15 # (!A14 & EXRAM);
-IOCS = !A15 & !A14 & !A13 & !A12 & !A11 & !A10 & A09 & !A08;
+RAM       = Address:[0000..7FFF];
+IO_SHADOW = Address:[0200..02FF];
+RAM_EXTRA = Address:[8000..BFFF];
+ROM       = Address:[8000..FFFF];
+
+!WE       = CLK & !RW;
+!OE       = CLK & RW;
+!RAM1_CS  = RAM & !IO_SHADOW;
+!RAM2_CS  = EXRAM & RAM_EXTRA;
+!ROM_CS   = ROM & !(EXRAM & RAM_EXTRA);
+IO_CS     = IO_SHADOW;

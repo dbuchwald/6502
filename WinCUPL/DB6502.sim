@@ -1,6 +1,6 @@
 %SIGNAL
-PIN  11 =  A08 
-PIN  10 =  A09 
+PIN  11 =  A8 
+PIN  10 =  A9 
 PIN   9 =  A10 
 PIN   8 =  A11 
 PIN   7 =  A12 
@@ -9,52 +9,70 @@ PIN   5 =  A14
 PIN   4 =  A15 
 PIN   1 =  CLK 
 PIN   3 =  EXRAM 
-PIN  18 =  IOCS 
+PIN  18 =  IO_CS 
 PIN  22 =  OE 
-PIN  21 =  RAM1 
-PIN  20 =  RAM2 
-PIN  19 =  ROM 
+PIN  21 =  RAM1_CS 
+PIN  20 =  RAM2_CS 
+PIN  19 =  ROM_CS 
 PIN   2 =  RW 
 PIN  23 =  WE 
 %END
 
 %FIELD
+FIELD Address = A15,A14,A13,A12,A11,A10,A9,A8,A7,A6,A5,A4,A3,A2,A1,A0
 %END
 
 %EQUATION
-IOCS =>
-    !A08 & A09 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
+IO_CS =>
+    !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
 
-OE =>
+IO_SHADOW =>
+    !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
+
+!OE =>
     CLK & RW
 
-RAM1 =>
-    A15
-  # !A08 & A09 & !A10 & !A11 & !A12 & !A13 & !A14
+RAM =>
+    !A15
 
-RAM2 =>
+!RAM1_CS =>
+    A14 & !A15
+  # A13 & !A15
+  # A12 & !A15
+  # A11 & !A15
+  # A10 & !A15
+  # !A9 & !A15
+  # A8 & !A15
+
+!RAM2_CS =>
     !A14 & A15 & EXRAM
 
-ROM =>
-    !A15
-  # !A14 & EXRAM
+RAM_EXTRA =>
+    !A14 & A15
 
-WE =>
+ROM =>
+    A15
+
+!ROM_CS =>
+    A15 & !EXRAM
+  # A14 & A15
+
+!WE =>
     CLK & !RW
 
-IOCS.oe  =>
+IO_CS.oe  =>
     1 
 
 OE.oe  =>
     1 
 
-RAM1.oe  =>
+RAM1_CS.oe  =>
     1 
 
-RAM2.oe  =>
+RAM2_CS.oe  =>
     1 
 
-ROM.oe  =>
+ROM_CS.oe  =>
     1 
 
 WE.oe  =>
