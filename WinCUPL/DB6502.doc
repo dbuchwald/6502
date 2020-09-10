@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Thu Sep 10 13:18:12 2020
+Created         Thu Sep 10 14:31:49 2020
 Name            DB6502 Address Decoder
 Partno          DB6502
 Revision        01
@@ -20,8 +20,7 @@ Location        Poland
 ===============================================================================
 
 Address =>
-    A15 , A14 , A13 , A12 , A11 , A10 , A9 , A8 , A7 , A6 , A5 , A4 , A3 , A2 , 
-      A1 , A0
+    A15 , A14 , A13 , A12 , A11 , A10 , A9 , A8
 
 IO_CS =>
     !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15

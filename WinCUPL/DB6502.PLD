@@ -71,7 +71,7 @@ Pin 18 = IO_CS;   /* to IOCS pin */
  * Local variables
  */
 
-FIELD Address = [A15..A00];
+FIELD Address = [A15..A8];
 
 /*
  * Logic:
