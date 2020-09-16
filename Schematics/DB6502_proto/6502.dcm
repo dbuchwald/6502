@@ -1,0 +1,16 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 22V10C
+F http://www.farnell.com/datasheets/1627189.pdf
+$ENDCMP
+#
+$CMP 74HC238
+D Decoder 3 to 8 active high outputs
+$ENDCMP
+#
+$CMP DS1813
+D EconoReset with Pushbutton
+F https://datasheets.maximintegrated.com/en/ds/DS1813.pdf
+$ENDCMP
+#
+#End Doc Library
