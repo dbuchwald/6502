@@ -1,18 +1,4 @@
-16941093596786467
-65C02_Computer
-SSOP-16_3.9x4.9mm_P0.635mm_long_pads
-SSOP16: plastic shrink small outline package; 16 leads; body width 3.9 mm; lead pitch 0.635; (see NXP SSOP-TSSOP-VSO-REFLOW.pdf and sot519-1_po.pdf)
-SSOP 0.635
-0
-16
-16
-65C02_Computer
-mini_din-6
-A footprint for the generic 6 pin Mini-DIN through hole connector with shell.
-mini din 6pin connector socket
-0
-9
-7
+16937896547907390
 Battery
 BatteryHolder_Bulgin_BX0036_1xC
 Bulgin Battery Holder, BX0036, Battery Type C (https://www.bulgin.com/products/pub/media/bulgin/data/Battery_holders.pdf)

@@ -1147,6 +1147,38 @@ $EndComp
 Wire Wire Line
 	8950 3600 8950 3500
 Connection ~ 8950 3500
+$Comp
+L Device:R R12
+U 1 1 60B17A68
+P 9000 1350
+F 0 "R12" H 9070 1396 50  0000 L CNN
+F 1 "220" H 9070 1305 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 8930 1350 50  0001 C CNN
+F 3 "~" H 9000 1350 50  0001 C CNN
+	1    9000 1350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED D3
+U 1 1 60B19002
+P 9000 1750
+F 0 "D3" V 9039 1632 50  0000 R CNN
+F 1 "PWR" V 8948 1632 50  0000 R CNN
+F 2 "LED_THT:LED_D3.0mm" H 9000 1750 50  0001 C CNN
+F 3 "~" H 9000 1750 50  0001 C CNN
+	1    9000 1750
+	0    -1   -1   0   
+$EndComp
+Text GLabel 9000 1100 1    50   Input ~ 0
++5V
+Wire Wire Line
+	9000 1100 9000 1200
+Wire Wire Line
+	9000 1500 9000 1600
+Text GLabel 9000 2000 3    50   Input ~ 0
+GND
+Wire Wire Line
+	9000 2000 9000 1900
 Wire Bus Line
 	11000 1300 11000 1500
 Wire Bus Line
