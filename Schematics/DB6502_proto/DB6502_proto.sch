@@ -200,8 +200,6 @@ Wire Wire Line
 	2900 2050 3100 2050
 Wire Wire Line
 	2900 1950 3100 1950
-Wire Bus Line
-	3200 2650 3300 2650
 Text GLabel 3000 3250 3    50   Input ~ 0
 GND
 Wire Wire Line
@@ -217,7 +215,7 @@ Wire Bus Line
 Connection ~ 1600 3400
 Wire Bus Line
 	1600 3400 1600 3550
-Text GLabel 3300 2650 2    50   Input ~ 0
+Text GLabel 3300 2750 2    50   Input ~ 0
 d[0..7]
 Text GLabel 3000 1150 1    50   Input ~ 0
 ~6502_RES
@@ -1611,6 +1609,8 @@ F 3 "" H 9400 1900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Bus Line
+	3200 2750 3300 2750
+Wire Bus Line
 	6500 3750 6500 3950
 Wire Bus Line
 	3850 2350 3850 2950
@@ -1618,8 +1618,6 @@ Wire Bus Line
 	6200 2350 6200 2950
 Wire Bus Line
 	8600 2350 8600 2950
-Wire Bus Line
-	3200 2750 3200 3550
 Wire Bus Line
 	5450 2250 5450 2950
 Wire Bus Line
@@ -1633,7 +1631,9 @@ Wire Bus Line
 Wire Bus Line
 	10750 650  10750 1850
 Wire Bus Line
-	3200 2050 3200 2650
+	3200 2850 3200 3550
+Wire Bus Line
+	3200 2050 3200 2750
 Wire Bus Line
 	8650 3950 8650 4650
 Wire Bus Line
