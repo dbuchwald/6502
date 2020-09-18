@@ -772,9 +772,9 @@ Wire Wire Line
 	6050 2300 6050 3300
 Wire Wire Line
 	6050 3300 7900 3300
-Text GLabel 10750 3000 2    50   BiDi ~ 0
-USBD-
 Text GLabel 10750 3250 2    50   BiDi ~ 0
+USBD-
+Text GLabel 10750 3000 2    50   BiDi ~ 0
 USBD+
 $Comp
 L Device:R R10
