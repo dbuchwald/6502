@@ -21,9 +21,14 @@ void assumeBusControl(void) {
 
 void returnBusControl(void) {
   // master clock, rw and sync all input
-  CONTROL_DDR  &= ~(CLK_BIT | RW_BIT);
+  //CONTROL_DDR  &= ~(CLK_BIT | RW_BIT);
   // enable pull-ups on input bits
-  CONTROL_POUT |= (CLK_BIT | RW_BIT);
+  //CONTROL_POUT |= (CLK_BIT | RW_BIT);
+  // keep the clock under our control for now
+  CONTROL_DDR  &= ~RW_BIT;
+  // enable pull-ups on input bits
+  CONTROL_POUT |= RW_BIT;
+
   // address and data buses are all input
   ADDRMSB_DDR  = ALL_INPUT;
   ADDRLSB_DDR  = ALL_INPUT;

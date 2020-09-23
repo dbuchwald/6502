@@ -3,11 +3,11 @@
 #include <util/delay.h>
 #include "main_shell.h"
 #include "programmer_shell.h"
+#include "monitor_shell.h"
 
 #define LINE_LENGTH 16
 
 static void displayHelp(void);
-static void runProgrammer(void);
 
 void runMainShell(void) {
   unsigned char keep_going=1;
@@ -24,10 +24,10 @@ void runMainShell(void) {
         displayHelp();
         break;
       case 'M':
-        printf("Not implemented yet!");
+        runMonitorShell();
         break;
       case 'P':
-        runProgrammer();
+        runProgrammerShell();
         break;
       default:
         printf("ERROR: Unrecognized command %c [%02x], type 'h' for help...\n", c, c);
@@ -39,8 +39,4 @@ void displayHelp(void) {
   printf("Please select one of the options:\n");
   printf(" [m]onitor - run debugger/monitor application\n");
   printf(" [p]rogrammer - run EEPROM programmer application\n");
-}
-
-void runProgrammer(void) {
-  runProgrammerShell();
 }

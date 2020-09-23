@@ -17,10 +17,15 @@ void initSystem(void) {
   // init data direction registers
   // shift register is all output
   CONTROL_DDR  |= (SR_DAT | SR_CLK | SR_OUT);
+  CONTROL_DDR  |= CLK_BIT;
   // master clock, rw and sync all input
-  CONTROL_DDR  &= ~(CLK_BIT | RW_BIT | SYNC_BIT);
+  //CONTROL_DDR  &= ~(CLK_BIT | RW_BIT | SYNC_BIT);
+  CONTROL_DDR  &= ~(RW_BIT | SYNC_BIT);
   // enable pull-ups on input bits
-  CONTROL_POUT |= (CLK_BIT | RW_BIT | SYNC_BIT);
+  //CONTROL_POUT |= (CLK_BIT | RW_BIT | SYNC_BIT);
+  CONTROL_POUT |= (RW_BIT | SYNC_BIT);
+  // lower the clock, we will raise it only when needed
+  CONTROL_POUT &= ~CLK_BIT;  
   // address and data buses are all input
   ADDRMSB_DDR  = ALL_INPUT;
   ADDRLSB_DDR  = ALL_INPUT;
