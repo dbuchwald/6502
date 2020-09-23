@@ -528,7 +528,7 @@ U 1 1 60247D13
 P 10350 1600
 F 0 "J10" H 10021 1696 50  0000 R CNN
 F 1 "AVR-ISP-6" H 10021 1605 50  0000 R CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_2x03_P2.54mm_Vertical" V 10100 1650 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" V 10100 1650 50  0001 C CNN
 F 3 " ~" H 9075 1050 50  0001 C CNN
 	1    10350 1600
 	1    0    0    -1  
