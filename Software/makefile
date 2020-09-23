@@ -9,7 +9,7 @@ LOAD_FOLDER=$(BUILD_FOLDER)/load
 FIRMWARE_PROJECTS_FOLDER=rom
 LOADABLE_PROJECTS_FOLDER=load
 
-ADDRESS_MODE=ext
+ADDRESS_MODE=v2
 
 FIRMWARE_PROJECTS = 01_nop_fill          \
                     02_nop_fffc          \

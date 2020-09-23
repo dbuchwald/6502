@@ -69,8 +69,8 @@ endif
 # R6551 - use 1 or 0 (both are supported, but 1 is "better")
 ACIA_TX_IRQ=0
 
-# Default address mode (basic/ext/.. )
-ADDRESS_MODE=ext
+# Default address mode (basic/ext/v2/.. )
+ADDRESS_MODE=v2
 
 # Default clock mode (supported are: slow, 250k, 1m, 2m, 4m, 8m)
 CLOCK_MODE=8m
