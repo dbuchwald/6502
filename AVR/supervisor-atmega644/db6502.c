@@ -1,6 +1,10 @@
 #include <avr/io.h>
+#include <util/delay_basic.h>
+#include <util/delay.h>
 #include "db6502.h"
 #include "pinout.h"
+
+#define RESET_CLOCK_COUNT 3
 
 static uint8_t control_register;
 
@@ -39,6 +43,24 @@ void returnBusControl(void) {
   DATA_POUT    = ALL_PULL_UP;
   // restore clock, BE and RDY operation
   updateControlRegister(0x00, CLKSEL_BIT | BE_BIT | RDY_BIT);
+}
+
+void resetSystem(void) {
+  // get hold of the bus (to drive the clock)
+  assumeBusControl();
+  // raise reset line
+  updateControlRegister(RESET_BIT, RESET_BIT);
+  // tick-tock
+  for (uint8_t i=0; i<RESET_CLOCK_COUNT; i++) {
+    CONTROL_POUT &= ~CLK_BIT;
+    _delay_loop_1(10);
+    CONTROL_POUT |= CLK_BIT;
+    _delay_loop_1(10);
+  }
+  // lower reset line
+  updateControlRegister(0x00, RESET_BIT);
+  // let go of the bus
+  returnBusControl();
 }
 
 void updateControlRegister(const uint8_t value, const uint8_t mask) {

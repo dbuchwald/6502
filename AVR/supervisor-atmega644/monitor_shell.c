@@ -11,6 +11,7 @@
 
 static void displayHelp(void);
 static void singleStep(void);
+static void reset6502(void);
 
 void runMonitorShell(void) {
   unsigned char keep_going=1;
@@ -19,7 +20,7 @@ void runMonitorShell(void) {
   while (keep_going) {
     printf("Dbg >");
     unsigned char c = getc(stdin);
-    printf("\n");
+    //printf("\n");
     switch (toupper(c)) {
       case 0x0d:
         break;
@@ -32,6 +33,9 @@ void runMonitorShell(void) {
       case 'S':
         singleStep();
         break;
+      case 'R':
+        reset6502();
+        break;
       default:
         printf("ERROR: Unrecognized command %c [%02x], type 'h' for help...\n", c, c);
     }
@@ -41,6 +45,7 @@ void runMonitorShell(void) {
 void displayHelp(void) {
   printf("Please select one of the options:\n");
   printf(" [s]ingle step - execute single clock cycle of 6502\n");
+  printf(" [r]eset - reset 6502 and its peripherals\n");
   printf(" [h]elp - display this information\n");
   printf(" [q]uit - leave shell\n");
 }
@@ -59,4 +64,10 @@ static void singleStep(void) {
   printf(buffer);
   // lower the clock
   CONTROL_POUT &= ~CLK_BIT;
+}
+
+static void reset6502(void) {
+  printf("Resetting 6502 and peripherals...");
+  resetSystem();
+  printf("done.\n");
 }
