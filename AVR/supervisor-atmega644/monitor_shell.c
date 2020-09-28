@@ -5,12 +5,15 @@
 #include "db6502.h"
 #include "pinout.h"
 #include "core.h"
+#include "uart.h"
 #include "monitor_shell.h"
 
 #define LINE_LENGTH 16
 
 static void displayHelp(void);
 static void singleStep(void);
+static void goSlow(void);
+static void goFast(void);
 static void reset6502(void);
 
 void runMonitorShell(void) {
@@ -33,6 +36,12 @@ void runMonitorShell(void) {
       case 'S':
         singleStep();
         break;
+      case 'G':
+        goSlow();
+        break;
+      case 'F':
+        goFast();
+        break;
       case 'R':
         reset6502();
         break;
@@ -45,6 +54,8 @@ void runMonitorShell(void) {
 void displayHelp(void) {
   printf("Please select one of the options:\n");
   printf(" [s]ingle step - execute single clock cycle of 6502\n");
+  printf(" [g]o slow - keep running and dumping bus to serial; press any key to stop\n");
+  printf(" go [f]ast - run as fast as possible, without dumping bus data to serial\n");
   printf(" [r]eset - reset 6502 and its peripherals\n");
   printf(" [h]elp - display this information\n");
   printf(" [q]uit - leave shell\n");
@@ -65,6 +76,48 @@ static void singleStep(void) {
   // lower the clock
   CONTROL_POUT &= ~CLK_BIT;
 }
+
+static void goSlow(void) {
+  uint8_t addressLSB, addressMSB, data, ctrl;
+  char buffer[64];
+  while (1) {
+    // raise the clock
+    CONTROL_POUT |= CLK_BIT;
+    // read the busses
+    addressLSB = ADDRLSB_PIN;
+    addressMSB = ADDRMSB_PIN;
+    data       = DATA_PIN;
+    ctrl       = CONTROL_PIN & (RW_BIT | SYNC_BIT);
+    sprintf(buffer, "  %02x%02x: %c %02x %c\n", addressMSB, addressLSB, ctrl & RW_BIT ? 'r' : 'W', data, ctrl & SYNC_BIT ? 's' : ' ');
+    // lower the clock
+    CONTROL_POUT &= ~CLK_BIT;
+    printf(buffer);
+    if (uart_peek() == UART_DATA_AVAILABLE) {
+      getc(stdin);
+      return;
+    }
+  }
+}
+
+static void goFast(void) {
+  uint8_t addressLSB, addressMSB, data, ctrl;
+  while (1) {
+    // raise the clock
+    CONTROL_POUT |= CLK_BIT;
+    // read the busses
+    addressLSB = ADDRLSB_PIN;
+    addressMSB = ADDRMSB_PIN;
+    data       = DATA_PIN;
+    ctrl       = CONTROL_PIN & (RW_BIT | SYNC_BIT);
+    // lower the clock
+    CONTROL_POUT &= ~CLK_BIT;
+    if (uart_peek() == UART_DATA_AVAILABLE) {
+      getc(stdin);
+      return;
+    }
+  }
+}
+
 
 static void reset6502(void) {
   printf("Resetting 6502 and peripherals...");
