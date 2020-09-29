@@ -3,6 +3,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "db6502.h"
+#include "opcodes.h"
 #include "pinout.h"
 #include "core.h"
 #include "uart.h"
@@ -71,7 +72,7 @@ static void singleStep(void) {
   addressMSB = ADDRMSB_PIN;
   data       = DATA_PIN;
   ctrl       = CONTROL_PIN & (RW_BIT | SYNC_BIT);
-  sprintf(buffer, "  %02x%02x: %c %02x %c\n", addressMSB, addressLSB, ctrl & RW_BIT ? 'r' : 'W', data, ctrl & SYNC_BIT ? 's' : ' ');
+  sprintf(buffer, "  %02x%02x: %c %02x %s\n", addressMSB, addressLSB, ctrl & RW_BIT ? 'r' : 'W', data, ctrl & SYNC_BIT ? getOpcodeText(data) : "");
   printf(buffer);
   // lower the clock
   CONTROL_POUT &= ~CLK_BIT;
@@ -88,7 +89,7 @@ static void goSlow(void) {
     addressMSB = ADDRMSB_PIN;
     data       = DATA_PIN;
     ctrl       = CONTROL_PIN & (RW_BIT | SYNC_BIT);
-    sprintf(buffer, "  %02x%02x: %c %02x %c\n", addressMSB, addressLSB, ctrl & RW_BIT ? 'r' : 'W', data, ctrl & SYNC_BIT ? 's' : ' ');
+    sprintf(buffer, "  %02x%02x: %c %02x %s\n", addressMSB, addressLSB, ctrl & RW_BIT ? 'r' : 'W', data, ctrl & SYNC_BIT ? getOpcodeText(data) : "");
     // lower the clock
     CONTROL_POUT &= ~CLK_BIT;
     printf(buffer);
