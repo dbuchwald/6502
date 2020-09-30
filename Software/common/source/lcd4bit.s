@@ -67,7 +67,10 @@ _lcd_init:
         ; Initialize DDRB
         lda LCD_DDR
         ora #(LCD_DDR_WRITE_MASK)
+        cmp LCD_DDR
+        beq @no_change
         sta LCD_DDR
+@no_change:
         ; Initialization by instruction
         ldx #$00
 @lcd_force_reset_loop:
@@ -143,7 +146,10 @@ lcd_write_byte:
         ; Set port direction (output)
         lda LCD_DDR
         ora #(LCD_DDR_WRITE_MASK)
+        cmp LCD_DDR
+        beq @no_change
         sta LCD_DDR
+@no_change:
         ; Process actual data
         lda lcd_temp_char2
         ; Most significant bits first
@@ -209,7 +215,10 @@ lcd_read_byte:
         lda LCD_DDR
         and #(BLINK_PORT_MASK)
         ora #(LCD_DDR_READ_MASK)
+        cmp LCD_DDR
+        beq @no_change
         sta LCD_DDR
+@no_change:
         ; Preserve status of blink led
         lda LCD_PORT
         and #(BLINK_PORT_MASK)
@@ -251,7 +260,10 @@ lcd_wait_bf_clear:
         lda LCD_DDR
         and #(BLINK_PORT_MASK)
         ora #(LCD_DDR_READ_MASK)
+        cmp LCD_DDR
+        beq @no_change
         sta LCD_DDR
+@no_change:
         ; Preserve status of blink led
 @wait_loop:
         lda LCD_PORT
