@@ -18,7 +18,7 @@
 #define INDIRECT    0x0e
 #define INDIRECT_X  0x0f
 
-const char* getOpcodeText(const uint8_t opcode);
+void getOpcodeText(char* buffer, const uint8_t opcode);
 
 uint8_t getAddressMode(const uint8_t opcode);
 

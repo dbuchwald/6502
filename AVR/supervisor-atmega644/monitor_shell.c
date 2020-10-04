@@ -65,6 +65,7 @@ void displayHelp(void) {
 static void singleStep(void) {
   uint8_t addressLSB, addressMSB, data, ctrl;
   char buffer[64];
+  char opcodeBuffer[6];
   // raise the clock
   CONTROL_POUT |= CLK_BIT;
   // read the busses
@@ -72,7 +73,12 @@ static void singleStep(void) {
   addressMSB = ADDRMSB_PIN;
   data       = DATA_PIN;
   ctrl       = CONTROL_PIN & (RW_BIT | SYNC_BIT);
-  sprintf(buffer, "  %02x%02x: %c %02x %s\n", addressMSB, addressLSB, ctrl & RW_BIT ? 'r' : 'W', data, ctrl & SYNC_BIT ? getOpcodeText(data) : "");
+  if (ctrl & SYNC_BIT) {
+    getOpcodeText(opcodeBuffer, data);
+  } else {
+    opcodeBuffer[0]=0;
+  }
+  sprintf(buffer, "  %02x%02x: %c %02x %s\n", addressMSB, addressLSB, ctrl & RW_BIT ? 'r' : 'W', data, opcodeBuffer);
   printf(buffer);
   // lower the clock
   CONTROL_POUT &= ~CLK_BIT;
@@ -81,6 +87,7 @@ static void singleStep(void) {
 static void goSlow(void) {
   uint8_t addressLSB, addressMSB, data, ctrl;
   char buffer[64];
+  char opcodeBuffer[6];
   while (1) {
     // raise the clock
     CONTROL_POUT |= CLK_BIT;
@@ -89,7 +96,12 @@ static void goSlow(void) {
     addressMSB = ADDRMSB_PIN;
     data       = DATA_PIN;
     ctrl       = CONTROL_PIN & (RW_BIT | SYNC_BIT);
-    sprintf(buffer, "  %02x%02x: %c %02x %s\n", addressMSB, addressLSB, ctrl & RW_BIT ? 'r' : 'W', data, ctrl & SYNC_BIT ? getOpcodeText(data) : "");
+    if (ctrl & SYNC_BIT) {
+      getOpcodeText(opcodeBuffer, data);
+    } else {
+      opcodeBuffer[0]=0;
+    }
+    sprintf(buffer, "  %02x%02x: %c %02x %s\n", addressMSB, addressLSB, ctrl & RW_BIT ? 'r' : 'W', data, opcodeBuffer);
     // lower the clock
     CONTROL_POUT &= ~CLK_BIT;
     printf(buffer);
