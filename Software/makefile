@@ -34,6 +34,7 @@ FIRMWARE_PROJECTS = 01_nop_fill          \
                     21_serial_load_test  \
                     22_modem_test        \
                     23_blink_test        \
+                    24_duart_sync        \
                     minimal_bootloader   \
                     os1                  \
 										microsoft_basic
