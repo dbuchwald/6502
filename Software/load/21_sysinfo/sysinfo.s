@@ -18,7 +18,7 @@
         .import __VECTORS_SIZE__
         .import __VIA1_START__
         .import __VIA2_START__
-        .import __ACIA_START__
+        .import __SERIAL_START__
 
 
         .code
@@ -82,7 +82,7 @@ init:
         write_tty_address #__VIA2_START__
         jsr _tty_send_newline
         write_tty #acia_addr_msg
-        write_tty_address #__ACIA_START__
+        write_tty_address #__SERIAL_START__
         jsr _tty_send_newline
 
         rts
@@ -129,4 +129,4 @@ via1_addr_msg:
 via2_addr_msg:
         .asciiz "VIA2 address: 0x"
 acia_addr_msg:
-        .asciiz "ACIA address: 0x"
+        .asciiz "Serial address: 0x"

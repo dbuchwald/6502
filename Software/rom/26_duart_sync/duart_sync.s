@@ -1,6 +1,6 @@
-        .import __ACIA_START__
+        .import __SERIAL_START__
 
-DUART_START = __ACIA_START__
+DUART_START = __SERIAL_START__
 
 ; READ:
 DUART_R_MR0A  = DUART_START + $00

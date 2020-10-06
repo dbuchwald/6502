@@ -117,7 +117,7 @@ static void goFast(void) {
     // raise the clock
     CONTROL_POUT |= CLK_BIT;
     // wait a moment
-    _delay_loop_1(2);
+    _delay_loop_1(8);
     // lower the clock
     CONTROL_POUT &= ~CLK_BIT;
     if (uart_peek() == UART_DATA_AVAILABLE) {

@@ -1,12 +1,12 @@
       .setcpu "65C02"
       .include "via.inc"
 
-      .import __ACIA_START__
+      .import __SERIAL_START__
 
-ACIA_DATA    = __ACIA_START__ + $00
-ACIA_STATUS  = __ACIA_START__ + $01
-ACIA_COMMAND = __ACIA_START__ + $02
-ACIA_CONTROL = __ACIA_START__ + $03
+ACIA_DATA    = __SERIAL_START__ + $00
+ACIA_STATUS  = __SERIAL_START__ + $01
+ACIA_COMMAND = __SERIAL_START__ + $02
+ACIA_CONTROL = __SERIAL_START__ + $03
 
 ACIA_STOP_BITS_1 = %00000000
 ACIA_STOP_BITS_2 = %10000000
