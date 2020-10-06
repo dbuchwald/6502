@@ -12,6 +12,7 @@
         .export _serial_notify_read
         .export _serial_notify_write
         .export _serial_disable_controller
+        .export SERIAL_DRIVER_STRING
 
 ; READ:
 DUART_R_MR0A  = __SERIAL_START__ + $00
@@ -216,3 +217,7 @@ _serial_disable_controller:
         sta DUART_W_IMR
         rts
         rts
+
+        .segment "RODATA"
+SERIAL_DRIVER_STRING:
+        .asciiz "SC26C92"

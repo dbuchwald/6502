@@ -13,6 +13,7 @@
         .export _serial_notify_read
         .export _serial_notify_write
         .export _serial_disable_controller
+        .export SERIAL_DRIVER_STRING
 
 ACIA_DATA    = __SERIAL_START__ + $00
 ACIA_STATUS  = __SERIAL_START__ + $01
@@ -225,3 +226,7 @@ _serial_disable_controller:
         lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_DISABLE | ACIA_DTR_LOW)
         sta ACIA_COMMAND
         rts
+
+        .segment "RODATA"
+SERIAL_DRIVER_STRING:
+        .asciiz "WDC65C51"

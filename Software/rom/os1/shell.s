@@ -10,6 +10,7 @@
         .include "menu.inc"
         .include "parse.inc"
         .include "macros.inc"
+        .include "serial.inc"
 
         .export _run_shell
         .import os1_version
@@ -166,6 +167,10 @@ _process_info:
         write_tty #acia_addr_msg
         write_tty_address #__SERIAL_START__
         jsr _tty_send_newline
+        jsr _tty_send_newline
+        write_tty #serial_drv_msg
+        write_tty #SERIAL_DRIVER_STRING
+        jsr _tty_send_newline
         rts
 
 system_break_handler:
@@ -241,6 +246,8 @@ via2_addr_msg:
         .asciiz "VIA2 address: 0x"
 acia_addr_msg:
         .asciiz "Serial address: 0x"
+serial_drv_msg:
+        .asciiz "Serial driver: "
 os1prompt:
         .asciiz "OS/1>"
 msgemptyline:

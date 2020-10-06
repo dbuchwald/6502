@@ -10,6 +10,7 @@
         .import _serial_write_string
         .import _serial_flush
         .import _serial_disable
+        .import SERIAL_DRIVER_STRING
 
         .macro serial_write_string channel, string
         pha
