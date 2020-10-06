@@ -113,15 +113,11 @@ static void goSlow(void) {
 }
 
 static void goFast(void) {
-  uint8_t addressLSB, addressMSB, data, ctrl;
   while (1) {
     // raise the clock
     CONTROL_POUT |= CLK_BIT;
-    // read the busses
-    addressLSB = ADDRLSB_PIN;
-    addressMSB = ADDRMSB_PIN;
-    data       = DATA_PIN;
-    ctrl       = CONTROL_PIN & (RW_BIT | SYNC_BIT);
+    // wait a moment
+    _delay_loop_1(2);
     // lower the clock
     CONTROL_POUT &= ~CLK_BIT;
     if (uart_peek() == UART_DATA_AVAILABLE) {

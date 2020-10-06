@@ -221,6 +221,9 @@ void flashEEPROM(void) {
   }
   printf(" - enabling SDP...");
   enableDataProtection();
+  printf("done!\n");
+  printf(" - resetting 6502...");
+  resetSystem();
   returnBusControl();
   end = getSystemTime();
   secs = (end-start)/50;
@@ -264,6 +267,9 @@ void zeroEEPROM(void) {
   }
   printf(" - Enabling data protection...");
   enableDataProtection();
+  printf("done!\n");
+  printf(" - resetting 6502...");
+  resetSystem();
   returnBusControl();
   end = getSystemTime();
   secs = (end-start)/50;
@@ -282,5 +288,8 @@ void eraseEEPROM(void) {
   } else {
     printf("failed!\n");
   }
+  printf(" - resetting 6502...");
+  resetSystem();
+  printf("done!\n");
   returnBusControl();
 }
