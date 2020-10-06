@@ -1,4 +1,4 @@
-PROJECT_NAME=24_duart_sync
+PROJECT_NAME=26_duart_sync
 BUILD_TYPE=rom
 
 ASM_SOURCES=duart_sync.s
