@@ -1,6 +1,7 @@
         .include "zeropage.inc"
-        .include "acia.inc"
+        .include "serial.inc"
         .include "utils.inc"
+        .include "sys_const.inc"
         .export _modem_send
         .export _modem_receive
 
@@ -43,6 +44,9 @@ _modem_send:
 
 ; NEGATIVE C COMPLIANT - uses carry flag for result
 _modem_receive:
+        ; Initialize channel number
+        lda #CHANNEL0
+        sta channel
         ; Send prompt to terminal
         jsr @send_prompt
         ; Initialize block number
@@ -59,15 +63,14 @@ _modem_receive:
 @enable_crc:
         ; Request CRC mode
         lda #('C')
-        jsr _acia_write_byte
+        phx
+        ldx channel
+        jsr serial_write_byte
+        plx
 @read_block_loop:
         ; Poll for first character
         jsr @wait_for_next_char
         bcc @enable_crc
-        ; jsr _acia_is_data_available
-        ; bcc @read_block_loop
-        ; Read data
-        ; jsr _acia_read_byte
         ; Check control characters
         cmp #(ESC)
         bne @not_quitting_yet
@@ -134,7 +137,10 @@ _modem_receive:
         jsr @flush_input
         ; Send negative acknowledgement
         lda #(NAK)
-        jsr _acia_write_byte
+        phx
+        ldx channel
+        jsr serial_write_byte
+        plx
         ; Try the package again
         jmp @read_block_loop
 @correct_crc:
@@ -180,13 +186,19 @@ _modem_receive:
         ; Block completed
         inc block_number
         lda #(ACK)
-        jsr _acia_write_byte
+        phx
+        ldx channel
+        jsr serial_write_byte
+        plx
         jmp @read_block_loop
 
 @receive_complete:
         ; Acknowledge transfer completion
         lda #(ACK)
-        jsr _acia_write_byte
+        phx
+        ldx channel
+        jsr serial_write_byte
+        plx
         ; Flush any input pending (should be none)
         jsr @flush_input
         ; Send nice completion message
@@ -201,8 +213,9 @@ _modem_receive:
         sta delay_counter
 @three_second_wait:
         ; Is there any data available?
-        jsr _acia_is_data_available
-        cmp #(ACIA_NO_DATA_AVAILABLE)
+        lda channel
+        jsr _serial_is_data_available
+        cmp #(SERIAL_NO_DATA_AVAILABLE)
         ; Yes it is
         bne @three_read_data
         ; Nope, it's not, wait 20ms
@@ -216,7 +229,8 @@ _modem_receive:
         clc
         rts
 @three_read_data:
-        jsr _acia_read_byte
+        lda channel
+        jsr _serial_read_byte
         ; Data loaded, set carry
         sec
         rts
@@ -227,8 +241,9 @@ _modem_receive:
         sta delay_counter
 @one_second_wait:
         ; Is there any data available?
-        jsr _acia_is_data_available
-        cmp #(ACIA_NO_DATA_AVAILABLE)
+        lda channel
+        jsr _serial_is_data_available
+        cmp #(SERIAL_NO_DATA_AVAILABLE)
         ; Yes it is
         bne @one_read_data
         ; Nope, it's not, wait 20ms
@@ -240,50 +255,55 @@ _modem_receive:
         bne @one_second_wait
         rts
 @one_read_data:
-        jsr _acia_read_byte
+        lda channel
+        jsr _serial_read_byte
         ; Data loaded, ignore, repeat
         bra @one_second_wait
 
 @send_prompt:
-        ldx #$00
+        ldy #$00
 @prompt_loop:
-        lda prompt,x
+        lda prompt,y
         beq @prompt_done
-        jsr _acia_write_byte
-        inx
+        ldx channel
+        jsr serial_write_byte
+        iny
         bra @prompt_loop
 @prompt_done:
         rts
 
 @send_completion_message:
-        ldx #$00
+        ldy #$00
 @success_loop:
-        lda success_message,x
+        lda success_message,y
         beq @success_done
-        jsr _acia_write_byte
-        inx
+        ldx channel
+        jsr serial_write_byte
+        iny
         bra @success_loop
 @success_done:
         rts
 
 @send_error_message:
-        ldx #$00
+        ldy #$00
 @error_loop:
-        lda error_message,x
+        lda error_message,y
         beq @error_done
-        jsr _acia_write_byte
-        inx
+        ldx channel
+        jsr serial_write_byte
+        iny
         bra @error_loop
 @error_done:
         rts
 
 @send_abort_message:
-        ldx #$00
+        ldy #$00
 @abort_loop:
-        lda abort_message,x
+        lda abort_message,y
         beq @abort_done
-        jsr _acia_write_byte
-        inx
+        ldx channel
+        jsr serial_write_byte
+        iny
         bra @abort_loop
 @abort_done:
         rts
@@ -309,6 +329,8 @@ _modem_receive:
         .segment "BSS"
 recv_buffer: 
         .res RECEIVE_BUFFER_SIZE
+channel:
+        .res 1
 
         .segment "RODATA"
 prompt:

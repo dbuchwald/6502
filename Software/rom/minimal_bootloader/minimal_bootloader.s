@@ -2,16 +2,19 @@
       .include "utils.inc"
       .include "lcd.inc"
       .include "core.inc"
-      .include "acia.inc"
+      .include "serial.inc"
       .include "keyboard.inc"
       .include "modem.inc"
       .include "syscalls.inc"
+      .include "sys_const.inc"
 
       .segment "VECTORS"
 
       .word   $0000
       .word   init
       .word   _interrupt_handler
+
+CHANNEL = CHANNEL0
 
       .code
 
@@ -45,20 +48,22 @@ init:
       write_lcd #instruction
       jsr _keyboard_is_connected
       cmp #(KEYBOARD_NOT_CONNECTED)
-      beq @wait_for_acia
+      beq @wait_for_serial
       write_lcd #instruction_keyboard
 @wait_for_keyboard_input:
       jsr _keyboard_read_char
       cmp #(KEY_ENTER)
       bne @wait_for_keyboard_input
       bra @receive_file
-@wait_for_acia:
+@wait_for_serial:
       write_lcd #instruction_serial
-@wait_for_acia_input:
-      jsr _acia_is_data_available
-      cmp #(ACIA_NO_DATA_AVAILABLE)
-      beq @wait_for_acia_input
-      jsr _acia_read_byte
+@wait_for_serial_input:
+      lda #CHANNEL
+      jsr _serial_is_data_available
+      cmp #(SERIAL_NO_DATA_AVAILABLE)
+      beq @wait_for_serial_input
+      lda #CHANNEL
+      jsr _serial_read_byte
 
 @receive_file:
       jsr _modem_receive

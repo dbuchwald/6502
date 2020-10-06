@@ -1,4 +1,5 @@
-      .include "acia.inc"
+      .include "serial.inc"
+      .include "sys_const.inc"
 
 .segment "CODE"
 ISCNTC:
@@ -36,11 +37,13 @@ MONCOUT:
 
 MONRDKEY:
 
-  jsr _acia_is_data_available
+  lda #CHANNEL0
+  jsr _serial_is_data_available
   ; skip, no data available at this point
-  cmp #(ACIA_NO_DATA_AVAILABLE)
+  cmp #(SERIAL_NO_DATA_AVAILABLE)
   beq NoDataIn
-  jsr _acia_read_byte
+  lda #CHANNEL0
+  jsr _serial_read_byte
   sec
   rts
 NoDataIn:
@@ -49,12 +52,12 @@ NoDataIn:
 
 MONISCNTC:
 	JSR	MONRDKEY
-	BCC	NotCTRLC ; If no key pressed then exit
-	CMP	#3
-	BNE	NotCTRLC ; if CTRL-C not pressed then exit
-	SEC		; Carry set if control C pressed
-	RTS
-NotCTRLC:
+; 	BCC	NotCTRLC ; If no key pressed then exit
+; 	CMP	#3
+; 	BNE	NotCTRLC ; if CTRL-C not pressed then exit
+; 	SEC		; Carry set if control C pressed
+; 	RTS
+; NotCTRLC:
 	CLC		; Carry clear if control C not pressed
 	RTS
 

@@ -2,9 +2,10 @@
       .include "utils.inc"
       .include "lcd.inc"
       .include "core.inc"
-      .include "acia.inc"
+      .include "serial.inc"
       .include "keyboard.inc"
       .include "syscalls.inc"
+      .include "sys_const.inc"
 
       .import _run_shell
       .export os1_version
@@ -14,6 +15,8 @@
       .word   $0000
       .word   init
       .word   _interrupt_handler
+
+CHANNEL = CHANNEL0
 
       .code
 
@@ -51,21 +54,24 @@ init:
       jsr _lcd_newline
 
       write_lcd #instruction
-@wait_for_acia_input:
-      jsr _acia_is_data_available
-      cmp #(ACIA_NO_DATA_AVAILABLE)
+@wait_for_serial_input:
+      lda #CHANNEL
+      jsr _serial_is_data_available
+      cmp #(SERIAL_NO_DATA_AVAILABLE)
       beq @check_keyboard
-      jsr _acia_read_byte
+      lda #CHANNEL
+      jsr _serial_read_byte
       bra @run_shell
 @check_keyboard:
       jsr _keyboard_is_data_available
       cmp #(KEYBOARD_NO_DATA_AVAILABLE)
-      beq @wait_for_acia_input
+      beq @wait_for_serial_input
       jsr _keyboard_read_char
 @run_shell:
       jsr _lcd_clear
       write_lcd #shell_connected
       jsr _run_shell
+      jsr _serial_disable
       ; Disable interrupt processing during init
       sei 
       jmp init
@@ -73,7 +79,7 @@ init:
       .segment "RODATA"
 
 os1_version:
-      .asciiz "OS/1 version 0.3.0C"
+      .asciiz "OS/1 version 0.3.5C"
 keyboard_disconnected:
       .asciiz "No keyboard"
 keyboard_connected:

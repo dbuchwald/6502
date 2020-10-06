@@ -2,15 +2,18 @@
       .include "utils.inc"
       .include "lcd.inc"
       .include "core.inc"
-      .include "acia.inc"
+      .include "serial.inc"
       .include "modem.inc"
       .include "syscalls.inc"
+      .include "sys_const.inc"
 
       .segment "VECTORS"
 
       .word   $0000
       .word   init
       .word   _interrupt_handler
+
+CHANNEL = CHANNEL0
 
       .code
 
@@ -23,18 +26,21 @@ init:
       ; lda #$03
       ; jsr _delay_sec
 
-wait_for_acia_input:
-      jsr _acia_is_data_available
-      cmp #(ACIA_NO_DATA_AVAILABLE)
-      beq wait_for_acia_input
-      jsr _acia_read_byte
+wait_for_serial_input:
+      lda #CHANNEL
+      jsr _serial_is_data_available
+      cmp #(SERIAL_NO_DATA_AVAILABLE)
+      beq wait_for_serial_input
+      lda #CHANNEL
+      jsr _serial_read_byte
 
-      ldx #00
+      ldy #00
 prompt_loop:
-      lda prompt,x
+      lda prompt,y
       beq main_loop
-      jsr _acia_write_byte
-      inx
+      ldx #CHANNEL
+      jsr serial_write_byte
+      iny
       bra prompt_loop
 
 main_loop:

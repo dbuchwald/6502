@@ -7,11 +7,10 @@ AR65_BINARY=ar65
 CPU_FLAG=--cpu 65C02
 ARCH_FLAG=-t none
 CLOCK_FLAG=-Dclock_mode_flag=$(CLOCK_MODE_FLAG) 
-ACIA_FLAG=-Dacia_tx_irq=$(ACIA_TX_IRQ) 
 BUILD_FLAG=-Ddb6502
 
-CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) $(ACIA_FLAG) -O
-CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG) $(ACIA_FLAG) $(BUILD_FLAG)
+CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) -O
+CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG) $(BUILD_FLAG)
 LD65_FLAGS=
 AR65_FLAGS=r
 
@@ -63,11 +62,13 @@ else
 	LCD_MODULE=lcd8bit.s
 endif
 
-# ACIA TX IRQ support
-# Possible values below
-# WDC65C51 - use 0
-# R6551 - use 1 or 0 (both are supported, but 1 is "better")
-ACIA_TX_IRQ=0
+# Serial interface
+# Possible values are
+# - wdc65c51
+# - r6551
+SERIAL_INTERFACE=wdc65c51
+
+SERIAL_DRIVER=serial_$(SERIAL_INTERFACE).s
 
 # Default address mode (basic/ext/v2/.. )
 ADDRESS_MODE=v2
@@ -100,20 +101,21 @@ COMMON_SOURCE_FOLDER=$(COMMON_ROOT)/source
 BASE_LIBRARY=$(COMMON_ROOT)/none.lib
 
 # Common objects to be linked
-COMMON_SOURCES=syscalls.s    \
-							 acia.s        \
-               blink.s       \
-							 core.s        \
-							 keyboard.s    \
-							 lcd.s         \
-							 $(LCD_MODULE) \
-							 modem.s       \
-							 string.s      \
-							 utils.s       \
-							 via.s         \
-							 via_utils.s   \
-							 tty.s         \
-							 parse.s       \
+COMMON_SOURCES=syscalls.s       \
+               serial.s         \
+							 $(SERIAL_DRIVER) \
+               blink.s          \
+							 core.s           \
+							 keyboard.s       \
+							 lcd.s            \
+							 $(LCD_MODULE)    \
+							 modem.s          \
+							 string.s         \
+							 utils.s          \
+							 via.s            \
+							 via_utils.s      \
+							 tty.s            \
+							 parse.s          \
 							 menu.s
 
 COMMON_OBJECTS=$(COMMON_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.o)
@@ -242,7 +244,7 @@ emu: $(FIRMWARE_BINARY)
 	$(X6502_BINARY) $<
 
 terminal:
-	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) /dev/tty.usbserial-DN4QHYAP
+	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) /dev/tty.usbserial-DN4KYF7O
 
 # Clean generated files
 clean:

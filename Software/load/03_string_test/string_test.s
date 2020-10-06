@@ -1,7 +1,8 @@
         .include "string.inc"
-        .include "acia.inc"
+        .include "serial.inc"
         .include "utils.inc"
         .include "macros.inc"
+        .include "sys_const.inc"
 
         .segment "VECTORS"
 
@@ -10,56 +11,57 @@
         .word   $0000
 
 TOKENIZE_BUFFER_SIZE = 64
+CHANNEL              = CHANNEL0
 
         .code
 init:
-        write_acia #message
+        serial_write_string #CHANNEL, #message
 
-        write_acia #msg1
+        serial_write_string #CHANNEL, #msg1
         strlength #message
         jsr convert_to_hex
         txa
         sta result_val
         tya
         sta result_val+1
-        write_acia #result_msg
+        serial_write_string #CHANNEL, #result_msg
 
-        write_acia #msg2
+        serial_write_string #CHANNEL, #msg2
         strcompare #strc1, #strc2
         jsr convert_to_hex
         txa
         sta result_val
         tya
         sta result_val+1
-        write_acia #result_msg
+        serial_write_string #CHANNEL, #result_msg
 
-        write_acia #msg3
+        serial_write_string #CHANNEL, #msg3
         strcompare #strc2, #strc3
         jsr convert_to_hex
         txa
         sta result_val
         tya
         sta result_val+1
-        write_acia #result_msg
+        serial_write_string #CHANNEL, #result_msg
 
-        write_acia #msg4
+        serial_write_string #CHANNEL, #msg4
         strcompare #strc3, #strc4
         jsr convert_to_hex
         txa
         sta result_val
         tya
         sta result_val+1
-        write_acia #result_msg
+        serial_write_string #CHANNEL, #result_msg
 
-        write_acia #to_upper_message
+        serial_write_string #CHANNEL, #to_upper_message
         strtoupper #to_upper_message
-        write_acia #to_upper_message
+        serial_write_string #CHANNEL, #to_upper_message
 
-        write_acia #to_lower_message
+        serial_write_string #CHANNEL, #to_lower_message
         strtolower #to_lower_message
-        write_acia #to_lower_message
+        serial_write_string #CHANNEL, #to_lower_message
 
-        write_acia #token1
+        serial_write_string #CHANNEL, #token1
 
         strtokenize #token1, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
@@ -68,15 +70,9 @@ init:
         copy_ptr #tokenize_buffer, ptr4
 
 @token1_loop:
-        write_acia #token_found
-        ; lda ptr4
-        ; sta ptr1
-        ; lda ptr4+1
-        ; sta ptr1+1
-        ; copy_ptr ptr4, ptr1
-        ; jsr _acia_write_string
-        write_acia ptr4
-        write_acia #token_newline
+        serial_write_string #CHANNEL, #token_found
+        serial_write_string #CHANNEL, ptr4
+        serial_write_string #CHANNEL, #token_newline
         dec tmp2
         beq @done_listing_token1
 @next_token1_loop:
@@ -89,18 +85,16 @@ init:
         bra @token1_loop
 @done_listing_token1:
 
-        write_acia #token2
+        serial_write_string #CHANNEL, #token2
 
         strtokenize #token2, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
         tax 
         copy_ptr #tokenize_buffer, ptr4
 @token2_loop:
-        write_acia #token_found
-        ; copy_ptr ptr4, ptr1
-        ; jsr _acia_write_string
-        write_acia ptr4
-        write_acia #token_newline
+        serial_write_string #CHANNEL, #token_found
+        serial_write_string #CHANNEL, ptr4
+        serial_write_string #CHANNEL, #token_newline
         dec tmp2
         beq @done_listing_token2
 @next_token2_loop:
@@ -113,18 +107,16 @@ init:
         bra @token2_loop
 @done_listing_token2:
 
-        write_acia #token3
+        serial_write_string #CHANNEL, #token3
 
         strtokenize #token3, #tokenize_buffer, TOKENIZE_BUFFER_SIZE
 
         tax 
         copy_ptr #tokenize_buffer, ptr4
 @token3_loop:
-        write_acia #token_found
-        ; copy_ptr ptr4, ptr1
-        ; jsr _acia_write_string
-        write_acia ptr4
-        write_acia #token_newline
+        serial_write_string #CHANNEL, #token_found
+        serial_write_string #CHANNEL, ptr4
+        serial_write_string #CHANNEL, #token_newline
         dec tmp2
         beq @done_listing_token3
 @next_token3_loop:

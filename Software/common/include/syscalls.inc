@@ -2,7 +2,7 @@
         .forceimport _syscall__system_init
         .forceimport _syscall__blink_init
         .forceimport _syscall__lcd_init
-        .forceimport _syscall__acia_init
+        .forceimport _syscall__serial_init
         .forceimport _syscall__keyboard_init
 ; Core routines
         .forceimport _syscall__register_user_break
@@ -24,11 +24,15 @@
         .forceimport _syscall__via2_get_register
         .forceimport _syscall_via2_set_register
         .forceimport _syscall__via2_set_register
-; ACIA routines 
-        .forceimport _syscall__acia_is_data_available
-        .forceimport _syscall__acia_read_byte
-        .forceimport _syscall__acia_write_byte
-        .forceimport _syscall__acia_write_string
+; Serial routines 
+        .forceimport _syscall__serial_is_data_available
+        .forceimport _syscall__serial_read_byte
+        .forceimport _syscall__serial_write_byte
+        .forceimport _syscall_serial_write_byte
+        .forceimport _syscall__serial_write_string
+        .forceimport _syscall_serial_write_string
+        .forceimport _syscall__serial_flush
+        .forceimport _syscall__serial_disable
 ; Keyboard routines
         .forceimport _syscall__keyboard_is_connected
         .forceimport _syscall__keyboard_is_data_available

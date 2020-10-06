@@ -2,9 +2,10 @@
         .include "zeropage.inc"
         .include "utils.inc"
         .include "lcd.inc"
-        .include "acia.inc"
+        .include "serial.inc"
         .include "blink.inc"
         .include "keyboard.inc"
+        .include "sys_const.inc"
 
         .import __USERRAM_START__
         .import __USERRAM_SIZE__
@@ -57,7 +58,8 @@ _system_init:
         ; Initialize LCD
         jsr _lcd_init
         ; Initialize ACIA
-        jsr _acia_init
+        lda #CHANNEL0
+        jsr _serial_init
         ; Initialize keyboard
         jsr _keyboard_init
         ; Disable BCD mode
@@ -75,9 +77,10 @@ _system_init:
 ; Uses ACIA and keyboard handling routines
 _interrupt_handler:
         ; Test ACIA first
-        bit ACIA_STATUS
-        bpl check_via1
-        jsr _handle_acia_irq
+        pha
+        lda #CHANNEL0
+        jsr _handle_serial_irq
+        pla
 check_via1:
         bit VIA1_IFR
         bpl check_via2

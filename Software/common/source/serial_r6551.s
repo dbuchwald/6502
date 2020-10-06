@@ -1,19 +1,17 @@
+        .setcpu "65C02"
         .include "zeropage.inc"
         .include "sys_const.inc"
         .include "sysram_map.inc"
         .include "utils.inc"
+        .include "macros.inc"
         
         .import __ACIA_START__
-        .export ACIA_DATA
-        .export ACIA_STATUS
-        .export ACIA_COMMAND
-        .export ACIA_CONTROL
-        .export _acia_init
-        .export _handle_acia_irq
-        .export _acia_is_data_available
-        .export _acia_read_byte
-        .export _acia_write_byte
-        .export _acia_write_string
+
+        .export _handle_serial_irq
+        .export _serial_init_controller
+        .export _serial_notify_read
+        .export _serial_notify_write
+        .export _serial_disable_controller
 
 ACIA_DATA    = __ACIA_START__ + $00
 ACIA_STATUS  = __ACIA_START__ + $01
@@ -75,49 +73,54 @@ ACIA_STATUS_OVERRUN    = 1 << 2
 ACIA_STATUS_FRAME_ERR  = 1 << 1
 ACIA_STATUS_PARITY_ERR = 1 << 0
 
-ACIA_DATA_AVAILABLE    = $01
-ACIA_NO_DATA_AVAILABLE = $00
-
         .code
 
-; POSITIVE C COMPLIANT        
-_acia_init:
+; POSITIVE C COMPLIANT
+; channel number in A        
+_serial_init_controller:
         lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_ENABLE | ACIA_DTR_LOW)
         sta ACIA_COMMAND
         lda #(ACIA_STOP_BITS_1 | ACIA_DATA_BITS_8 | ACIA_CLOCK_INT | ACIA_BAUD_19200)
         sta ACIA_CONTROL
-        stz acia_rx_rptr
-        stz acia_rx_wptr
-        stz acia_tx_rptr
-        stz acia_tx_wptr
         rts
 
 ; TENTATIVE C COMPLIANT
-_handle_acia_irq:
-        ; Preserve accumulator and x register
+_handle_serial_irq:
+        ; Preserve accumulator
         pha
+        bit ACIA_STATUS
+        bmi @process_irq
+        jmp @no_irq
+@process_irq:
+        ; Process, preserve x and y register 
         phx
+        phy
+        ; Preserve temporary buffer pointer
+        ldx serial_buffer_tmp_ptr
+        phx
+        ldx serial_buffer_tmp_ptr+1
+        phx
+        ; store channel offset in X
+        tax
         ; Load current ACIA status
         lda ACIA_STATUS
         ; Stop processing if only CTS is high
         cmp #$80
-        beq cts_high
+        beq @cts_high
         ; Ignore IRQ bit, we already know
         asl
         ; ignore DSR
         asl
         ; ignore DCD
         asl
-        ; Ignore the following code for ACIA chips that don't support TX IRQ (WDC65C51)
-        .if acia_tx_irq=1
         ; TX buffer empty
-        bpl tx_empty_exit
+        bpl @tx_empty_exit
         ; Preserve accumulator
         pha
         ; Compare TX write and read buffer pointers
-        ldx acia_tx_rptr
-        cpx acia_tx_wptr
-        bne tx_send_character
+        lda serial_tx_rptr,x
+        cmp serial_tx_wptr,x
+        bne @tx_send_character
         ; Both equal - nothing to send in buffer
         lda ACIA_COMMAND
         ; Disable TX interrupt now until new data sent
@@ -126,17 +129,25 @@ _handle_acia_irq:
         sta ACIA_COMMAND
         ; Restore value of accumulator (rolled ACIA STATUS)
         pla
-        bra tx_empty_exit
-tx_send_character:
+        bra @tx_empty_exit
+@tx_send_character:
         ; Otherwise, send new character
-        lda acia_tx_buffer,x
+        tay
+        ; Copy selected buffer pointer
+        ; to temporary one for indirect
+        ; access
+        lda serial_tx_buffer_ptr,x
+        sta serial_buffer_tmp_ptr
+        lda serial_tx_buffer_ptr+1,x
+        sta serial_buffer_tmp_ptr+1
+        lda (serial_buffer_tmp_ptr),y
         sta ACIA_DATA
         ; Increase read buffer pointer
-        inc acia_tx_rptr
+        inc serial_tx_rptr,x
         ; Compare pointers - is there any data
-        lda acia_tx_rptr
-        cmp acia_tx_wptr
-        bne tx_data_left_to_send
+        lda serial_tx_rptr,x
+        cmp serial_tx_wptr,x
+        bne @tx_data_left_to_send
         ; Both equal - nothing to send in buffer
         lda ACIA_COMMAND
         ; Disable TX interrupt now until new data sent
@@ -144,83 +155,67 @@ tx_send_character:
         ora #(ACIA_TX_INT_DISABLE_RTS_LOW)
         sta ACIA_COMMAND
         ; Restore value of accumulator (rolled ACIA STATUS)
-tx_data_left_to_send:
+@tx_data_left_to_send:
         pla
-tx_empty_exit:
-        ; End of R6551 specific code
-        .endif
+@tx_empty_exit:
         ; Test the RX bit now
         asl
         ; Receive buffer full
-        bpl rx_full_exit
+        bpl @rx_full_exit
         ; Preserve accumulator again
         pha
+        ; Copy buffer pointer to temporary
+        ; pointer for indirection
+        lda serial_rx_buffer_ptr,x
+        sta serial_buffer_tmp_ptr
+        lda serial_rx_buffer_ptr+1,x
+        sta serial_buffer_tmp_ptr+1
         ; Read byte from RX
         lda ACIA_DATA
-        ldx acia_rx_wptr
+        ldy serial_rx_wptr,x
         ; Store in rx buffer
-        sta acia_rx_buffer,x
+        sta (serial_buffer_tmp_ptr),y
         ; Increase write buffer pointer
-        inc acia_rx_wptr
+        inc serial_rx_wptr,x
         ; Check for receive buffer overflow condition
-        lda acia_rx_wptr
+        lda serial_rx_wptr,x
         sec
-        sbc acia_rx_rptr
+        sbc serial_rx_rptr,x
         ; We have more than 128 characters to service in queue - overflow
         cmp #$80
-        bcc no_rx_overflow
+        bcc @no_rx_overflow
         ; Raise RTS line to stop inflow
         lda ACIA_COMMAND
         and #%11110011
         ; ora #%00000001
         sta ACIA_COMMAND
-no_rx_overflow:
+@no_rx_overflow:
         pla
-rx_full_exit:
+@rx_full_exit:
         ; Ignore overrun
         ; Ignore framing error
         ; Ignore parity error
-cts_high:
+@cts_high:
+        pla
+        sta serial_buffer_tmp_ptr+1
+        pla
+        sta serial_buffer_tmp_ptr
+        ply
         plx
+@no_irq:
         pla
         rts
 
-; POSITIVE C COMPLIANT - return value A
-; Check if there is anything to receive and return in A
-; 0 - data not available
-; 1 - data available
-_acia_is_data_available:
-        lda acia_rx_wptr
-        cmp acia_rx_rptr
-        beq @no_data_found
-        lda #(ACIA_DATA_AVAILABLE)
-        rts
-@no_data_found:
-        lda #(ACIA_NO_DATA_AVAILABLE)
-        rts
-
-; POSITIVE C COMPLIANT
-; Return one byte from RX buffer
-_acia_read_byte:
-        ; block until data available
-        jsr _acia_is_data_available
-        cmp #(ACIA_NO_DATA_AVAILABLE)
-        beq _acia_read_byte
-        ; proceed
-        phx
-        ldx acia_rx_rptr
-        lda acia_rx_buffer,x
-        ; Increase read buffer pointer
-        inc acia_rx_rptr
-        ; Store result in X for a while now
-        tax
+; X contains channel number
+_serial_notify_read:
+        pha
         ; Check how many characters are to be serviced
-        lda acia_rx_wptr
+        lda serial_rx_wptr,x
         sec
-        sbc acia_rx_rptr
+        sbc serial_rx_rptr,x
         ; More than 64 - still overflow
         cmp #$40
-        bcs still_rx_overflow
+        bcs @still_rx_overflow
         ; Otherwise accept more characters
         lda ACIA_COMMAND
         and #%11110011
@@ -229,37 +224,14 @@ _acia_read_byte:
         ; correct the setting if it should not be enabled
         ora #(ACIA_TX_INT_ENABLE_RTS_LOW)
         sta ACIA_COMMAND
-still_rx_overflow:
+@still_rx_overflow:
         ; Transfer result back to A
-        txa
-        plx
+        pla
         rts
 
-; POSITIVE C COMPLIANT
-; Write one byte to TX buffer
-; Assume input in accumulator
-_acia_write_byte:
-        ; below code works only for R6551 and compatibles
-        .if acia_tx_irq=1
-        ; Preserve x register
-        phx
-        ; Preserve input value
-        pha
-        ; Check if TX buffer full - if so, keep polling until more space available
-@compare_with_read_pointer:
-        ; Load current value of write pointer
-        lda acia_tx_wptr
-        sec
-        sbc acia_tx_rptr
-        cmp #$ff
-        beq @compare_with_read_pointer
-        ; Restore input value
-        pla
-        ; Write data to the TX buffer
-        ldx acia_tx_wptr
-        sta acia_tx_buffer,x
-        ; Increase pointer
-        inc acia_tx_wptr
+; A contains written character
+; X contains channel number
+_serial_notify_write:
         ; Enable interrupt after tx buffer is empty
         pha
         lda ACIA_COMMAND
@@ -267,46 +239,11 @@ _acia_write_byte:
         ora #(ACIA_TX_INT_ENABLE_RTS_LOW)
         sta ACIA_COMMAND
         pla
-
-        plx
-        .else
-        ; code below works for non-IRQ compliant devices, like WDC65C51
-        ; store data in data register
-        sta ACIA_DATA
-        pha
-        ; wait 1ms (more than 520us for 19200 baud)
-        lda #$01
-        jsr _delay_ms
-        pla
-        ; done, sent
-        .endif
         rts
 
 ; POSITIVE C COMPLIANT
-; Write null terminated string to TX buffer
-; Assume input pointer in A,X
-_acia_write_string:
-        sta ptr1
-        stx ptr1+1
-        ; preserve Y register
-        phy
-        ; init index
-        ldy #$00
-@string_loop:
-        ; load character
-        lda (ptr1),y
-        ; stop if null
-        beq @end_loop
-        ; send char to buffer
-        jsr _acia_write_byte
-        ; increase index
-        iny 
-        ; prevent infinite loop
-        beq @end_loop
-        ; repeat
-        bra @string_loop
-@end_loop:
-        ; restore Y register
-        ply
-        ; return
+; channel number in A        
+_serial_disable_controller:
+        lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_DISABLE | ACIA_DTR_LOW)
+        sta ACIA_COMMAND
         rts
