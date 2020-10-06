@@ -4,6 +4,8 @@
         .include "sysram_map.inc"
         .include "utils.inc"
         .include "macros.inc"
+
+        .import __ACIA_START__
         
         .export _handle_serial_irq
         .export _serial_init_controller
@@ -11,50 +13,48 @@
         .export _serial_notify_write
         .export _serial_disable_controller
 
-DUART_START = $8200
-
 ; READ:
-DUART_R_MR0A  = DUART_START + $00
-DUART_R_MR1A  = DUART_START + $00
-DUART_R_MR2A  = DUART_START + $00
-DUART_R_SRA   = DUART_START + $01
+DUART_R_MR0A  = __ACIA_START__ + $00
+DUART_R_MR1A  = __ACIA_START__ + $00
+DUART_R_MR2A  = __ACIA_START__ + $00
+DUART_R_SRA   = __ACIA_START__ + $01
 ;Reserved
-DUART_R_RxA   = DUART_START + $03
-DUART_R_IPCR  = DUART_START + $04
-DUART_R_ISR   = DUART_START + $05
-DUART_R_CTU   = DUART_START + $06
-DUART_R_CTL   = DUART_START + $07
-DUART_R_MR0B  = DUART_START + $08
-DUART_R_MR1B  = DUART_START + $08
-DUART_R_MR2B  = DUART_START + $08
-DUART_R_SRB   = DUART_START + $09
+DUART_R_RxA   = __ACIA_START__ + $03
+DUART_R_IPCR  = __ACIA_START__ + $04
+DUART_R_ISR   = __ACIA_START__ + $05
+DUART_R_CTU   = __ACIA_START__ + $06
+DUART_R_CTL   = __ACIA_START__ + $07
+DUART_R_MR0B  = __ACIA_START__ + $08
+DUART_R_MR1B  = __ACIA_START__ + $08
+DUART_R_MR2B  = __ACIA_START__ + $08
+DUART_R_SRB   = __ACIA_START__ + $09
 ;Reserved
-DUART_R_RxB   = DUART_START + $0b
-DUART_R_USER  = DUART_START + $0c
-DUART_R_PORT  = DUART_START + $0d
-DUART_R_START = DUART_START + $0e
-DUART_R_STOP  = DUART_START + $0f
+DUART_R_RxB   = __ACIA_START__ + $0b
+DUART_R_USER  = __ACIA_START__ + $0c
+DUART_R_PORT  = __ACIA_START__ + $0d
+DUART_R_START = __ACIA_START__ + $0e
+DUART_R_STOP  = __ACIA_START__ + $0f
 ; WRITE:
-DUART_W_MR0A  = DUART_START + $00
-DUART_W_MR1A  = DUART_START + $00
-DUART_W_MR2A  = DUART_START + $00
-DUART_W_CSRA  = DUART_START + $01
-DUART_W_CRA   = DUART_START + $02
-DUART_W_TxA   = DUART_START + $03
-DUART_W_ACR   = DUART_START + $04
-DUART_W_IMR   = DUART_START + $05
-DUART_W_CTPU  = DUART_START + $06
-DUART_W_CTPL  = DUART_START + $07
-DUART_W_MR0B  = DUART_START + $08
-DUART_W_MR1B  = DUART_START + $08
-DUART_W_MR2B  = DUART_START + $08
-DUART_W_CSRB  = DUART_START + $09
-DUART_W_CRB   = DUART_START + $0a
-DUART_W_TxB   = DUART_START + $0b
-DUART_W_USER  = DUART_START + $0c
-DUART_W_OPCR  = DUART_START + $0d
-DUART_W_SOP12 = DUART_START + $0e
-DUART_W_ROP12 = DUART_START + $0f
+DUART_W_MR0A  = __ACIA_START__ + $00
+DUART_W_MR1A  = __ACIA_START__ + $00
+DUART_W_MR2A  = __ACIA_START__ + $00
+DUART_W_CSRA  = __ACIA_START__ + $01
+DUART_W_CRA   = __ACIA_START__ + $02
+DUART_W_TxA   = __ACIA_START__ + $03
+DUART_W_ACR   = __ACIA_START__ + $04
+DUART_W_IMR   = __ACIA_START__ + $05
+DUART_W_CTPU  = __ACIA_START__ + $06
+DUART_W_CTPL  = __ACIA_START__ + $07
+DUART_W_MR0B  = __ACIA_START__ + $08
+DUART_W_MR1B  = __ACIA_START__ + $08
+DUART_W_MR2B  = __ACIA_START__ + $08
+DUART_W_CSRB  = __ACIA_START__ + $09
+DUART_W_CRB   = __ACIA_START__ + $0a
+DUART_W_TxB   = __ACIA_START__ + $0b
+DUART_W_USER  = __ACIA_START__ + $0c
+DUART_W_OPCR  = __ACIA_START__ + $0d
+DUART_W_SOP12 = __ACIA_START__ + $0e
+DUART_W_ROP12 = __ACIA_START__ + $0f
 
         .code
 
@@ -88,7 +88,9 @@ _serial_init_controller:
         ; TxINT on ready FIFO (b5:4=11)
         ; b3=0
         ; Extended mode (b2:0=001)
-        lda #%00110001
+        ; lda #%00110001
+        ; Normal mode (b2:0=000)        
+        lda #%00110000
         sta DUART_W_MR0A
         ; Write to MR1A
         lda #$10
@@ -151,12 +153,17 @@ _handle_serial_irq:
         lda serial_rx_buffer_ptr+1,x
         sta serial_buffer_tmp_ptr+1
 
+@keep_reading_input:
         lda DUART_R_RxA
         ldy serial_rx_wptr,x
         ; Store in rx buffer
         sta (serial_buffer_tmp_ptr),y
         ; Increase write buffer pointer
         inc serial_rx_wptr,x
+        ; repeat until all bytes read
+        lda DUART_R_SRA
+        and #%00000001
+        bne @keep_reading_input
         pla
 @not_rx_irq:
         asl

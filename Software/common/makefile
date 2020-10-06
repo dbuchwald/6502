@@ -66,7 +66,8 @@ endif
 # Possible values are
 # - wdc65c51
 # - r6551
-SERIAL_INTERFACE=wdc65c51
+# - sc26c92
+SERIAL_INTERFACE=sc26c92
 
 SERIAL_DRIVER=serial_$(SERIAL_INTERFACE).s
 
@@ -74,7 +75,7 @@ SERIAL_DRIVER=serial_$(SERIAL_INTERFACE).s
 ADDRESS_MODE=v2
 
 # Default clock mode (supported are: slow, 250k, 1m, 2m, 4m, 8m)
-CLOCK_MODE=slow
+CLOCK_MODE=250k
 
 # Clock mode translation (for CA65 preprocessor) - see common/include/clock.inc
 ifeq ($(CLOCK_MODE), slow)
