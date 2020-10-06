@@ -1,0 +1,90 @@
+Name            DB6502 Address Decoder;
+Partno          DB6502;
+Revision        01;
+Date            09/09/2020;
+Designer        Dawid Buchwald;
+Company         ;
+Location        Poland;
+Assembly        None;
+Device          p22v10;
+
+/*********************************************************************************/
+/*                                                                               */
+/*  This program and its associated documentation are provided for your personal */
+/*  use only and appear here exclusively by permission of the copyright holder.  */
+/*  Please contact the copyright holder before re-distributing, re-publishing    */
+/*  or disseminating this copyrighted work. This code is not GPL or in the       */ 
+/*  public domain. Please respect the author's copyright.                        */
+/*                                                                               */
+/*  No waranty, either expressed or implied, are given.  I assume no liability   */
+/*  for its use in any project or device.                                        */
+/*                                                                               */
+/*  Your use of this program indicates your acceptance of all license terms.     */
+/*  This particular version is freeware as long as the copyright messages are    */
+/*  left intact.                                                                 */  
+/*                                                                               */
+/*********************************************************************************/
+
+/* Pin Map 
+       --------
+CLK   |1     24| Vcc
+RW    |2     23| /WE
+EXRAM |3     22| /OE
+A15   |4     21| /RAM1_CS
+A14   |5     20| /RAM2_CS
+A13   |6     19| /ROM_CS
+A12   |7     18| IO_CS
+A11   |8     17| --
+A10   |9     16| --
+A9    |10    15| --
+A8    |11    14| --
+Gnd   |12    13| -- 
+       --------
+*/
+
+/*
+ * Inputs:  All are signals from the 6502, 65C02, 65816
+ */
+
+Pin 1  =  CLK;
+Pin 2  =  RW;
+Pin 3  =  EXRAM;
+Pin 4  =  A15;
+Pin 5  =  A14;
+Pin 6  =  A13;
+Pin 7  =  A12;
+Pin 8  =  A11;
+Pin 9  =  A10;
+Pin 10 =  A9;
+Pin 11 =  A8;
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+Pin 23 = WE;      /* to RAM and ROM chips */
+Pin 22 = OE;      /* to RAM and ROM chips */
+Pin 21 = RAM1_CS; /* to RAM1 /CS pin */
+Pin 20 = RAM2_CS; /* to RAM2 /CS pin */
+Pin 19 = ROM_CS;  /* to ROM  /CS pin */
+Pin 18 = IO_CS;   /* to IOCS pin */
+
+/*
+ * Local variables
+ */
+
+FIELD Address = [A15..A8];
+
+/*
+ * Logic:
+ */
+
+RAM       = Address:[0000..7FFF];
+IO_SHADOW = Address:[0200..02FF];
+RAM_EXTRA = Address:[8000..BFFF];
+ROM       = Address:[8000..FFFF];
+
+!WE       = CLK & !RW;
+!OE       = CLK & RW;
+!RAM1_CS  = RAM & !IO_SHADOW;
+!RAM2_CS  = EXRAM & RAM_EXTRA;
+!ROM_CS   = ROM & !(EXRAM & RAM_EXTRA);
+IO_CS     = IO_SHADOW;

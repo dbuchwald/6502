@@ -196,7 +196,10 @@ void disableSDP(void) {
 }
 
 void flashEEPROM(void) {
+  uint32_t start, end;
+  uint8_t secs, millis;
   printf("Preparing to flash EEPROM\n");
+  start = getSystemTime();
   assumeBusControl();
   printf(" - Erasing EEPROM...");
   if (eraseChip() == WRITE_OK) {
@@ -218,7 +221,10 @@ void flashEEPROM(void) {
   printf(" - enabling SDP...");
   enableDataProtection();
   returnBusControl();
-  printf("done!\n");
+  end = getSystemTime();
+  secs = (end-start)/50;
+  millis = ((end-start) % 50) * 2;
+  printf("done, took: %d:%02d secs!\n", secs, millis);
 }
 
 uint8_t upload_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size) {
@@ -233,10 +239,13 @@ void zeroEEPROM(void) {
   uint16_t address=ROM_START;
   uint8_t new_data[PAGE_SIZE];
   uint8_t result;
+  uint32_t start, end;
+  uint8_t secs, millis;
   for (uint8_t i=0; i<PAGE_SIZE; i++) {
     new_data[i] = 0x00;
   }
   printf("Filling EEPROM with nulls\n");
+  start = getSystemTime();
   assumeBusControl();
   printf(" - Disabling write protection...");
   disableDataProtection();
@@ -254,8 +263,11 @@ void zeroEEPROM(void) {
   }
   printf(" - Enabling data protection...");
   enableDataProtection();
-  printf("done!\n");
   returnBusControl();
+  end = getSystemTime();
+  secs = (end-start)/50;
+  millis = ((end-start) % 50) * 2;
+  printf("done, took: %d:%02d secs!\n", secs, millis);
 }
 
 void eraseEEPROM(void) {

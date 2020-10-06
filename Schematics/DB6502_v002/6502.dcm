@@ -1,0 +1,11 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 22V10C
+F http://www.farnell.com/datasheets/1627189.pdf
+$ENDCMP
+#
+$CMP 74HC238
+D Decoder 3 to 8 active high outputs
+$ENDCMP
+#
+#End Doc Library

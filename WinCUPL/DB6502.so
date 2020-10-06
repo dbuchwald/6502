@@ -1,0 +1,108 @@
+CSIM(WM): CUPL Simulation Program
+Version 5.0a Serial# 
+Copyright (c) 1983, 1998 Logical Devices, Inc.
+CREATED Thu Sep 10 14:31:52 2020
+
+LISTING FOR SIMULATION FILE: DB6502.si
+
+   1: Name     DB6502 Address Decoder;
+   2: PartNo   DB6502;
+   3: Date     09/09/2020;
+   4: Revision 01;
+   5: Designer Dawid Buchwald;
+   6: Company  ;
+   7: Assembly None;
+   8: Location Poland;
+   9: Device   p22v10;
+  10: 
+  11: 
+  12: FIELD Address = [A15,A14,A13,A12,A11,A10,A9,A8];
+  13:
+  14: ORDER: CLK, %2, RW, %5, EXRAM, %1, Address, %3, WE, %3, OE, %5, RAM1_CS, %5, RAM2_CS, %4, ROM_CS, %2, IO_CS; 
+  15: 
+  16: 
+
+========================================================
+                                      R     R           
+                                      A     A    R      
+               E                      M     M    O  I   
+               X                      1     2    M  O   
+      C        R                      _     _    _  _   
+      L  R     A            W   O     C     C    C  C   
+      K  W     M Address    E   E     S     S    S  S   
+========================================================
+                 Address decoder test                   
+      CLK RW EXRAM  ADDRESS WE# OE# RAM1# RAM2# ROM# IO 
+      --- -- ----- -------- --- --- ----- ----- ---- -- 
+0001: 0  0     0 00000000   H   H     L     H    H  L
+0002: 0  1     0 00000000   H   H     L     H    H  L
+0003: 1  0     0 00000000   L   H     L     H    H  L
+0004: 1  1     0 00000000   H   L     L     H    H  L
+0005: 0  0     0 00000001   H   H     L     H    H  L
+0006: 0  1     0 00000001   H   H     L     H    H  L
+0007: 1  0     0 00000001   L   H     L     H    H  L
+0008: 1  1     0 00000001   H   L     L     H    H  L
+0009: 0  0     0 00000010   H   H     H     H    H  H
+0010: 0  1     0 00000010   H   H     H     H    H  H
+0011: 1  0     0 00000010   L   H     H     H    H  H
+0012: 1  1     0 00000010   H   L     H     H    H  H
+0013: 0  0     0 00000011   H   H     L     H    H  L
+0014: 0  1     0 00000011   H   H     L     H    H  L
+0015: 1  0     0 00000011   L   H     L     H    H  L
+0016: 1  1     0 00000011   H   L     L     H    H  L
+0017: 0  0     0 01111111   H   H     L     H    H  L
+0018: 0  1     0 01111111   H   H     L     H    H  L
+0019: 1  0     0 01111111   L   H     L     H    H  L
+0020: 1  1     0 01111111   H   L     L     H    H  L
+0021: 0  0     0 10000000   H   H     H     H    L  L
+0022: 0  1     0 10000000   H   H     H     H    L  L
+0023: 1  0     0 10000000   L   H     H     H    L  L
+0024: 1  1     0 10000000   H   L     H     H    L  L
+0025: 0  0     0 10111111   H   H     H     H    L  L
+0026: 0  1     0 10111111   H   H     H     H    L  L
+0027: 1  0     0 10111111   L   H     H     H    L  L
+0028: 1  1     0 10111111   H   L     H     H    L  L
+0029: 0  0     0 11000000   H   H     H     H    L  L
+0030: 0  1     0 11000000   H   H     H     H    L  L
+0031: 1  0     0 11000000   L   H     H     H    L  L
+0032: 1  1     0 11000000   H   L     H     H    L  L
+0033: 0  0     0 11111111   H   H     H     H    L  L
+0034: 0  1     0 11111111   H   H     H     H    L  L
+0035: 1  0     0 11111111   L   H     H     H    L  L
+0036: 1  1     0 11111111   H   L     H     H    L  L
+0037: 0  0     1 00000000   H   H     L     H    H  L
+0038: 0  1     1 00000000   H   H     L     H    H  L
+0039: 1  0     1 00000000   L   H     L     H    H  L
+0040: 1  1     1 00000000   H   L     L     H    H  L
+0041: 0  0     1 00000001   H   H     L     H    H  L
+0042: 0  1     1 00000001   H   H     L     H    H  L
+0043: 1  0     1 00000001   L   H     L     H    H  L
+0044: 1  1     1 00000001   H   L     L     H    H  L
+0045: 0  0     1 00000010   H   H     H     H    H  H
+0046: 0  1     1 00000010   H   H     H     H    H  H
+0047: 1  0     1 00000010   L   H     H     H    H  H
+0048: 1  1     1 00000010   H   L     H     H    H  H
+0049: 0  0     1 00000011   H   H     L     H    H  L
+0050: 0  1     1 00000011   H   H     L     H    H  L
+0051: 1  0     1 00000011   L   H     L     H    H  L
+0052: 1  1     1 00000011   H   L     L     H    H  L
+0053: 0  0     1 01111111   H   H     L     H    H  L
+0054: 0  1     1 01111111   H   H     L     H    H  L
+0055: 1  0     1 01111111   L   H     L     H    H  L
+0056: 1  1     1 01111111   H   L     L     H    H  L
+0057: 0  0     1 10000000   H   H     H     L    H  L
+0058: 0  1     1 10000000   H   H     H     L    H  L
+0059: 1  0     1 10000000   L   H     H     L    H  L
+0060: 1  1     1 10000000   H   L     H     L    H  L
+0061: 0  0     1 10111111   H   H     H     L    H  L
+0062: 0  1     1 10111111   H   H     H     L    H  L
+0063: 1  0     1 10111111   L   H     H     L    H  L
+0064: 1  1     1 10111111   H   L     H     L    H  L
+0065: 0  0     1 11000000   H   H     H     H    L  L
+0066: 0  1     1 11000000   H   H     H     H    L  L
+0067: 1  0     1 11000000   L   H     H     H    L  L
+0068: 1  1     1 11000000   H   L     H     H    L  L
+0069: 0  0     1 11111111   H   H     H     H    L  L
+0070: 0  1     1 11111111   H   H     H     H    L  L
+0071: 1  0     1 11111111   L   H     H     H    L  L
+0072: 1  1     1 11111111   H   L     H     H    L  L
