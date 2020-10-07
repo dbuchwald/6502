@@ -104,20 +104,20 @@ BASE_LIBRARY=$(COMMON_ROOT)/none.lib
 # Common objects to be linked
 COMMON_SOURCES=syscalls.s       \
                serial.s         \
-							 $(SERIAL_DRIVER) \
+               $(SERIAL_DRIVER) \
                blink.s          \
-							 core.s           \
-							 keyboard.s       \
-							 lcd.s            \
-							 $(LCD_MODULE)    \
-							 modem.s          \
-							 string.s         \
-							 utils.s          \
-							 via.s            \
-							 via_utils.s      \
-							 tty.s            \
-							 parse.s          \
-							 menu.s
+               core.s           \
+               keyboard.s       \
+               lcd.s            \
+               $(LCD_MODULE)    \
+               modem.s          \
+               string.s         \
+               utils.s          \
+               via.s            \
+               via_utils.s      \
+               tty.s            \
+               parse.s          \
+               menu.s
 
 COMMON_OBJECTS=$(COMMON_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.o)
 
