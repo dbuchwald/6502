@@ -40,6 +40,8 @@ static void renderLastCycles(cycle_buffer* buffer, uint8_t count);
 static void renderLastInstructions(cycle_buffer* buffer, uint8_t count);
 static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer);
 
+static void renderSingleCycle(cpu_cycle* cycle_ptr);
+
 void runMonitorShell(void) {
   cycle_buffer cpu_buffer;
   unsigned char keep_going=1;
@@ -177,32 +179,41 @@ static uint8_t getOneCycleToBuffer(cycle_buffer* buffer) {
 static void renderLastCycles(cycle_buffer* buffer, uint8_t count) {
   uint8_t wptr = buffer->write_ptr;
   uint8_t wptr_orig = wptr;
-  char serial_buffer[64];
   wptr = wptr - count;
   while (wptr!=wptr_orig) {
     cpu_cycle* cycle_ptr = &(buffer->cycles[wptr]);
-    if (!(cycle_ptr->ctrl & CLK_BIT)) {
-      sprintf(serial_buffer, "  %02x%02x: %c %02x %c\n", cycle_ptr->addrMSB, 
-                                                         cycle_ptr->addrLSB, 
-                                                         cycle_ptr->ctrl & RW_BIT ? 'r' : 'W', 
-                                                         cycle_ptr->data,
-                                                         cycle_ptr->ctrl & SYNC_BIT ? 'S' : ' ');
-      printf(serial_buffer);
-    }
+    renderSingleCycle(cycle_ptr);
     wptr++;
   }
 }
 
 static void renderLastInstructions(cycle_buffer* buffer, uint8_t count) {
-  uint8_t wptr = buffer->write_ptr;
-  uint8_t wptr_orig = wptr;
-  // count is incremented, as we want full instructions from the buffer
-  count++;
+  uint8_t wptr = buffer->write_ptr-1;
+  cpu_cycle* cycle_ptr = &(buffer->cycles[wptr]);
+  uint8_t wptr_orig;
+  uint8_t found = 0;
+
+  // start by finding first byte of last instruction
+  while (!(cycle_ptr->ctrl & (SYNC_BIT | CLK_BIT))) {
+    wptr--;
+    cycle_ptr = &(buffer->cycles[wptr]);
+  }
+
+  // no previous instruction found
+  if (cycle_ptr->ctrl & CLK_BIT) {
+    return;
+  }
+
+  // set original position of the wptr to current one (pointing to beginning of last instruction)
+  wptr_orig=wptr;
+
+  // keep counting previous instructions
   while (count) {
     wptr--;
-    cpu_cycle* cycle_ptr = &(buffer->cycles[wptr]);
+    cycle_ptr = &(buffer->cycles[wptr]);
     if (cycle_ptr->ctrl & SYNC_BIT) {
       count--;
+      found++;
     }
     // exit if we reached uninitialized data, no more instructions will be found
     if (cycle_ptr->ctrl & CLK_BIT) {
@@ -215,12 +226,18 @@ static void renderLastInstructions(cycle_buffer* buffer, uint8_t count) {
     }
   }
 
+  // to display correctly we need at least one instruction
+  if (!found) {
+    return;
+  }
+
   while (wptr!=wptr_orig) {
-    cpu_cycle* cycle_ptr = &(buffer->cycles[wptr]);
+    cycle_ptr = &(buffer->cycles[wptr]);
     if (!(cycle_ptr->ctrl & CLK_BIT)) {
       renderOpcode(buffer, &wptr);
+    } else {
+      wptr++;
     }
-    wptr++;
   }
 }
 
@@ -254,7 +271,7 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer) {
     sprintf(operand, " #$%02x", opLSB);
     break;
   case IMPLIED:
-    sprintf(operand, "");
+    operand[0]=0;
     break;
   case X_INDIRECT:
     sprintf(operand, " ($%02x,X)", opLSB);
@@ -297,18 +314,26 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer) {
   printf(serial_buffer);
   wptr+=getOpcodeBytes(opcode);
   cycle_ptr = &(buffer->cycles[wptr]);
-  while (!(cycle_ptr->ctrl & SYNC_BIT)) {
+  while (!(cycle_ptr->ctrl & (SYNC_BIT | CLK_BIT))) {
+    renderSingleCycle(cycle_ptr);
+    wptr++;
+    cycle_ptr = &(buffer->cycles[wptr]);
+  }
+  *pointer = wptr;
+}
+
+static void renderSingleCycle(cpu_cycle* cycle_ptr) {
+  char serial_buffer[64];
+  if (!(cycle_ptr->ctrl & CLK_BIT)) {
     sprintf(serial_buffer, "  %02x%02x: %c %02x %c\n", cycle_ptr->addrMSB, 
                                                        cycle_ptr->addrLSB, 
                                                        cycle_ptr->ctrl & RW_BIT ? 'r' : 'W', 
                                                        cycle_ptr->data,
                                                        cycle_ptr->ctrl & SYNC_BIT ? 'S' : ' ');
     printf(serial_buffer);
-    wptr++;
-    cycle_ptr = &(buffer->cycles[wptr]);
   }
-  *pointer = wptr;
 }
+
 
 static void reset6502(void) {
   printf("Resetting 6502 and peripherals...");
