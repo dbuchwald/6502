@@ -141,7 +141,7 @@ const uint8_t addressModes[] PROGMEM = {
 
 // how many bytes per instruction (aggregated by addressModes)
 const unsigned char modeBytes[] = {
-  0, 2, 2, 2, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2
+  1, 3, 3, 3, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3
 };
 
 void getOpcodeText(char* buffer, const uint8_t opcode) {

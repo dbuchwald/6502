@@ -228,8 +228,8 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer) {
   uint8_t wptr = *pointer;
   cpu_cycle* cycle_ptr = &(buffer->cycles[wptr]);
   char serial_buffer[64];
-  char operand[8];
-  char opcode_text[8];
+  char operand[10];
+  char opcode_text[6];
   uint8_t addrMSB = cycle_ptr->addrMSB;
   uint8_t addrLSB = cycle_ptr->addrLSB;
   unsigned int relAddress;
@@ -242,25 +242,25 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer) {
     sprintf(operand, "A");
     break;
   case ABSOLUTE:
-    sprintf(operand, "$%02x%02x", opMSB, opLSB);
+    sprintf(operand, " $%02x%02x", opMSB, opLSB);
     break;
   case ABSOLUTE_X:
-    sprintf(operand, "$%02x%02x,X", opMSB, opLSB);
+    sprintf(operand, " $%02x%02x,X", opMSB, opLSB);
     break;
   case ABSOLUTE_Y:
-    sprintf(operand, "$%02x%02x,Y", opMSB, opLSB);
+    sprintf(operand, " $%02x%02x,Y", opMSB, opLSB);
     break;
   case IMMEDIATE:
-    sprintf(operand, "#$%02x", opLSB);
+    sprintf(operand, " #$%02x", opLSB);
     break;
   case IMPLIED:
-    sprintf(operand, " ");
+    sprintf(operand, "");
     break;
   case X_INDIRECT:
-    sprintf(operand, "($%02x,X)", opLSB);
+    sprintf(operand, " ($%02x,X)", opLSB);
     break;
   case INDIRECT_Y:
-    sprintf(operand, "($%02x),Y", opLSB);
+    sprintf(operand, " ($%02x),Y", opLSB);
     break;
   case RELATIVE:
     if (opLSB>=0x80) {
@@ -268,34 +268,34 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer) {
     } else {
       relAddress=(addrMSB << 8) + addrLSB + opLSB + 1;
     }
-    sprintf(operand, "$%04x", relAddress);
+    sprintf(operand, " $%04x", relAddress);
     break;
   case ZEROPAGE:
-    sprintf(operand, "$%02x", opLSB);
+    sprintf(operand, " $%02x", opLSB);
     break;
   case ZEROPAGE_X:
-    sprintf(operand, "$%02x,X", opLSB);
+    sprintf(operand, " $%02x,X", opLSB);
     break;
   case ZEROPAGE_Y:
-    sprintf(operand, "$%02x,Y", opLSB);
+    sprintf(operand, " $%02x,Y", opLSB);
     break;
   case ZEROPAGE_R:
-    sprintf(operand, "$%02x,$xxxx", opLSB);
+    sprintf(operand, " $%02x,$xxxx", opLSB);
     break;
   case ZEROPAGE_I:
-    sprintf(operand, "($%02x)", opLSB);
+    sprintf(operand, " ($%02x)", opLSB);
     break;
   case INDIRECT:
-    sprintf(operand, "($%02x%02x)", opMSB, opLSB);
+    sprintf(operand, " ($%02x%02x)", opMSB, opLSB);
     break;
   case INDIRECT_X:
-    sprintf(operand, "($%02x%02x,X)", opMSB, opLSB);
+    sprintf(operand, " ($%02x%02x,X)", opMSB, opLSB);
     break;
   }
   getOpcodeText(opcode_text, opcode);
-  sprintf(serial_buffer, " %02x%02x %s %s\n", addrMSB, addrLSB, opcode_text, operand);
+  sprintf(serial_buffer, "  \x1B[1;94m%02x%02x %s%s\x1B[0m\n", addrMSB, addrLSB, opcode_text, operand);
   printf(serial_buffer);
-  wptr+=getOpcodeBytes(opcode)+1;
+  wptr+=getOpcodeBytes(opcode);
   cycle_ptr = &(buffer->cycles[wptr]);
   while (!(cycle_ptr->ctrl & SYNC_BIT)) {
     sprintf(serial_buffer, "  %02x%02x: %c %02x %c\n", cycle_ptr->addrMSB, 
