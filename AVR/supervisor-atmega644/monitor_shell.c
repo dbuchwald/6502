@@ -31,7 +31,7 @@ static void singleInstruction(cycle_buffer* buffer);
 static void cycleStack(cycle_buffer* buffer);
 static void instructionsStack(cycle_buffer* buffer);
 static void goSlow(cycle_buffer* buffer);
-static void goFast(void);
+static void goFast(cycle_buffer* buffer);
 static void reset6502(void);
 
 static void initBuffer(cycle_buffer* buffer);
@@ -77,7 +77,7 @@ void runMonitorShell(void) {
         goSlow(&cpu_buffer);
         break;
       case 'F':
-        goFast();
+        goFast(&cpu_buffer);
         break;
       case 'R':
         reset6502();
@@ -132,14 +132,9 @@ static void goSlow(cycle_buffer* buffer) {
   }
 }
 
-static void goFast(void) {
+static void goFast(cycle_buffer* buffer) {
   while (1) {
-    // raise the clock
-    CONTROL_POUT |= CLK_BIT;
-    // wait a moment
-    _delay_loop_1(8);
-    // lower the clock
-    CONTROL_POUT &= ~CLK_BIT;
+    getOneCycleToBuffer(buffer);
     if (uart_peek() == UART_DATA_AVAILABLE) {
       getc(stdin);
       return;
