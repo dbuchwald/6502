@@ -12,6 +12,9 @@
 #define LINE_LENGTH 16
 #define BUFFER_SIZE 256
 
+// use CLK_BIT as uninitialized flag in buffer
+#define UNINITIALIZED CLK_BIT
+
 typedef struct {
   uint8_t addrMSB;
   uint8_t addrLSB;
@@ -21,7 +24,6 @@ typedef struct {
 
 typedef struct {
   cpu_cycle cycles[BUFFER_SIZE];
-  uint8_t   read_ptr;
   uint8_t   write_ptr;
 } cycle_buffer;
 
@@ -32,7 +34,7 @@ static void cycleStack(cycle_buffer* buffer);
 static void instructionsStack(cycle_buffer* buffer);
 static void goSlow(cycle_buffer* buffer);
 static void goFast(cycle_buffer* buffer);
-static void reset6502(void);
+static void reset6502(cycle_buffer* buffer);
 
 static void initBuffer(cycle_buffer* buffer);
 static uint8_t getOneCycleToBuffer(cycle_buffer* buffer);
@@ -49,7 +51,7 @@ void runMonitorShell(void) {
   printf("Welcome to DB6502 monitor/debugger\n");
   displayHelp();
   while (keep_going) {
-    printf("Debugger [z|x|g|f|h|q]");
+    printf("Debugger [z|x|g|f|r|h|q]");
     unsigned char c = getc(stdin);
     printf("\x1B[2K\r");
     switch (toupper(c)) {
@@ -80,7 +82,7 @@ void runMonitorShell(void) {
         goFast(&cpu_buffer);
         break;
       case 'R':
-        reset6502();
+        reset6502(&cpu_buffer);
         break;
       default:
         printf("ERROR: Unrecognized command %c [%02x], type 'h' for help...\n", c, c);
@@ -144,12 +146,11 @@ static void goFast(cycle_buffer* buffer) {
 
 static void initBuffer(cycle_buffer* buffer) {
   buffer->write_ptr = 0;
-  buffer->read_ptr = 0;
   do {
     buffer->cycles[buffer->write_ptr].addrMSB = 0;
     buffer->cycles[buffer->write_ptr].addrLSB = 0;
     buffer->cycles[buffer->write_ptr].data = 0;
-    buffer->cycles[buffer->write_ptr].ctrl = CLK_BIT; // indicates that this is uninitialized entry
+    buffer->cycles[buffer->write_ptr].ctrl = UNINITIALIZED; // indicates that this is uninitialized entry
     buffer->write_ptr++;
   } while (buffer->write_ptr);
 }
@@ -189,13 +190,13 @@ static void renderLastInstructions(cycle_buffer* buffer, uint8_t count) {
   uint8_t found = 0;
 
   // start by finding first byte of last instruction
-  while (!(cycle_ptr->ctrl & (SYNC_BIT | CLK_BIT))) {
+  while (!(cycle_ptr->ctrl & (SYNC_BIT | UNINITIALIZED))) {
     wptr--;
     cycle_ptr = &(buffer->cycles[wptr]);
   }
 
   // no previous instruction found
-  if (cycle_ptr->ctrl & CLK_BIT) {
+  if (cycle_ptr->ctrl & UNINITIALIZED) {
     return;
   }
 
@@ -211,7 +212,7 @@ static void renderLastInstructions(cycle_buffer* buffer, uint8_t count) {
       found++;
     }
     // exit if we reached uninitialized data, no more instructions will be found
-    if (cycle_ptr->ctrl & CLK_BIT) {
+    if (cycle_ptr->ctrl & UNINITIALIZED) {
       // fast forward to next next instruction
       while (wptr!=wptr_orig && !(cycle_ptr->ctrl & SYNC_BIT)) {
         wptr++;
@@ -228,7 +229,7 @@ static void renderLastInstructions(cycle_buffer* buffer, uint8_t count) {
 
   while (wptr!=wptr_orig) {
     cycle_ptr = &(buffer->cycles[wptr]);
-    if (!(cycle_ptr->ctrl & CLK_BIT)) {
+    if (!(cycle_ptr->ctrl & UNINITIALIZED)) {
       renderOpcode(buffer, &wptr);
     } else {
       wptr++;
@@ -305,11 +306,11 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer) {
     break;
   }
   getOpcodeText(opcode_text, opcode);
-  sprintf(serial_buffer, "  \x1B[1;94m%02x%02x %s%s\x1B[0m\n", addrMSB, addrLSB, opcode_text, operand);
+  sprintf(serial_buffer, "  \x1B[1m%02x%02x %s%s\x1B[0m\n", addrMSB, addrLSB, opcode_text, operand);
   printf(serial_buffer);
   wptr+=getOpcodeBytes(opcode);
   cycle_ptr = &(buffer->cycles[wptr]);
-  while (!(cycle_ptr->ctrl & (SYNC_BIT | CLK_BIT))) {
+  while (!(cycle_ptr->ctrl & (SYNC_BIT | UNINITIALIZED))) {
     renderSingleCycle(cycle_ptr);
     wptr++;
     cycle_ptr = &(buffer->cycles[wptr]);
@@ -319,7 +320,7 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer) {
 
 static void renderSingleCycle(cpu_cycle* cycle_ptr) {
   char serial_buffer[64];
-  if (!(cycle_ptr->ctrl & CLK_BIT)) {
+  if (!(cycle_ptr->ctrl & UNINITIALIZED)) {
     sprintf(serial_buffer, "  %02x%02x: %c %02x %c\n", cycle_ptr->addrMSB, 
                                                        cycle_ptr->addrLSB, 
                                                        cycle_ptr->ctrl & RW_BIT ? 'r' : 'W', 
@@ -330,8 +331,9 @@ static void renderSingleCycle(cpu_cycle* cycle_ptr) {
 }
 
 
-static void reset6502(void) {
+static void reset6502(cycle_buffer* buffer) {
   printf("Resetting 6502 and peripherals...");
   resetSystem();
+  initBuffer(buffer);
   printf("done.\n");
 }
