@@ -254,8 +254,8 @@ clean:
 	$(BUILD_FOLDER)/*.o \
 	$(BUILD_FOLDER)/*.lst \
 	$(BUILD_FOLDER)/*.s \
-	$(ROM_FOLDER)/*.map \
+	$(BUILD_FOLDER)/*.map \
 	$(COMMON_BUILD_FOLDER)/*.o \
 	$(COMMON_BUILD_FOLDER)/*.lst \
 	$(COMMON_BUILD_FOLDER)/*.s \
-	$(COMMON_BUILD_FOLDER)/*.lib
+	$(COMMON_LIB_FOLDER)/*.lib
