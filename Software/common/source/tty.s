@@ -23,7 +23,8 @@ TTY_CONFIG_OUTPUT_SERIAL  = %00000100
 TTY_CONFIG_OUTPUT_LCD     = %00001000
 
 ENTER                   = $0d
-BACKSPACE               = $7f
+BACKSPACE               = $08
+DELETE                  = $7f
 ESC                     = $1b
 
         .code
@@ -83,7 +84,10 @@ tty_read_line:
         rts
 @not_enter:
         cmp #(BACKSPACE)
+        beq @backspace
+        cmp #(DELETE)
         bne @not_backspace
+@backspace:
         ; check if we are at the beginning of the buffer - if so, ignore
         cpy #$00
         beq @read_char_loop
