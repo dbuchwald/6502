@@ -3,14 +3,14 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 2
-Title "DB6502 Hobby Computer (prototype)"
-Date "2020-09-09"
-Rev "v002"
+Sheet 1 3
+Title "DB6502 Hobby Computer Version 2"
+Date "2020-10-13"
+Rev "v003"
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 "Based on Ben Eater's design"
+Comment3 "Open Source Hardware"
 Comment4 "Author: Dawid Buchwald"
 $EndDescr
 Text GLabel 1650 1150 1    50   Input ~ 0
@@ -1083,8 +1083,6 @@ Wire Wire Line
 Wire Wire Line
 	6650 4250 6750 4250
 Connection ~ 6650 4350
-Text GLabel 6650 4150 0    50   Input ~ 0
-IOCS
 Wire Wire Line
 	6650 4150 6750 4150
 Text GLabel 7850 3550 1    50   Output ~ 0
@@ -1177,278 +1175,6 @@ Wire Wire Line
 Wire Wire Line
 	10250 5550 10250 5650
 Connection ~ 9750 5550
-$Comp
-L Device:Crystal_Small Y1
-U 1 1 5FC4CF16
-P 4200 3950
-F 0 "Y1" V 4154 4038 50  0000 L CNN
-F 1 "20MHz" V 4245 4038 50  0000 L CNN
-F 2 "Crystal:Crystal_HC49-U_Vertical" H 4200 3950 50  0001 C CNN
-F 3 "~" H 4200 3950 50  0001 C CNN
-	1    4200 3950
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:C_Small C1
-U 1 1 5FC4E22C
-P 3950 3850
-F 0 "C1" V 4179 3850 50  0000 C CNN
-F 1 "22pF" V 4088 3850 50  0000 C CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 3950 3850 50  0001 C CNN
-F 3 "~" H 3950 3850 50  0001 C CNN
-	1    3950 3850
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:C_Small C2
-U 1 1 5FC4EE44
-P 3950 4050
-F 0 "C2" V 3800 4050 50  0000 C CNN
-F 1 "22pF" V 3700 4050 50  0000 C CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 3950 4050 50  0001 C CNN
-F 3 "~" H 3950 4050 50  0001 C CNN
-	1    3950 4050
-	0    -1   -1   0   
-$EndComp
-Text GLabel 3750 4200 3    50   Input ~ 0
-GND
-Wire Wire Line
-	3750 4050 3850 4050
-Wire Wire Line
-	3750 3850 3850 3850
-Wire Wire Line
-	4050 4050 4200 4050
-Wire Wire Line
-	4050 3850 4200 3850
-Wire Wire Line
-	4200 3850 4600 3850
-Connection ~ 4200 3850
-Wire Wire Line
-	4200 4050 4600 4050
-Connection ~ 4200 4050
-$Comp
-L Device:C_Small C3
-U 1 1 5FCBF815
-P 4400 4250
-F 0 "C3" V 4250 4250 50  0000 C CNN
-F 1 "100nF" V 4150 4250 50  0000 C CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 4400 4250 50  0001 C CNN
-F 3 "~" H 4400 4250 50  0001 C CNN
-	1    4400 4250
-	0    -1   -1   0   
-$EndComp
-Text GLabel 4200 4350 3    50   Input ~ 0
-GND
-Wire Wire Line
-	4200 4350 4200 4250
-Wire Wire Line
-	4200 4250 4300 4250
-Wire Wire Line
-	4500 4250 4600 4250
-Text GLabel 4500 3650 0    50   Input ~ 0
-~RES
-Wire Wire Line
-	4500 3650 4600 3650
-Text Label 6250 3650 2    50   ~ 0
-a0
-Text Label 6250 3750 2    50   ~ 0
-a1
-Text Label 6250 3850 2    50   ~ 0
-a2
-Text Label 6250 3950 2    50   ~ 0
-a3
-Text Label 6250 4050 2    50   ~ 0
-a4
-Text Label 6250 4150 2    50   ~ 0
-a5
-Text Label 6250 4250 2    50   ~ 0
-a6
-Text Label 6250 4350 2    50   ~ 0
-a7
-Wire Wire Line
-	5800 3650 6250 3650
-Wire Wire Line
-	5800 3750 6250 3750
-Wire Wire Line
-	5800 3850 6250 3850
-Wire Wire Line
-	5800 3950 6250 3950
-Wire Wire Line
-	5800 4050 6250 4050
-Wire Wire Line
-	5800 4150 6250 4150
-Wire Wire Line
-	5800 4250 6250 4250
-Wire Wire Line
-	5800 4350 6250 4350
-Entry Wire Line
-	6250 3650 6350 3750
-Entry Wire Line
-	6250 3750 6350 3850
-Entry Wire Line
-	6250 3850 6350 3950
-Entry Wire Line
-	6250 3950 6350 4050
-Entry Wire Line
-	6250 4050 6350 4150
-Entry Wire Line
-	6250 4150 6350 4250
-Entry Wire Line
-	6250 4250 6350 4350
-Entry Wire Line
-	6250 4350 6350 4450
-Text Label 6250 5450 2    50   ~ 0
-a8
-Text Label 6250 5550 2    50   ~ 0
-a9
-Text Label 6250 5650 2    50   ~ 0
-a10
-Text Label 6250 5750 2    50   ~ 0
-a11
-Text Label 6250 5850 2    50   ~ 0
-a12
-Text Label 6250 5950 2    50   ~ 0
-a13
-Text Label 6250 6050 2    50   ~ 0
-a14
-Text Label 6250 6150 2    50   ~ 0
-a15
-Wire Wire Line
-	5800 5450 6250 5450
-Wire Wire Line
-	5800 5550 6250 5550
-Wire Wire Line
-	5800 5650 6250 5650
-Wire Wire Line
-	5800 5750 6250 5750
-Wire Wire Line
-	5800 5850 6250 5850
-Wire Wire Line
-	5800 5950 6250 5950
-Wire Wire Line
-	5800 6050 6250 6050
-Wire Wire Line
-	5800 6150 6250 6150
-Entry Wire Line
-	6250 5450 6350 5550
-Entry Wire Line
-	6250 5550 6350 5650
-Entry Wire Line
-	6250 5650 6350 5750
-Entry Wire Line
-	6250 5750 6350 5850
-Entry Wire Line
-	6250 5850 6350 5950
-Entry Wire Line
-	6250 5950 6350 6050
-Entry Wire Line
-	6250 6050 6350 6150
-Entry Wire Line
-	6250 6150 6350 6250
-Text Label 6000 4550 2    50   ~ 0
-d0
-Text Label 6000 4650 2    50   ~ 0
-d1
-Text Label 6000 4750 2    50   ~ 0
-d2
-Text Label 6000 4850 2    50   ~ 0
-d3
-Text Label 6000 4950 2    50   ~ 0
-d4
-Text Label 6000 5050 2    50   ~ 0
-d5
-Text Label 6000 5150 2    50   ~ 0
-d6
-Text Label 6000 5250 2    50   ~ 0
-d7
-Wire Wire Line
-	5800 4550 6000 4550
-Wire Wire Line
-	5800 4650 6000 4650
-Wire Wire Line
-	5800 4750 6000 4750
-Wire Wire Line
-	5800 4850 6000 4850
-Wire Wire Line
-	5800 4950 6000 4950
-Wire Wire Line
-	5800 5050 6000 5050
-Wire Wire Line
-	5800 5150 6000 5150
-Wire Wire Line
-	5800 5250 6000 5250
-Entry Wire Line
-	6000 4550 6100 4650
-Entry Wire Line
-	6000 4650 6100 4750
-Entry Wire Line
-	6000 4750 6100 4850
-Entry Wire Line
-	6000 4850 6100 4950
-Entry Wire Line
-	6000 4950 6100 5050
-Entry Wire Line
-	6000 5050 6100 5150
-Entry Wire Line
-	6000 5150 6100 5250
-Entry Wire Line
-	6000 5250 6100 5350
-Text GLabel 5900 6350 2    50   Input ~ 0
-RxD_DBG
-Text GLabel 5900 6450 2    50   Output ~ 0
-TxD_DBG
-Text GLabel 5900 6550 2    50   Output ~ 0
-SR_DAT
-Text GLabel 5900 6650 2    50   Output ~ 0
-SR_CLK
-Text GLabel 5900 6750 2    50   Output ~ 0
-SR_OUT
-Text GLabel 5900 6850 2    50   Output ~ 0
-CLK_DBG
-Text GLabel 5900 7150 3    50   Input ~ 0
-SYNC
-Text GLabel 6050 7150 3    50   BiDi ~ 0
-R~W
-Wire Wire Line
-	5900 7150 5900 7050
-Wire Wire Line
-	5900 7050 5800 7050
-Wire Wire Line
-	5800 6950 6050 6950
-Wire Wire Line
-	6050 6950 6050 7150
-Wire Wire Line
-	5800 6850 5900 6850
-Wire Wire Line
-	5800 6750 5900 6750
-Wire Wire Line
-	5800 6650 5900 6650
-Wire Wire Line
-	5800 6550 5900 6550
-Wire Wire Line
-	5800 6450 5900 6450
-Wire Wire Line
-	5800 6350 5900 6350
-Text GLabel 5200 7450 3    50   Input ~ 0
-GND
-Wire Wire Line
-	5200 7450 5200 7350
-Text GLabel 5200 3200 1    50   Input ~ 0
-+5V
-Wire Wire Line
-	5200 3200 5200 3250
-Wire Wire Line
-	5200 3250 5300 3250
-Wire Wire Line
-	5300 3250 5300 3350
-Connection ~ 5200 3250
-Wire Wire Line
-	5200 3250 5200 3350
-Wire Wire Line
-	3750 3850 3750 4050
-Connection ~ 3750 4050
-Wire Wire Line
-	3750 4050 3750 4200
 Text GLabel 10050 4650 2    50   Input ~ 0
 IN12
 Text GLabel 10050 4550 2    50   BiDi ~ 0
@@ -1470,7 +1196,7 @@ Wire Wire Line
 Wire Wire Line
 	9950 4650 10050 4650
 $Sheet
-S 700  6650 800  900 
+S 700  6650 750  350 
 U 6014B4D9
 F0 "ports" 50
 F1 "ports.sch" 50
@@ -1554,17 +1280,6 @@ F 3 "https://datasheets.maximintegrated.com/en/ds/DS1813.pdf" H 1600 4600 50  00
 	1    0    0    -1  
 $EndComp
 $Comp
-L MCU_Microchip_ATmega:ATmega644PA-PU U4
-U 1 1 5FBDA499
-P 5200 5350
-F 0 "U4" H 5200 5450 50  0000 C CNN
-F 1 "ATmega644PA-PU" H 5200 5350 50  0000 C CNN
-F 2 "Package_DIP:DIP-40_W15.24mm_Socket" H 5200 5350 50  0001 C CIN
-F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-8272-8-bit-AVR-microcontroller-ATmega164A_PA-324A_PA-644A_PA-1284_P_datasheet.pdf" H 5200 5350 50  0001 C CNN
-	1    5200 5350
-	1    0    0    -1  
-$EndComp
-$Comp
 L 6502:65C02S U2
 U 1 1 5F5A65C1
 P 2400 2150
@@ -1610,6 +1325,14 @@ F 3 "" H 9400 1900 50  0001 C CNN
 $EndComp
 Wire Bus Line
 	3200 2750 3300 2750
+$Sheet
+S 1700 6650 700  350 
+U 5F8F4E1E
+F0 "supervisor" 50
+F1 "supervisor.sch" 50
+$EndSheet
+Text GLabel 6650 4150 0    50   Input ~ 0
+IOCS
 Wire Bus Line
 	6500 3750 6500 3950
 Wire Bus Line
@@ -1637,8 +1360,6 @@ Wire Bus Line
 Wire Bus Line
 	8650 3950 8650 4650
 Wire Bus Line
-	6100 4650 6100 5350
-Wire Bus Line
 	3850 650  3850 2050
 Wire Bus Line
 	6200 650  6200 2050
@@ -1646,6 +1367,4 @@ Wire Bus Line
 	8600 650  8600 2050
 Wire Bus Line
 	1600 2150 1600 3400
-Wire Bus Line
-	6350 3750 6350 6250
 $EndSCHEMATC
