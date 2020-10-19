@@ -36,6 +36,10 @@ static void goSlow(cycle_buffer* buffer);
 static void goFast(cycle_buffer* buffer);
 static void reset6502(cycle_buffer* buffer);
 
+static void toggleClock(cycle_buffer* buffer);
+static void toggleBusEnable();
+static void toggleReady();
+
 static void initBuffer(cycle_buffer* buffer);
 static uint8_t getOneCycleToBuffer(cycle_buffer* buffer);
 static void renderLastCycles(cycle_buffer* buffer, uint8_t count);
@@ -44,14 +48,21 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer);
 
 static void renderSingleCycle(cpu_cycle* cycle_ptr);
 
+static uint8_t clock_state=0;
+
 void runMonitorShell(void) {
   cycle_buffer cpu_buffer;
   unsigned char keep_going=1;
+  uint8_t control_register;
   initBuffer(&cpu_buffer);
   printf("Welcome to DB6502 monitor/debugger\n");
   displayHelp();
   while (keep_going) {
-    printf("Debugger [z|x|g|f|r|h|q]");
+    control_register = getControlRegister(); 
+    printf("Debugger [z|x|g|f|r|b|n|m|h|q] <CLK: %c |BE: %c |RDY: %c >", 
+           clock_state ? '1' : '0',
+           control_register & BE_BIT ? '0' : '1',
+           control_register & RDY_BIT ? '0' : '1');
     unsigned char c = getc(stdin);
     printf("\x1B[2K\r");
     switch (toupper(c)) {
@@ -84,6 +95,15 @@ void runMonitorShell(void) {
       case 'R':
         reset6502(&cpu_buffer);
         break;
+      case 'B':
+        toggleClock(&cpu_buffer);
+        break;
+      case 'N':
+        toggleBusEnable();
+        break;
+      case 'M':
+        toggleReady();
+        break;
       default:
         printf("ERROR: Unrecognized command %c [%02x], type 'h' for help...\n", c, c);
     }
@@ -98,6 +118,9 @@ void displayHelp(void) {
   printf(" [s] instruction stack trace - display 6502 stack trace (instructions)\n");
   printf(" [g]o slow - keep running and dumping bus to serial; press any key to stop\n");
   printf(" go [f]ast - run as fast as possible, without dumping bus data to serial\n");
+  printf(" [b] toggle clock line high/low - for fine CPU control\n");
+  printf(" [n] toggle BE line high/low - for fine CPU control\n");
+  printf(" [m] toggle RDY line high/low - for fine CPU control\n");
   printf(" [r]eset - reset 6502 and its peripherals\n");
   printf(" [h]elp - display this information\n");
   printf(" [q]uit - leave shell\n");
@@ -161,6 +184,7 @@ static uint8_t getOneCycleToBuffer(cycle_buffer* buffer) {
 
   // raise the clock
   CONTROL_POUT |= CLK_BIT;
+  clock_state = 1;
   // read the busses
   cycle_ptr->addrLSB = ADDRLSB_PIN;
   cycle_ptr->addrMSB = ADDRMSB_PIN;
@@ -168,6 +192,7 @@ static uint8_t getOneCycleToBuffer(cycle_buffer* buffer) {
   cycle_ptr->ctrl    = CONTROL_PIN & (RW_BIT | SYNC_BIT);
   // lower the clock
   CONTROL_POUT &= ~CLK_BIT;
+  clock_state = 0;
   buffer->write_ptr++;
   return cycle_ptr->ctrl & SYNC_BIT;
 }
@@ -330,10 +355,66 @@ static void renderSingleCycle(cpu_cycle* cycle_ptr) {
   }
 }
 
-
 static void reset6502(cycle_buffer* buffer) {
   printf("Resetting 6502 and peripherals...");
   resetSystem();
   initBuffer(buffer);
   printf("done.\n");
+}
+
+static void toggleClock(cycle_buffer* buffer) {
+  char serial_buffer[64];
+
+  // read busses first (before clock transition)
+  uint8_t addrLSB = ADDRLSB_PIN;
+  uint8_t addrMSB = ADDRMSB_PIN;
+  uint8_t data    = DATA_PIN;
+  uint8_t ctrl    = CONTROL_PIN & (RW_BIT | SYNC_BIT);
+
+  //print the data to output
+  sprintf(serial_buffer, "  %02x%02x: %c %02x %c <%c>\n", addrMSB, 
+                                                          addrLSB, 
+                                                          ctrl & RW_BIT ? 'r' : 'W', 
+                                                          data,
+                                                          ctrl & SYNC_BIT ? 'S' : ' ',
+                                                          clock_state ? 'H' : 'l');
+  printf(serial_buffer);
+
+  if (clock_state == 0) {
+    // raise the clock
+    CONTROL_POUT |= CLK_BIT;
+    clock_state = 1;
+  } else {
+    // save cycle to buffer (PHI2 high)
+    cpu_cycle* cycle_ptr = &(buffer->cycles[buffer->write_ptr]);
+
+    cycle_ptr->addrLSB = addrLSB;
+    cycle_ptr->addrMSB = addrMSB;
+    cycle_ptr->data    = data;
+    cycle_ptr->ctrl    = ctrl;
+    // lower the clock
+    CONTROL_POUT &= ~CLK_BIT;
+    clock_state = 0;
+    buffer->write_ptr++;
+  }
+}
+
+static void toggleBusEnable() {
+  uint8_t control_register = getControlRegister();
+
+  if (control_register & BE_BIT) {
+    updateControlRegister(0x00, BE_BIT);
+  } else {
+    updateControlRegister(BE_BIT, BE_BIT);
+  }
+}
+
+static void toggleReady() {
+  uint8_t control_register = getControlRegister();
+
+  if (control_register & RDY_BIT) {
+    updateControlRegister(0x00, RDY_BIT);
+  } else {
+    updateControlRegister(RDY_BIT, RDY_BIT);
+  }
 }

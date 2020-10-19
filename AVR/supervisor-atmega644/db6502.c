@@ -63,6 +63,10 @@ void resetSystem(void) {
   returnBusControl();
 }
 
+uint8_t getControlRegister(void) {
+  return control_register;
+}
+
 void updateControlRegister(const uint8_t value, const uint8_t mask) {
   control_register = (control_register & ~mask) | (value & mask);
   // shift out current state
