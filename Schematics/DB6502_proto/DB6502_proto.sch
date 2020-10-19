@@ -1333,6 +1333,29 @@ F1 "supervisor.sch" 50
 $EndSheet
 Text GLabel 6650 4150 0    50   Input ~ 0
 IOCS
+$Comp
+L Oscillator:ACO-xxxMHz X?
+U 1 1 5F9BC711
+P 3550 4550
+F 0 "X?" H 3206 4596 50  0000 R CNN
+F 1 "8MHz" H 3206 4505 50  0000 R CNN
+F 2 "Oscillator:Oscillator_DIP-14" H 4000 4200 50  0001 C CNN
+F 3 "" H 3450 4550 50  0001 C CNN
+	1    3550 4550
+	1    0    0    -1  
+$EndComp
+Text GLabel 3550 4150 1    50   Input ~ 0
++5V
+Text GLabel 3550 4950 3    50   Input ~ 0
+GND
+Text GLabel 3950 4550 2    50   Output ~ 0
+6502_CLK
+Wire Wire Line
+	3550 4150 3550 4250
+Wire Wire Line
+	3550 4950 3550 4850
+Wire Wire Line
+	3850 4550 3950 4550
 Wire Bus Line
 	6500 3750 6500 3950
 Wire Bus Line
