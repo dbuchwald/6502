@@ -213,6 +213,41 @@ static void renderLastCycles(cycle_buffer* buffer, uint8_t count) {
   }
 }
 
+// moves pointer to beginning of previous cycle
+static void findPrevCycle(cycle_buffer* buffer, uint8_t* pointer) {
+  uint8_t wptr = *pointer;
+  uint8_t wptr_orig = wptr;
+  cpu_cycle* cycle_ptr = &(buffer->cycles[wptr]);
+  cpu_cycle* old_ptr   = cycle_ptr;
+  do {
+    wptr--;
+    cycle_ptr = &(buffer->cycles[wptr]);
+  } while (old_ptr->addrLSB == cycle_ptr->addrLSB &&
+           old_ptr->addrMSB == cycle_ptr->addrMSB &&
+           old_ptr->data    == cycle_ptr->data    &&
+           old_ptr->ctrl    == cycle_ptr->ctrl    &&
+           wptr             != wptr_orig);
+  *pointer = wptr;
+}
+
+// moves pointer to beginning of next cycle
+static void findNextCycle(cycle_buffer* buffer, uint8_t* pointer) {
+  uint8_t wptr = *pointer;
+  uint8_t wptr_orig = wptr;
+  cpu_cycle* cycle_ptr = &(buffer->cycles[wptr]);
+  cpu_cycle* old_ptr   = cycle_ptr;
+  do {
+    wptr++;
+    cycle_ptr = &(buffer->cycles[wptr]);
+  } while (old_ptr->addrLSB == cycle_ptr->addrLSB &&
+           old_ptr->addrMSB == cycle_ptr->addrMSB &&
+           old_ptr->data    == cycle_ptr->data    &&
+           old_ptr->ctrl    == cycle_ptr->ctrl    &&
+           wptr             != wptr_orig);
+  *pointer = wptr;
+}
+
+
 static void renderLastInstructions(cycle_buffer* buffer, uint8_t count) {
   uint8_t wptr = buffer->write_ptr-1;
   cpu_cycle* cycle_ptr = &(buffer->cycles[wptr]);
@@ -221,7 +256,7 @@ static void renderLastInstructions(cycle_buffer* buffer, uint8_t count) {
 
   // start by finding first byte of last instruction
   while (!(cycle_ptr->ctrl & (SYNC_BIT | UNINITIALIZED))) {
-    wptr--;
+    findPrevCycle(buffer, &wptr);
     cycle_ptr = &(buffer->cycles[wptr]);
   }
 
@@ -231,11 +266,13 @@ static void renderLastInstructions(cycle_buffer* buffer, uint8_t count) {
   }
 
   // set original position of the wptr to current one (pointing to beginning of last instruction)
+  findPrevCycle(buffer, &wptr);
+  findNextCycle(buffer, &wptr);
   wptr_orig=wptr;
 
   // keep counting previous instructions
   while (count) {
-    wptr--;
+    findPrevCycle(buffer, &wptr);
     cycle_ptr = &(buffer->cycles[wptr]);
     if (cycle_ptr->ctrl & SYNC_BIT) {
       count--;
@@ -245,7 +282,7 @@ static void renderLastInstructions(cycle_buffer* buffer, uint8_t count) {
     if (cycle_ptr->ctrl & UNINITIALIZED) {
       // fast forward to next next instruction
       while (wptr!=wptr_orig && !(cycle_ptr->ctrl & SYNC_BIT)) {
-        wptr++;
+        findNextCycle(buffer, &wptr);
         cycle_ptr = &(buffer->cycles[wptr]);
       }
       count=0;
@@ -262,7 +299,7 @@ static void renderLastInstructions(cycle_buffer* buffer, uint8_t count) {
     if (!(cycle_ptr->ctrl & UNINITIALIZED)) {
       renderOpcode(buffer, &wptr);
     } else {
-      wptr++;
+      findNextCycle(buffer, &wptr);
     }
   }
 }
@@ -277,8 +314,19 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer) {
   uint8_t addrLSB = cycle_ptr->addrLSB;
   unsigned int relAddress;
   uint8_t opcode = cycle_ptr->data;
-  uint8_t opLSB = buffer->cycles[wptr+1].data;
-  uint8_t opMSB = buffer->cycles[wptr+2].data;
+  uint8_t opLSB=0;
+  uint8_t opMSB=0;
+  uint8_t opcode_bytes = getOpcodeBytes(opcode);
+  if (opcode_bytes >= 2) {
+    findNextCycle(buffer, &wptr);
+    cycle_ptr = &(buffer->cycles[wptr]);
+    opLSB = cycle_ptr->data;
+  }
+  if (opcode_bytes == 3) {
+    findNextCycle(buffer, &wptr);
+    cycle_ptr = &(buffer->cycles[wptr]);
+    opMSB = cycle_ptr->data;
+  }  
   uint8_t addrMode = getAddressMode(opcode);
   switch (addrMode) {
   case ACCUMULATOR:
@@ -343,11 +391,11 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer) {
                                                   operand,
                                                   ESCAPE_FORMAT_CLEAR);
   printf(serial_buffer);
-  wptr+=getOpcodeBytes(opcode);
+  findNextCycle(buffer, &wptr);
   cycle_ptr = &(buffer->cycles[wptr]);
   while (!(cycle_ptr->ctrl & (SYNC_BIT | UNINITIALIZED))) {
     renderSingleCycle(cycle_ptr);
-    wptr++;
+    findNextCycle(buffer, &wptr);
     cycle_ptr = &(buffer->cycles[wptr]);
   }
   *pointer = wptr;
