@@ -26,7 +26,7 @@ SIZE := avr-size -A
 
 CFLAGS := -Wall -pedantic -mmcu=$(MCU) -std=c99 -g -Os -DF_CPU=20000000UL
 
-all: $(HEX) $(BUILD_FOLDER)
+all: $(HEX) | $(BUILD_FOLDER)
 
 clean:
 	rm -rf $(HEX) $(OUT) $(MAP) $(OBJECTS) $(BUILD_FOLDER)
@@ -49,11 +49,11 @@ $(OUT): $(OBJECTS)
 	@$(SIZE) $@
 	@echo
 
-$(BUILD_FOLDER)/%.o: %.c $(HEADERS) $(BUILD_FOLDER)
+$(BUILD_FOLDER)/%.o: %.c $(HEADERS) | $(BUILD_FOLDER)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(BUILD_FOLDER)/%.pp: %.c $(BUILD_FOLDER)
+$(BUILD_FOLDER)/%.pp: %.c | $(BUILD_FOLDER)
 	$(CC) $(CFLAGS) -E -o $@ $<
 
-$(BUILD_FOLDER)/%.ppo: %.c $(BUILD_FOLDER)
+$(BUILD_FOLDER)/%.ppo: %.c | $(BUILD_FOLDER)
 	$(CC) $(CFLAGS) -E $<

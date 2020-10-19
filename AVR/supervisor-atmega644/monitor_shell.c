@@ -8,6 +8,7 @@
 #include "core.h"
 #include "uart.h"
 #include "monitor_shell.h"
+#include "escape_codes.h"
 
 #define LINE_LENGTH 16
 #define BUFFER_SIZE 256
@@ -55,6 +56,8 @@ void runMonitorShell(void) {
   unsigned char keep_going=1;
   uint8_t control_register;
   initBuffer(&cpu_buffer);
+  // take control of system clock
+  updateControlRegister(CLKSEL_BIT, CLKSEL_BIT);
   printf("Welcome to DB6502 monitor/debugger\n");
   displayHelp();
   while (keep_going) {
@@ -64,7 +67,7 @@ void runMonitorShell(void) {
            control_register & BE_BIT ? '0' : '1',
            control_register & RDY_BIT ? '0' : '1');
     unsigned char c = getc(stdin);
-    printf("\x1B[2K\r");
+    printf(ESCAPE_CLEAR_LINE);
     switch (toupper(c)) {
       case 0x0d:
         break;
@@ -108,6 +111,8 @@ void runMonitorShell(void) {
         printf("ERROR: Unrecognized command %c [%02x], type 'h' for help...\n", c, c);
     }
   }
+  // return control to 6502
+  returnBusControl();
 }
 
 void displayHelp(void) {
@@ -331,7 +336,12 @@ static void renderOpcode(cycle_buffer* buffer, uint8_t* pointer) {
     break;
   }
   getOpcodeText(opcode_text, opcode);
-  sprintf(serial_buffer, "  \x1B[1m%02x%02x %s%s\x1B[0m\n", addrMSB, addrLSB, opcode_text, operand);
+  sprintf(serial_buffer, "  %s%02x%02x %s%s%s\n", ESCAPE_FORMAT_BOLD, 
+                                                  addrMSB, 
+                                                  addrLSB, 
+                                                  opcode_text, 
+                                                  operand,
+                                                  ESCAPE_FORMAT_CLEAR);
   printf(serial_buffer);
   wptr+=getOpcodeBytes(opcode);
   cycle_ptr = &(buffer->cycles[wptr]);
