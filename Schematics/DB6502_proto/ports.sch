@@ -14,10 +14,10 @@ Comment3 "Open Source Hardware"
 Comment4 "Author: Dawid Buchwald"
 $EndDescr
 $Comp
-L Connector:Conn_01x32_Female J1
+L Connector:Conn_01x32_Female J2
 U 1 1 6014BD0C
 P 4700 6200
-F 0 "J1" H 4728 6176 50  0000 L CNN
+F 0 "J2" H 4728 6176 50  0000 L CNN
 F 1 "System Bus" H 4728 6085 50  0000 L CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x32_P2.54mm_Vertical" H 4700 6200 50  0001 C CNN
 F 3 "~" H 4700 6200 50  0001 C CNN
@@ -301,7 +301,7 @@ $EndComp
 Text GLabel 3650 1050 1    50   Output ~ 0
 ~SO
 Text GLabel 3350 1050 1    50   Output ~ 0
-CLK
+6502_CLK
 Text GLabel 3200 1050 1    50   Output ~ 0
 R~W
 Wire Wire Line
@@ -381,10 +381,10 @@ Wire Wire Line
 Wire Wire Line
 	4700 1250 4950 1250
 $Comp
-L Connector:Conn_01x32_Female J2
+L Connector:Conn_01x32_Female J3
 U 1 1 60166003
 P 5150 2650
-F 0 "J2" H 5178 2626 50  0000 L CNN
+F 0 "J3" H 5178 2626 50  0000 L CNN
 F 1 "Controls" H 5178 2535 50  0000 L CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x32_P2.54mm_Vertical" H 5150 2650 50  0001 C CNN
 F 3 "~" H 5150 2650 50  0001 C CNN
@@ -428,10 +428,10 @@ Wire Wire Line
 Wire Wire Line
 	3200 2250 4950 2250
 $Comp
-L Connector:Conn_01x32_Female J4
+L Connector:Conn_01x32_Female J1
 U 1 1 60200164
 P 2850 5250
-F 0 "J4" H 2878 5226 50  0000 L CNN
+F 0 "J1" H 2878 5226 50  0000 L CNN
 F 1 "I/O Bus" H 2878 5135 50  0000 L CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x32_P2.54mm_Vertical" H 2850 5250 50  0001 C CNN
 F 3 "~" H 2850 5250 50  0001 C CNN
@@ -611,7 +611,7 @@ Wire Wire Line
 Wire Wire Line
 	2550 6850 2650 6850
 Text GLabel 6400 7100 2    50   Input ~ 0
-CLK
+6502_CLK
 Wire Wire Line
 	6400 7100 5900 7100
 Wire Wire Line
@@ -653,7 +653,7 @@ Wire Wire Line
 Wire Wire Line
 	5600 7550 5600 6400
 Text GLabel 4850 2750 0    50   Input ~ 0
-CLK_DBG
+DBG_CLK
 Wire Wire Line
 	4850 2750 4950 2750
 Text GLabel 4850 2850 0    50   Output ~ 0
@@ -751,10 +751,10 @@ Wire Wire Line
 Wire Wire Line
 	1400 6650 2650 6650
 $Comp
-L Device:R R12
+L Device:R R8
 U 1 1 60B17A68
 P 5650 1300
-F 0 "R12" H 5720 1346 50  0000 L CNN
+F 0 "R8" H 5720 1346 50  0000 L CNN
 F 1 "220" H 5720 1255 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5580 1300 50  0001 C CNN
 F 3 "~" H 5650 1300 50  0001 C CNN
@@ -762,10 +762,10 @@ F 3 "~" H 5650 1300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:LED D3
+L Device:LED D1
 U 1 1 60B19002
 P 5650 1700
-F 0 "D3" V 5689 1582 50  0000 R CNN
+F 0 "D1" V 5689 1582 50  0000 R CNN
 F 1 "PWR" V 5598 1582 50  0000 R CNN
 F 2 "LED_THT:LED_D3.0mm" H 5650 1700 50  0001 C CNN
 F 3 "~" H 5650 1700 50  0001 C CNN
