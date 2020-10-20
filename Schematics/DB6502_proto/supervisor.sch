@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 3
+Sheet 3 4
 Title "DB6502 Hobby Computer Version 2"
 Date "2020-10-13"
 Rev "v003"
@@ -361,8 +361,6 @@ $EndComp
 NoConn ~ 8500 3300
 Text GLabel 8600 3500 3    50   Input ~ 0
 GND
-Wire Wire Line
-	8600 3400 8600 3300
 $Comp
 L Device:Ferrite_Bead_Small FB?
 U 1 1 5F9AD1C9
@@ -380,8 +378,6 @@ Text GLabel 10400 2700 2    50   Input ~ 0
 +5V
 Wire Wire Line
 	8900 2700 9100 2700
-Wire Wire Line
-	9550 2700 10150 2700
 Wire Wire Line
 	8900 3000 9000 3000
 $Comp
@@ -451,8 +447,8 @@ L Device:C C?
 U 1 1 5F9AD1F3
 P 9500 5350
 AR Path="/6014B4D9/5F9AD1F3" Ref="C?"  Part="1" 
-AR Path="/5F8F4E1E/5F9AD1F3" Ref="C23"  Part="1" 
-F 0 "C23" H 9615 5396 50  0000 L CNN
+AR Path="/5F8F4E1E/5F9AD1F3" Ref="C22"  Part="1" 
+F 0 "C22" H 9615 5396 50  0000 L CNN
 F 1 "100nF" H 9615 5305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9538 5200 50  0001 C CNN
 F 3 "~" H 9500 5350 50  0001 C CNN
@@ -599,8 +595,8 @@ L Device:C_Small C?
 U 1 1 5F9AD23C
 P 9450 3350
 AR Path="/6014B4D9/5F9AD23C" Ref="C?"  Part="1" 
-AR Path="/5F8F4E1E/5F9AD23C" Ref="C22"  Part="1" 
-F 0 "C22" H 9542 3396 50  0000 L CNN
+AR Path="/5F8F4E1E/5F9AD23C" Ref="C21"  Part="1" 
+F 0 "C21" H 9542 3396 50  0000 L CNN
 F 1 "47pF" H 9542 3305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9450 3350 50  0001 C CNN
 F 3 "~" H 9450 3350 50  0001 C CNN
@@ -612,8 +608,8 @@ L Device:C_Small C?
 U 1 1 5F9AD242
 P 9800 3350
 AR Path="/6014B4D9/5F9AD242" Ref="C?"  Part="1" 
-AR Path="/5F8F4E1E/5F9AD242" Ref="C24"  Part="1" 
-F 0 "C24" H 9892 3396 50  0000 L CNN
+AR Path="/5F8F4E1E/5F9AD242" Ref="C23"  Part="1" 
+F 0 "C23" H 9892 3396 50  0000 L CNN
 F 1 "47pF" H 9892 3305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9800 3350 50  0001 C CNN
 F 3 "~" H 9800 3350 50  0001 C CNN
@@ -647,8 +643,8 @@ L Device:C_Small C?
 U 1 1 5F9AD254
 P 9100 3350
 AR Path="/6014B4D9/5F9AD254" Ref="C?"  Part="1" 
-AR Path="/5F8F4E1E/5F9AD254" Ref="C21"  Part="1" 
-F 0 "C21" H 9192 3396 50  0000 L CNN
+AR Path="/5F8F4E1E/5F9AD254" Ref="C20"  Part="1" 
+F 0 "C20" H 9192 3396 50  0000 L CNN
 F 1 "10nF" H 9192 3305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9100 3350 50  0001 C CNN
 F 3 "~" H 9100 3350 50  0001 C CNN
@@ -664,22 +660,6 @@ Text GLabel 9100 3550 3    50   Input ~ 0
 GND
 Wire Wire Line
 	9100 3550 9100 3450
-$Comp
-L power:PWR_FLAG #FLG?
-U 1 1 5F9AD25F
-P 10150 2700
-AR Path="/6014B4D9/5F9AD25F" Ref="#FLG?"  Part="1" 
-AR Path="/5F8F4E1E/5F9AD25F" Ref="#FLG02"  Part="1" 
-F 0 "#FLG02" H 10150 2775 50  0001 C CNN
-F 1 "PWR_FLAG" H 10150 2873 50  0000 C CNN
-F 2 "" H 10150 2700 50  0001 C CNN
-F 3 "~" H 10150 2700 50  0001 C CNN
-	1    10150 2700
-	1    0    0    -1  
-$EndComp
-Connection ~ 10150 2700
-Wire Wire Line
-	10150 2700 10400 2700
 $Comp
 L Connector:Conn_01x06_Male J?
 U 1 1 5F9AD267
@@ -717,22 +697,6 @@ Text GLabel 8450 5950 2    50   Input ~ 0
 DBG_TxD
 Wire Wire Line
 	8450 5950 8350 5950
-$Comp
-L power:PWR_FLAG #FLG?
-U 1 1 5F9AD27A
-P 8600 3400
-AR Path="/6014B4D9/5F9AD27A" Ref="#FLG?"  Part="1" 
-AR Path="/5F8F4E1E/5F9AD27A" Ref="#FLG01"  Part="1" 
-F 0 "#FLG01" H 8600 3475 50  0001 C CNN
-F 1 "PWR_FLAG" V 8600 3527 50  0000 L CNN
-F 2 "" H 8600 3400 50  0001 C CNN
-F 3 "~" H 8600 3400 50  0001 C CNN
-	1    8600 3400
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	8600 3500 8600 3400
-Connection ~ 8600 3400
 $Comp
 L 74xx:74HC595 U14
 U 1 1 5F9C2188
@@ -863,28 +827,12 @@ F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 7100 2600 50  0001 C CNN
 	4    7100 2600
 	1    0    0    -1  
 $EndComp
-$Comp
-L 74xx:74LS04 U4
-U 6 1 5F95C43F
-P 10650 2100
-F 0 "U4" H 10650 2417 50  0000 C CNN
-F 1 "74AC04" H 10650 2326 50  0000 C CNN
-F 2 "" H 10650 2100 50  0001 C CNN
-F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 10650 2100 50  0001 C CNN
-	6    10650 2100
-	1    0    0    -1  
-$EndComp
 Text GLabel 6700 2050 0    50   Input ~ 0
 DBG_RES
 Wire Wire Line
 	6700 2050 6800 2050
 Wire Wire Line
 	6700 2600 6800 2600
-Text GLabel 10250 2100 0    50   Input ~ 0
-GND
-Wire Wire Line
-	10250 2100 10350 2100
-NoConn ~ 10950 2100
 Text GLabel 7500 2050 2    50   Output ~ 0
 ~DBG_RES
 Wire Wire Line
@@ -953,9 +901,9 @@ Connection ~ 5150 4950
 Wire Wire Line
 	5150 4950 5150 4900
 Text GLabel 6700 2600 0    50   Input ~ 0
-6502_CLK
+CLK
 Text GLabel 7500 2600 2    50   Output ~ 0
-~6502_CLK
+~CLK
 Wire Wire Line
 	7400 2600 7500 2600
 $Comp
@@ -1066,10 +1014,10 @@ Connection ~ 1850 5800
 Wire Wire Line
 	1850 5800 1850 5850
 $Comp
-L Device:C_Small C19
+L Device:C_Small C18
 U 1 1 5FAF8D14
 P 4950 2950
-F 0 "C19" V 4721 2950 50  0000 C CNN
+F 0 "C18" V 4721 2950 50  0000 C CNN
 F 1 "0,1uF" V 4812 2950 50  0000 C CNN
 F 2 "" H 4950 2950 50  0001 C CNN
 F 3 "~" H 4950 2950 50  0001 C CNN
@@ -1101,10 +1049,10 @@ Text GLabel 2800 5650 1    50   Input ~ 0
 Text GLabel 2800 6850 3    50   Input ~ 0
 GND
 $Comp
-L Device:C_Small C17
+L Device:C_Small C16
 U 1 1 5FB0F869
 P 3150 6250
-F 0 "C17" H 3242 6296 50  0000 L CNN
+F 0 "C16" H 3242 6296 50  0000 L CNN
 F 1 "0,1uF" H 3242 6205 50  0000 L CNN
 F 2 "" H 3150 6250 50  0001 C CNN
 F 3 "~" H 3150 6250 50  0001 C CNN
@@ -1147,10 +1095,10 @@ Wire Wire Line
 Wire Wire Line
 	2200 800  2300 800 
 $Comp
-L Device:C_Small C18
+L Device:C_Small C17
 U 1 1 5FB5019A
 P 4950 850
-F 0 "C18" V 4721 850 50  0000 C CNN
+F 0 "C17" V 4721 850 50  0000 C CNN
 F 1 "0,1uF" V 4812 850 50  0000 C CNN
 F 2 "" H 4950 850 50  0001 C CNN
 F 3 "~" H 4950 850 50  0001 C CNN
@@ -1187,10 +1135,10 @@ Wire Wire Line
 	10250 900  10350 900 
 NoConn ~ 10950 1000
 $Comp
-L Device:C_Small C20
+L Device:C_Small C19
 U 1 1 5FC939BD
 P 9050 5750
-F 0 "C20" H 8958 5704 50  0000 R CNN
+F 0 "C19" H 8958 5704 50  0000 R CNN
 F 1 "0,1uF" H 8958 5795 50  0000 R CNN
 F 2 "" H 9050 5750 50  0001 C CNN
 F 3 "~" H 9050 5750 50  0001 C CNN
@@ -1276,6 +1224,10 @@ Wire Wire Line
 	4700 1450 4700 1400
 Wire Wire Line
 	4700 1400 4750 1400
+Wire Wire Line
+	8600 3300 8600 3500
+Wire Wire Line
+	9550 2700 10400 2700
 Wire Bus Line
 	1600 2950 1600 3150
 Wire Bus Line

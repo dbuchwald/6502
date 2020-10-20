@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 3
+Sheet 2 4
 Title "DB6502 Hobby Computer Version 2"
 Date "2020-10-13"
 Rev "v003"
@@ -475,7 +475,7 @@ Text GLabel 1850 4950 1    50   Input ~ 0
 Text GLabel 1700 4950 1    50   Input ~ 0
 ~VIA2
 Text GLabel 1550 4950 1    50   Input ~ 0
-~UART
+~UART_CS
 Text GLabel 1400 4950 1    50   Input ~ 0
 ~IOCS0
 Text GLabel 1250 4950 1    50   Input ~ 0

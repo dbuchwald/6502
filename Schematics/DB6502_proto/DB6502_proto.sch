@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 3
+Sheet 1 4
 Title "DB6502 Hobby Computer Version 2"
 Date "2020-10-13"
 Rev "v003"
@@ -988,7 +988,7 @@ Wire Wire Line
 Wire Wire Line
 	8150 3850 7750 3850
 Text GLabel 8300 3550 1    50   Output ~ 0
-~UART
+~UART_CS
 Wire Wire Line
 	8300 3550 8300 3950
 Wire Wire Line
@@ -1212,7 +1212,7 @@ F 3 "https://www.ti.com/lit/ds/symlink/sn74ac08.pdf" H 5300 4050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 4900 3950 0    50   Input ~ 0
-~DBG_RDY
+DBG_RDY
 Wire Wire Line
 	4900 3950 5000 3950
 Wire Wire Line
@@ -1543,6 +1543,12 @@ F 3 "~" H 10600 5450 50  0001 C CNN
 	1    10600 5450
 	1    0    0    -1  
 $EndComp
+$Sheet
+S 5100 6650 750  350 
+U 5F910E81
+F0 "io" 50
+F1 "io.sch" 50
+$EndSheet
 Wire Bus Line
 	6500 3750 6500 3950
 Wire Bus Line
