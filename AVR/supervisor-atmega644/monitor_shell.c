@@ -13,6 +13,9 @@
 #define LINE_LENGTH 16
 #define BUFFER_SIZE 256
 
+#define LAST_CYCLES_COUNT 64
+#define LAST_INSTRUCTIONS_COUNT 16
+
 // use CLK_BIT as uninitialized flag in buffer
 #define UNINITIALIZED CLK_BIT
 
@@ -143,12 +146,12 @@ static void singleInstruction(cycle_buffer* buffer) {
 
 static void cycleStack(cycle_buffer* buffer) {
   printf("Printing last cycle stack:\n");
-  renderLastCycles(buffer, 16);
+  renderLastCycles(buffer, LAST_CYCLES_COUNT);
 }
 
 static void instructionsStack(cycle_buffer* buffer) {
   printf("Printing last instructions stack:\n");
-  renderLastInstructions(buffer, 16);
+  renderLastInstructions(buffer, LAST_INSTRUCTIONS_COUNT);
 }
 
 static void goSlow(cycle_buffer* buffer) {
