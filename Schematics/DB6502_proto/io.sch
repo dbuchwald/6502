@@ -38,38 +38,37 @@ Wire Wire Line
 	900  1850 1600 1850
 Text Label 1450 1550 0    50   ~ 0
 a3
-Text Label 1900 1100 3    50   ~ 0
+Text Label 1900 900  3    50   ~ 0
 a2
-Text Label 2100 1100 3    50   ~ 0
+Text Label 2100 900  3    50   ~ 0
 a1
-Text Label 2300 1100 3    50   ~ 0
+Text Label 2300 900  3    50   ~ 0
 a0
-NoConn ~ 2000 1250
 NoConn ~ 2200 1250
 Text GLabel 2500 950  1    50   Input ~ 0
 +5V
 Wire Wire Line
 	1600 1550 1450 1550
 Wire Wire Line
-	1900 1250 1900 1100
+	1900 1250 1900 900 
 Wire Wire Line
-	2100 1250 2100 1100
+	2100 1250 2100 900 
 Wire Wire Line
-	2300 1250 2300 1100
+	2300 1250 2300 900 
 Entry Wire Line
 	1350 1450 1450 1550
 Entry Wire Line
-	1800 1000 1900 1100
+	1800 800  1900 900 
 Entry Wire Line
-	2000 1000 2100 1100
+	2000 800  2100 900 
 Entry Wire Line
-	2200 1000 2300 1100
+	2200 800  2300 900 
 Wire Bus Line
-	1350 1450 1350 1000
+	1350 1450 1350 800 
 Wire Bus Line
-	1250 1000 1350 1000
-Connection ~ 1350 1000
-Text GLabel 1250 1000 0    50   Input ~ 0
+	1250 800  1350 800 
+Connection ~ 1350 800 
+Text GLabel 1250 800  0    50   Input ~ 0
 a[0..15]
 Wire Wire Line
 	2500 950  2500 1050
@@ -264,448 +263,564 @@ F 3 "" H 6150 1300 50  0001 C CNN
 	1    6150 1300
 	1    0    0    -1  
 $EndComp
-Text GLabel 5500 950  0    50   Output ~ 0
+Text GLabel 5500 900  0    50   Output ~ 0
 UART_A_RxD
 Text GLabel 5500 1250 0    50   Input ~ 0
 UART_A_TxD
-Wire Wire Line
-	5500 950  5600 950 
-Text GLabel 5400 1350 0    50   Input ~ 0
+Text GLabel 5500 1350 0    50   Input ~ 0
 GND
-Text GLabel 5500 1750 0    50   BiDi ~ 0
+Text GLabel 5500 1800 0    50   BiDi ~ 0
 UART_A_USBD+
-Text GLabel 6800 1650 2    50   BiDi ~ 0
+Text GLabel 6800 1750 2    50   BiDi ~ 0
 UART_A_USBD-
-Text GLabel 6800 1250 2    50   Input ~ 0
+Text GLabel 7000 1150 1    50   Input ~ 0
 GND
-Wire Wire Line
-	6700 1250 6800 1250
-Wire Wire Line
-	5400 1350 5500 1350
-Text GLabel 6800 1350 2    50   Input ~ 0
+Text GLabel 7400 1150 1    50   Input ~ 0
 +5V
-Wire Wire Line
-	6800 1350 6700 1350
-Wire Wire Line
-	5600 1450 5500 1450
-Wire Wire Line
-	5500 1450 5500 1350
-Connection ~ 5500 1350
-Wire Wire Line
-	5500 1350 5600 1350
-NoConn ~ 5600 1050
 Wire Wire Line
 	5500 1250 5600 1250
 Wire Wire Line
-	4700 1150 4700 1850
+	4750 1150 4750 1950
 Wire Wire Line
-	4700 1850 5600 1850
+	4750 1950 4900 1950
 Wire Wire Line
-	7550 1850 7550 1550
+	7500 1950 7500 1550
 Wire Wire Line
-	7550 1550 6700 1550
+	7500 1550 6700 1550
 Wire Wire Line
-	4700 1150 5600 1150
+	4750 1150 5600 1150
 Wire Wire Line
-	6700 1650 6800 1650
+	6700 1450 7500 1450
 Wire Wire Line
-	6700 1450 7550 1450
-Wire Wire Line
-	7550 1450 7550 1550
-Connection ~ 7550 1550
+	7500 1450 7500 1550
+Connection ~ 7500 1550
 $Comp
 L Device:C C?
 U 1 1 5F95BFF2
-P 5600 2100
+P 4900 2200
 AR Path="/6014B4D9/5F95BFF2" Ref="C?"  Part="1" 
 AR Path="/5F8F4E1E/5F95BFF2" Ref="C?"  Part="1" 
 AR Path="/5F910E81/5F95BFF2" Ref="C27"  Part="1" 
-F 0 "C27" H 5715 2146 50  0000 L CNN
-F 1 "0,1uF" H 5715 2055 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 5638 1950 50  0001 C CNN
-F 3 "~" H 5600 2100 50  0001 C CNN
-	1    5600 2100
+F 0 "C27" H 5015 2246 50  0000 L CNN
+F 1 "0,1uF" H 5015 2155 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 4938 2050 50  0001 C CNN
+F 3 "~" H 4900 2200 50  0001 C CNN
+	1    4900 2200
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5600 1850 5600 1950
-Connection ~ 5600 1850
+	4900 1950 4900 2050
+Connection ~ 4900 1950
 Wire Wire Line
-	5600 1850 6050 1850
-Text GLabel 5600 2350 3    50   Input ~ 0
+	4900 1950 5450 1950
+Text GLabel 5000 2450 2    50   Input ~ 0
 GND
 Wire Wire Line
-	5600 2350 5600 2250
-Text GLabel 6800 1100 2    50   Output ~ 0
+	4900 2450 4900 2350
+Text GLabel 6850 1050 1    50   Output ~ 0
 ~UART_A_RXLED
-Text GLabel 5500 1550 0    50   Output ~ 0
+Text GLabel 5400 1650 0    50   Output ~ 0
 ~UART_A_TXLED
 Wire Wire Line
-	5500 1750 5550 1750
+	5500 1800 5550 1800
 Wire Wire Line
-	5550 1750 5550 1650
+	5550 1800 5550 1650
 Wire Wire Line
 	5550 1650 5600 1650
-Wire Wire Line
-	5500 1550 5600 1550
 NoConn ~ 6700 1050
 NoConn ~ 6700 950 
 $Comp
 L Device:R R?
-U 1 1 5F95C006
-P 6050 2100
-AR Path="/6014B4D9/5F95C006" Ref="R?"  Part="1" 
-AR Path="/5F8F4E1E/5F95C006" Ref="R?"  Part="1" 
-AR Path="/5F910E81/5F95C006" Ref="R13"  Part="1" 
-F 0 "R13" H 6120 2146 50  0000 L CNN
-F 1 "220" H 6120 2055 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5980 2100 50  0001 C CNN
-F 3 "~" H 6050 2100 50  0001 C CNN
-	1    6050 2100
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
 U 1 1 5F95C00C
-P 6350 2100
+P 5800 2150
 AR Path="/6014B4D9/5F95C00C" Ref="R?"  Part="1" 
 AR Path="/5F8F4E1E/5F95C00C" Ref="R?"  Part="1" 
-AR Path="/5F910E81/5F95C00C" Ref="R14"  Part="1" 
-F 0 "R14" H 6420 2146 50  0000 L CNN
-F 1 "220" H 6420 2055 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 6280 2100 50  0001 C CNN
-F 3 "~" H 6350 2100 50  0001 C CNN
-	1    6350 2100
-	1    0    0    -1  
+AR Path="/5F910E81/5F95C00C" Ref="R13"  Part="1" 
+F 0 "R13" V 5900 2150 50  0000 C CNN
+F 1 "220" V 5800 2150 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5730 2150 50  0001 C CNN
+F 3 "~" H 5800 2150 50  0001 C CNN
+	1    5800 2150
+	0    -1   -1   0   
 $EndComp
+Connection ~ 5450 1950
 Wire Wire Line
-	6050 1850 6050 1950
-Connection ~ 6050 1850
+	5450 1950 5550 1950
+Connection ~ 5550 1950
 Wire Wire Line
-	6050 1850 6350 1850
-Wire Wire Line
-	6350 1850 6350 1950
-Connection ~ 6350 1850
-Wire Wire Line
-	6350 1850 7550 1850
+	5550 1950 7500 1950
 $Comp
 L Device:LED D?
 U 1 1 5F95C018
-P 6600 2900
+P 6200 2450
 AR Path="/6014B4D9/5F95C018" Ref="D?"  Part="1" 
 AR Path="/5F8F4E1E/5F95C018" Ref="D?"  Part="1" 
 AR Path="/5F910E81/5F95C018" Ref="D5"  Part="1" 
-F 0 "D5" H 6600 2700 50  0000 C CNN
-F 1 "RX" H 6600 2800 50  0000 C CNN
-F 2 "LED_THT:LED_D3.0mm" H 6600 2900 50  0001 C CNN
-F 3 "~" H 6600 2900 50  0001 C CNN
-	1    6600 2900
+F 0 "D5" H 6200 2350 50  0000 C CNN
+F 1 "RX" H 6200 2550 50  0000 C CNN
+F 2 "LED_THT:LED_D3.0mm" H 6200 2450 50  0001 C CNN
+F 3 "~" H 6200 2450 50  0001 C CNN
+	1    6200 2450
 	-1   0    0    1   
 $EndComp
 $Comp
 L Device:LED D?
 U 1 1 5F95C01E
-P 6600 2500
+P 6200 2150
 AR Path="/6014B4D9/5F95C01E" Ref="D?"  Part="1" 
 AR Path="/5F8F4E1E/5F95C01E" Ref="D?"  Part="1" 
 AR Path="/5F910E81/5F95C01E" Ref="D4"  Part="1" 
-F 0 "D4" H 6600 2300 50  0000 C CNN
-F 1 "TX" H 6600 2400 50  0000 C CNN
-F 2 "LED_THT:LED_D3.0mm" H 6600 2500 50  0001 C CNN
-F 3 "~" H 6600 2500 50  0001 C CNN
-	1    6600 2500
+F 0 "D4" H 6200 2050 50  0000 C CNN
+F 1 "TX" H 6200 2250 50  0000 C CNN
+F 2 "LED_THT:LED_D3.0mm" H 6200 2150 50  0001 C CNN
+F 3 "~" H 6200 2150 50  0001 C CNN
+	1    6200 2150
 	-1   0    0    1   
 $EndComp
-Text GLabel 6850 2900 2    50   Input ~ 0
+Text GLabel 6450 2450 2    50   Input ~ 0
 ~UART_A_RXLED
-Text GLabel 6850 2500 2    50   Input ~ 0
+Text GLabel 6450 2150 2    50   Input ~ 0
 ~UART_A_TXLED
 Wire Wire Line
-	6850 2900 6750 2900
+	6450 2450 6350 2450
 Wire Wire Line
-	6850 2500 6750 2500
+	6450 2150 6350 2150
 $Comp
 L Connector:Conn_01x06_Male J?
 U 1 1 5F95C02A
-P 4700 2450
+P 4100 4350
 AR Path="/6014B4D9/5F95C02A" Ref="J?"  Part="1" 
 AR Path="/5F8F4E1E/5F95C02A" Ref="J?"  Part="1" 
 AR Path="/5F910E81/5F95C02A" Ref="J7"  Part="1" 
-F 0 "J7" H 4808 2831 50  0000 C CNN
-F 1 "UART A" H 4808 2740 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal" H 4700 2450 50  0001 C CNN
-F 3 "~" H 4700 2450 50  0001 C CNN
-	1    4700 2450
+F 0 "J7" H 4200 4800 50  0000 C CNN
+F 1 "UART A" H 4200 4700 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal" H 4100 4350 50  0001 C CNN
+F 3 "~" H 4100 4350 50  0001 C CNN
+	1    4100 4350
 	1    0    0    -1  
 $EndComp
-Text GLabel 5000 2250 2    50   Input ~ 0
+Text GLabel 4500 4050 2    50   Input ~ 0
 GND
-Wire Wire Line
-	5000 2250 4950 2250
-Wire Wire Line
-	4900 2350 4950 2350
-Wire Wire Line
-	4950 2350 4950 2250
-Connection ~ 4950 2250
-Wire Wire Line
-	4950 2250 4900 2250
-Text GLabel 5000 2450 2    50   Input ~ 0
+Text GLabel 4500 4350 2    50   Input ~ 0
 +5V
 Wire Wire Line
-	5000 2450 4900 2450
-NoConn ~ 4900 2750
-Text GLabel 5000 2550 2    50   Output ~ 0
+	4500 4350 4300 4350
+Text GLabel 4500 4450 2    50   Output ~ 0
 UART_A_RxD
 Wire Wire Line
-	5000 2550 4900 2550
-Text GLabel 5000 2650 2    50   Input ~ 0
+	4500 4450 4300 4450
+Text GLabel 4500 4550 2    50   Input ~ 0
 UART_A_TxD
 Wire Wire Line
-	5000 2650 4900 2650
+	4500 4550 4300 4550
 $Comp
 L Device:C_Small C?
 U 1 1 5F95C03D
-P 7750 1400
+P 7200 1250
 AR Path="/5F8F4E1E/5F95C03D" Ref="C?"  Part="1" 
 AR Path="/5F910E81/5F95C03D" Ref="C28"  Part="1" 
-F 0 "C28" H 7658 1354 50  0000 R CNN
-F 1 "0,1uF" H 7658 1445 50  0000 R CNN
-F 2 "" H 7750 1400 50  0001 C CNN
-F 3 "~" H 7750 1400 50  0001 C CNN
-	1    7750 1400
-	-1   0    0    1   
+F 0 "C28" H 7108 1204 50  0000 R CNN
+F 1 "0,1uF" H 7108 1295 50  0000 R CNN
+F 2 "" H 7200 1250 50  0001 C CNN
+F 3 "~" H 7200 1250 50  0001 C CNN
+	1    7200 1250
+	0    1    1    0   
 $EndComp
-Text GLabel 7750 1200 1    50   Input ~ 0
-+5V
-Text GLabel 7750 1600 3    50   Input ~ 0
-GND
-Wire Wire Line
-	7750 1600 7750 1500
-Wire Wire Line
-	7750 1300 7750 1200
-Wire Wire Line
-	6700 1150 6750 1150
-Wire Wire Line
-	6750 1150 6750 1100
-Wire Wire Line
-	6750 1100 6800 1100
-Wire Wire Line
-	6450 2500 6350 2500
-Wire Wire Line
-	6350 2250 6350 2500
-Wire Wire Line
-	6050 2900 6450 2900
-Wire Wire Line
-	6050 2250 6050 2900
 $Comp
 L 6502:USB_B J?
 U 1 1 5F982914
-P 8600 1350
+P 8350 1350
 AR Path="/6014B4D9/5F982914" Ref="J?"  Part="1" 
 AR Path="/5F8F4E1E/5F982914" Ref="J?"  Part="1" 
-AR Path="/5F910E81/5F982914" Ref="J8"  Part="1" 
-F 0 "J8" H 8657 1817 50  0000 C CNN
-F 1 "UART_A" H 8657 1726 50  0000 C CNN
-F 2 "Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal" H 8750 1300 50  0001 C CNN
-F 3 "" H 8750 1300 50  0001 C CNN
-	1    8600 1350
+AR Path="/5F910E81/5F982914" Ref="J9"  Part="1" 
+F 0 "J9" H 8407 1817 50  0000 C CNN
+F 1 "UART_A" H 8407 1726 50  0000 C CNN
+F 2 "Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal" H 8500 1300 50  0001 C CNN
+F 3 "" H 8500 1300 50  0001 C CNN
+	1    8350 1350
 	1    0    0    -1  
 $EndComp
-NoConn ~ 8500 1750
-Text GLabel 8600 2000 3    50   Input ~ 0
+NoConn ~ 8250 1750
+Text GLabel 8350 2000 3    50   Input ~ 0
 GND
 Wire Wire Line
-	8600 1850 8600 1750
+	8350 1850 8350 1750
 $Comp
 L Device:Ferrite_Bead_Small FB?
 U 1 1 5F98291D
-P 9450 1150
+P 9200 1150
 AR Path="/6014B4D9/5F98291D" Ref="FB?"  Part="1" 
 AR Path="/5F8F4E1E/5F98291D" Ref="FB?"  Part="1" 
 AR Path="/5F910E81/5F98291D" Ref="FB2"  Part="1" 
-F 0 "FB2" V 9213 1150 50  0000 C CNN
-F 1 "FB" V 9304 1150 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9380 1150 50  0001 C CNN
-F 3 "~" H 9450 1150 50  0001 C CNN
-	1    9450 1150
+F 0 "FB2" V 8963 1150 50  0000 C CNN
+F 1 "FB" V 9054 1150 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9130 1150 50  0001 C CNN
+F 3 "~" H 9200 1150 50  0001 C CNN
+	1    9200 1150
 	0    1    1    0   
 $EndComp
-Text GLabel 10400 1150 2    50   Input ~ 0
+Text GLabel 10150 1150 2    50   Input ~ 0
 +5V
 Wire Wire Line
-	8900 1150 9100 1150
+	8650 1150 8850 1150
 Wire Wire Line
-	9550 1150 10150 1150
+	9300 1150 9900 1150
 Wire Wire Line
-	8900 1450 9000 1450
-Text GLabel 10400 1600 2    50   BiDi ~ 0
+	8650 1450 8750 1450
+Text GLabel 10150 1600 2    50   BiDi ~ 0
 UART_A_USBD-
-Text GLabel 10400 1350 2    50   BiDi ~ 0
+Text GLabel 10150 1350 2    50   BiDi ~ 0
 UART_A_USBD+
 $Comp
 L Device:R R?
 U 1 1 5F982929
-P 10150 1600
+P 9900 1600
 AR Path="/6014B4D9/5F982929" Ref="R?"  Part="1" 
 AR Path="/5F8F4E1E/5F982929" Ref="R?"  Part="1" 
 AR Path="/5F910E81/5F982929" Ref="R16"  Part="1" 
-F 0 "R16" V 10250 1600 50  0000 C CNN
-F 1 "27" V 10150 1600 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10080 1600 50  0001 C CNN
-F 3 "~" H 10150 1600 50  0001 C CNN
-	1    10150 1600
+F 0 "R16" V 10000 1600 50  0000 C CNN
+F 1 "27" V 9900 1600 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9830 1600 50  0001 C CNN
+F 3 "~" H 9900 1600 50  0001 C CNN
+	1    9900 1600
 	0    -1   -1   0   
 $EndComp
 $Comp
 L Device:R R?
 U 1 1 5F98292F
-P 10150 1350
+P 9900 1350
 AR Path="/6014B4D9/5F98292F" Ref="R?"  Part="1" 
 AR Path="/5F8F4E1E/5F98292F" Ref="R?"  Part="1" 
 AR Path="/5F910E81/5F98292F" Ref="R15"  Part="1" 
-F 0 "R15" V 10250 1350 50  0000 C CNN
-F 1 "27" V 10150 1350 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10080 1350 50  0001 C CNN
-F 3 "~" H 10150 1350 50  0001 C CNN
-	1    10150 1350
+F 0 "R15" V 10000 1350 50  0000 C CNN
+F 1 "27" V 9900 1350 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9830 1350 50  0001 C CNN
+F 3 "~" H 9900 1350 50  0001 C CNN
+	1    9900 1350
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	10300 1600 10400 1600
+	10050 1600 10150 1600
 Wire Wire Line
-	10300 1350 10400 1350
+	10050 1350 10150 1350
 Wire Wire Line
-	9000 1450 9000 1600
+	8750 1450 8750 1600
 $Comp
 L Device:C_Small C?
 U 1 1 5F982938
-P 9450 1800
+P 9200 1800
 AR Path="/6014B4D9/5F982938" Ref="C?"  Part="1" 
 AR Path="/5F8F4E1E/5F982938" Ref="C?"  Part="1" 
 AR Path="/5F910E81/5F982938" Ref="C30"  Part="1" 
-F 0 "C30" H 9542 1846 50  0000 L CNN
-F 1 "47pF" H 9542 1755 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9450 1800 50  0001 C CNN
-F 3 "~" H 9450 1800 50  0001 C CNN
-	1    9450 1800
+F 0 "C30" H 9292 1846 50  0000 L CNN
+F 1 "47pF" H 9292 1755 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9200 1800 50  0001 C CNN
+F 3 "~" H 9200 1800 50  0001 C CNN
+	1    9200 1800
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:C_Small C?
 U 1 1 5F98293E
-P 9800 1800
+P 9550 1800
 AR Path="/6014B4D9/5F98293E" Ref="C?"  Part="1" 
 AR Path="/5F8F4E1E/5F98293E" Ref="C?"  Part="1" 
 AR Path="/5F910E81/5F98293E" Ref="C31"  Part="1" 
-F 0 "C31" H 9892 1846 50  0000 L CNN
-F 1 "47pF" H 9892 1755 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9800 1800 50  0001 C CNN
-F 3 "~" H 9800 1800 50  0001 C CNN
-	1    9800 1800
+F 0 "C31" H 9642 1846 50  0000 L CNN
+F 1 "47pF" H 9642 1755 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9550 1800 50  0001 C CNN
+F 3 "~" H 9550 1800 50  0001 C CNN
+	1    9550 1800
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8900 1350 9450 1350
+	8650 1350 9200 1350
 Wire Wire Line
-	9000 1600 9800 1600
-Text GLabel 9450 2000 3    50   Input ~ 0
+	8750 1600 9550 1600
+Text GLabel 9200 2000 3    50   Input ~ 0
 GND
-Text GLabel 9800 2000 3    50   Input ~ 0
+Text GLabel 9550 2000 3    50   Input ~ 0
 GND
 Wire Wire Line
-	9450 1700 9450 1350
-Connection ~ 9450 1350
+	9200 1700 9200 1350
+Connection ~ 9200 1350
 Wire Wire Line
-	9450 1350 10000 1350
+	9200 1350 9750 1350
 Wire Wire Line
-	9450 1900 9450 2000
+	9200 1900 9200 2000
 Wire Wire Line
-	9800 2000 9800 1900
+	9550 2000 9550 1900
 Wire Wire Line
-	9800 1700 9800 1600
-Connection ~ 9800 1600
+	9550 1700 9550 1600
+Connection ~ 9550 1600
 Wire Wire Line
-	9800 1600 10000 1600
+	9550 1600 9750 1600
 $Comp
 L Device:C_Small C?
 U 1 1 5F982950
-P 9100 1800
+P 8850 1800
 AR Path="/6014B4D9/5F982950" Ref="C?"  Part="1" 
 AR Path="/5F8F4E1E/5F982950" Ref="C?"  Part="1" 
 AR Path="/5F910E81/5F982950" Ref="C29"  Part="1" 
-F 0 "C29" H 9192 1846 50  0000 L CNN
-F 1 "10nF" H 9192 1755 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9100 1800 50  0001 C CNN
-F 3 "~" H 9100 1800 50  0001 C CNN
-	1    9100 1800
+F 0 "C29" H 8942 1846 50  0000 L CNN
+F 1 "10nF" H 8942 1755 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 8850 1800 50  0001 C CNN
+F 3 "~" H 8850 1800 50  0001 C CNN
+	1    8850 1800
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9100 1700 9100 1150
-Connection ~ 9100 1150
+	8850 1700 8850 1150
+Connection ~ 8850 1150
 Wire Wire Line
-	9100 1150 9350 1150
-Text GLabel 9100 2000 3    50   Input ~ 0
+	8850 1150 9100 1150
+Text GLabel 8850 2000 3    50   Input ~ 0
 GND
 Wire Wire Line
-	9100 2000 9100 1900
+	8850 2000 8850 1900
 $Comp
 L power:PWR_FLAG #FLG?
 U 1 1 5F98295B
-P 10150 1150
+P 9900 1150
 AR Path="/6014B4D9/5F98295B" Ref="#FLG?"  Part="1" 
 AR Path="/5F8F4E1E/5F98295B" Ref="#FLG?"  Part="1" 
 AR Path="/5F910E81/5F98295B" Ref="#FLG02"  Part="1" 
-F 0 "#FLG02" H 10150 1225 50  0001 C CNN
-F 1 "PWR_FLAG" H 10150 1323 50  0000 C CNN
-F 2 "" H 10150 1150 50  0001 C CNN
-F 3 "~" H 10150 1150 50  0001 C CNN
-	1    10150 1150
+F 0 "#FLG02" H 9900 1225 50  0001 C CNN
+F 1 "PWR_FLAG" H 9900 1323 50  0000 C CNN
+F 2 "" H 9900 1150 50  0001 C CNN
+F 3 "~" H 9900 1150 50  0001 C CNN
+	1    9900 1150
 	1    0    0    -1  
 $EndComp
-Connection ~ 10150 1150
+Connection ~ 9900 1150
 Wire Wire Line
-	10150 1150 10400 1150
+	9900 1150 10150 1150
 $Comp
 L power:PWR_FLAG #FLG?
 U 1 1 5F982963
-P 8600 1850
+P 8350 1850
 AR Path="/6014B4D9/5F982963" Ref="#FLG?"  Part="1" 
 AR Path="/5F8F4E1E/5F982963" Ref="#FLG?"  Part="1" 
 AR Path="/5F910E81/5F982963" Ref="#FLG01"  Part="1" 
-F 0 "#FLG01" H 8600 1925 50  0001 C CNN
-F 1 "PWR_FLAG" V 8600 1977 50  0000 L CNN
-F 2 "" H 8600 1850 50  0001 C CNN
-F 3 "~" H 8600 1850 50  0001 C CNN
-	1    8600 1850
+F 0 "#FLG01" H 8350 1925 50  0001 C CNN
+F 1 "PWR_FLAG" V 8350 1977 50  0000 L CNN
+F 2 "" H 8350 1850 50  0001 C CNN
+F 3 "~" H 8350 1850 50  0001 C CNN
+	1    8350 1850
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	8600 2000 8600 1850
-Connection ~ 8600 1850
+	8350 2000 8350 1850
+Connection ~ 8350 1850
 $Comp
 L 74xx:74LS04 U?
 U 6 1 5F9A15C7
-P 2350 3900
+P 4400 3050
 AR Path="/5F8F4E1E/5F9A15C7" Ref="U?"  Part="6" 
 AR Path="/5F910E81/5F9A15C7" Ref="U4"  Part="6" 
-F 0 "U4" H 2350 4217 50  0000 C CNN
-F 1 "74AC04" H 2350 4126 50  0000 C CNN
-F 2 "" H 2350 3900 50  0001 C CNN
-F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 2350 3900 50  0001 C CNN
-	6    2350 3900
+F 0 "U4" H 4400 3367 50  0000 C CNN
+F 1 "74AC04" H 4400 3276 50  0000 C CNN
+F 2 "" H 4400 3050 50  0001 C CNN
+F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 4400 3050 50  0001 C CNN
+	6    4400 3050
 	1    0    0    -1  
 $EndComp
-Text GLabel 2750 3900 2    50   Output ~ 0
+Text GLabel 4800 3050 2    50   Output ~ 0
 UART_RES
-Text GLabel 1850 3900 0    50   Input ~ 0
+Text GLabel 3900 3050 0    50   Input ~ 0
 ~6502_RES
 Wire Wire Line
-	1850 3900 2050 3900
+	3900 3050 4100 3050
 Wire Wire Line
-	2650 3900 2750 3900
+	4700 3050 4800 3050
+NoConn ~ 3200 2350
+NoConn ~ 1600 2350
+NoConn ~ 1600 2450
+NoConn ~ 1600 2550
+NoConn ~ 3200 2550
+NoConn ~ 3200 2450
+Text GLabel 3300 2300 2    50   Output ~ 0
+UART_A_~RTS
+Wire Wire Line
+	3200 2250 3250 2250
+Wire Wire Line
+	3250 2250 3250 2300
+Wire Wire Line
+	3250 2300 3300 2300
+Text GLabel 1500 2300 0    50   Output ~ 0
+UART_B_~RTS
+Wire Wire Line
+	1500 2300 1550 2300
+Wire Wire Line
+	1550 2300 1550 2250
+Wire Wire Line
+	1550 2250 1600 2250
+Text GLabel 1200 1550 1    50   Input ~ 0
+UART_A_~CTS
+Wire Wire Line
+	1200 1550 1200 1650
+Wire Wire Line
+	1200 1650 1600 1650
+Text GLabel 3300 1150 2    50   Input ~ 0
+UART_B_~CTS
+Wire Wire Line
+	3300 1150 2000 1150
+Wire Wire Line
+	2000 1150 2000 1250
+Wire Wire Line
+	4300 4150 4400 4150
+Wire Wire Line
+	4400 4150 4400 4050
+Wire Wire Line
+	4400 4050 4500 4050
+Text GLabel 4500 4200 2    50   Input ~ 0
+UART_A_~RTS
+Text GLabel 4500 4700 2    50   Output ~ 0
+UART_A_~CTS
+Wire Wire Line
+	4500 4700 4400 4700
+Wire Wire Line
+	4400 4700 4400 4650
+Wire Wire Line
+	4400 4650 4300 4650
+Wire Wire Line
+	4400 4250 4400 4200
+Wire Wire Line
+	4400 4200 4500 4200
+Wire Wire Line
+	4300 4250 4400 4250
+$Comp
+L Connector:Conn_01x06_Male J?
+U 1 1 5F9E48ED
+P 5200 4350
+AR Path="/6014B4D9/5F9E48ED" Ref="J?"  Part="1" 
+AR Path="/5F8F4E1E/5F9E48ED" Ref="J?"  Part="1" 
+AR Path="/5F910E81/5F9E48ED" Ref="J8"  Part="1" 
+F 0 "J8" H 5300 4800 50  0000 C CNN
+F 1 "UART B" H 5300 4700 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal" H 5200 4350 50  0001 C CNN
+F 3 "~" H 5200 4350 50  0001 C CNN
+	1    5200 4350
+	1    0    0    -1  
+$EndComp
+Text GLabel 5600 4050 2    50   Input ~ 0
+GND
+Text GLabel 5600 4350 2    50   Input ~ 0
++5V
+Wire Wire Line
+	5600 4350 5400 4350
+Text GLabel 5600 4450 2    50   Output ~ 0
+UART_B_RxD
+Wire Wire Line
+	5600 4450 5400 4450
+Text GLabel 5600 4550 2    50   Input ~ 0
+UART_B_TxD
+Wire Wire Line
+	5600 4550 5400 4550
+Wire Wire Line
+	5400 4150 5500 4150
+Wire Wire Line
+	5500 4150 5500 4050
+Wire Wire Line
+	5500 4050 5600 4050
+Text GLabel 5600 4200 2    50   Input ~ 0
+UART_B_~RTS
+Text GLabel 5600 4700 2    50   Output ~ 0
+UART_B_~CTS
+Wire Wire Line
+	5600 4700 5500 4700
+Wire Wire Line
+	5500 4700 5500 4650
+Wire Wire Line
+	5500 4650 5400 4650
+Wire Wire Line
+	5500 4250 5500 4200
+Wire Wire Line
+	5500 4200 5600 4200
+Wire Wire Line
+	5400 4250 5500 4250
+Wire Wire Line
+	5500 1350 5600 1350
+Wire Wire Line
+	5400 1650 5500 1650
+Wire Wire Line
+	5500 1650 5500 1550
+Wire Wire Line
+	5500 1550 5600 1550
+Text GLabel 5400 1500 0    50   Input ~ 0
+UART_A_~RTS
+Wire Wire Line
+	5400 1500 5450 1500
+Wire Wire Line
+	5450 1500 5450 1450
+Wire Wire Line
+	5450 1450 5600 1450
+Text GLabel 5500 1050 0    50   Output ~ 0
+UART_A_~CTS
+Wire Wire Line
+	5600 1050 5500 1050
+Wire Wire Line
+	5600 950  5550 950 
+Wire Wire Line
+	5550 950  5550 900 
+Wire Wire Line
+	5550 900  5500 900 
+Wire Wire Line
+	6850 1150 6850 1050
+Wire Wire Line
+	6700 1150 6850 1150
+Wire Wire Line
+	7000 1150 7000 1250
+Wire Wire Line
+	6700 1250 7000 1250
+Wire Wire Line
+	7400 1350 7400 1250
+Wire Wire Line
+	6700 1350 7400 1350
+Wire Wire Line
+	7300 1250 7400 1250
+Connection ~ 7400 1250
+Wire Wire Line
+	7400 1250 7400 1150
+Wire Wire Line
+	7100 1250 7000 1250
+Connection ~ 7000 1250
+$Comp
+L Device:R R?
+U 1 1 5FA78290
+P 5800 2450
+AR Path="/6014B4D9/5FA78290" Ref="R?"  Part="1" 
+AR Path="/5F8F4E1E/5FA78290" Ref="R?"  Part="1" 
+AR Path="/5F910E81/5FA78290" Ref="R14"  Part="1" 
+F 0 "R14" V 5900 2450 50  0000 C CNN
+F 1 "220" V 5800 2450 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5730 2450 50  0001 C CNN
+F 3 "~" H 5800 2450 50  0001 C CNN
+	1    5800 2450
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5950 2150 6050 2150
+Wire Wire Line
+	5950 2450 6050 2450
+Wire Wire Line
+	5550 2150 5650 2150
+Wire Wire Line
+	5550 1950 5550 2150
+Wire Wire Line
+	5450 2450 5650 2450
+Wire Wire Line
+	5450 1950 5450 2450
+Wire Wire Line
+	4900 2450 5000 2450
+Wire Wire Line
+	6800 1750 6750 1750
+Wire Wire Line
+	6750 1750 6750 1650
+Wire Wire Line
+	6750 1650 6700 1650
 Wire Bus Line
-	1350 1000 2200 1000
+	1350 800  2200 800 
 Wire Bus Line
 	1700 3350 2800 3350
 $EndSCHEMATC
