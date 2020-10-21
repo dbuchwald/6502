@@ -96,13 +96,13 @@ _serial_init_controller:
         ; Write to MR1A
         lda #$10
         sta DUART_W_CRA
-        ; No RTS (b7=0)
+        ; Rx controls RTS (b7=1)
         ; RxINT on at least one byte in FIFO (b6=0)
         ; Char error mode (b5=0)
         ; No parity (b4:3=10)
         ; Odd parity (b2=1)
         ; 8 bits (b1:0=11)
-        lda #%00010111
+        lda #%10010111
         sta DUART_W_MR1A
         ; Write to MR2A
         ; Automatically moves after access to MR1A
@@ -110,9 +110,9 @@ _serial_init_controller:
         ; sta DUART_W_CRA
         ; Normal channel (b7:6=00)
         ; No RTS on Tx (b5=0)
-        ; No CTS on Tx (b4=0)
+        ; CTS enables Tx (b4=1)
         ; One stop bit (b3:0=0111)
-        lda #%00000111
+        lda #%00010111
         sta DUART_W_MR2A
         ; Select BRG
         lda #%11100000
@@ -123,7 +123,7 @@ _serial_init_controller:
         lda #%11001100
         sta DUART_W_CSRA
         ; Enable both transmitter and receiver
-        lda #%00000101
+        lda #%10000101
         sta DUART_W_CRA
         ; Enable Channel A Tx/Rx interrupts
         lda #%00000011
