@@ -43,6 +43,8 @@ _system_init:
         ; user IRQ to null
         stz user_irq_address
         stz user_irq_address+1
+        ; Initialize clock
+        jsr _delay_init
         ; Initialize BLINK LED
         jsr _blink_init
         ; Short BLINK LED strobe

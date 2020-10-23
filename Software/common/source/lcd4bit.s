@@ -64,6 +64,8 @@ _lcd_init:
         ; store registers A and X
         pha
         phx
+        ; Initialize timer if not done before
+        jsr _delay_init
         ; Initialize DDRB
         lda LCD_DDR
         ora #(LCD_DDR_WRITE_MASK)

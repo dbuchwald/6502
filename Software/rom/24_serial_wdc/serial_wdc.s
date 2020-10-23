@@ -74,6 +74,7 @@ ACIA_STATUS_PARITY_ERR = 1 << 0
 init:
       ldx #$ff
       txs
+      jsr _delay_init
 
       lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_DISABLE | ACIA_DTR_LOW)
       sta ACIA_COMMAND

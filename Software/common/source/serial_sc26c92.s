@@ -114,8 +114,8 @@ _serial_init_controller:
         ; One stop bit (b3:0=0111)
         lda #%00010111
         sta DUART_W_MR2A
-        ; Select BRG
-        lda #%11100000
+        ; Select BRG and counter X1/16 mode
+        lda #%10110000
         sta DUART_W_ACR
         ; ; Select clock (19200 baud) on Tx and Rx
         ; lda #%11001100

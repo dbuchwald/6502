@@ -6,11 +6,10 @@ AR65_BINARY=ar65
 
 CPU_FLAG=--cpu 65C02
 ARCH_FLAG=-t none
-CLOCK_FLAG=-Dclock_mode_flag=$(CLOCK_MODE_FLAG) 
 BUILD_FLAG=-Ddb6502
 
-CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) -O
-CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG) $(BUILD_FLAG)
+CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(EXTRA_FLAGS) -O
+CA65_FLAGS=$(CPU_FLAG) $(BUILD_FLAG) $(EXTRA_FLAGS)
 LD65_FLAGS=
 AR65_FLAGS=r
 
@@ -71,27 +70,40 @@ SERIAL_INTERFACE=sc26c92
 
 SERIAL_DRIVER=serial_$(SERIAL_INTERFACE).s
 
+# Timing interface
+# possible values are
+# - sc26c92
+# - cpu
+# for CPU interface there is additional parameter: CLOCK_MODE
+TIMING_INTERFACE=sc26c92
+
+TIMING_DRIVER=delay_$(TIMING_INTERFACE).s
+
 # Default address mode (basic/ext/v2/.. )
 ADDRESS_MODE=v2
 
-# Default clock mode (supported are: slow, 250k, 1m, 2m, 4m, 8m)
-CLOCK_MODE=250k
+ifeq ($(TIMING_INTERFACE), cpu)
+	# Default clock mode (supported are: slow, 250k, 1m, 2m, 4m, 8m)
+	CLOCK_MODE=250k
 
-# Clock mode translation (for CA65 preprocessor) - see common/include/clock.inc
-ifeq ($(CLOCK_MODE), slow)
-	CLOCK_MODE_FLAG=0
-else ifeq ($(CLOCK_MODE), 250k)
-	CLOCK_MODE_FLAG=1
-else ifeq ($(CLOCK_MODE), 1m)
-	CLOCK_MODE_FLAG=2
-else ifeq ($(CLOCK_MODE), 2m)
-	CLOCK_MODE_FLAG=3
-else ifeq ($(CLOCK_MODE), 4m)
-	CLOCK_MODE_FLAG=4
-else ifeq ($(CLOCK_MODE), 8m)
-	CLOCK_MODE_FLAG=5
-else
-	$(error Incorrect clock mode selected: $(CLOCK_MODE))
+	# Clock mode translation (for CA65 preprocessor) - see common/include/clock.inc
+	ifeq ($(CLOCK_MODE), slow)
+		CLOCK_MODE_FLAG=0
+	else ifeq ($(CLOCK_MODE), 250k)
+		CLOCK_MODE_FLAG=1
+	else ifeq ($(CLOCK_MODE), 1m)
+		CLOCK_MODE_FLAG=2
+	else ifeq ($(CLOCK_MODE), 2m)
+		CLOCK_MODE_FLAG=3
+	else ifeq ($(CLOCK_MODE), 4m)
+		CLOCK_MODE_FLAG=4
+	else ifeq ($(CLOCK_MODE), 8m)
+		CLOCK_MODE_FLAG=5
+	else
+		$(error Incorrect clock mode selected: $(CLOCK_MODE))
+	endif
+
+	EXTRA_FLAGS += -Dclock_mode_flag=$(CLOCK_MODE_FLAG)
 endif
 
 # Include folders
@@ -113,6 +125,7 @@ COMMON_SOURCES=syscalls.s       \
                modem.s          \
                string.s         \
                utils.s          \
+							 $(TIMING_DRIVER) \
                via.s            \
                via_utils.s      \
                tty.s            \

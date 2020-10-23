@@ -24,6 +24,7 @@
         .export _syscall__register_user_irq
         .export _syscall__deregister_user_irq
 ; Common routines
+        .export _syscall__delay_init
         .export _syscall__delay_ms
         .export _syscall__delay_sec
         .export _syscall__convert_to_hex
@@ -134,6 +135,8 @@ _syscall__register_user_irq:
         SYSCALL_VECTOR _register_user_irq
 _syscall__deregister_user_irq:
         SYSCALL_VECTOR _deregister_user_irq
+_syscall__delay_init:
+        SYSCALL_VECTOR _delay_init
 _syscall__delay_ms:
         SYSCALL_VECTOR _delay_ms
 _syscall__delay_sec:

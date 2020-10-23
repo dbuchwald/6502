@@ -12,6 +12,7 @@
         .export _register_user_irq
         .export _deregister_user_irq
 ; Common routines
+        .export _delay_init
         .export _delay_ms
         .export _delay_sec
         .export _convert_to_hex
@@ -126,6 +127,9 @@ _deregister_user_irq:
         jmp (_syscall__deregister_user_irq)
 
 ; Common routines
+_delay_init:
+        jmp (_syscall__delay_init)
+
 _delay_ms:
         jmp (_syscall__delay_ms)
 

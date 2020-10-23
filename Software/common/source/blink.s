@@ -16,6 +16,7 @@ _blink_init:
       lda VIA1_DDRB
       ora #%00000001
       sta VIA1_DDRB
+      jsr _delay_init
       pla
       rts
 

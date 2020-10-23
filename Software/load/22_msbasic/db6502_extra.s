@@ -62,7 +62,7 @@ MONISCNTC:
 	RTS
 
 StartupMessage:
-	.byte	"Cold [C] or warm [W] start?",$0D,$0A,$00
+	.asciiz	"[C]old or [W]arm start?"
 
 LOAD:
 	RTS
