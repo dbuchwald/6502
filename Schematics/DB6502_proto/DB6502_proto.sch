@@ -1532,12 +1532,12 @@ $EndSheet
 $Comp
 L 74xx:74LS21 U3
 U 1 1 5FB20233
-P 2150 5800
-F 0 "U3" H 2150 6175 50  0000 C CNN
-F 1 "74HC21" H 2150 6084 50  0000 C CNN
-F 2 "" H 2150 5800 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 2150 5800 50  0001 C CNN
-	1    2150 5800
+P 2350 5800
+F 0 "U3" H 2350 6175 50  0000 C CNN
+F 1 "74HC21" H 2350 6084 50  0000 C CNN
+F 2 "" H 2350 5800 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 2350 5800 50  0001 C CNN
+	1    2350 5800
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1595,54 +1595,52 @@ Wire Wire Line
 Connection ~ 1700 7450
 Wire Wire Line
 	1700 7450 1700 7400
-Text GLabel 1750 5550 1    50   Input ~ 0
+Text GLabel 1950 5550 1    50   Input ~ 0
 ~VIA1_IRQ
 Wire Wire Line
-	1750 5550 1750 5650
+	1950 5550 1950 5650
 Wire Wire Line
-	1750 5650 1850 5650
-Text GLabel 1600 5550 1    50   Input ~ 0
+	1950 5650 2050 5650
+Text GLabel 1800 5550 1    50   Input ~ 0
 ~VIA2_IRQ
-Text GLabel 1450 5550 1    50   Input ~ 0
+Text GLabel 1650 5550 1    50   Input ~ 0
 ~UART_IRQ
-Text GLabel 1300 5550 1    50   Input ~ 0
+Text GLabel 1500 5550 1    50   Input ~ 0
 ~EXT_IRQ
-Text GLabel 2550 5800 2    50   Output ~ 0
+Text GLabel 2750 5800 2    50   Output ~ 0
 ~IRQ
 Wire Wire Line
-	2450 5800 2550 5800
+	2650 5800 2750 5800
 Wire Wire Line
-	1600 5550 1600 5750
+	1800 5550 1800 5750
 Wire Wire Line
-	1600 5750 1850 5750
+	1800 5750 2050 5750
 Wire Wire Line
-	1450 5550 1450 5850
+	1650 5550 1650 5850
 Wire Wire Line
-	1450 5850 1850 5850
+	1650 5850 2050 5850
 Wire Wire Line
-	1300 5550 1300 5950
+	1500 5550 1500 5950
 Wire Wire Line
-	1300 5950 1850 5950
+	1500 5950 2050 5950
 $Comp
 L Device:R R1
 U 1 1 5FC6DB04
-P 1150 5750
-F 0 "R1" V 1050 5750 50  0000 C CNN
-F 1 "4K7" V 1150 5750 50  0000 C CNN
-F 2 "" V 1080 5750 50  0001 C CNN
-F 3 "~" H 1150 5750 50  0001 C CNN
-	1    1150 5750
+P 1150 5600
+F 0 "R1" V 1050 5600 50  0000 C CNN
+F 1 "4K7" V 1150 5600 50  0000 C CNN
+F 2 "" V 1080 5600 50  0001 C CNN
+F 3 "~" H 1150 5600 50  0001 C CNN
+	1    1150 5600
 	1    0    0    -1  
 $EndComp
-Text GLabel 1150 5550 1    50   Input ~ 0
+Text GLabel 1150 5400 1    50   Input ~ 0
 +5V
 Wire Wire Line
-	1150 5550 1150 5600
+	1150 5400 1150 5450
 Wire Wire Line
-	1150 5900 1150 5950
-Wire Wire Line
-	1150 5950 1300 5950
-Connection ~ 1300 5950
+	1150 5950 1500 5950
+Connection ~ 1500 5950
 Text GLabel 3550 6150 0    50   Input ~ 0
 GND
 Text GLabel 3550 6250 0    50   Input ~ 0
@@ -1743,6 +1741,27 @@ Wire Wire Line
 	3450 4950 3450 4850
 Wire Wire Line
 	3450 4850 3550 4850
+$Comp
+L Device:R R?
+U 1 1 6011A69F
+P 1350 5600
+F 0 "R?" V 1250 5600 50  0000 C CNN
+F 1 "4K7" V 1350 5600 50  0000 C CNN
+F 2 "" V 1280 5600 50  0001 C CNN
+F 3 "~" H 1350 5600 50  0001 C CNN
+	1    1350 5600
+	1    0    0    -1  
+$EndComp
+Text GLabel 1350 5400 1    50   Input ~ 0
++5V
+Wire Wire Line
+	1350 5400 1350 5450
+Wire Wire Line
+	1150 5750 1150 5950
+Wire Wire Line
+	1350 5750 1350 5850
+Wire Wire Line
+	1350 5850 1650 5850
 Wire Bus Line
 	6500 3750 6500 3950
 Wire Bus Line
@@ -1777,4 +1796,5 @@ Wire Bus Line
 	3850 650  3850 2050
 Wire Bus Line
 	1600 2150 1600 3400
+Connection ~ 1650 5850
 $EndSCHEMATC
