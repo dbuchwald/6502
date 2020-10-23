@@ -1,4 +1,5 @@
         .include "tty.inc"
+        .include "utils.inc"
         .import __ROM_START__
         .import __ROM_LAST__
         .import __ROM_SIZE__
@@ -26,8 +27,7 @@ init:
         writeln_tty #message
         write_tty #clock_msg1
         ldx #$00
-        ;lda #(clock_mhz)
-        lda #0
+        jsr _get_cpu_mhz
         jsr _tty_write_dec
         writeln_tty #clock_msg2
         jsr _tty_send_newline

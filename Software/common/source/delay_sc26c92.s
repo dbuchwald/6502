@@ -1,4 +1,6 @@
       .include "zeropage.inc"
+      .include "via.inc"
+      .include "via_const.inc"
 
       .import __SERIAL_START__
 
@@ -16,6 +18,7 @@ DUART_W_CTPL  = __SERIAL_START__ + $07
       .export _delay_init
       .export _delay_ms
       .export _delay_sec
+      .export _get_cpu_mhz
 
       .code
 ; POSITIVE C COMPLIANT
@@ -117,6 +120,38 @@ _delay_sec:
       plx
       pla
 ; return
+      rts
+
+_get_cpu_mhz:
+      phx
+; start VIA cycle counter
+      lda #(VIA_ACR_T1_SINGLE_NO_PB7 | VIA_ACR_T2_TIMED | VIA_ACR_SR_DISABLED | VIA_ACR_PB_LATCH_DISABLE | VIA_ACR_PA_LATCH_DISABLE)
+      sta VIA1_ACR
+
+; count down from max value
+      lda #$ff
+      sta VIA1_T1CL
+      lda #$ff
+      sta VIA1_T1CH
+
+; wait for 4.102 ms
+      lda #$b1
+      ldx #$03
+      jsr delay_internal
+
+; get current state (high latch only, ignore the low one)
+      sec
+      lda #$00
+      sbc VIA1_T1CH
+
+; MHz count in 4 most significant bits
+      lsr
+      lsr
+      lsr
+      lsr
+
+; restore X register
+      plx
       rts
 
 ; INTERNAL

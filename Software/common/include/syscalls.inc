@@ -17,6 +17,7 @@
         .forceimport _syscall_convert_to_hex
         .forceimport _syscall__convert_hex_to_dec
         .forceimport _syscall_convert_hex_to_dec
+        .forceimport _syscall__get_cpu_mhz
 ; Blink routines
         .forceimport _syscall__blink_led
         .forceimport _syscall__strobe_led

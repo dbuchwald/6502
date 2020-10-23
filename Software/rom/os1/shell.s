@@ -109,8 +109,7 @@ _process_info:
         writeln_tty #msginfo
         write_tty #clock_msg1
         ldx #$00
-        ;lda #(clock_mhz)
-        lda #0
+        jsr _get_cpu_mhz
         jsr _tty_write_dec
         writeln_tty #clock_msg2
         jsr _tty_send_newline

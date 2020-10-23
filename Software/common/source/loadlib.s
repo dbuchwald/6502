@@ -19,6 +19,7 @@
         .export convert_to_hex
         .export _convert_hex_to_dec
         .export convert_hex_to_dec
+        .export _get_cpu_mhz
 ; Blink routines
         .export _blink_led
         .export _strobe_led
@@ -147,6 +148,9 @@ _convert_hex_to_dec:
 
 convert_hex_to_dec:
         jmp (_syscall_convert_hex_to_dec)
+
+_get_cpu_mhz:
+        jmp (_syscall__get_cpu_mhz)
 
 ; Blink routines
 _blink_led:

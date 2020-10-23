@@ -4,6 +4,7 @@
       .export _delay_init
       .export _delay_ms
       .export _delay_sec
+      .export _get_cpu_mhz
 
       .code
 ; POSITIVE C COMPLIANT
@@ -98,4 +99,9 @@ exit_delay_sec:
 ; restore original value of A register
       pla
 ; return
+      rts
+
+; POSITIVE C COMPLIANT
+_get_cpu_mhz:
+      lda #(clock_mhz)
       rts

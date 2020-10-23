@@ -31,6 +31,7 @@
         .export _syscall_convert_to_hex
         .export _syscall__convert_hex_to_dec
         .export _syscall_convert_hex_to_dec
+        .export _syscall__get_cpu_mhz
 ; Blink routines
         .export _syscall__blink_led
         .export _syscall__strobe_led
@@ -149,6 +150,8 @@ _syscall__convert_hex_to_dec:
         SYSCALL_VECTOR _convert_hex_to_dec
 _syscall_convert_hex_to_dec:
         SYSCALL_VECTOR convert_hex_to_dec
+_syscall__get_cpu_mhz:
+        SYSCALL_VECTOR _get_cpu_mhz
 _syscall__blink_led:
         SYSCALL_VECTOR _blink_led
 _syscall__strobe_led:
