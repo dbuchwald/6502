@@ -1,3 +1,5 @@
+include ../../build.mk
+
 # cc65 utilities used in this example
 CA65_BINARY=ca65
 CC65_BINARY=cc65
@@ -6,10 +8,9 @@ AR65_BINARY=ar65
 
 CPU_FLAG=--cpu 65C02
 ARCH_FLAG=-t none
-BUILD_FLAG=-Ddb6502
 
 CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(EXTRA_FLAGS) -O
-CA65_FLAGS=$(CPU_FLAG) $(BUILD_FLAG) $(EXTRA_FLAGS)
+CA65_FLAGS=$(CPU_FLAG) $(EXTRA_FLAGS)
 LD65_FLAGS=
 AR65_FLAGS=r
 
@@ -61,31 +62,11 @@ else
 	LCD_MODULE=lcd8bit.s
 endif
 
-# Serial interface
-# Possible values are
-# - wdc65c51
-# - r6551
-# - sc26c92
-SERIAL_INTERFACE=sc26c92
-
 SERIAL_DRIVER=serial_$(SERIAL_INTERFACE).s
-
-# Timing interface
-# possible values are
-# - sc26c92
-# - cpu
-# for CPU interface there is additional parameter: CLOCK_MODE
-TIMING_INTERFACE=sc26c92
 
 TIMING_DRIVER=delay_$(TIMING_INTERFACE).s
 
-# Default address mode (basic/ext/v2/.. )
-ADDRESS_MODE=v2
-
 ifeq ($(TIMING_INTERFACE), cpu)
-	# Default clock mode (supported are: slow, 250k, 1m, 2m, 4m, 8m)
-	CLOCK_MODE=250k
-
 	# Clock mode translation (for CA65 preprocessor) - see common/include/clock.inc
 	ifeq ($(CLOCK_MODE), slow)
 		CLOCK_MODE_FLAG=0

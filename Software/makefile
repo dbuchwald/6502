@@ -1,3 +1,5 @@
+include build.mk
+
 RM_BINARY=rm
 RM_FLAGS=-rf
 
@@ -10,8 +12,6 @@ COMMON_FOLDER=$(BUILD_FOLDER)/common
 LIB_FOLDER=$(BUILD_FOLDER)/lib
 FIRMWARE_PROJECTS_FOLDER=rom
 LOADABLE_PROJECTS_FOLDER=load
-
-ADDRESS_MODE=v2
 
 FIRMWARE_PROJECTS = 01_nop_fill          \
                     02_nop_fffc          \

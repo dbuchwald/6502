@@ -81,6 +81,18 @@ For serial communication you can use regular PuTTy, but it doesn't have the feat
 
 **PLEASE NOTE:** You might be able to use virtual machines or Windows Subsystem for Linux (WSL) - but neither of the two worked correctly with `make install` target that uses TL866II+ programmer to flash the ROM. YMMV.
 
+### Setting up build-specific variables
+
+Before you proceed with the build, you need to set up some basic details. Check `Software/build.mk` file and change as needed. If you built DB6502 using one of the standard boards, then most likely all you have to do is to provide correct value to `BOARD_VERSION` variable. There are two main default configurations:
+
+- `DB6502v01` - this one represents revision one of the computer with WDC65C51 ACIA chip, 8MHz CPU clock and 4-bit LCD display,
+- `DB6502v02` - this one represents (not yet released) revision two of the computer, with SC26C92 Dual UART chip and 4-bit LCD display,
+- `custom` - this one can be configured (or expanded) as needed. You can select any combination of the build configuration parameters.
+
+If you are building breadboard version of DB6502, or porting this software to any other build it is advisable to check out all the build parameters and options. Most likely the `custom` configuration would be the best. Also, don't forget to add your own `Software/common/firmware.<your_id>.cfg` variant of the configuration file with memory and peripheral mapping.
+
+**PLEASE NOTE:** Each time you change `Software/build.mk` make sure to invoke `make clean` command in root `Software` folder to ensure that all the common libraries are rebuilt with new build parameters. Failing to do so might result in linking issues that will manifest as hard to understand and explain bugs, so full rebuild should always be the first step of any troubleshooting.
+
 ### Running the simplest possible program
 
 Now you need to build the first program. Go to `Software/rom/01_nop_fill` folder and run:
@@ -284,10 +296,12 @@ General rule is simple: `make` should be sufficient for all the build/installati
 - `terminal` - connect to the 6502 computer using serial port, please note - currently uses my own device ID as visible under MacOS and most likely needs to be adapted to your build/OS,
 - `emu` - run the generated binary in system emulator. Again: suitable for simple programs, more complex ones are not yet supported. So far I needed it only for simple debugging and that's why it is so limited.
 
-Beside the targets, there are three very important build flags:
+Beside the targets, there are three very important build flags (defined in `Software/build.mk`):
 
-- `ADDRESS_MODE` - with acceptable values `basic` and `ext` (the latter being default if omitted) that drives target addressing model. To build for Ben Eater's machine, use `basic` mode; for my build, use `ext` mode. If you want to support your own model, create additional configuration file, as explained in common sources section below,
-- `CLOCK_MODE` - used to control internal delay routines to work with different clock setups. The following modes are supported:
+- `ADDRESS_MODE` - with acceptable values `basic`, `ext` and `v2` that drives target addressing model. To build for Ben Eater's machine, use `basic` mode; for my build revision v1, use `ext` mode. `v2` is for the second DB6502 revision. If you want to support your own model, create additional configuration file, as explained in common sources section below,
+- `SERIAL_INTERFACE` - with acceptable values `r6551`, `wdc65c51`, `sc26c92` enables selection of type of controller used for serial communication. `r6551` represents Rockwell R6551 chips (the ones without the infamous "wdc bug"); `wdc65c51` represents WDC 65C51 chips that do suffer from TX status bug (otherwise known as "wdc bug") and `sc26c92` represents SC26C92 DUART controller. For the ACIA chip - if you are not sure if your chip is affected, try using `r6551`, but if it fails, select `wdc65c51` instead.
+- `TIMING_INTERFACE` - represents interface used to calculate delays. There are two options now: `cpu` and `sc26c92`. First one represents delay calculation based on CPU cycles (and requires compile-time selection of clock speed, explained below), and the second uses SC26C92 built-in timer to accurately measure time, so it is CPU clock-independent,
+- `CLOCK_MODE` - used to control internal CPU delay routines to work with different clock setups, and is not needed for `sc29c92` timing interface. The following modes are supported:
   - `slow` - to be used with external clock module, all delays are basically disabled,
   - `250k` - to be used with Arduino Mega Debugger (my own variant running at approx. 275kHz),
   - `1m` - to be used with 1MHz oscillator,
@@ -295,7 +309,6 @@ Beside the targets, there are three very important build flags:
   - `4m` - to be used with 4MHz oscillator,
   - `8m` - to be used with 8MHz oscillator.
 - `LCD_MODE` - with acceptable values `8bit` and `4bit` (the latter being default if omitted) enables build time selection of LCD interface. If your own build of 6502 computer uses 8-bit interface towards LCD, this will let you use provided software with it. The only thing you might want to check is the LCD data and port definitions at the beginning of `common/source/lcd8bit.s` (or, if you are using your own build with 4-bit mode `common/source/lcd4bit.s`) for symbols `LCD_DATA_PORT` and `LCD_CONTROL_PORT`, as well as their DDR counterparts. The same is possible with 4-bit mode, but there is just one symbol - `LCD_PORT` accompanied by DDR counterpart. Default configuration is obviously immediately compatible with 4-bit onboard LCD connector, and 8-bit interface connected to VIA2 PA for control and PB for data (like in BE6502),
-- `SERIAL_INTERFACE` - with acceptable values `r6551` and `wdc65c51` enables selection of type of controller used for serial communication. `r6551` represents Rockwell R6551 chips (the ones without the infamous "wdc bug") and `wdc65c51` represents WDC 65C51 chips that do suffer from TX status bug (otherwise known as "wdc bug"). If you are not sure if your chip is affected, try using `r6551`, but if it fails, select `wdc65c51` instead.
 
 Build examples:
 
@@ -310,6 +323,8 @@ make CLOCK_MODE=1m all test
 ```
 
 This command will rebuild only modified modules with support for my own addressing scheme (32K RAM, 24K ROM, VIA at 0x9000) and suitable for 1MHz execution - all delays will be enabled.
+
+**PLEASE NOTE:** instead of passing values in command line you should change `Software/build.mk` file to reflect your build. This will prevent any issues related to linking of incompatible modules (built with different setup). Also, each time you change `Software/build.mk` make sure to invoke `make clean` command in root `Software` folder to ensure that all the common libraries are rebuilt with new build parameters.
 
 ## Detailed description of modules in `Software` folder
 
