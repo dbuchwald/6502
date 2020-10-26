@@ -16,13 +16,10 @@ FILE uart_input = FDEV_SETUP_STREAM(NULL, uart_getchar, _FDEV_SETUP_READ);
 void initSystem(void) {
   // init data direction registers
   // shift register is all output
-  CONTROL_DDR  |= (SR_DAT | SR_CLK | SR_OUT);
-  CONTROL_DDR  |= CLK_BIT;
-  // master clock, rw and sync all input
-  //CONTROL_DDR  &= ~(CLK_BIT | RW_BIT | SYNC_BIT);
+  CONTROL_DDR  |= (CLK_BIT | SR_DAT | SR_CLK | SR_OUT);
+  // rw and sync all input
   CONTROL_DDR  &= ~(RW_BIT | SYNC_BIT);
   // enable pull-ups on input bits
-  //CONTROL_POUT |= (CLK_BIT | RW_BIT | SYNC_BIT);
   CONTROL_POUT |= (RW_BIT | SYNC_BIT);
   // lower the clock, we will raise it only when needed
   CONTROL_POUT &= ~CLK_BIT;  

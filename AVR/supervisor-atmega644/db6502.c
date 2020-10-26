@@ -11,8 +11,8 @@ static uint8_t control_register;
 void assumeBusControl(void) {
   // start by stopping clock and 
   updateControlRegister(CLKSEL_BIT | BE_BIT | RDY_BIT, CLKSEL_BIT | BE_BIT | RDY_BIT);
-  // master clock and rw are output now
-  CONTROL_DDR  |= (CLK_BIT | RW_BIT);
+  // we will control RW now
+  CONTROL_DDR  |= RW_BIT;
   // lower the clock, we will raise it only when needed
   CONTROL_POUT &= ~CLK_BIT;
   // address and data buses are all output
@@ -24,14 +24,10 @@ void assumeBusControl(void) {
 }
 
 void returnBusControl(void) {
-  // master clock, rw and sync all input
-  //CONTROL_DDR  &= ~(CLK_BIT | RW_BIT);
+  // rw and sync all input
+  CONTROL_DDR  &= ~(SYNC_BIT | RW_BIT);
   // enable pull-ups on input bits
-  //CONTROL_POUT |= (CLK_BIT | RW_BIT);
-  // keep the clock under our control for now
-  CONTROL_DDR  &= ~RW_BIT;
-  // enable pull-ups on input bits
-  CONTROL_POUT |= RW_BIT;
+  CONTROL_POUT |= (SYNC_BIT | RW_BIT);
 
   // address and data buses are all input
   ADDRMSB_DDR  = ALL_INPUT;
@@ -45,9 +41,8 @@ void returnBusControl(void) {
   updateControlRegister(0x00, CLKSEL_BIT | BE_BIT | RDY_BIT);
 }
 
+// assumes bus is already under our control
 void resetSystem(void) {
-  // get hold of the bus (to drive the clock)
-  assumeBusControl();
   // raise reset line
   updateControlRegister(RESET_BIT, RESET_BIT);
   // tick-tock
@@ -59,8 +54,6 @@ void resetSystem(void) {
   }
   // lower reset line
   updateControlRegister(0x00, RESET_BIT);
-  // let go of the bus
-  returnBusControl();
 }
 
 uint8_t getControlRegister(void) {
