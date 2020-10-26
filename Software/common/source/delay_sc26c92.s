@@ -144,7 +144,11 @@ _get_cpu_mhz:
       lda #$00
       sbc VIA1_T1CH
 
-; MHz count in 4 most significant bits
+; just a precaution - add two before division to eliminate rounding error
+      clc
+      adc #$02
+
+; MHz count in 4 most significant bits, so divide by 16
       lsr
       lsr
       lsr
