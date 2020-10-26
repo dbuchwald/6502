@@ -1,4 +1,5 @@
 .import __USERRAM_START__
+.import __ROM_START__
 
 ; configuration
 CONFIG_2C := 1
@@ -29,4 +30,5 @@ WIDTH			:= 72
 WIDTH2			:= 56
 
 ; memory layout
+CONST_MEMSIZ := __ROM_START__
 RAMSTART2		:= __USERRAM_START__

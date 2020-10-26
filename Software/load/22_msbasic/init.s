@@ -221,7 +221,7 @@ L4098:
   .endif
         ldx     #TEMPST
         stx     TEMPPT
-.ifndef CONFIG_CBM_ALL
+.if !(.def(CONFIG_CBM_ALL) || .def(DB6502))
         lda     #<QT_MEMORY_SIZE
         ldy     #>QT_MEMORY_SIZE
         jsr     STROUT
@@ -257,54 +257,63 @@ L4098:
 .else
         ldy     #$00
 .endif
-L40D7:
-        inc     LINNUM
-        bne     L40DD
-        inc     LINNUM+1
-.ifdef CBM1
-; CBM: hard RAM top limit is $8000
-        lda     LINNUM+1
-        cmp     #$80
-        beq     L40FA
-.endif
-.ifdef CBM2
-; optimized version of the CBM1 code
-        bmi     L40FA
-.endif
-.if .def(AIM65)
-; AIM65: hard RAM top limit is $A000
-        lda     LINNUM+1
-        cmp     #$A0
-        beq     L40FA
-.endif
-L40DD:
-.ifdef CONFIG_2
-        lda     #$55 ; 01010101 / 10101010
+.ifdef DB6502
+; DB6502: hard RAM top limit is $8000
+        lda     #<CONST_MEMSIZ
+        sta     LINNUM
+        lda     #>CONST_MEMSIZ
+        sta     LINNUM+1
+        jmp     L40FA
 .else
-        lda     #$92 ; 10010010 / 00100100
-.endif
-        sta     (LINNUM),y
-        cmp     (LINNUM),y
-        bne     L40FA
-        asl     a
-        sta     (LINNUM),y
-        cmp     (LINNUM),y
-.ifdef CONFIG_CBM_ALL
-        beq     L40D7
-.else
-  .ifndef CONFIG_11
-        beq     L40D7; old: faster
-        bne     L40FA
-  .else
-        bne     L40FA; new: slower
-        beq     L40D7
+  L40D7:
+          inc     LINNUM
+          bne     L40DD
+          inc     LINNUM+1
+  .ifdef CBM1
+  ; CBM: hard RAM top limit is $8000
+          lda     LINNUM+1
+          cmp     #$80
+          beq     L40FA
   .endif
-L40EE:
-        jsr     CHRGOT
-        jsr     LINGET
-        tay
-        beq     L40FA
-        jmp     SYNERR
+  .ifdef CBM2
+  ; optimized version of the CBM1 code
+          bmi     L40FA
+  .endif
+  .if .def(AIM65)
+  ; AIM65: hard RAM top limit is $A000
+          lda     LINNUM+1
+          cmp     #$A0
+          beq     L40FA
+  .endif
+  L40DD:
+  .ifdef CONFIG_2
+          lda     #$55 ; 01010101 / 10101010
+  .else
+          lda     #$92 ; 10010010 / 00100100
+  .endif
+          sta     (LINNUM),y
+          cmp     (LINNUM),y
+          bne     L40FA
+          asl     a
+          sta     (LINNUM),y
+          cmp     (LINNUM),y
+  .ifdef CONFIG_CBM_ALL
+          beq     L40D7
+  .else
+    .ifndef CONFIG_11
+          beq     L40D7; old: faster
+          bne     L40FA
+    .else
+          bne     L40FA; new: slower
+          beq     L40D7
+    .endif
+  L40EE:
+          jsr     CHRGOT
+          jsr     LINGET
+          tay
+          beq     L40FA
+          jmp     SYNERR
+  .endif
 .endif
 L40FA:
         lda     LINNUM
@@ -508,7 +517,7 @@ QT_BYTES_FREE:
   .endif
 QT_BASIC:
   .ifdef DB6502
-        .byte   "DB6502 BASIC VERSION 2C"
+        .byte   "DB6502 BASIC VER. 2C"
   .endif
   .ifdef OSI
         .byte   "OSI 6502 BASIC VERSION 1.0 REV 3.2"

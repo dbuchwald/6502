@@ -554,7 +554,7 @@ CLEAR:
         bne     L256A
 .endif
 CLEARC:
-.ifdef KBD
+.ifdef CONST_MEMSIZ
         lda     #<CONST_MEMSIZ
         ldy     #>CONST_MEMSIZ
 .else
