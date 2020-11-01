@@ -34,11 +34,11 @@ A15   |4     21| /RAM1_CS
 A14   |5     20| /RAM2_CS
 A13   |6     19| /ROM_CS
 A12   |7     18| IO_CS
-A11   |8     17| --
+A11   |8     17| RDY
 A10   |9     16| --
-A9    |10    15| --
-A8    |11    14| --
-Gnd   |12    13| -- 
+A9    |10    15| CLK_TOGGLE
+A8    |11    14| RDY_M2
+Gnd   |12    13| RDY_M1
        --------
 */
 
@@ -57,6 +57,9 @@ Pin 8  =  A11;
 Pin 9  =  A10;
 Pin 10 =  A9;
 Pin 11 =  A8;
+Pin 13 =  RDY_M1;
+Pin 14 =  RDY_M2;
+Pin 15 =  CLK_TOGGLE;
 /*
  * Outputs:  define outputs - all are simple combinatorial
  */
@@ -66,6 +69,7 @@ Pin 21 = RAM1_CS; /* to RAM1 /CS pin */
 Pin 20 = RAM2_CS; /* to RAM2 /CS pin */
 Pin 19 = ROM_CS;  /* to ROM  /CS pin */
 Pin 18 = IO_CS;   /* to IOCS pin */
+Pin 17 = RDY;     /* to DBG_RDY gate */
 
 /*
  * Local variables
@@ -82,9 +86,27 @@ IO_SHADOW = Address:[0200..02FF];
 RAM_EXTRA = Address:[8000..BFFF];
 ROM       = Address:[8000..FFFF];
 
-!WE       = CLK & !RW;
-!OE       = CLK & RW;
+!WE       = !RW & (CLK # !RDY_M1);
+!OE       = RW  & (CLK # !RDY_M1);
 !RAM1_CS  = RAM & !IO_SHADOW;
 !RAM2_CS  = EXRAM & RAM_EXTRA;
 !ROM_CS   = ROM & !(EXRAM & RAM_EXTRA);
 IO_CS     = IO_SHADOW;
+/*
+ * Slow memory
+ */ 
+RDY       = CLK_TOGGLE #
+            ((!RAM1_CS # !RAM2_CS) & !RDY_M1) #
+            (!ROM_CS & !RDY_M2) #
+			(IO_CS & !RDY_M1);
+/*
+ */
+/*
+ * Fast memory
+
+RDY       = CLK_TOGGLE #
+            (!RAM1_CS # !RAM2_CS) #
+            (!ROM_CS & !RDY_M2) #
+			(IO_CS & !RDY_M1);
+
+ */
