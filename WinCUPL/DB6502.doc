@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Thu Sep 10 14:31:49 2020
+Created         Sun Nov 01 17:27:56 2020
 Name            DB6502 Address Decoder
 Partno          DB6502
 Revision        01
@@ -30,6 +30,7 @@ IO_SHADOW =>
 
 !OE =>
     CLK & RW
+  # !RDY_M1 & RW
 
 RAM =>
     !A15
@@ -49,6 +50,13 @@ RAM =>
 RAM_EXTRA =>
     !A14 & A15
 
+RDY =>
+    CLK_TOGGLE
+  # !RAM1_CS & !RDY_M1
+  # !RAM2_CS & !RDY_M1
+  # !RDY_M2 & !ROM_CS
+  # IO_CS & !RDY_M1
+
 ROM =>
     A15
 
@@ -58,6 +66,10 @@ ROM =>
 
 !WE =>
     CLK & !RW
+  # !RDY_M1 & !RW
+
+CLK_TOGGLE.oe  =>
+    0 
 
 IO_CS.oe  =>
     1 
@@ -70,6 +82,12 @@ RAM1_CS.oe  =>
 
 RAM2_CS.oe  =>
     1 
+
+RDY.oe  =>
+    1 
+
+RDY_M2.oe  =>
+    0 
 
 ROM_CS.oe  =>
     1 
@@ -96,22 +114,29 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     A15                         4        V        -       -       -     
     Address                     0        F        -       -       -     
     CLK                         1        V        -       -       -     
+    CLK_TOGGLE                  15       V        -       -       -     
     EXRAM                       3        V        -       -       -     
     IO_CS                       18       V        1       16      1     
     IO_SHADOW                   0        I        1       -       -     
-    OE                          22       V        1       10      1     
+    OE                          22       V        2       10      1     
     RAM                         0        I        1       -       -     
     RAM1_CS                     21       V        7       12      1     
     RAM2_CS                     20       V        1       14      1     
     RAM_EXTRA                   0        I        1       -       -     
+    RDY                         17       V        5       14      1     
+    RDY_M1                      13       V        -       -       -     
+    RDY_M2                      14       V        -       -       -     
     ROM                         0        I        1       -       -     
     ROM_CS                      19       V        2       16      1     
     RW                          2        V        -       -       -     
-    WE                          23       V        1       8       1     
+    WE                          23       V        2       8       1     
+    CLK_TOGGLE          oe      15       D        1       1       0     
     IO_CS               oe      18       D        1       1       0     
     OE                  oe      22       D        1       1       0     
     RAM1_CS             oe      21       D        1       1       0     
     RAM2_CS             oe      20       D        1       1       0     
+    RDY                 oe      17       D        1       1       0     
+    RDY_M2              oe      14       D        1       1       0     
     ROM_CS              oe      19       D        1       1       0     
     WE                  oe      23       D        1       1       0     
 
