@@ -59,7 +59,7 @@ RDY =>
     CLK_TOGGLE
   # !RAM1_CS & !RDY_M1
   # !RAM2_CS & !RDY_M1
-  # !RDY_M2 & !ROM_CS
+  # !RDY_M1 & !RDY_M2 & !ROM_CS
   # IO_CS & !RDY_M1
 
 ROM =>
