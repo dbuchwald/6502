@@ -94,19 +94,17 @@ ROM       = Address:[8000..FFFF];
 IO_CS     = IO_SHADOW;
 /*
  * Slow memory
- */ 
+ */
 RDY       = CLK_TOGGLE #
             ((!RAM1_CS # !RAM2_CS) & !RDY_M1) #
-            (!ROM_CS & !RDY_M2) #
-			(IO_CS & !RDY_M1);
-/*
- */
+            (!ROM_CS & !RDY_M2 & !RDY_M1) #
+            (IO_CS & !RDY_M1);
 /*
  * Fast memory
-
+ */
+/*
 RDY       = CLK_TOGGLE #
             (!RAM1_CS # !RAM2_CS) #
-            (!ROM_CS & !RDY_M2) #
-			(IO_CS & !RDY_M1);
-
+            (!ROM_CS & !RDY_M2 & !RDY_M1) #
+            (IO_CS & !RDY_M1);
  */
