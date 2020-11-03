@@ -1,7 +1,7 @@
 CSIM(WM): CUPL Simulation Program
 Version 5.0a Serial# 
 Copyright (c) 1983, 1998 Logical Devices, Inc.
-CREATED Mon Nov 02 00:16:03 2020
+CREATED Mon Nov 02 13:45:54 2020
 
 LISTING FOR SIMULATION FILE: DB6502.si
 
@@ -37,363 +37,903 @@ LISTING FOR SIMULATION FILE: DB6502.si
                           Address decoder test                             
       CLKT RDY2 RDY1 CLK RW EXRAM  ADDRESS WE# OE# RAM1# RAM2# ROM# IO RDY 
       ---- ---- ---- --- -- ----- -------- --- --- ----- ----- ---- -- --- 
-0001: 1    1    1    0   0  0     00000000 H   H   L     H     H    L  H
-0002: 1    1    1    0   1  0     00000000 H   H   L     H     H    L  H
+0001: 1    1    1    0   0  0     00000000 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0002: 1    1    1    0   1  0     00000000 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0003: 1    1    1    1   0  0     00000000 L   H   L     H     H    L  H
 0004: 1    1    1    1   1  0     00000000 H   L   L     H     H    L  H
-0005: 1    1    1    0   0  0     00000001 H   H   L     H     H    L  H
-0006: 1    1    1    0   1  0     00000001 H   H   L     H     H    L  H
+0005: 1    1    1    0   0  0     00000001 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0006: 1    1    1    0   1  0     00000001 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0007: 1    1    1    1   0  0     00000001 L   H   L     H     H    L  H
 0008: 1    1    1    1   1  0     00000001 H   L   L     H     H    L  H
-0009: 1    1    1    0   0  0     00000010 H   H   H     H     H    H  H
-0010: 1    1    1    0   1  0     00000010 H   H   H     H     H    H  H
+0009: 1    1    1    0   0  0     00000010 X   H   H     H     H    H  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0010: 1    1    1    0   1  0     00000010 H   X   H     H     H    H  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0011: 1    1    1    1   0  0     00000010 L   H   H     H     H    H  H
 0012: 1    1    1    1   1  0     00000010 H   L   H     H     H    H  H
-0013: 1    1    1    0   0  0     00000011 H   H   L     H     H    L  H
-0014: 1    1    1    0   1  0     00000011 H   H   L     H     H    L  H
+0013: 1    1    1    0   0  0     00000011 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0014: 1    1    1    0   1  0     00000011 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0015: 1    1    1    1   0  0     00000011 L   H   L     H     H    L  H
 0016: 1    1    1    1   1  0     00000011 H   L   L     H     H    L  H
-0017: 1    1    1    0   0  0     01111111 H   H   L     H     H    L  H
-0018: 1    1    1    0   1  0     01111111 H   H   L     H     H    L  H
+0017: 1    1    1    0   0  0     01111111 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0018: 1    1    1    0   1  0     01111111 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0019: 1    1    1    1   0  0     01111111 L   H   L     H     H    L  H
 0020: 1    1    1    1   1  0     01111111 H   L   L     H     H    L  H
-0021: 1    1    1    0   0  0     10000000 H   H   H     H     L    L  H
-0022: 1    1    1    0   1  0     10000000 H   H   H     H     L    L  H
+0021: 1    1    1    0   0  0     10000000 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0022: 1    1    1    0   1  0     10000000 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0023: 1    1    1    1   0  0     10000000 L   H   H     H     L    L  H
 0024: 1    1    1    1   1  0     10000000 H   L   H     H     L    L  H
-0025: 1    1    1    0   0  0     10111111 H   H   H     H     L    L  H
-0026: 1    1    1    0   1  0     10111111 H   H   H     H     L    L  H
+0025: 1    1    1    0   0  0     10111111 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0026: 1    1    1    0   1  0     10111111 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0027: 1    1    1    1   0  0     10111111 L   H   H     H     L    L  H
 0028: 1    1    1    1   1  0     10111111 H   L   H     H     L    L  H
-0029: 1    1    1    0   0  0     11000000 H   H   H     H     L    L  H
-0030: 1    1    1    0   1  0     11000000 H   H   H     H     L    L  H
+0029: 1    1    1    0   0  0     11000000 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0030: 1    1    1    0   1  0     11000000 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0031: 1    1    1    1   0  0     11000000 L   H   H     H     L    L  H
 0032: 1    1    1    1   1  0     11000000 H   L   H     H     L    L  H
-0033: 1    1    1    0   0  0     11111111 H   H   H     H     L    L  H
-0034: 1    1    1    0   1  0     11111111 H   H   H     H     L    L  H
+0033: 1    1    1    0   0  0     11111111 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0034: 1    1    1    0   1  0     11111111 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0035: 1    1    1    1   0  0     11111111 L   H   H     H     L    L  H
 0036: 1    1    1    1   1  0     11111111 H   L   H     H     L    L  H
-0037: 1    1    1    0   0  1     00000000 H   H   L     H     H    L  H
-0038: 1    1    1    0   1  1     00000000 H   H   L     H     H    L  H
+0037: 1    1    1    0   0  1     00000000 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0038: 1    1    1    0   1  1     00000000 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0039: 1    1    1    1   0  1     00000000 L   H   L     H     H    L  H
 0040: 1    1    1    1   1  1     00000000 H   L   L     H     H    L  H
-0041: 1    1    1    0   0  1     00000001 H   H   L     H     H    L  H
-0042: 1    1    1    0   1  1     00000001 H   H   L     H     H    L  H
+0041: 1    1    1    0   0  1     00000001 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0042: 1    1    1    0   1  1     00000001 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0043: 1    1    1    1   0  1     00000001 L   H   L     H     H    L  H
 0044: 1    1    1    1   1  1     00000001 H   L   L     H     H    L  H
-0045: 1    1    1    0   0  1     00000010 H   H   H     H     H    H  H
-0046: 1    1    1    0   1  1     00000010 H   H   H     H     H    H  H
+0045: 1    1    1    0   0  1     00000010 X   H   H     H     H    H  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0046: 1    1    1    0   1  1     00000010 H   X   H     H     H    H  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0047: 1    1    1    1   0  1     00000010 L   H   H     H     H    H  H
 0048: 1    1    1    1   1  1     00000010 H   L   H     H     H    H  H
-0049: 1    1    1    0   0  1     00000011 H   H   L     H     H    L  H
-0050: 1    1    1    0   1  1     00000011 H   H   L     H     H    L  H
+0049: 1    1    1    0   0  1     00000011 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0050: 1    1    1    0   1  1     00000011 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0051: 1    1    1    1   0  1     00000011 L   H   L     H     H    L  H
 0052: 1    1    1    1   1  1     00000011 H   L   L     H     H    L  H
-0053: 1    1    1    0   0  1     01111111 H   H   L     H     H    L  H
-0054: 1    1    1    0   1  1     01111111 H   H   L     H     H    L  H
+0053: 1    1    1    0   0  1     01111111 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0054: 1    1    1    0   1  1     01111111 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0055: 1    1    1    1   0  1     01111111 L   H   L     H     H    L  H
 0056: 1    1    1    1   1  1     01111111 H   L   L     H     H    L  H
-0057: 1    1    1    0   0  1     10000000 H   H   H     L     H    L  H
-0058: 1    1    1    0   1  1     10000000 H   H   H     L     H    L  H
+0057: 1    1    1    0   0  1     10000000 X   H   H     L     H    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0058: 1    1    1    0   1  1     10000000 H   X   H     L     H    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0059: 1    1    1    1   0  1     10000000 L   H   H     L     H    L  H
 0060: 1    1    1    1   1  1     10000000 H   L   H     L     H    L  H
-0061: 1    1    1    0   0  1     10111111 H   H   H     L     H    L  H
-0062: 1    1    1    0   1  1     10111111 H   H   H     L     H    L  H
+0061: 1    1    1    0   0  1     10111111 X   H   H     L     H    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0062: 1    1    1    0   1  1     10111111 H   X   H     L     H    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0063: 1    1    1    1   0  1     10111111 L   H   H     L     H    L  H
 0064: 1    1    1    1   1  1     10111111 H   L   H     L     H    L  H
-0065: 1    1    1    0   0  1     11000000 H   H   H     H     L    L  H
-0066: 1    1    1    0   1  1     11000000 H   H   H     H     L    L  H
+0065: 1    1    1    0   0  1     11000000 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0066: 1    1    1    0   1  1     11000000 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0067: 1    1    1    1   0  1     11000000 L   H   H     H     L    L  H
 0068: 1    1    1    1   1  1     11000000 H   L   H     H     L    L  H
-0069: 1    1    1    0   0  1     11111111 H   H   H     H     L    L  H
-0070: 1    1    1    0   1  1     11111111 H   H   H     H     L    L  H
+0069: 1    1    1    0   0  1     11111111 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (H) for WE
+
+0070: 1    1    1    0   1  1     11111111 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (H) for OE
+
 0071: 1    1    1    1   0  1     11111111 L   H   H     H     L    L  H
 0072: 1    1    1    1   1  1     11111111 H   L   H     H     L    L  H
-0073: 0    1    1    0   1  0     00000000 H   H   L     H     H    L  L
-0074: 0    1    1    0   0  0     00000000 H   H   L     H     H    L  L
+0073: 0    1    1    0   1  0     00000000 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
+0074: 0    1    1    0   0  0     00000000 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
 0075: 0    1    1    1   0  0     00000000 L   H   L     H     H    L  L
 0076: 0    1    1    1   1  0     00000000 H   L   L     H     H    L  L
-0077: 0    1    1    0   0  0     00000001 H   H   L     H     H    L  L
-0078: 0    1    1    0   1  0     00000001 H   H   L     H     H    L  L
+0077: 0    1    1    0   0  0     00000001 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0078: 0    1    1    0   1  0     00000001 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0079: 0    1    1    1   0  0     00000001 L   H   L     H     H    L  L
 0080: 0    1    1    1   1  0     00000001 H   L   L     H     H    L  L
-0081: 0    1    1    0   0  0     00000010 H   H   H     H     H    H  L
-0082: 0    1    1    0   1  0     00000010 H   H   H     H     H    H  L
+0081: 0    1    1    0   0  0     00000010 X   H   H     H     H    H  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0082: 0    1    1    0   1  0     00000010 H   X   H     H     H    H  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0083: 0    1    1    1   0  0     00000010 L   H   H     H     H    H  L
 0084: 0    1    1    1   1  0     00000010 H   L   H     H     H    H  L
-0085: 0    1    1    0   0  0     00000011 H   H   L     H     H    L  L
-0086: 0    1    1    0   1  0     00000011 H   H   L     H     H    L  L
+0085: 0    1    1    0   0  0     00000011 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0086: 0    1    1    0   1  0     00000011 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0087: 0    1    1    1   0  0     00000011 L   H   L     H     H    L  L
 0088: 0    1    1    1   1  0     00000011 H   L   L     H     H    L  L
-0089: 0    1    1    0   0  0     01111111 H   H   L     H     H    L  L
-0090: 0    1    1    0   1  0     01111111 H   H   L     H     H    L  L
+0089: 0    1    1    0   0  0     01111111 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0090: 0    1    1    0   1  0     01111111 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0091: 0    1    1    1   0  0     01111111 L   H   L     H     H    L  L
 0092: 0    1    1    1   1  0     01111111 H   L   L     H     H    L  L
-0093: 0    1    1    0   0  0     10000000 H   H   H     H     L    L  L
-0094: 0    1    1    0   1  0     10000000 H   H   H     H     L    L  L
+0093: 0    1    1    0   0  0     10000000 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0094: 0    1    1    0   1  0     10000000 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0095: 0    1    1    1   0  0     10000000 L   H   H     H     L    L  L
 0096: 0    1    1    1   1  0     10000000 H   L   H     H     L    L  L
-0097: 0    1    1    0   0  0     10111111 H   H   H     H     L    L  L
-0098: 0    1    1    0   1  0     10111111 H   H   H     H     L    L  L
+0097: 0    1    1    0   0  0     10111111 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0098: 0    1    1    0   1  0     10111111 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0099: 0    1    1    1   0  0     10111111 L   H   H     H     L    L  L
 0100: 0    1    1    1   1  0     10111111 H   L   H     H     L    L  L
-0101: 0    1    1    0   0  0     11000000 H   H   H     H     L    L  L
-0102: 0    1    1    0   1  0     11000000 H   H   H     H     L    L  L
+0101: 0    1    1    0   0  0     11000000 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0102: 0    1    1    0   1  0     11000000 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0103: 0    1    1    1   0  0     11000000 L   H   H     H     L    L  L
 0104: 0    1    1    1   1  0     11000000 H   L   H     H     L    L  L
-0105: 0    1    1    0   0  0     11111111 H   H   H     H     L    L  L
-0106: 0    1    1    0   1  0     11111111 H   H   H     H     L    L  L
+0105: 0    1    1    0   0  0     11111111 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0106: 0    1    1    0   1  0     11111111 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0107: 0    1    1    1   0  0     11111111 L   H   H     H     L    L  L
 0108: 0    1    1    1   1  0     11111111 H   L   H     H     L    L  L
-0109: 0    1    1    0   0  1     00000000 H   H   L     H     H    L  L
-0110: 0    1    1    0   1  1     00000000 H   H   L     H     H    L  L
+0109: 0    1    1    0   0  1     00000000 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0110: 0    1    1    0   1  1     00000000 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0111: 0    1    1    1   0  1     00000000 L   H   L     H     H    L  L
 0112: 0    1    1    1   1  1     00000000 H   L   L     H     H    L  L
-0113: 0    1    1    0   0  1     00000001 H   H   L     H     H    L  L
-0114: 0    1    1    0   1  1     00000001 H   H   L     H     H    L  L
+0113: 0    1    1    0   0  1     00000001 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0114: 0    1    1    0   1  1     00000001 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0115: 0    1    1    1   0  1     00000001 L   H   L     H     H    L  L
 0116: 0    1    1    1   1  1     00000001 H   L   L     H     H    L  L
-0117: 0    1    1    0   0  1     00000010 H   H   H     H     H    H  L
-0118: 0    1    1    0   1  1     00000010 H   H   H     H     H    H  L
+0117: 0    1    1    0   0  1     00000010 X   H   H     H     H    H  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0118: 0    1    1    0   1  1     00000010 H   X   H     H     H    H  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0119: 0    1    1    1   0  1     00000010 L   H   H     H     H    H  L
 0120: 0    1    1    1   1  1     00000010 H   L   H     H     H    H  L
-0121: 0    1    1    0   0  1     00000011 H   H   L     H     H    L  L
-0122: 0    1    1    0   1  1     00000011 H   H   L     H     H    L  L
+0121: 0    1    1    0   0  1     00000011 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0122: 0    1    1    0   1  1     00000011 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0123: 0    1    1    1   0  1     00000011 L   H   L     H     H    L  L
 0124: 0    1    1    1   1  1     00000011 H   L   L     H     H    L  L
-0125: 0    1    1    0   0  1     01111111 H   H   L     H     H    L  L
-0126: 0    1    1    0   1  1     01111111 H   H   L     H     H    L  L
+0125: 0    1    1    0   0  1     01111111 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0126: 0    1    1    0   1  1     01111111 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0127: 0    1    1    1   0  1     01111111 L   H   L     H     H    L  L
 0128: 0    1    1    1   1  1     01111111 H   L   L     H     H    L  L
-0129: 0    1    1    0   0  1     10000000 H   H   H     L     H    L  L
-0130: 0    1    1    0   1  1     10000000 H   H   H     L     H    L  L
+0129: 0    1    1    0   0  1     10000000 X   H   H     L     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0130: 0    1    1    0   1  1     10000000 H   X   H     L     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0131: 0    1    1    1   0  1     10000000 L   H   H     L     H    L  L
 0132: 0    1    1    1   1  1     10000000 H   L   H     L     H    L  L
-0133: 0    1    1    0   0  1     10111111 H   H   H     L     H    L  L
-0134: 0    1    1    0   1  1     10111111 H   H   H     L     H    L  L
+0133: 0    1    1    0   0  1     10111111 X   H   H     L     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0134: 0    1    1    0   1  1     10111111 H   X   H     L     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0135: 0    1    1    1   0  1     10111111 L   H   H     L     H    L  L
 0136: 0    1    1    1   1  1     10111111 H   L   H     L     H    L  L
-0137: 0    1    1    0   0  1     11000000 H   H   H     H     L    L  L
-0138: 0    1    1    0   1  1     11000000 H   H   H     H     L    L  L
+0137: 0    1    1    0   0  1     11000000 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0138: 0    1    1    0   1  1     11000000 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0139: 0    1    1    1   0  1     11000000 L   H   H     H     L    L  L
 0140: 0    1    1    1   1  1     11000000 H   L   H     H     L    L  L
-0141: 0    1    1    0   0  1     11111111 H   H   H     H     L    L  L
-0142: 0    1    1    0   1  1     11111111 H   H   H     H     L    L  L
+0141: 0    1    1    0   0  1     11111111 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0142: 0    1    1    0   1  1     11111111 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0143: 0    1    1    1   0  1     11111111 L   H   H     H     L    L  L
 0144: 0    1    1    1   1  1     11111111 H   L   H     H     L    L  L
-0145: 0    1    0    0   0  0     00000000 L   H   L     H     H    L  H
-0146: 0    1    0    0   1  0     00000000 H   L   L     H     H    L  H
+0145: 0    1    0    0   0  0     00000000 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0146: 0    1    0    0   1  0     00000000 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0147: 0    1    0    1   0  0     00000000 L   H   L     H     H    L  H
 0148: 0    1    0    1   1  0     00000000 H   L   L     H     H    L  H
-0149: 0    1    0    0   0  0     00000001 L   H   L     H     H    L  H
-0150: 0    1    0    0   1  0     00000001 H   L   L     H     H    L  H
+0149: 0    1    0    0   0  0     00000001 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0150: 0    1    0    0   1  0     00000001 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0151: 0    1    0    1   0  0     00000001 L   H   L     H     H    L  H
 0152: 0    1    0    1   1  0     00000001 H   L   L     H     H    L  H
-0153: 0    1    0    0   0  0     00000010 L   H   H     H     H    H  H
-0154: 0    1    0    0   1  0     00000010 H   L   H     H     H    H  H
+0153: 0    1    0    0   0  0     00000010 X   H   H     H     H    H  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0154: 0    1    0    0   1  0     00000010 H   X   H     H     H    H  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0155: 0    1    0    1   0  0     00000010 L   H   H     H     H    H  H
 0156: 0    1    0    1   1  0     00000010 H   L   H     H     H    H  H
-0157: 0    1    0    0   0  0     00000011 L   H   L     H     H    L  H
-0158: 0    1    0    0   1  0     00000011 H   L   L     H     H    L  H
+0157: 0    1    0    0   0  0     00000011 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0158: 0    1    0    0   1  0     00000011 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0159: 0    1    0    1   0  0     00000011 L   H   L     H     H    L  H
 0160: 0    1    0    1   1  0     00000011 H   L   L     H     H    L  H
-0161: 0    1    0    0   0  0     01111111 L   H   L     H     H    L  H
-0162: 0    1    0    0   1  0     01111111 H   L   L     H     H    L  H
+0161: 0    1    0    0   0  0     01111111 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0162: 0    1    0    0   1  0     01111111 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0163: 0    1    0    1   0  0     01111111 L   H   L     H     H    L  H
 0164: 0    1    0    1   1  0     01111111 H   L   L     H     H    L  H
-0165: 0    1    0    0   0  0     10000000 L   H   H     H     L    L  L
-0166: 0    1    0    0   1  0     10000000 H   L   H     H     L    L  L
+0165: 0    1    0    0   0  0     10000000 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (L) for WE
+
+0166: 0    1    0    0   1  0     10000000 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (L) for OE
+
 0167: 0    1    0    1   0  0     10000000 L   H   H     H     L    L  L
 0168: 0    1    0    1   1  0     10000000 H   L   H     H     L    L  L
-0169: 0    1    0    0   0  0     10111111 L   H   H     H     L    L  L
-0170: 0    1    0    0   1  0     10111111 H   L   H     H     L    L  L
+0169: 0    1    0    0   0  0     10111111 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (L) for WE
+
+0170: 0    1    0    0   1  0     10111111 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (L) for OE
+
 0171: 0    1    0    1   0  0     10111111 L   H   H     H     L    L  L
 0172: 0    1    0    1   1  0     10111111 H   L   H     H     L    L  L
-0173: 0    1    0    0   0  0     11000000 L   H   H     H     L    L  L
-0174: 0    1    0    0   1  0     11000000 H   L   H     H     L    L  L
+0173: 0    1    0    0   0  0     11000000 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (L) for WE
+
+0174: 0    1    0    0   1  0     11000000 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (L) for OE
+
 0175: 0    1    0    1   0  0     11000000 L   H   H     H     L    L  L
 0176: 0    1    0    1   1  0     11000000 H   L   H     H     L    L  L
-0177: 0    1    0    0   0  0     11111111 L   H   H     H     L    L  L
-0178: 0    1    0    0   1  0     11111111 H   L   H     H     L    L  L
+0177: 0    1    0    0   0  0     11111111 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (L) for WE
+
+0178: 0    1    0    0   1  0     11111111 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (L) for OE
+
 0179: 0    1    0    1   0  0     11111111 L   H   H     H     L    L  L
 0180: 0    1    0    1   1  0     11111111 H   L   H     H     L    L  L
-0181: 0    1    0    0   0  1     00000000 L   H   L     H     H    L  H
-0182: 0    1    0    0   1  1     00000000 H   L   L     H     H    L  H
+0181: 0    1    0    0   0  1     00000000 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0182: 0    1    0    0   1  1     00000000 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0183: 0    1    0    1   0  1     00000000 L   H   L     H     H    L  H
 0184: 0    1    0    1   1  1     00000000 H   L   L     H     H    L  H
-0185: 0    1    0    0   0  1     00000001 L   H   L     H     H    L  H
-0186: 0    1    0    0   1  1     00000001 H   L   L     H     H    L  H
+0185: 0    1    0    0   0  1     00000001 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0186: 0    1    0    0   1  1     00000001 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0187: 0    1    0    1   0  1     00000001 L   H   L     H     H    L  H
 0188: 0    1    0    1   1  1     00000001 H   L   L     H     H    L  H
-0189: 0    1    0    0   0  1     00000010 L   H   H     H     H    H  H
-0190: 0    1    0    0   1  1     00000010 H   L   H     H     H    H  H
+0189: 0    1    0    0   0  1     00000010 X   H   H     H     H    H  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0190: 0    1    0    0   1  1     00000010 H   X   H     H     H    H  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0191: 0    1    0    1   0  1     00000010 L   H   H     H     H    H  H
 0192: 0    1    0    1   1  1     00000010 H   L   H     H     H    H  H
-0193: 0    1    0    0   0  1     00000011 L   H   L     H     H    L  H
-0194: 0    1    0    0   1  1     00000011 H   L   L     H     H    L  H
+0193: 0    1    0    0   0  1     00000011 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0194: 0    1    0    0   1  1     00000011 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0195: 0    1    0    1   0  1     00000011 L   H   L     H     H    L  H
 0196: 0    1    0    1   1  1     00000011 H   L   L     H     H    L  H
-0197: 0    1    0    0   0  1     01111111 L   H   L     H     H    L  H
-0198: 0    1    0    0   1  1     01111111 H   L   L     H     H    L  H
+0197: 0    1    0    0   0  1     01111111 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0198: 0    1    0    0   1  1     01111111 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0199: 0    1    0    1   0  1     01111111 L   H   L     H     H    L  H
 0200: 0    1    0    1   1  1     01111111 H   L   L     H     H    L  H
-0201: 0    1    0    0   0  1     10000000 L   H   H     L     H    L  H
-0202: 0    1    0    0   1  1     10000000 H   L   H     L     H    L  H
+0201: 0    1    0    0   0  1     10000000 X   H   H     L     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0202: 0    1    0    0   1  1     10000000 H   X   H     L     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0203: 0    1    0    1   0  1     10000000 L   H   H     L     H    L  H
 0204: 0    1    0    1   1  1     10000000 H   L   H     L     H    L  H
-0205: 0    1    0    0   0  1     10111111 L   H   H     L     H    L  H
-0206: 0    1    0    0   1  1     10111111 H   L   H     L     H    L  H
+0205: 0    1    0    0   0  1     10111111 X   H   H     L     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0206: 0    1    0    0   1  1     10111111 H   X   H     L     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0207: 0    1    0    1   0  1     10111111 L   H   H     L     H    L  H
 0208: 0    1    0    1   1  1     10111111 H   L   H     L     H    L  H
-0209: 0    1    0    0   0  1     11000000 L   H   H     H     L    L  L
-0210: 0    1    0    0   1  1     11000000 H   L   H     H     L    L  L
+0209: 0    1    0    0   0  1     11000000 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (L) for WE
+
+0210: 0    1    0    0   1  1     11000000 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (L) for OE
+
 0211: 0    1    0    1   0  1     11000000 L   H   H     H     L    L  L
 0212: 0    1    0    1   1  1     11000000 H   L   H     H     L    L  L
-0213: 0    1    0    0   0  1     11111111 L   H   H     H     L    L  L
-0214: 0    1    0    0   1  1     11111111 H   L   H     H     L    L  L
+0213: 0    1    0    0   0  1     11111111 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (L) for WE
+
+0214: 0    1    0    0   1  1     11111111 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (L) for OE
+
 0215: 0    1    0    1   0  1     11111111 L   H   H     H     L    L  L
 0216: 0    1    0    1   1  1     11111111 H   L   H     H     L    L  L
-0217: 0    0    1    0   0  0     00000000 H   H   L     H     H    L  L
-0218: 0    0    1    0   1  0     00000000 H   H   L     H     H    L  L
+0217: 0    0    1    0   0  0     00000000 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0218: 0    0    1    0   1  0     00000000 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0219: 0    0    1    1   0  0     00000000 L   H   L     H     H    L  L
 0220: 0    0    1    1   1  0     00000000 H   L   L     H     H    L  L
-0221: 0    0    1    0   0  0     00000001 H   H   L     H     H    L  L
-0222: 0    0    1    0   1  0     00000001 H   H   L     H     H    L  L
+0221: 0    0    1    0   0  0     00000001 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0222: 0    0    1    0   1  0     00000001 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0223: 0    0    1    1   0  0     00000001 L   H   L     H     H    L  L
 0224: 0    0    1    1   1  0     00000001 H   L   L     H     H    L  L
-0225: 0    0    1    0   0  0     00000010 H   H   H     H     H    H  L
-0226: 0    0    1    0   1  0     00000010 H   H   H     H     H    H  L
+0225: 0    0    1    0   0  0     00000010 X   H   H     H     H    H  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0226: 0    0    1    0   1  0     00000010 H   X   H     H     H    H  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0227: 0    0    1    1   0  0     00000010 L   H   H     H     H    H  L
 0228: 0    0    1    1   1  0     00000010 H   L   H     H     H    H  L
-0229: 0    0    1    0   0  0     00000011 H   H   L     H     H    L  L
-0230: 0    0    1    0   1  0     00000011 H   H   L     H     H    L  L
+0229: 0    0    1    0   0  0     00000011 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0230: 0    0    1    0   1  0     00000011 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0231: 0    0    1    1   0  0     00000011 L   H   L     H     H    L  L
 0232: 0    0    1    1   1  0     00000011 H   L   L     H     H    L  L
-0233: 0    0    1    0   0  0     01111111 H   H   L     H     H    L  L
-0234: 0    0    1    0   1  0     01111111 H   H   L     H     H    L  L
+0233: 0    0    1    0   0  0     01111111 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0234: 0    0    1    0   1  0     01111111 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0235: 0    0    1    1   0  0     01111111 L   H   L     H     H    L  L
 0236: 0    0    1    1   1  0     01111111 H   L   L     H     H    L  L
-0237: 0    0    1    0   0  0     10000000 H   H   H     H     L    L  L
-0238: 0    0    1    0   1  0     10000000 H   H   H     H     L    L  L
+0237: 0    0    1    0   0  0     10000000 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0238: 0    0    1    0   1  0     10000000 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0239: 0    0    1    1   0  0     10000000 L   H   H     H     L    L  L
 0240: 0    0    1    1   1  0     10000000 H   L   H     H     L    L  L
-0241: 0    0    1    0   0  0     10111111 H   H   H     H     L    L  L
-0242: 0    0    1    0   1  0     10111111 H   H   H     H     L    L  L
+0241: 0    0    1    0   0  0     10111111 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0242: 0    0    1    0   1  0     10111111 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0243: 0    0    1    1   0  0     10111111 L   H   H     H     L    L  L
 0244: 0    0    1    1   1  0     10111111 H   L   H     H     L    L  L
-0245: 0    0    1    0   0  0     11000000 H   H   H     H     L    L  L
-0246: 0    0    1    0   1  0     11000000 H   H   H     H     L    L  L
+0245: 0    0    1    0   0  0     11000000 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0246: 0    0    1    0   1  0     11000000 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0247: 0    0    1    1   0  0     11000000 L   H   H     H     L    L  L
 0248: 0    0    1    1   1  0     11000000 H   L   H     H     L    L  L
-0249: 0    0    1    0   0  0     11111111 H   H   H     H     L    L  L
-0250: 0    0    1    0   1  0     11111111 H   H   H     H     L    L  L
+0249: 0    0    1    0   0  0     11111111 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0250: 0    0    1    0   1  0     11111111 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0251: 0    0    1    1   0  0     11111111 L   H   H     H     L    L  L
 0252: 0    0    1    1   1  0     11111111 H   L   H     H     L    L  L
-0253: 0    0    1    0   0  1     00000000 H   H   L     H     H    L  L
-0254: 0    0    1    0   1  1     00000000 H   H   L     H     H    L  L
+0253: 0    0    1    0   0  1     00000000 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0254: 0    0    1    0   1  1     00000000 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0255: 0    0    1    1   0  1     00000000 L   H   L     H     H    L  L
 0256: 0    0    1    1   1  1     00000000 H   L   L     H     H    L  L
-0257: 0    0    1    0   0  1     00000001 H   H   L     H     H    L  L
-0258: 0    0    1    0   1  1     00000001 H   H   L     H     H    L  L
+0257: 0    0    1    0   0  1     00000001 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0258: 0    0    1    0   1  1     00000001 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0259: 0    0    1    1   0  1     00000001 L   H   L     H     H    L  L
 0260: 0    0    1    1   1  1     00000001 H   L   L     H     H    L  L
-0261: 0    0    1    0   0  1     00000010 H   H   H     H     H    H  L
-0262: 0    0    1    0   1  1     00000010 H   H   H     H     H    H  L
+0261: 0    0    1    0   0  1     00000010 X   H   H     H     H    H  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0262: 0    0    1    0   1  1     00000010 H   X   H     H     H    H  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0263: 0    0    1    1   0  1     00000010 L   H   H     H     H    H  L
 0264: 0    0    1    1   1  1     00000010 H   L   H     H     H    H  L
-0265: 0    0    1    0   0  1     00000011 H   H   L     H     H    L  L
-0266: 0    0    1    0   1  1     00000011 H   H   L     H     H    L  L
+0265: 0    0    1    0   0  1     00000011 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0266: 0    0    1    0   1  1     00000011 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0267: 0    0    1    1   0  1     00000011 L   H   L     H     H    L  L
 0268: 0    0    1    1   1  1     00000011 H   L   L     H     H    L  L
-0269: 0    0    1    0   0  1     01111111 H   H   L     H     H    L  L
-0270: 0    0    1    0   1  1     01111111 H   H   L     H     H    L  L
+0269: 0    0    1    0   0  1     01111111 X   H   L     H     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0270: 0    0    1    0   1  1     01111111 H   X   L     H     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0271: 0    0    1    1   0  1     01111111 L   H   L     H     H    L  L
 0272: 0    0    1    1   1  1     01111111 H   L   L     H     H    L  L
-0273: 0    0    1    0   0  1     10000000 H   H   H     L     H    L  L
-0274: 0    0    1    0   1  1     10000000 H   H   H     L     H    L  L
+0273: 0    0    1    0   0  1     10000000 X   H   H     L     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0274: 0    0    1    0   1  1     10000000 H   X   H     L     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0275: 0    0    1    1   0  1     10000000 L   H   H     L     H    L  L
 0276: 0    0    1    1   1  1     10000000 H   L   H     L     H    L  L
-0277: 0    0    1    0   0  1     10111111 H   H   H     L     H    L  L
-0278: 0    0    1    0   1  1     10111111 H   H   H     L     H    L  L
+0277: 0    0    1    0   0  1     10111111 X   H   H     L     H    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0278: 0    0    1    0   1  1     10111111 H   X   H     L     H    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0279: 0    0    1    1   0  1     10111111 L   H   H     L     H    L  L
 0280: 0    0    1    1   1  1     10111111 H   L   H     L     H    L  L
-0281: 0    0    1    0   0  1     11000000 H   H   H     H     L    L  L
-0282: 0    0    1    0   1  1     11000000 H   H   H     H     L    L  L
+0281: 0    0    1    0   0  1     11000000 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0282: 0    0    1    0   1  1     11000000 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0283: 0    0    1    1   0  1     11000000 L   H   H     H     L    L  L
 0284: 0    0    1    1   1  1     11000000 H   L   H     H     L    L  L
-0285: 0    0    1    0   0  1     11111111 H   H   H     H     L    L  L
-0286: 0    0    1    0   1  1     11111111 H   H   H     H     L    L  L
+0285: 0    0    1    0   0  1     11111111 X   H   H     H     L    L  L
+                                           ^
+[0019sa] user expected (H) for WE
+
+0286: 0    0    1    0   1  1     11111111 H   X   H     H     L    L  L
+                                               ^
+[0019sa] user expected (H) for OE
+
 0287: 0    0    1    1   0  1     11111111 L   H   H     H     L    L  L
 0288: 0    0    1    1   1  1     11111111 H   L   H     H     L    L  L
-0289: 0    0    0    0   0  0     00000000 L   H   L     H     H    L  H
-0290: 0    0    0    0   1  0     00000000 H   L   L     H     H    L  H
+0289: 0    0    0    0   0  0     00000000 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0290: 0    0    0    0   1  0     00000000 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0291: 0    0    0    1   0  0     00000000 L   H   L     H     H    L  H
 0292: 0    0    0    1   1  0     00000000 H   L   L     H     H    L  H
-0293: 0    0    0    0   0  0     00000001 L   H   L     H     H    L  H
-0294: 0    0    0    0   1  0     00000001 H   L   L     H     H    L  H
+0293: 0    0    0    0   0  0     00000001 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0294: 0    0    0    0   1  0     00000001 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0295: 0    0    0    1   0  0     00000001 L   H   L     H     H    L  H
 0296: 0    0    0    1   1  0     00000001 H   L   L     H     H    L  H
-0297: 0    0    0    0   0  0     00000010 L   H   H     H     H    H  H
-0298: 0    0    0    0   1  0     00000010 H   L   H     H     H    H  H
+0297: 0    0    0    0   0  0     00000010 X   H   H     H     H    H  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0298: 0    0    0    0   1  0     00000010 H   X   H     H     H    H  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0299: 0    0    0    1   0  0     00000010 L   H   H     H     H    H  H
 0300: 0    0    0    1   1  0     00000010 H   L   H     H     H    H  H
-0301: 0    0    0    0   0  0     00000011 L   H   L     H     H    L  H
-0302: 0    0    0    0   1  0     00000011 H   L   L     H     H    L  H
+0301: 0    0    0    0   0  0     00000011 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0302: 0    0    0    0   1  0     00000011 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0303: 0    0    0    1   0  0     00000011 L   H   L     H     H    L  H
 0304: 0    0    0    1   1  0     00000011 H   L   L     H     H    L  H
-0305: 0    0    0    0   0  0     01111111 L   H   L     H     H    L  H
-0306: 0    0    0    0   1  0     01111111 H   L   L     H     H    L  H
+0305: 0    0    0    0   0  0     01111111 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0306: 0    0    0    0   1  0     01111111 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0307: 0    0    0    1   0  0     01111111 L   H   L     H     H    L  H
 0308: 0    0    0    1   1  0     01111111 H   L   L     H     H    L  H
-0309: 0    0    0    0   0  0     10000000 L   H   H     H     L    L  H
-0310: 0    0    0    0   1  0     10000000 H   L   H     H     L    L  H
+0309: 0    0    0    0   0  0     10000000 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0310: 0    0    0    0   1  0     10000000 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0311: 0    0    0    1   0  0     10000000 L   H   H     H     L    L  H
 0312: 0    0    0    1   1  0     10000000 H   L   H     H     L    L  H
-0313: 0    0    0    0   0  0     10111111 L   H   H     H     L    L  H
-0314: 0    0    0    0   1  0     10111111 H   L   H     H     L    L  H
+0313: 0    0    0    0   0  0     10111111 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0314: 0    0    0    0   1  0     10111111 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0315: 0    0    0    1   0  0     10111111 L   H   H     H     L    L  H
 0316: 0    0    0    1   1  0     10111111 H   L   H     H     L    L  H
-0317: 0    0    0    0   0  0     11000000 L   H   H     H     L    L  H
-0318: 0    0    0    0   1  0     11000000 H   L   H     H     L    L  H
+0317: 0    0    0    0   0  0     11000000 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0318: 0    0    0    0   1  0     11000000 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0319: 0    0    0    1   0  0     11000000 L   H   H     H     L    L  H
 0320: 0    0    0    1   1  0     11000000 H   L   H     H     L    L  H
-0321: 0    0    0    0   0  0     11111111 L   H   H     H     L    L  H
-0322: 0    0    0    0   1  0     11111111 H   L   H     H     L    L  H
+0321: 0    0    0    0   0  0     11111111 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0322: 0    0    0    0   1  0     11111111 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0323: 0    0    0    1   0  0     11111111 L   H   H     H     L    L  H
 0324: 0    0    0    1   1  0     11111111 H   L   H     H     L    L  H
-0325: 0    0    0    0   0  1     00000000 L   H   L     H     H    L  H
-0326: 0    0    0    0   1  1     00000000 H   L   L     H     H    L  H
+0325: 0    0    0    0   0  1     00000000 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0326: 0    0    0    0   1  1     00000000 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0327: 0    0    0    1   0  1     00000000 L   H   L     H     H    L  H
 0328: 0    0    0    1   1  1     00000000 H   L   L     H     H    L  H
-0329: 0    0    0    0   0  1     00000001 L   H   L     H     H    L  H
-0330: 0    0    0    0   1  1     00000001 H   L   L     H     H    L  H
+0329: 0    0    0    0   0  1     00000001 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0330: 0    0    0    0   1  1     00000001 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0331: 0    0    0    1   0  1     00000001 L   H   L     H     H    L  H
 0332: 0    0    0    1   1  1     00000001 H   L   L     H     H    L  H
-0333: 0    0    0    0   0  1     00000010 L   H   H     H     H    H  H
-0334: 0    0    0    0   1  1     00000010 H   L   H     H     H    H  H
+0333: 0    0    0    0   0  1     00000010 X   H   H     H     H    H  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0334: 0    0    0    0   1  1     00000010 H   X   H     H     H    H  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0335: 0    0    0    1   0  1     00000010 L   H   H     H     H    H  H
 0336: 0    0    0    1   1  1     00000010 H   L   H     H     H    H  H
-0337: 0    0    0    0   0  1     00000011 L   H   L     H     H    L  H
-0338: 0    0    0    0   1  1     00000011 H   L   L     H     H    L  H
+0337: 0    0    0    0   0  1     00000011 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0338: 0    0    0    0   1  1     00000011 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0339: 0    0    0    1   0  1     00000011 L   H   L     H     H    L  H
 0340: 0    0    0    1   1  1     00000011 H   L   L     H     H    L  H
-0341: 0    0    0    0   0  1     01111111 L   H   L     H     H    L  H
-0342: 0    0    0    0   1  1     01111111 H   L   L     H     H    L  H
+0341: 0    0    0    0   0  1     01111111 X   H   L     H     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0342: 0    0    0    0   1  1     01111111 H   X   L     H     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0343: 0    0    0    1   0  1     01111111 L   H   L     H     H    L  H
 0344: 0    0    0    1   1  1     01111111 H   L   L     H     H    L  H
-0345: 0    0    0    0   0  1     10000000 L   H   H     L     H    L  H
-0346: 0    0    0    0   1  1     10000000 H   L   H     L     H    L  H
+0345: 0    0    0    0   0  1     10000000 X   H   H     L     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0346: 0    0    0    0   1  1     10000000 H   X   H     L     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0347: 0    0    0    1   0  1     10000000 L   H   H     L     H    L  H
 0348: 0    0    0    1   1  1     10000000 H   L   H     L     H    L  H
-0349: 0    0    0    0   0  1     10111111 L   H   H     L     H    L  H
-0350: 0    0    0    0   1  1     10111111 H   L   H     L     H    L  H
+0349: 0    0    0    0   0  1     10111111 X   H   H     L     H    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0350: 0    0    0    0   1  1     10111111 H   X   H     L     H    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0351: 0    0    0    1   0  1     10111111 L   H   H     L     H    L  H
 0352: 0    0    0    1   1  1     10111111 H   L   H     L     H    L  H
-0353: 0    0    0    0   0  1     11000000 L   H   H     H     L    L  H
-0354: 0    0    0    0   1  1     11000000 H   L   H     H     L    L  H
+0353: 0    0    0    0   0  1     11000000 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0354: 0    0    0    0   1  1     11000000 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0355: 0    0    0    1   0  1     11000000 L   H   H     H     L    L  H
 0356: 0    0    0    1   1  1     11000000 H   L   H     H     L    L  H
-0357: 0    0    0    0   0  1     11111111 L   H   H     H     L    L  H
-0358: 0    0    0    0   1  1     11111111 H   L   H     H     L    L  H
+0357: 0    0    0    0   0  1     11111111 X   H   H     H     L    L  H
+                                           ^
+[0019sa] user expected (L) for WE
+
+0358: 0    0    0    0   1  1     11111111 H   X   H     H     L    L  H
+                                               ^
+[0019sa] user expected (L) for OE
+
 0359: 0    0    0    1   0  1     11111111 L   H   H     H     L    L  H
 0360: 0    0    0    1   1  1     11111111 H   L   H     H     L    L  H

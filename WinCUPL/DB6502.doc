@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Mon Nov 02 00:16:01 2020
+Created         Mon Nov 02 13:45:49 2020
 Name            DB6502 Address Decoder
 Partno          DB6502
 Revision        01
@@ -30,7 +30,7 @@ IO_SHADOW =>
 
 !OE =>
     CLK & RW
-  # !RDY_M1 & RW
+  # !RDY_M15 & RW
 
 RAM =>
     !A15
@@ -66,7 +66,7 @@ ROM =>
 
 !WE =>
     CLK & !RW
-  # !RDY_M1 & !RW
+  # !RDY_M15 & !RW
 
 CLK_TOGGLE.oe  =>
     0 
@@ -87,6 +87,9 @@ RDY.oe  =>
     1 
 
 RDY_M2.oe  =>
+    0 
+
+RDY_M15.oe  =>
     0 
 
 ROM_CS.oe  =>
@@ -114,7 +117,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     A15                         4        V        -       -       -     
     Address                     0        F        -       -       -     
     CLK                         1        V        -       -       -     
-    CLK_TOGGLE                  15       V        -       -       -     
+    CLK_TOGGLE                  16       V        -       -       -     
     EXRAM                       3        V        -       -       -     
     IO_CS                       18       V        1       16      1     
     IO_SHADOW                   0        I        1       -       -     
@@ -126,17 +129,19 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     RDY                         17       V        5       14      1     
     RDY_M1                      13       V        -       -       -     
     RDY_M2                      14       V        -       -       -     
+    RDY_M15                     15       V        -       -       -     
     ROM                         0        I        1       -       -     
     ROM_CS                      19       V        2       16      1     
     RW                          2        V        -       -       -     
     WE                          23       V        2       8       1     
-    CLK_TOGGLE          oe      15       D        1       1       0     
+    CLK_TOGGLE          oe      16       D        1       1       0     
     IO_CS               oe      18       D        1       1       0     
     OE                  oe      22       D        1       1       0     
     RAM1_CS             oe      21       D        1       1       0     
     RAM2_CS             oe      20       D        1       1       0     
     RDY                 oe      17       D        1       1       0     
     RDY_M2              oe      14       D        1       1       0     
+    RDY_M15             oe      15       D        1       1       0     
     ROM_CS              oe      19       D        1       1       0     
     WE                  oe      23       D        1       1       0     
 

@@ -8,7 +8,7 @@ PIN   6 =  A13
 PIN   5 =  A14 
 PIN   4 =  A15 
 PIN   1 =  CLK 
-PIN  15 =  CLK_TOGGLE 
+PIN  16 =  CLK_TOGGLE 
 PIN   3 =  EXRAM 
 PIN  18 =  IO_CS 
 PIN  22 =  OE 
@@ -17,6 +17,7 @@ PIN  20 =  RAM2_CS
 PIN  17 =  RDY 
 PIN  13 =  RDY_M1 
 PIN  14 =  RDY_M2 
+PIN  15 =  RDY_M15 
 PIN  19 =  ROM_CS 
 PIN   2 =  RW 
 PIN  23 =  WE 
@@ -35,7 +36,7 @@ IO_SHADOW =>
 
 !OE =>
     CLK & RW
-  # !RDY_M1 & RW
+  # !RDY_M15 & RW
 
 RAM =>
     !A15
@@ -71,7 +72,7 @@ ROM =>
 
 !WE =>
     CLK & !RW
-  # !RDY_M1 & !RW
+  # !RDY_M15 & !RW
 
 CLK_TOGGLE.oe  =>
     0 
@@ -92,6 +93,9 @@ RDY.oe  =>
     1 
 
 RDY_M2.oe  =>
+    0 
+
+RDY_M15.oe  =>
     0 
 
 ROM_CS.oe  =>

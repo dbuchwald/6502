@@ -35,8 +35,8 @@ A14   |5     20| /RAM2_CS
 A13   |6     19| /ROM_CS
 A12   |7     18| IO_CS
 A11   |8     17| RDY
-A10   |9     16| --
-A9    |10    15| CLK_TOGGLE
+A10   |9     16| CLK_TOGGLE
+A9    |10    15| RDY_M15
 A8    |11    14| RDY_M2
 Gnd   |12    13| RDY_M1
        --------
@@ -59,7 +59,8 @@ Pin 10 =  A9;
 Pin 11 =  A8;
 Pin 13 =  RDY_M1;
 Pin 14 =  RDY_M2;
-Pin 15 =  CLK_TOGGLE;
+Pin 15 =  RDY_M15;
+Pin 16 =  CLK_TOGGLE;
 /*
  * Outputs:  define outputs - all are simple combinatorial
  */
@@ -86,8 +87,8 @@ IO_SHADOW = Address:[0200..02FF];
 RAM_EXTRA = Address:[8000..BFFF];
 ROM       = Address:[8000..FFFF];
 
-!WE       = !RW & (CLK # !RDY_M1);
-!OE       = RW  & (CLK # !RDY_M1);
+!WE       = !RW & (CLK # !RDY_M15);
+!OE       = RW  & (CLK # !RDY_M15);
 !RAM1_CS  = RAM & !IO_SHADOW;
 !RAM2_CS  = EXRAM & RAM_EXTRA;
 !ROM_CS   = ROM & !(EXRAM & RAM_EXTRA);
