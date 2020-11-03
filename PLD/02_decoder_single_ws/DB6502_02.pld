@@ -1,0 +1,100 @@
+Name            DB6502_02;
+Partno          DB6502_02;
+Revision        01;
+Date            03/11/2020;
+Designer        Dawid Buchwald;
+Company         ;
+Location        Poland;
+Assembly        None;
+Device          g22v10;
+
+/*********************************************************************************/
+/*                                                                               */
+/*  This decoder has been developed for DB6502 project, and this particular      */
+/*  instance implements basic V2 address decoder with simple wait state          */
+/*  generator.                                                                   */
+/*                                                                               */
+/*  Upload to ATF22V10C using the following command:                             */
+/*  minipro -p 'ATF22V10C' -w DB6502_02.jed                                      */
+/*                                                                               */
+/*********************************************************************************/
+
+/* Pin Map 
+       --------
+CLK   |1     24| Vcc
+RW    |2     23| /WE
+EXRAM |3     22| /RD
+A15   |4     21| /RAM1_CS
+A14   |5     20| /RAM2_CS
+A13   |6     19| /ROM_CS
+A12   |7     18| IO_CS
+A11   |8     17| RDY
+A10   |9     16| DBG_RDY
+A9    |10    15| WS_DISABLE
+A8    |11    14| RDY_M2F
+Gnd   |12    13| RDY_M1F
+       --------
+*/
+
+/*
+ * Inputs:  All are signals from the 6502, 65C02, 65816
+ */
+
+Pin 1  =  CLK;
+Pin 2  =  RW;
+Pin 3  =  EXRAM;
+Pin 4  =  A15;
+Pin 5  =  A14;
+Pin 6  =  A13;
+Pin 7  =  A12;
+Pin 8  =  A11;
+Pin 9  =  A10;
+Pin 10 =  A9;
+Pin 11 =  A8;
+Pin 13 =  RDY_M1F;
+Pin 14 =  RDY_M2F;
+Pin 15 =  WS_DISABLE;
+Pin 16 =  DBG_RDY;
+/*
+ * Outputs:  define outputs - all are simple combinatorial
+ */
+Pin 23 = WR;      /* to RAM and ROM chips */
+Pin 22 = RD;      /* to RAM and ROM chips */
+Pin 21 = RAM1_CS; /* to RAM1 /CS pin */
+Pin 20 = RAM2_CS; /* to RAM2 /CS pin */
+Pin 19 = ROM_CS;  /* to ROM  /CS pin */
+Pin 18 = IO_CS;   /* to IOCS pin */
+Pin 17 = RDY;     /* to RDY pin */
+
+/*
+ * Local variables
+ */
+
+FIELD Address = [A15..A8];
+
+/*
+ * Logic:
+ */
+
+RAM       = Address:[0000..7FFF];
+IO_SHADOW = Address:[0200..02FF];
+RAM_EXTRA = Address:[8000..BFFF];
+ROM       = Address:[8000..FFFF];
+
+!WR       = !RW & (CLK # !RDY);
+!RD       = RW & (CLK # !RDY);
+!RAM1_CS  = RAM & !IO_SHADOW;
+!RAM2_CS  = EXRAM & RAM_EXTRA;
+!ROM_CS   = ROM & !(EXRAM & RAM_EXTRA);
+IO_CS     = IO_SHADOW;
+
+RDY.AR    = 'b'0;
+RDY.SP    = 'b'0;
+RDY.D     = !DBG_RDY & 
+            (WS_DISABLE #
+             !RAM1_CS #
+             !RAM2_CS #
+             IO_CS   #
+             (!ROM_CS & !RDY_M1F));
+			 
+RDY.OE    = !RDY;

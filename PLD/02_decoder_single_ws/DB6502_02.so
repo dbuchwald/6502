@@ -1,0 +1,152 @@
+CSIM(WM): CUPL Simulation Program
+Version 5.0a Serial# 
+Copyright (c) 1983, 1998 Logical Devices, Inc.
+CREATED Tue Nov 03 20:15:26 2020
+
+LISTING FOR SIMULATION FILE: DB6502_02.si
+
+   1: Name     DB6502_02;
+   2: PartNo   DB6502_02;
+   3: Date     03/11/2020;
+   4: Revision 01;
+   5: Designer Dawid Buchwald;
+   6: Company  ;
+   7: Assembly None;
+   8: Location Poland;
+   9: Device   p22v10;
+  10: 
+  11: FIELD Address = [A15,A14,A13,A12,A11,A10,A9,A8];
+  12:
+  13: ORDER: CLK, %3, 
+  14:        RW, %2, 
+  15:        EXRAM, %3,
+  16:        RDY_M1F, %4,
+  17:        RDY_M2F, %4,
+  18:        WS_DISABLE, %3,
+  19:        DBG_RDY, %4,	   
+  20:        Address, %3, 
+  21:        WR, %3, 
+  22:        RD, %5, 
+  23:        RAM1_CS, %5, 
+  24:        RAM2_CS, %4, 
+  25:        ROM_CS, %2, 
+  26:        IO_CS, %2,
+  27:        RDY;
+  28: 
+
+==============================================================================
+                           W                                                  
+                           S                                                  
+                           _                                                  
+                 R    R    D   D                         R     R              
+                 D    D    I   B                         A     A    R         
+             E   Y    Y    S   G                         M     M    O  I      
+             X   _    _    A   _                         1     2    M  O      
+      C      R   M    M    B   R                         _     _    _  _  R   
+      L   R  A   1    2    L   D               W   R     C     C    C  C  D   
+      K   W  M   F    F    E   Y    Address    R   D     S     S    S  S  Y   
+==============================================================================
+                        1-WS Address decoder test               
+      CLK RW EXR RD1F RD2F WSD DBGR  ADDRESS WR# RD# RAM1# RAM2# ROM# IO RDY
+      --- -- --- ---- ---- --- ---- -------- --- --- ----- ----- ---- -- ---
+      Clocking in ready state...
+0001: 0   0  0   1    1    1   0    00000000   L   H     L     H    H  L  L
+0002: 1   0  0   1    1    1   0    00000000   L   H     L     H    H  L  Z
+      Testing pure address decoding...
+0003: 0   0  0   X    X    X   X    00000000   H   H     L     H    H  L  Z
+0004: 0   0  1   X    X    X   X    00000000   H   H     L     H    H  L  Z
+0005: 0   0  0   X    X    X   X    00000001   H   H     L     H    H  L  Z
+0006: 0   0  0   X    X    X   X    00000010   H   H     H     H    H  H  Z
+0007: 0   0  1   X    X    X   X    00000010   H   H     H     H    H  H  Z
+0008: 0   0  0   X    X    X   X    00000011   H   H     L     H    H  L  Z
+0009: 0   0  1   X    X    X   X    00000011   H   H     L     H    H  L  Z
+0010: 0   0  0   X    X    X   X    01111111   H   H     L     H    H  L  Z
+0011: 0   0  1   X    X    X   X    01111111   H   H     L     H    H  L  Z
+0012: 0   0  0   X    X    X   X    10000000   H   H     H     H    L  L  Z
+0013: 0   0  1   X    X    X   X    10000000   H   H     H     L    H  L  Z
+0014: 0   0  0   X    X    X   X    10111111   H   H     H     H    L  L  Z
+0015: 0   0  1   X    X    X   X    10111111   H   H     H     L    H  L  Z
+0016: 0   0  0   X    X    X   X    11000000   H   H     H     H    L  L  Z
+0017: 0   0  1   X    X    X   X    11000000   H   H     H     H    L  L  Z
+0018: 0   0  0   X    X    X   X    11111111   H   H     H     H    L  L  Z
+0019: 0   0  1   X    X    X   X    11111111   H   H     H     H    L  L  Z
+      Clocking in ready state...
+0020: 0   0  0   X    X    1   0    00000000   H   H     L     H    H  L  Z
+0021: 1   0  0   X    X    1   0    00000000   L   H     L     H    H  L  Z
+      Testing basic nWR and nRD signals...
+0022: 0   0  X   X    X    1   0    00000000   H   H     L     H    H  L  Z
+0023: 0   1  X   X    X    1   0    00000000   H   H     L     H    H  L  Z
+0024: 1   0  X   X    X    1   0    00000000   L   H     L     H    H  L  Z
+0025: 1   1  X   X    X    1   0    00000000   H   L     L     H    H  L  Z
+      Clocking in ready state...
+0026: 0   0  0   X    X    1   0    00000000   H   H     L     H    H  L  Z
+0027: 1   0  0   X    X    1   0    00000000   L   H     L     H    H  L  Z
+      Testing basic ready states (no WS)...
+0028: 0   X  X   1    X    0   0    00000000   H   H     L     H    H  L  Z
+0029: 1   X  X   1    X    0   0    00000000   X   X     L     H    H  L  Z
+0030: 0   X  X   1    X    0   0    00000010   H   H     H     H    H  H  Z
+0031: 1   X  X   1    X    0   0    00000010   X   X     H     H    H  H  Z
+0032: 0   X  1   1    X    0   0    10111111   H   H     H     L    H  L  Z
+0033: 1   X  1   1    X    0   0    10111111   X   X     H     L    H  L  Z
+      Testing single WS (ROM access)...
+0034: 0   X  X   1    X    0   0    11111111   H   H     H     H    L  L  Z
+0035: 1   X  X   1    X    0   0    11111111   X   X     H     H    L  L  L
+0036: 0   X  X   1    X    0   0    11111111   X   X     H     H    L  L  L
+0037: 1   X  X   0    X    0   0    11111111   X   X     H     H    L  L  Z
+      Testing nWR and nRD signal stretching...
+0038: 0   0  X   0    X    0   0    00000000   H   H     L     H    H  L  Z
+0039: 1   0  X   1    X    0   0    00000000   L   H     L     H    H  L  Z
+0040: 0   1  X   1    X    0   0    00000000   H   H     L     H    H  L  Z
+0041: 1   1  X   1    X    0   0    00000000   H   L     L     H    H  L  Z
+0042: 0   0  X   1    X    0   0    00000010   H   H     H     H    H  H  Z
+0043: 1   0  X   1    X    0   0    00000010   L   H     H     H    H  H  Z
+0044: 0   1  X   1    X    0   0    00000010   H   H     H     H    H  H  Z
+0045: 1   1  X   1    X    0   0    00000010   H   L     H     H    H  H  Z
+0046: 0   0  X   1    X    0   0    11111111   H   H     H     H    L  L  Z
+0047: 1   0  X   1    X    0   0    11111111   L   H     H     H    L  L  L
+0048: 0   0  X   1    X    0   0    11111111   L   H     H     H    L  L  L
+0049: 1   0  X   0    X    0   0    11111111   L   H     H     H    L  L  Z
+0050: 0   1  X   0    X    0   0    11111111   H   H     H     H    L  L  Z
+0051: 1   1  X   1    X    0   0    11111111   H   L     H     H    L  L  L
+0052: 0   1  X   1    X    0   0    11111111   H   L     H     H    L  L  L
+0053: 1   1  X   0    X    0   0    11111111   H   L     H     H    L  L  Z
+      Testing wait states disable operation...
+0054: 0   0  X   0    X    1   0    00000000   H   H     L     H    H  L  Z
+0055: 1   0  X   1    X    1   0    00000000   L   H     L     H    H  L  Z
+0056: 0   1  X   1    X    1   0    00000000   H   H     L     H    H  L  Z
+0057: 1   1  X   1    X    1   0    00000000   H   L     L     H    H  L  Z
+0058: 0   0  X   1    X    1   0    00000010   H   H     H     H    H  H  Z
+0059: 1   0  X   1    X    1   0    00000010   L   H     H     H    H  H  Z
+0060: 0   1  X   1    X    1   0    00000010   H   H     H     H    H  H  Z
+0061: 1   1  X   1    X    1   0    00000010   H   L     H     H    H  H  Z
+0062: 0   0  X   1    X    1   0    11111111   H   H     H     H    L  L  Z
+0063: 1   0  X   1    X    1   0    11111111   L   H     H     H    L  L  Z
+0064: 0   0  X   1    X    1   0    11111111   H   H     H     H    L  L  Z
+0065: 1   0  X   1    X    1   0    11111111   L   H     H     H    L  L  Z
+0066: 0   1  X   1    X    1   0    11111111   H   H     H     H    L  L  Z
+0067: 1   1  X   1    X    1   0    11111111   H   L     H     H    L  L  Z
+0068: 0   1  X   1    X    1   0    11111111   H   H     H     H    L  L  Z
+0069: 1   1  X   1    X    1   0    11111111   H   L     H     H    L  L  Z
+      Testing debug wait state operation...
+0070: 0   0  X   1    X    0   1    00000000   H   H     L     H    H  L  Z
+0071: 1   0  X   1    X    0   1    00000000   L   H     L     H    H  L  L
+0072: 0   0  X   1    X    0   1    00000000   L   H     L     H    H  L  L
+0073: 1   0  X   0    X    0   0    00000000   L   H     L     H    H  L  Z
+0074: 0   0  X   0    X    0   1    00000010   H   H     H     H    H  H  Z
+0075: 1   0  X   1    X    0   1    00000010   L   H     H     H    H  H  L
+0076: 0   0  X   1    X    0   1    00000010   L   H     H     H    H  H  L
+0077: 1   0  X   0    X    0   1    00000010   L   H     H     H    H  H  L
+0078: 0   0  X   0    X    0   1    00000010   L   H     H     H    H  H  L
+0079: 1   0  X   0    X    0   0    00000010   L   H     H     H    H  H  Z
+0080: 0   0  X   0    X    0   1    00000011   H   H     L     H    H  L  Z
+0081: 1   0  X   1    X    0   1    00000011   L   H     L     H    H  L  L
+0082: 0   0  X   1    X    0   1    00000011   L   H     L     H    H  L  L
+0083: 1   0  X   0    X    0   1    00000011   L   H     L     H    H  L  L
+0084: 0   0  X   0    X    0   0    00000011   L   H     L     H    H  L  L
+0085: 1   0  X   0    X    0   0    00000011   L   H     L     H    H  L  Z
+0086: 0   0  X   0    X    0   1    11111111   H   H     H     H    L  L  Z
+0087: 1   0  X   1    X    0   1    11111111   L   H     H     H    L  L  L
+0088: 0   0  X   1    X    0   1    11111111   L   H     H     H    L  L  L
+0089: 1   0  X   0    X    0   1    11111111   L   H     H     H    L  L  L
+0090: 0   0  X   0    X    0   0    11111111   L   H     H     H    L  L  L
+0091: 1   0  X   0    X    0   0    11111111   L   H     H     H    L  L  Z
