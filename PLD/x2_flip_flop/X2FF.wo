@@ -1,0 +1,20 @@
+#WAVEFORM
+#H Name     X2FF;
+#H PartNo   X2FF;
+#H Date     03/11/2020;
+#H Revision 01;
+#H Designer Dawid Buchwald;
+#H Company  ;
+#H Assembly None;
+#H Location Poland;
+#H Device   p22v10;
+#H 
+#H 
+#H ORDER: clk, %2, d_in, %3, rdy, %3, rdyz; 
+#H 
+#H 
+#V 0001 00LL
+#V 0002 00LL
+#V 0003 10LL
+#V 0004 01LL
+#V 0005 11HZ

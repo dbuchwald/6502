@@ -1,0 +1,34 @@
+%SIGNAL
+PIN   1 =  clk 
+PIN   2 =  d_in 
+PIN  23 =  rdy 
+PIN  22 =  rdyz 
+%END
+
+%FIELD
+%END
+
+%EQUATION
+rdy.d  =>
+    d_in
+
+rdy.ar rdyz.ar  =>
+    0 
+
+rdy.sp rdyz.sp  =>
+    0 
+
+rdyz.d  =>
+    d_in
+
+rdyz.ar  =>
+    
+rdyz.oe  =>
+    rdyz
+
+rdyz.sp  =>
+    
+rdy.oe  =>
+    1 
+
+%END

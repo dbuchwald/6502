@@ -1,0 +1,25 @@
+Name     X2FF;
+PartNo   X2FF;
+Date     03/11/2020;
+Revision 01;
+Designer Dawid Buchwald;
+Company  ;
+Assembly None;
+Location Poland;
+Device   p22v10;
+
+
+ORDER: clk, %2, d_in, %3, rdy, %3, rdyz; 
+
+
+VECTORS:
+$MSG  "      High-Z Flip-flop test  ";
+$MSG  "      CLK DIN RDY RDYZ ";
+$MSG  "      --- --- --- ---- ";
+$MSG  "Testing default value...";
+00 LL
+$MSG  "Testing CLK operation...";
+00 LL
+10 LL
+01 LL
+11 HZ

@@ -1,0 +1,48 @@
+Name            X2FF;
+Partno          X2FF;
+Revision        01;
+Date            03/11/2020;
+Designer        Dawid Buchwald;
+Company         ;
+Location        Poland;
+Assembly        None;
+Device          p22v10;
+
+/*********************************************************************************/
+/*                                                                               */
+/*  Just trying to understand how the WinCUPL compiler works. This is second     */
+/*  attempt to work with simple flip-flop, this time using OE flag.              */
+/*                                                                               */
+/*********************************************************************************/
+
+/* Pin Map 
+       --------
+CLK   |1     24| Vcc
+DIN   |2     23| RDY
+--    |3     22| RDYZ
+--    |4     21| --
+--    |5     20| --
+--    |6     19| --
+--    |7     18| --
+--    |8     17| --
+--    |9     16| --
+--    |10    15| --
+--    |11    14| --
+Gnd   |12    13| --
+       --------
+*/
+
+Pin 1   = clk;
+Pin 2   = d_in;
+
+Pin 23  = rdy;
+Pin 22  = rdyz;
+
+rdy.sp  = 'b'0;
+rdy.ar  = 'b'0;
+rdyz.sp = 'b'0;
+rdyz.ar = 'b'0;
+
+rdy.d   = d_in;
+rdyz.d  = d_in;
+rdyz.oe = !rdyz;

@@ -1,0 +1,111 @@
+{COMPONENT C:\USERS\DAWID\DEVELOPMENT\6502\PLD\X2_FLIP_FLOP\X2FF.SYM
+
+ {ENVIRONMENT
+  {PDIFvrev 3.00}
+  {Program "CUPL(WM) Version 5.0a"}
+  {DBtype "Schematic"}
+  {DBvrev 1.01}
+  {DBtime "Tue Nov 03 18:42:07 2020 "}
+  {DBunit "MIL"}
+  {DBgrid 10}
+  {Lyrstr "WIRES" 1 "BUS" 1 "GATE" 2 "IEEE" 2 "PINFUN" 3 "PINNUM" 1 
+          "PINNAM" 6 "PINCON" 4 "REFDES" 2 "ATTR" 6 "SDOT" 1 
+          "DEVICE" 5 "OUTLIN" 5 "ATTR2" 6 "NOTES" 6 "NETNAM" 4 
+          "CMPNAM" 5 "BORDER" 5}
+ }
+
+ {USER
+  {VIEW
+   {Mode SYMB}
+   {Nlst OPEN}
+   {Vw 0 0 2}
+   {Lv 12 2 2 2 0 0 2 2 2 2 0 0 2 1 2 0 0 0 0}
+   {Gs 10 10}
+  }
+ }
+
+ {DISPLAY
+  [Ly "PINNUM"]
+  [Ls "SOLID"][Wd 0]
+  [Ts 15][Tj "LC"][Tr 0][Tm "N"]
+ }
+
+ {SYMBOL
+  {PIN_DEF
+   [Ly "PINCON"]
+   {P CLK {Pt "INPUT"}{Lq 0}{Ploc 100 60}}
+   {P D_IN {Pt "INPUT"}{Lq 0}{Ploc 100 20}}
+   {P RDYZ {Pt "OUTPUT"}{Lq 0}{Ploc 280 20}}
+   {P RDY {Pt "OUTPUT"}{Lq 0}{Ploc 280 40}}
+  }
+
+  {PKG
+   [Ly "REFDES"]
+   [Ts 25][Tj "CB"][Tr 0][Tm "N"]
+   {Rdl 190 90}
+
+   [Ly "PINNUM"]
+   [Ts 15][Tj "RC"]
+   {Pnl 120 70}
+   [Ts 15][Tj "RC"]
+   {Pnl 120 30}
+   [Ts 15][Tj "LC"]
+   {Pnl 260 30}
+   {Pnl 260 50}
+
+   {Sd A 1 2 22 23}
+  }
+
+  {PIC
+   [Ly "GATE"]
+   [Ts 15][Tj "LC"][Tr 0][Tm "N"]
+   {R 130 80 250 0}
+   {L 130 60 100 60}
+   {L 130 70 140 60 130 50}
+   {L 130 20 100 20}
+   {L 250 20 280 20}
+   {L 250 40 280 40}
+   [Ly "PINNAM"]
+   [Tj "LC"]
+   {T "CLK" 140 60}
+   {T "D_IN" 140 20}
+   [Tj "RC"]
+   {T "RDYZ" 240 20}
+   {T "RDY" 240 40}
+   [Ly "DEVICE"]
+   [Tj "CT"]
+   {T "P22V10" 190 -10}
+  }
+
+  {ATR
+   {IN
+    {Org 100 20}
+    {Ty 255}
+   }
+   {EX
+    [Ly "ATTR2"]
+    [Ts 12][Tj "CT"][Tr 0][Tm "N"]
+    {At PLD C:\USERS\DAWID\DEVELOPMENT\6502\PLD\X2_FLIP_FLOP\X2FF 190 80}
+   }
+  }
+ }
+
+ {DETAIL
+  {ANNOTATE
+  }
+
+  {NET_DEF
+   {N CLK
+   }
+   {N D_IN
+   }
+   {N RDYZ
+   }
+   {N RDY
+   }
+  }
+
+  {SUBCOMP
+  }
+ }
+}

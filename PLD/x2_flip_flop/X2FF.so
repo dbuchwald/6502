@@ -1,0 +1,38 @@
+CSIM(WM): CUPL Simulation Program
+Version 5.0a Serial# 
+Copyright (c) 1983, 1998 Logical Devices, Inc.
+CREATED Tue Nov 03 18:42:10 2020
+
+LISTING FOR SIMULATION FILE: X2FF.si
+
+   1: Name     X2FF;
+   2: PartNo   X2FF;
+   3: Date     03/11/2020;
+   4: Revision 01;
+   5: Designer Dawid Buchwald;
+   6: Company  ;
+   7: Assembly None;
+   8: Location Poland;
+   9: Device   p22v10;
+  10: 
+  11: 
+  12: ORDER: clk, %2, d_in, %3, rdy, %3, rdyz; 
+  13: 
+  14: 
+
+=====================
+         d       r   
+      c  _   r   d   
+      l  i   d   y   
+      k  n   y   z   
+=====================
+      High-Z Flip-flop test  
+      CLK DIN RDY RDYZ 
+      --- --- --- ---- 
+Testing default value...
+0001: 0  0   L   L
+Testing CLK operation...
+0002: 0  0   L   L
+0003: 1  0   L   L
+0004: 0  1   L   L
+0005: 1  1   H   Z

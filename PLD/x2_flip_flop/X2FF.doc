@@ -1,0 +1,73 @@
+
+*******************************************************************************
+                                     X2FF
+*******************************************************************************
+
+CUPL(WM)        5.0a Serial# 60008009
+Device          p22v10  Library DLIB-h-40-17
+Created         Tue Nov 03 18:42:07 2020
+Name            X2FF
+Partno          X2FF
+Revision        01
+Date            03/11/2020
+Designer        Dawid Buchwald
+Company         
+Assembly        None
+Location        Poland
+
+===============================================================================
+                            Expanded Product Terms
+===============================================================================
+
+rdy.d  =>
+    d_in
+
+rdy.ar  =>
+    0 
+
+rdy.sp  =>
+    0 
+
+rdyz.d  =>
+    d_in
+
+rdyz.ar  =>
+    0 
+
+rdyz.oe  =>
+    !rdyz
+
+rdyz.sp  =>
+    0 
+
+rdy.oe  =>
+    1 
+
+
+===============================================================================
+                                 Symbol Table
+===============================================================================
+
+Pin Variable                                    Pterms   Max     Min    
+Pol   Name              Ext     Pin     Type     Used   Pterms  Level   
+--- --------            ---     ---     ----    ------  ------  -----   
+
+    clk                         1        V        -       -       -     
+    d_in                        2        V        -       -       -     
+    rdy                         23       V        -       -       -     
+    rdy                 d       23       X        1       8       1     
+    rdy                 ar      23       X        1       1       1     
+    rdy                 sp      23       X        1       1       1     
+    rdyz                        22       V        -       -       -     
+    rdyz                d       22       X        1       10      1     
+    rdyz                ar      22       X        1       1       1     
+    rdyz                oe      22       X        1       1       1     
+    rdyz                sp      22       X        1       1       1     
+    rdy                 oe      23       D        1       1       0     
+
+
+LEGEND    D : default variable         F : field      G : group
+          I : intermediate variable    N : node       M : extended node
+          U : undefined                V : variable   X : extended variable
+          T : function
+
