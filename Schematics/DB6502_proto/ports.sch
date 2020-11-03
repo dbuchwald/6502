@@ -521,9 +521,9 @@ Wire Wire Line
 Wire Wire Line
 	2150 5050 2650 5050
 Text GLabel 800  4950 1    50   Input ~ 0
-~OE
+~RD
 Text GLabel 650  4950 1    50   Input ~ 0
-~WE
+~WR
 Wire Wire Line
 	650  4950 650  6050
 Wire Wire Line
@@ -577,9 +577,9 @@ GND
 Wire Wire Line
 	2300 2850 2300 2750
 Text GLabel 6400 6950 2    50   Input ~ 0
-~OE
+~RD
 Text GLabel 6400 6800 2    50   Input ~ 0
-~WE
+~WR
 Wire Wire Line
 	6400 6950 6000 6950
 Wire Wire Line
@@ -1518,6 +1518,15 @@ Wire Wire Line
 	10250 4250 9650 4250
 Wire Wire Line
 	8450 4000 8450 4250
+Connection ~ 8950 4250
+Wire Wire Line
+	8950 4250 8450 4250
+Connection ~ 9300 4250
+Wire Wire Line
+	9300 4250 8950 4250
+Connection ~ 9650 4250
+Wire Wire Line
+	9650 4250 9300 4250
 Wire Bus Line
 	7700 2600 7700 2800
 Wire Bus Line
@@ -1530,13 +1539,4 @@ Wire Bus Line
 	4350 3250 4350 3950
 Wire Bus Line
 	3100 6700 4600 6700
-Connection ~ 8950 4250
-Wire Wire Line
-	8950 4250 8450 4250
-Connection ~ 9300 4250
-Wire Wire Line
-	9300 4250 8950 4250
-Connection ~ 9650 4250
-Wire Wire Line
-	9650 4250 9300 4250
 $EndSCHEMATC

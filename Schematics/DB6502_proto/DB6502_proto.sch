@@ -336,9 +336,9 @@ Wire Wire Line
 Wire Wire Line
 	4050 1450 4450 1450
 Text GLabel 5700 1150 1    50   Output ~ 0
-~WE
+~WR
 Text GLabel 5850 1150 1    50   Output ~ 0
-~OE
+~RD
 Wire Wire Line
 	5700 1150 5700 1350
 Wire Wire Line
@@ -1034,16 +1034,16 @@ F0 "memory" 50
 F1 "memory.sch" 50
 $EndSheet
 Wire Wire Line
-	5450 1850 6300 1850
+	5450 1850 6450 1850
 Text Label 6750 1850 2    50   ~ 0
 io_cs
-Text GLabel 6300 1950 3    50   Output ~ 0
+Text GLabel 6450 1950 3    50   Output ~ 0
 IOCS
 Wire Wire Line
-	6300 1950 6300 1850
-Connection ~ 6300 1850
+	6450 1950 6450 1850
+Connection ~ 6450 1850
 Wire Wire Line
-	6300 1850 6750 1850
+	6450 1850 6750 1850
 Wire Bus Line
 	6500 1450 6500 1650
 Wire Bus Line

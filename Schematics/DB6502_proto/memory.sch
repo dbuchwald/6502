@@ -26,13 +26,13 @@ Wire Wire Line
 Wire Wire Line
 	2300 1450 2200 1450
 Text GLabel 2450 1350 1    50   Input ~ 0
-~WE
+~WR
 Wire Wire Line
 	2450 1350 2450 1550
 Wire Wire Line
 	2450 1550 2200 1550
 Text GLabel 2600 1350 1    50   Input ~ 0
-~OE
+~RD
 Text GLabel 2750 1350 1    50   Input ~ 0
 RAM1_~CS
 Wire Wire Line
@@ -198,13 +198,13 @@ Wire Wire Line
 Wire Wire Line
 	4650 1450 4550 1450
 Text GLabel 4800 1350 1    50   Input ~ 0
-~WE
+~WR
 Wire Wire Line
 	4800 1350 4800 1550
 Wire Wire Line
 	4800 1550 4550 1550
 Text GLabel 4950 1350 1    50   Input ~ 0
-~OE
+~RD
 Text GLabel 5100 1350 1    50   Input ~ 0
 RAM2_~CS
 Wire Wire Line
@@ -370,13 +370,13 @@ Wire Wire Line
 Wire Wire Line
 	7050 1450 6950 1450
 Text GLabel 7200 1350 1    50   Input ~ 0
-~WE
+~WR
 Wire Wire Line
 	7200 1350 7200 1550
 Wire Wire Line
 	7200 1550 6950 1550
 Text GLabel 7350 1350 1    50   Input ~ 0
-~OE
+~RD
 Text GLabel 7500 1350 1    50   Input ~ 0
 ROM_~CS
 Wire Wire Line

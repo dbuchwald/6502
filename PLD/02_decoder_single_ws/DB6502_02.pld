@@ -22,7 +22,7 @@ Device          g22v10;
 /* Pin Map 
        --------
 CLK   |1     24| Vcc
-RW    |2     23| /WE
+RW    |2     23| /WR
 EXRAM |3     22| /RD
 A15   |4     21| /RAM1_CS
 A14   |5     20| /RAM2_CS

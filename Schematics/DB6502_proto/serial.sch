@@ -25,13 +25,13 @@ F 3 "" H 2400 2050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 1050 1550 1    50   Input ~ 0
-~WE
+~WR
 Wire Wire Line
 	1050 1550 1050 1750
 Wire Wire Line
 	1050 1750 1600 1750
 Text GLabel 900  1550 1    50   Input ~ 0
-~OE
+~RD
 Wire Wire Line
 	900  1550 900  1850
 Wire Wire Line
