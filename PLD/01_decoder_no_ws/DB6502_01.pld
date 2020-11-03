@@ -10,18 +10,12 @@ Device          p22v10;
 
 /*********************************************************************************/
 /*                                                                               */
-/*  This program and its associated documentation are provided for your personal */
-/*  use only and appear here exclusively by permission of the copyright holder.  */
-/*  Please contact the copyright holder before re-distributing, re-publishing    */
-/*  or disseminating this copyrighted work. This code is not GPL or in the       */ 
-/*  public domain. Please respect the author's copyright.                        */
+/*  This decoder has been developed for DB6502 project, and this particular      */
+/*  instance implements basic V2 address decoder without any wait state          */
+/*  generator. It is kept here just for reference.                               */
 /*                                                                               */
-/*  No waranty, either expressed or implied, are given.  I assume no liability   */
-/*  for its use in any project or device.                                        */
-/*                                                                               */
-/*  Your use of this program indicates your acceptance of all license terms.     */
-/*  This particular version is freeware as long as the copyright messages are    */
-/*  left intact.                                                                 */  
+/*  Upload to ATF22V10C using the following command:                             */
+/*  minipro -p 'ATF22V10C' -w DB6502_01.jed                                      */
 /*                                                                               */
 /*********************************************************************************/
 
