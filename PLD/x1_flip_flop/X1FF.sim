@@ -1,0 +1,26 @@
+%SIGNAL
+PIN   1 =  clk 
+PIN   2 =  d_in 
+PIN  23 =  d_out 
+PIN   4 =  d_reset 
+PIN   3 =  d_set 
+PIN   5 =  out_enable 
+%END
+
+%FIELD
+%END
+
+%EQUATION
+d_out.d  =>
+    d_in
+
+d_out.ar  =>
+    d_reset
+
+d_out.oe  =>
+    !out_enable
+
+d_out.sp  =>
+    d_set
+
+%END

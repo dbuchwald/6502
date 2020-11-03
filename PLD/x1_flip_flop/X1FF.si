@@ -1,0 +1,40 @@
+Name     X1FF;
+PartNo   X1FF;
+Date     03/11/2020;
+Revision 01;
+Designer Dawid Buchwald;
+Company  ;
+Assembly None;
+Location Poland;
+Device   p22v10;
+
+
+ORDER: clk, %2, d_in, %3, d_set, %3, d_reset, %5, out_enable, %3, d_out; 
+
+
+VECTORS:
+$MSG  "      Flip-flop test  ";
+$MSG  "      CLK DIN SET RESET OE# DOUT ";
+$MSG  "      --- --- --- ----- --- ---- ";
+$MSG  "Testing disabled output...";
+00001 Z
+10001 Z
+01001 Z
+11001 Z
+$MSG  "Testing default value...";
+00000 H
+$MSG  "Testing CLK operation...";
+00000 H
+10000 L
+01000 L
+11000 H
+$MSG  "Testing asynch reset...";
+01010 L
+11000 H
+01000 H
+11010 L
+$MSG  "Testing synch set...";
+00000 L
+10000 L
+00100 L
+10100 H

@@ -1,0 +1,59 @@
+
+*******************************************************************************
+                                     X1FF
+*******************************************************************************
+
+CUPL(WM)        5.0a Serial# 60008009
+Device          p22v10  Library DLIB-h-40-17
+Created         Tue Nov 03 16:00:59 2020
+Name            X1FF
+Partno          X1FF
+Revision        01
+Date            03/11/2020
+Designer        Dawid Buchwald
+Company         
+Assembly        None
+Location        Poland
+
+===============================================================================
+                            Expanded Product Terms
+===============================================================================
+
+d_out.d  =>
+    d_in
+
+d_out.ar  =>
+    d_reset
+
+d_out.oe  =>
+    !out_enable
+
+d_out.sp  =>
+    d_set
+
+
+===============================================================================
+                                 Symbol Table
+===============================================================================
+
+Pin Variable                                    Pterms   Max     Min    
+Pol   Name              Ext     Pin     Type     Used   Pterms  Level   
+--- --------            ---     ---     ----    ------  ------  -----   
+
+    clk                         1        V        -       -       -     
+    d_in                        2        V        -       -       -     
+    d_out                       23       V        -       -       -     
+    d_out               d       23       X        1       8       1     
+    d_out               ar      23       X        1       1       1     
+    d_out               oe      23       X        1       1       1     
+    d_out               sp      23       X        1       1       1     
+    d_reset                     4        V        -       -       -     
+    d_set                       3        V        -       -       -     
+    out_enable                  5        V        -       -       -     
+
+
+LEGEND    D : default variable         F : field      G : group
+          I : intermediate variable    N : node       M : extended node
+          U : undefined                V : variable   X : extended variable
+          T : function
+

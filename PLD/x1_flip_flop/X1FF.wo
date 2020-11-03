@@ -1,0 +1,32 @@
+#WAVEFORM
+#H Name     X1FF;
+#H PartNo   X1FF;
+#H Date     03/11/2020;
+#H Revision 01;
+#H Designer Dawid Buchwald;
+#H Company  ;
+#H Assembly None;
+#H Location Poland;
+#H Device   p22v10;
+#H 
+#H 
+#H ORDER: clk, %2, d_in, %3, d_set, %3, d_reset, %5, out_enable, %3, d_out; 
+#H 
+#H 
+#V 0001 00001Z
+#V 0002 10001Z
+#V 0003 01001Z
+#V 0004 11001Z
+#V 0005 00000H
+#V 0006 00000H
+#V 0007 10000L
+#V 0008 01000L
+#V 0009 11000H
+#V 0010 01010L
+#V 0011 11000H
+#V 0012 01000H
+#V 0013 11010L
+#V 0014 00000L
+#V 0015 10000L
+#V 0016 00100L
+#V 0017 10100H

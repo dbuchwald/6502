@@ -1,0 +1,46 @@
+Name            X1FF;
+Partno          X1FF;
+Revision        01;
+Date            03/11/2020;
+Designer        Dawid Buchwald;
+Company         ;
+Location        Poland;
+Assembly        None;
+Device          p22v10;
+
+/*********************************************************************************/
+/*                                                                               */
+/*  Just trying to understand how the WinCUPL compiler works. This is first      */
+/*  attempt to work with simple flip-flop.                                       */
+/*                                                                               */
+/*********************************************************************************/
+
+/* Pin Map 
+       --------
+CLK   |1     24| Vcc
+DIN   |2     23| DOUT
+SET   |3     22| --
+RESET |4     21| --
+/OE   |5     20| --
+--    |6     19| --
+--    |7     18| --
+--    |8     17| --
+--    |9     16| --
+--    |10    15| --
+--    |11    14| --
+Gnd   |12    13| --
+       --------
+*/
+
+Pin 1  =  clk;
+Pin 2  =  d_in;
+Pin 3  =  d_set;
+Pin 4  =  d_reset;
+Pin 5  =  out_enable;
+
+Pin 23 =  d_out;
+
+d_out.sp = d_set;
+d_out.ar = d_reset;
+d_out.d  = d_in;
+d_out.oe = !out_enable;

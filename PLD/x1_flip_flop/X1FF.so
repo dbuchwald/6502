@@ -1,0 +1,59 @@
+CSIM(WM): CUPL Simulation Program
+Version 5.0a Serial# 
+Copyright (c) 1983, 1998 Logical Devices, Inc.
+CREATED Tue Nov 03 16:02:00 2020
+
+LISTING FOR SIMULATION FILE: X1FF.si
+
+   1: Name     X1FF;
+   2: PartNo   X1FF;
+   3: Date     03/11/2020;
+   4: Revision 01;
+   5: Designer Dawid Buchwald;
+   6: Company  ;
+   7: Assembly None;
+   8: Location Poland;
+   9: Device   p22v10;
+  10: 
+  11: 
+  12: ORDER: clk, %2, d_in, %3, d_set, %3, d_reset, %5, out_enable, %3, d_out; 
+  13: 
+  14: 
+
+===============================
+                       o       
+                       u       
+                       t       
+                 d     _       
+                 _     e       
+             d   r     n   d   
+         d   _   e     a   _   
+      c  _   s   s     b   o   
+      l  i   e   e     l   u   
+      k  n   t   t     e   t   
+===============================
+      Flip-flop test  
+      CLK DIN SET RESET OE# DOUT 
+      --- --- --- ----- --- ---- 
+Testing disabled output...
+0001: 0  0   0   0     1   Z
+0002: 1  0   0   0     1   Z
+0003: 0  1   0   0     1   Z
+0004: 1  1   0   0     1   Z
+Testing default value...
+0005: 0  0   0   0     0   H
+Testing CLK operation...
+0006: 0  0   0   0     0   H
+0007: 1  0   0   0     0   L
+0008: 0  1   0   0     0   L
+0009: 1  1   0   0     0   H
+Testing asynch reset...
+0010: 0  1   0   1     0   L
+0011: 1  1   0   0     0   H
+0012: 0  1   0   0     0   H
+0013: 1  1   0   1     0   L
+Testing synch set...
+0014: 0  0   0   0     0   L
+0015: 1  0   0   0     0   L
+0016: 0  0   1   0     0   L
+0017: 1  0   1   0     0   H
