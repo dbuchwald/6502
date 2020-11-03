@@ -14,7 +14,7 @@ Comment3 "Open Source Hardware"
 Comment4 "Author: Dawid Buchwald"
 $EndDescr
 Text GLabel 1650 1150 1    50   Input ~ 0
-RDY
+6502_RDY
 NoConn ~ 1900 1450
 Text GLabel 1500 1150 1    50   Input ~ 0
 ~IRQ
@@ -468,7 +468,7 @@ CLK_TOGGLE
 Text GLabel 5400 2050 2    50   BiDi ~ 0
 IO15
 Text GLabel 5400 1950 2    50   Output ~ 0
-6502_RDY
+RDY
 Wire Wire Line
 	5300 1950 5400 1950
 Wire Wire Line
@@ -535,7 +535,7 @@ DBG_RDY
 Wire Wire Line
 	9500 1800 9600 1800
 Text GLabel 10300 1900 2    50   Output ~ 0
-RDY
+6502_RDY
 $Comp
 L Device:C_Small C1
 U 1 1 5FFF1E28
@@ -814,7 +814,7 @@ This is main sheet with 6502 CPU, and the following\ncomponents:\n - glue logic 
 Wire Wire Line
 	10200 1900 10300 1900
 Text GLabel 9500 2000 0    50   Input ~ 0
-6502_RDY
+RDY
 Wire Wire Line
 	9500 2000 9600 2000
 $Comp
@@ -833,35 +833,35 @@ $EndComp
 $Comp
 L 74xx:74HC74 U?
 U 1 1 5FA636F8
-P 4550 3700
+P 4750 3700
 AR Path="/5F8F4E1E/5FA636F8" Ref="U?"  Part="2" 
 AR Path="/5FA636F8" Ref="U2"  Part="1" 
-F 0 "U2" H 4250 4100 50  0000 C CNN
-F 1 "74AC74" H 4250 4000 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 4550 3700 50  0001 C CNN
-F 3 "74xx/74hc_hct74.pdf" H 4550 3700 50  0001 C CNN
-	1    4550 3700
+F 0 "U2" H 4450 4100 50  0000 C CNN
+F 1 "74AC74" H 4450 4000 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 4750 3700 50  0001 C CNN
+F 3 "74xx/74hc_hct74.pdf" H 4750 3700 50  0001 C CNN
+	1    4750 3700
 	1    0    0    -1  
 $EndComp
-Text GLabel 4050 4200 0    50   Input ~ 0
+Text GLabel 4250 4200 0    50   Input ~ 0
 6502_CLK
-Text GLabel 4350 3150 0    50   Input ~ 0
+Text GLabel 4550 3150 0    50   Input ~ 0
 ~6502_RES
 Wire Wire Line
-	4350 3150 4550 3150
+	4550 3150 4750 3150
 Wire Wire Line
-	4550 3150 4550 3400
+	4750 3150 4750 3400
 Wire Wire Line
-	4550 3150 5750 3150
+	4750 3150 5750 3150
 Wire Wire Line
 	5750 3150 5750 3400
-Connection ~ 4550 3150
-Text GLabel 4450 4100 0    50   Input ~ 0
+Connection ~ 4750 3150
+Text GLabel 4650 4100 0    50   Input ~ 0
 +5V
 Wire Wire Line
-	4450 4100 4550 4100
+	4650 4100 4750 4100
 Wire Wire Line
-	4550 4100 4550 4000
+	4750 4100 4750 4000
 Text GLabel 5650 4100 0    50   Input ~ 0
 +5V
 Wire Wire Line
@@ -869,33 +869,37 @@ Wire Wire Line
 Wire Wire Line
 	5750 4100 5750 4000
 Wire Wire Line
-	4850 3600 5450 3600
+	5050 3600 5200 3600
 Wire Wire Line
-	4050 4200 4150 4200
+	4250 4200 4350 4200
 Wire Wire Line
-	4150 4200 4150 3700
+	4350 4200 4350 3700
 Wire Wire Line
-	4150 3700 4250 3700
+	4350 3700 4450 3700
 Wire Wire Line
-	4150 4200 5350 4200
+	4350 4200 5350 4200
 Wire Wire Line
 	5350 4200 5350 3700
 Wire Wire Line
 	5350 3700 5450 3700
-Connection ~ 4150 4200
-Text GLabel 4150 3600 0    50   Input ~ 0
-6502_RDY
+Connection ~ 4350 4200
+Text GLabel 4350 3600 0    50   Input ~ 0
+RDY
 Wire Wire Line
-	4150 3600 4250 3600
-Text GLabel 6150 3800 2    50   Output ~ 0
+	4350 3600 4450 3600
+Text GLabel 6150 3600 2    50   Output ~ 0
 RDY_M2
 Wire Wire Line
-	6050 3800 6150 3800
-Text GLabel 4950 3800 2    50   Output ~ 0
+	6050 3600 6150 3600
+Text GLabel 5200 3700 3    50   Output ~ 0
 RDY_M1
 Wire Wire Line
-	4850 3800 4950 3800
-NoConn ~ 6050 3600
+	5200 3600 5200 3700
+NoConn ~ 6050 3800
+Connection ~ 5200 3600
+Wire Wire Line
+	5200 3600 5450 3600
+NoConn ~ 5050 3800
 Wire Bus Line
 	6500 1400 6500 1600
 Wire Bus Line
