@@ -1,5 +1,5 @@
-Name            DB6502 Address Decoder;
-Partno          DB6502;
+Name            DB6502_01;
+Partno          DB6502_01;
 Revision        01;
 Date            09/09/2020;
 Designer        Dawid Buchwald;

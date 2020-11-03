@@ -1,12 +1,12 @@
 CSIM(WM): CUPL Simulation Program
 Version 5.0a Serial# 
 Copyright (c) 1983, 1998 Logical Devices, Inc.
-CREATED Thu Sep 10 14:31:52 2020
+CREATED Tue Nov 03 14:15:06 2020
 
-LISTING FOR SIMULATION FILE: DB6502.si
+LISTING FOR SIMULATION FILE: DB6502_01.si
 
-   1: Name     DB6502 Address Decoder;
-   2: PartNo   DB6502;
+   1: Name     DB6502_01;
+   2: PartNo   DB6502_01;
    3: Date     09/09/2020;
    4: Revision 01;
    5: Designer Dawid Buchwald;

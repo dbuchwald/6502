@@ -1,6 +1,6 @@
 #WAVEFORM
-#H Name     DB6502 Address Decoder;
-#H PartNo   DB6502;
+#H Name     DB6502_01;
+#H PartNo   DB6502_01;
 #H Date     09/09/2020;
 #H Revision 01;
 #H Designer Dawid Buchwald;

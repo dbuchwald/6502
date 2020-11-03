@@ -1,13 +1,13 @@
 
 *******************************************************************************
-                                    DB6502
+                                   DB6502_01
 *******************************************************************************
 
 CUPL(WM)        5.0a Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Thu Sep 10 14:31:49 2020
-Name            DB6502 Address Decoder
-Partno          DB6502
+Created         Tue Nov 03 14:15:03 2020
+Name            DB6502_01
+Partno          DB6502_01
 Revision        01
 Date            09/09/2020
 Designer        Dawid Buchwald
