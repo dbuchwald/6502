@@ -1342,8 +1342,6 @@ F 3 "" H 8600 3550 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 NoConn ~ 8350 4000
-Text GLabel 8450 4200 3    50   Input ~ 0
-GND
 $Comp
 L Device:Ferrite_Bead_Small FB3
 U 1 1 5FFE8733
@@ -1429,9 +1427,7 @@ Wire Wire Line
 	8750 3600 9300 3600
 Wire Wire Line
 	8850 3850 9650 3850
-Text GLabel 9300 4250 3    50   Input ~ 0
-GND
-Text GLabel 9650 4250 3    50   Input ~ 0
+Text GLabel 10250 4250 2    50   Input ~ 0
 GND
 Wire Wire Line
 	9300 3950 9300 3600
@@ -1465,12 +1461,8 @@ Wire Wire Line
 Connection ~ 8950 3400
 Wire Wire Line
 	8950 3400 9200 3400
-Text GLabel 8950 4250 3    50   Input ~ 0
-GND
 Wire Wire Line
 	8950 4250 8950 4150
-Wire Wire Line
-	8450 4000 8450 4200
 Wire Wire Line
 	9400 3400 10250 3400
 $Comp
@@ -1486,9 +1478,9 @@ F 3 " ~" H 5775 2350 50  0001 C CNN
 	1    7050 2900
 	1    0    0    -1  
 $EndComp
-Text GLabel 6950 3400 3    50   Input ~ 0
+Text GLabel 7050 3400 2    50   Input ~ 0
 GND
-Text GLabel 6950 2300 1    50   Input ~ 0
+Text GLabel 7050 2300 2    50   Input ~ 0
 +5V
 Text GLabel 7550 3000 2    50   Output ~ 0
 ~RES
@@ -1518,6 +1510,14 @@ Wire Wire Line
 	6950 3300 6950 3400
 Text GLabel 2150 4950 1    50   Input ~ 0
 IOCS
+Wire Wire Line
+	7050 3400 6950 3400
+Wire Wire Line
+	6950 2300 7050 2300
+Wire Wire Line
+	10250 4250 9650 4250
+Wire Wire Line
+	8450 4000 8450 4250
 Wire Bus Line
 	7700 2600 7700 2800
 Wire Bus Line
@@ -1530,4 +1530,13 @@ Wire Bus Line
 	4350 3250 4350 3950
 Wire Bus Line
 	3100 6700 4600 6700
+Connection ~ 8950 4250
+Wire Wire Line
+	8950 4250 8450 4250
+Connection ~ 9300 4250
+Wire Wire Line
+	9300 4250 8950 4250
+Connection ~ 9650 4250
+Wire Wire Line
+	9650 4250 9300 4250
 $EndSCHEMATC

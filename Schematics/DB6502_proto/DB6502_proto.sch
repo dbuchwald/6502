@@ -383,14 +383,14 @@ Wire Wire Line
 	6600 1450 6750 1450
 Wire Wire Line
 	6600 1550 6750 1550
-Text GLabel 7250 950  1    50   Input ~ 0
+Text GLabel 7350 1000 2    50   Input ~ 0
 +5V
 Wire Wire Line
-	7250 950  7250 1000
-Text GLabel 7250 2550 3    50   Input ~ 0
+	7350 1000 7250 1000
+Text GLabel 7350 2450 2    50   Input ~ 0
 GND
 Wire Wire Line
-	7250 2550 7250 2450
+	7350 2450 7250 2450
 Wire Wire Line
 	7250 2450 6650 2450
 Wire Wire Line
@@ -679,14 +679,14 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 850 6900 50  0001 C CNN
 	5    850  6900
 	1    0    0    -1  
 $EndComp
-Text GLabel 850  6300 1    50   Input ~ 0
+Text GLabel 750  6350 0    50   Input ~ 0
 +5V
-Text GLabel 850  7500 3    50   Input ~ 0
+Text GLabel 750  7450 0    50   Input ~ 0
 GND
 Wire Wire Line
-	850  6300 850  6350
+	750  6350 850  6350
 Wire Wire Line
-	850  7500 850  7450
+	750  7450 850  7450
 $Comp
 L Device:C_Small C2
 U 1 1 601E7D6E
@@ -791,12 +791,12 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 1700 6900 50  0001 C CNN
 	3    1700 6900
 	1    0    0    -1  
 $EndComp
-Text GLabel 1700 6300 1    50   Input ~ 0
+Text GLabel 1600 6350 0    50   Input ~ 0
 +5V
-Text GLabel 1700 7500 3    50   Input ~ 0
+Text GLabel 1600 7450 0    50   Input ~ 0
 GND
 Wire Wire Line
-	1700 7500 1700 7450
+	1600 7450 1700 7450
 Wire Wire Line
 	1700 6400 1700 6350
 $Comp
@@ -816,7 +816,7 @@ Wire Wire Line
 	2000 6350 1700 6350
 Connection ~ 1700 6350
 Wire Wire Line
-	1700 6350 1700 6300
+	1700 6350 1600 6350
 Wire Wire Line
 	1700 7450 2000 7450
 Wire Wire Line
@@ -900,14 +900,14 @@ F 3 "74xx/74hc_hct74.pdf" H 2550 6900 50  0001 C CNN
 	3    2550 6900
 	1    0    0    -1  
 $EndComp
-Text GLabel 2550 7400 3    50   Input ~ 0
+Text GLabel 2450 7350 0    50   Input ~ 0
 GND
 Wire Wire Line
-	2550 7400 2550 7350
-Text GLabel 2550 6400 1    50   Input ~ 0
+	2450 7350 2550 7350
+Text GLabel 2450 6450 0    50   Input ~ 0
 +5V
 Wire Wire Line
-	2550 6400 2550 6450
+	2450 6450 2550 6450
 $Comp
 L Device:C_Small C?
 U 1 1 5FDF80FF

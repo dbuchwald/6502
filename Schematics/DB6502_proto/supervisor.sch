@@ -265,14 +265,14 @@ Wire Wire Line
 	2900 4000 3000 4000
 Wire Wire Line
 	2900 3900 3000 3900
-Text GLabel 2300 5000 3    50   Input ~ 0
+Text GLabel 2200 5000 0    50   Input ~ 0
 GND
 Wire Wire Line
 	2300 5000 2300 4900
-Text GLabel 2300 750  1    50   Input ~ 0
+Text GLabel 2500 800  2    50   Input ~ 0
 +5V
 Wire Wire Line
-	2300 750  2300 800 
+	2500 800  2400 800 
 Wire Wire Line
 	2300 800  2400 800 
 Wire Wire Line
@@ -391,23 +391,20 @@ Wire Wire Line
 	4650 1200 4750 1200
 Text GLabel 4650 1400 0    50   Input ~ 0
 SR_CLK
-Text GLabel 5150 2500 3    50   Input ~ 0
+Text GLabel 4550 2100 0    50   Input ~ 0
 GND
-Wire Wire Line
-	5150 2500 5150 2400
 Wire Wire Line
 	5150 2400 4650 2400
 Wire Wire Line
-	4650 2400 4650 1800
+	4650 2400 4650 2100
 Wire Wire Line
 	4650 1800 4750 1800
-Connection ~ 5150 2400
 Wire Wire Line
 	5150 2400 5150 2300
-Text GLabel 5150 900  1    50   Input ~ 0
+Text GLabel 5250 900  2    50   Input ~ 0
 +5V
 Wire Wire Line
-	5150 900  5150 950 
+	5250 900  5150 900 
 Text GLabel 5650 1100 1    50   Output ~ 0
 CLKSEL
 Text GLabel 5800 1100 1    50   Output ~ 0
@@ -474,14 +471,14 @@ F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 900 6700 50  0001 C CNN
 	7    900  6700
 	1    0    0    -1  
 $EndComp
-Text GLabel 900  7300 3    50   Input ~ 0
+Text GLabel 800  7300 0    50   Input ~ 0
 GND
 Wire Wire Line
-	900  7300 900  7250
-Text GLabel 900  6100 1    50   Input ~ 0
+	800  7300 900  7300
+Text GLabel 800  6100 0    50   Input ~ 0
 +5V
 Wire Wire Line
-	900  6100 900  6150
+	800  6100 900  6100
 $Comp
 L 74xx:74LS04 U4
 U 3 1 5F95A89B
@@ -548,9 +545,9 @@ F 3 "https://www.ti.com/lit/ds/symlink/cd74hc157.pdf" H 7350 1800 50  0001 C CNN
 	1    7350 1800
 	1    0    0    -1  
 $EndComp
-Text GLabel 7350 800  1    50   Input ~ 0
+Text GLabel 7450 800  2    50   Input ~ 0
 +5V
-Text GLabel 7350 2900 3    50   Input ~ 0
+Text GLabel 6650 2700 0    50   Input ~ 0
 GND
 Text GLabel 6750 1300 0    50   Input ~ 0
 DBG_CLK
@@ -565,18 +562,15 @@ Text GLabel 7950 1100 1    50   Output ~ 0
 Wire Wire Line
 	7850 1200 7950 1200
 Wire Wire Line
-	7350 800  7350 850 
-Wire Wire Line
-	7350 2900 7350 2850
+	7450 800  7350 800 
 Wire Wire Line
 	6850 2500 6750 2500
 Wire Wire Line
-	6750 2500 6750 2850
+	6750 2500 6750 2700
 Wire Wire Line
-	6750 2850 7350 2850
-Connection ~ 7350 2850
+	6750 2900 7350 2900
 Wire Wire Line
-	7350 2850 7350 2800
+	7350 2900 7350 2800
 Text GLabel 9750 5600 0    50   Input ~ 0
 CLK
 Text GLabel 10550 5600 2    50   Output ~ 0
@@ -594,14 +588,10 @@ F 3 "74xx/74hc_hct74.pdf" H 1850 6700 50  0001 C CNN
 	3    1850 6700
 	1    0    0    -1  
 $EndComp
-Text GLabel 1850 7200 3    50   Input ~ 0
+Text GLabel 1750 7200 0    50   Input ~ 0
 GND
-Wire Wire Line
-	1850 7200 1850 7150
-Text GLabel 1850 6200 1    50   Input ~ 0
+Text GLabel 1750 6200 0    50   Input ~ 0
 +5V
-Wire Wire Line
-	1850 6200 1850 6250
 Text GLabel 6750 2400 0    50   Input ~ 0
 CLK_TOGGLE
 Wire Wire Line
@@ -629,53 +619,52 @@ F 3 "~" H 2200 6700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1250 6600 1250 6150
+	1250 6600 1250 6100
 Wire Wire Line
-	1250 6150 900  6150
-Connection ~ 900  6150
+	1250 6100 900  6100
+Connection ~ 900  6100
 Wire Wire Line
-	900  6150 900  6200
+	900  6100 900  6200
 Wire Wire Line
-	1250 6800 1250 7250
+	1250 6800 1250 7300
 Wire Wire Line
-	1250 7250 900  7250
-Connection ~ 900  7250
+	1250 7300 900  7300
+Connection ~ 900  7300
 Wire Wire Line
-	900  7250 900  7200
+	900  7300 900  7200
 Wire Wire Line
-	1850 7150 2200 7150
+	1850 7200 2200 7200
 Wire Wire Line
-	2200 7150 2200 6800
-Connection ~ 1850 7150
+	2200 7200 2200 6800
 Wire Wire Line
-	1850 7150 1850 7100
+	1850 7200 1850 7100
 Wire Wire Line
-	2200 6600 2200 6250
+	2200 6600 2200 6200
 Wire Wire Line
-	2200 6250 1850 6250
-Connection ~ 1850 6250
+	2200 6200 1850 6200
+Connection ~ 1850 6200
 Wire Wire Line
-	1850 6250 1850 6300
+	1850 6200 1850 6300
 $Comp
 L Device:C_Small C26
 U 1 1 5FAF8D14
-P 7150 850
-F 0 "C26" V 6921 850 50  0000 C CNN
-F 1 "0,1uF" V 7012 850 50  0000 C CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 7150 850 50  0001 C CNN
-F 3 "~" H 7150 850 50  0001 C CNN
-	1    7150 850 
+P 7150 800
+F 0 "C26" V 6921 800 50  0000 C CNN
+F 1 "0,1uF" V 7012 800 50  0000 C CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 7150 800 50  0001 C CNN
+F 3 "~" H 7150 800 50  0001 C CNN
+	1    7150 800 
 	0    1    1    0   
 $EndComp
-Text GLabel 6950 850  0    50   Input ~ 0
+Text GLabel 6950 800  0    50   Input ~ 0
 GND
 Wire Wire Line
-	6950 850  7050 850 
+	6950 800  7050 800 
 Wire Wire Line
-	7250 850  7350 850 
-Connection ~ 7350 850 
+	7250 800  7350 800 
+Connection ~ 7350 800 
 Wire Wire Line
-	7350 850  7350 900 
+	7350 800  7350 900 
 $Comp
 L 74xx:74LS08 U6
 U 5 1 5FB0D0DC
@@ -687,9 +676,9 @@ F 3 "https://www.ti.com/lit/ds/symlink/sn74ac08.pdf" H 2800 6700 50  0001 C CNN
 	5    2800 6700
 	1    0    0    -1  
 $EndComp
-Text GLabel 2800 6100 1    50   Input ~ 0
+Text GLabel 2700 6100 0    50   Input ~ 0
 +5V
-Text GLabel 2800 7300 3    50   Input ~ 0
+Text GLabel 2700 7300 0    50   Input ~ 0
 GND
 $Comp
 L Device:C_Small C23
@@ -703,23 +692,23 @@ F 3 "~" H 3150 6700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2800 6200 2800 6150
+	2800 6200 2800 6100
 Wire Wire Line
-	2800 7200 2800 7250
+	2800 7200 2800 7300
 Wire Wire Line
-	3150 6600 3150 6150
+	3150 6600 3150 6100
 Wire Wire Line
-	3150 6150 2800 6150
-Connection ~ 2800 6150
+	3150 6100 2800 6100
+Connection ~ 2800 6100
 Wire Wire Line
-	2800 6150 2800 6100
+	2800 6100 2700 6100
 Wire Wire Line
-	3150 6800 3150 7250
+	3150 6800 3150 7300
 Wire Wire Line
-	3150 7250 2800 7250
-Connection ~ 2800 7250
+	3150 7300 2800 7300
+Connection ~ 2800 7300
 Wire Wire Line
-	2800 7250 2800 7300
+	2800 7300 2700 7300
 $Comp
 L Device:C_Small C21
 U 1 1 5FB3967F
@@ -740,23 +729,23 @@ Wire Wire Line
 $Comp
 L Device:C_Small C25
 U 1 1 5FB5019A
-P 4950 950
-F 0 "C25" V 4721 950 50  0000 C CNN
-F 1 "0,1uF" V 4812 950 50  0000 C CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 4950 950 50  0001 C CNN
-F 3 "~" H 4950 950 50  0001 C CNN
-	1    4950 950 
+P 4950 900
+F 0 "C25" V 4721 900 50  0000 C CNN
+F 1 "0,1uF" V 4812 900 50  0000 C CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 4950 900 50  0001 C CNN
+F 3 "~" H 4950 900 50  0001 C CNN
+	1    4950 900 
 	0    1    1    0   
 $EndComp
-Text GLabel 4750 950  0    50   Input ~ 0
+Text GLabel 4750 900  0    50   Input ~ 0
 GND
 Wire Wire Line
-	4750 950  4850 950 
+	4750 900  4850 900 
 Wire Wire Line
-	5050 950  5150 950 
-Connection ~ 5150 950 
+	5050 900  5150 900 
+Connection ~ 5150 900 
 Wire Wire Line
-	5150 950  5150 1000
+	5150 900  5150 1000
 $Comp
 L Device:C_Small C28
 U 1 1 5FC939BD
@@ -1119,16 +1108,12 @@ F 3 "" H 5050 3650 50  0001 C CNN
 	1    5150 3650
 	1    0    0    -1  
 $EndComp
-Text GLabel 5150 3250 1    50   Input ~ 0
+Text GLabel 5250 3250 2    50   Input ~ 0
 +5V
-Text GLabel 5150 4050 3    50   Input ~ 0
+Text GLabel 5250 4050 2    50   Input ~ 0
 GND
 Text GLabel 5550 3650 2    50   Output ~ 0
 CLK
-Wire Wire Line
-	5150 3250 5150 3300
-Wire Wire Line
-	5150 4050 5150 4000
 Wire Wire Line
 	5450 3650 5550 3650
 $Comp
@@ -1145,19 +1130,17 @@ F 3 "~" H 4850 3650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4850 3550 4850 3300
+	4850 3550 4850 3250
 Wire Wire Line
-	4850 3300 5150 3300
-Connection ~ 5150 3300
+	4850 3250 5150 3250
 Wire Wire Line
-	5150 3300 5150 3350
+	5150 3250 5150 3350
 Wire Wire Line
-	4850 3750 4850 4000
+	4850 3750 4850 4050
 Wire Wire Line
-	4850 4000 5150 4000
-Connection ~ 5150 4000
+	4850 4050 5150 4050
 Wire Wire Line
-	5150 4000 5150 3950
+	5150 4050 5150 3950
 $Comp
 L Switch:SW_Push SW?
 U 1 1 601309D5
@@ -1171,22 +1154,22 @@ F 3 "~" H 5650 5950 50  0001 C CNN
 	1    5650 5750
 	0    1    1    0   
 $EndComp
-Text GLabel 5150 6100 3    50   Input ~ 0
+Text GLabel 5050 6100 0    50   Input ~ 0
 GND
 Wire Wire Line
-	5150 6100 5150 6050
+	5050 6100 5150 6100
 Wire Wire Line
-	5150 6050 5650 6050
+	5150 6100 5650 6100
 Wire Wire Line
-	5650 6050 5650 5950
-Connection ~ 5150 6050
+	5650 6100 5650 5950
+Connection ~ 5150 6100
 Wire Wire Line
-	5150 6050 5150 6000
+	5150 6100 5150 6000
 Wire Wire Line
 	5650 5550 5650 5450
 Wire Wire Line
 	5650 5450 5550 5450
-Text GLabel 5150 4800 1    50   Input ~ 0
+Text GLabel 5250 4800 2    50   Input ~ 0
 +5V
 Wire Wire Line
 	5150 4800 5150 4900
@@ -1208,6 +1191,32 @@ F 3 "https://datasheets.maximintegrated.com/en/ds/DS1813.pdf" H 5150 5450 50  00
 	1    5150 5450
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	1750 7200 1850 7200
+Connection ~ 1850 7200
+Wire Wire Line
+	1750 6200 1850 6200
+Wire Wire Line
+	5250 4800 5150 4800
+Wire Wire Line
+	5150 3250 5250 3250
+Connection ~ 5150 3250
+Wire Wire Line
+	5150 4050 5250 4050
+Connection ~ 5150 4050
+Connection ~ 2400 800 
+Wire Wire Line
+	6650 2700 6750 2700
+Connection ~ 6750 2700
+Wire Wire Line
+	6750 2700 6750 2900
+Wire Wire Line
+	4550 2100 4650 2100
+Connection ~ 4650 2100
+Wire Wire Line
+	4650 2100 4650 1800
+Wire Wire Line
+	2200 5000 2300 5000
 Wire Bus Line
 	3200 2200 3200 2900
 Wire Bus Line
