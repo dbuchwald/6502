@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# 60008009
 Device          g22v10  Library DLIB-h-40-1
-Created         Tue Nov 03 19:58:19 2020
+Created         Wed Nov 04 12:18:13 2020
 Name            DB6502_02
 Partno          DB6502_02
 Revision        01
@@ -47,8 +47,8 @@ RAM_EXTRA =>
     !A14 & A15
 
 !RD =>
-    CLK & RW
-  # !RDY & RW
+    !RDY & RW & !WS_DISABLE
+  # CLK & RW
 
 RDY.d  =>
     !DBG_RDY & WS_DISABLE
@@ -74,8 +74,8 @@ ROM =>
   # A14 & A15
 
 !WR =>
-    CLK & !RW
-  # !RDY & !RW
+    !RDY & !RW & !WS_DISABLE
+  # CLK & !RW
 
 DBG_RDY.oe  =>
     0 

@@ -53,8 +53,8 @@ RAM_EXTRA =>
     !A14 & A15
 
 !RD =>
-    CLK & RW
-  # RDY & RW
+    RDY & RW & !WS_DISABLE
+  # CLK & RW
 
 RDY.d  =>
     !DBG_RDY & WS_DISABLE
@@ -80,8 +80,8 @@ ROM =>
   # A14 & A15
 
 !WR =>
-    CLK & !RW
-  # RDY & !RW
+    RDY & !RW & !WS_DISABLE
+  # CLK & !RW
 
 DBG_RDY.oe  =>
     0 

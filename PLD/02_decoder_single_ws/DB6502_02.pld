@@ -81,8 +81,8 @@ IO_SHADOW = Address:[0200..02FF];
 RAM_EXTRA = Address:[8000..BFFF];
 ROM       = Address:[8000..FFFF];
 
-!WR       = !RW & (CLK # !RDY);
-!RD       = RW & (CLK # !RDY);
+!WR       = !RW & (CLK # (!RDY & !WS_DISABLE));
+!RD       = RW & (CLK # (!RDY & !WS_DISABLE));
 !RAM1_CS  = RAM & !IO_SHADOW;
 !RAM2_CS  = EXRAM & RAM_EXTRA;
 !ROM_CS   = ROM & !(EXRAM & RAM_EXTRA);

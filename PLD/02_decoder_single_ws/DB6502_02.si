@@ -129,3 +129,16 @@ $MSG  "      Testing debug wait state operation...";
 10X 0X 01 'FF' LH**** L
 00X 0X 00 'FF' LH**** L
 10X 0X 00 'FF' LH**** Z
+$MSG  "      Testing if nRD/nWR is stretched during WS_DISABLE and DBG_WAIT ...";
+00X 0X 11 '00' HH**** *
+10X 0X 11 '00' LH**** *
+01X 0X 11 '00' HH**** *
+11X 0X 11 '00' HL**** *
+00X 0X 11 '02' HH**** *
+10X 0X 11 '02' LH**** *
+01X 0X 11 '02' HH**** *
+11X 0X 11 '02' HL**** *
+00X 0X 11 'FF' HH**** *
+10X 0X 11 'FF' LH**** *
+01X 0X 11 'FF' HH**** *
+11X 0X 11 'FF' HL**** *
