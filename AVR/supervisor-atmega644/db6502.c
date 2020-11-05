@@ -10,7 +10,8 @@ static uint8_t control_register;
 
 void assumeBusControl(void) {
   // start by stopping clock and 
-  updateControlRegister(CLKSEL_BIT | BE_BIT | RDY_BIT, CLKSEL_BIT | BE_BIT | RDY_BIT);
+  updateControlRegister(CLKSEL_BIT | BE_BIT | RDY_BIT | WSDIS_BIT, 
+                        CLKSEL_BIT | BE_BIT | RDY_BIT | WSDIS_BIT);
   // we will control RW now
   CONTROL_DDR  |= RW_BIT;
   // lower the clock, we will raise it only when needed
@@ -38,7 +39,7 @@ void returnBusControl(void) {
   ADDRLSB_POUT = ALL_PULL_UP;
   DATA_POUT    = ALL_PULL_UP;
   // restore clock, BE and RDY operation
-  updateControlRegister(0x00, CLKSEL_BIT | BE_BIT | RDY_BIT);
+  updateControlRegister(0x00, CLKSEL_BIT | BE_BIT | RDY_BIT | WSDIS_BIT);
 }
 
 // assumes bus is already under our control

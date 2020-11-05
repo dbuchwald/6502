@@ -43,6 +43,7 @@ static void reset6502(cycle_buffer* buffer);
 static void toggleClock(cycle_buffer* buffer);
 static void toggleBusEnable();
 static void toggleReady();
+static void toggleWSDisable();
 
 static void initBuffer(cycle_buffer* buffer);
 static uint8_t getOneCycleToBuffer(cycle_buffer* buffer);
@@ -65,10 +66,11 @@ void runMonitorShell(void) {
   displayHelp();
   while (keep_going) {
     control_register = getControlRegister(); 
-    printf("Debugger [z|x|g|f|r|b|n|m|h|q] <CLK: %c |BE: %c |RDY: %c >", 
+    printf("Debugger [z|x|g|f|r|b|n|m|h|q] <CLK: %c |BE: %c |RDY: %c |WSDIS: %c >", 
            clock_state ? '1' : '0',
            control_register & BE_BIT ? '0' : '1',
-           control_register & RDY_BIT ? '0' : '1');
+           control_register & RDY_BIT ? '0' : '1',
+           control_register & WSDIS_BIT ? '1' : '0');
     unsigned char c = getc(stdin);
     printf(ESCAPE_CLEAR_LINE);
     switch (toupper(c)) {
@@ -110,6 +112,9 @@ void runMonitorShell(void) {
       case 'M':
         toggleReady();
         break;
+      case 'W':
+        toggleWSDisable();
+        break;
       default:
         printf("ERROR: Unrecognized command %c [%02x], type 'h' for help...\n", c, c);
     }
@@ -129,6 +134,7 @@ void displayHelp(void) {
   printf(" [b] toggle clock line high/low - for fine CPU control\n");
   printf(" [n] toggle BE line high/low - for fine CPU control\n");
   printf(" [m] toggle RDY line high/low - for fine CPU control\n");
+  printf(" [w] toggle Wait State disable line high/low\n");
   printf(" [r]eset - reset 6502 and its peripherals\n");
   printf(" [h]elp - display this information\n");
   printf(" [q]uit - leave shell\n");
@@ -477,5 +483,15 @@ static void toggleReady() {
     updateControlRegister(0x00, RDY_BIT);
   } else {
     updateControlRegister(RDY_BIT, RDY_BIT);
+  }
+}
+
+static void toggleWSDisable() {
+  uint8_t control_register = getControlRegister();
+
+  if (control_register & WSDIS_BIT) {
+    updateControlRegister(0x00, WSDIS_BIT);
+  } else {
+    updateControlRegister(WSDIS_BIT, WSDIS_BIT);
   }
 }

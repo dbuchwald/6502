@@ -27,6 +27,7 @@
 #define CLKSEL_BIT   _BV(0)
 #define BE_BIT       _BV(1)
 #define RDY_BIT      _BV(2)
+#define WSDIS_BIT    _BV(3)
 #define RESET_BIT    _BV(7)
 
 #define ALL_INPUT    0x00
