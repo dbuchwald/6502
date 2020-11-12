@@ -63,38 +63,38 @@ DUART_W_ROP12 = __SERIAL_START__ + $0f
 ; channel number in A        
 _serial_init_controller:
         ; disable powerdown
-        lda #$f0
+        lda #%11110000
         sta DUART_W_CRA
         ; deassert RTS
-        lda #$90
+        lda #%10010000
         sta DUART_W_CRA
         ; reset receiver
-        lda #$20
+        lda #%00100000
         sta DUART_W_CRA
         ; reset transmitter
-        lda #$30
+        lda #%00110000
         sta DUART_W_CRA
         ; reset break irq
-        lda #$50
+        lda #%01010000
         sta DUART_W_CRA
         ; reset error
-        lda #$40
+        lda #%01000000
         sta DUART_W_CRA
 
         ; Write to MR0A
-        lda #$b0
+        lda #%10110000
         sta DUART_W_CRA
         ; No watchdog (b7=0)
         ; RxINT on at least one byte in FIFO (b6=0)
         ; TxINT on ready FIFO (b5:4=11)
         ; b3=0
-        ; Extended mode (b2:0=001)
-        ; lda #%00110001
-        ; Normal mode (b2:0=000)        
-        lda #%00110000
+        ; Extended mode (b2:0=001) - 115200 baud
+        lda #%00110001
+        ; Normal mode (b2:0=000) - 19200 baud
+        ; lda #%00110000
         sta DUART_W_MR0A
         ; Write to MR1A
-        lda #$10
+        lda #%00010000
         sta DUART_W_CRA
         ; Rx controls RTS (b7=1)
         ; RxINT on at least one byte in FIFO (b6=0)
