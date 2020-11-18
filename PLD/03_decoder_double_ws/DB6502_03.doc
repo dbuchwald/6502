@@ -1,15 +1,15 @@
 
 *******************************************************************************
-                                   DB6502_02
+                                   DB6502_03
 *******************************************************************************
 
 CUPL(WM)        5.0a Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Wed Nov 18 16:44:46 2020
-Name            DB6502_02
-Partno          DB6502_02
+Created         Wed Nov 18 16:33:13 2020
+Name            DB6502_03
+Partno          DB6502_03
 Revision        01
-Date            03/11/2020
+Date            18/11/2020
 Designer        Dawid Buchwald
 Company         
 Assembly        None
@@ -52,10 +52,10 @@ RAM_EXTRA =>
 
 RDY.d  =>
     !DBG_RDY & WS_DISABLE
-  # !DBG_RDY & !RAM1_CS
-  # !DBG_RDY & !RAM2_CS
-  # !DBG_RDY & !RDY_M1F & !ROM_CS
-  # !DBG_RDY & IO_CS
+  # !DBG_RDY & !RAM1_CS & !RDY_M1F
+  # !DBG_RDY & !RAM2_CS & !RDY_M1F
+  # !DBG_RDY & !RDY_M1F & !RDY_M2F & !ROM_CS
+  # !DBG_RDY & IO_CS & !RDY_M1F
 
 RDY.ar  =>
     0 
@@ -91,6 +91,9 @@ RAM2_CS.oe  =>
 
 RD.oe  =>
     1 
+
+RDY_M2F.oe  =>
+    0 
 
 ROM_CS.oe  =>
     1 
@@ -146,6 +149,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     RAM1_CS             oe      21       D        1       1       0     
     RAM2_CS             oe      20       D        1       1       0     
     RD                  oe      22       D        1       1       0     
+    RDY_M2F             oe      14       D        1       1       0     
     ROM_CS              oe      19       D        1       1       0     
     WR                  oe      23       D        1       1       0     
     WS_DISABLE          oe      15       D        1       1       0     
