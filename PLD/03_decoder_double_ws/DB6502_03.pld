@@ -1,7 +1,7 @@
-Name            DB6502_02;
-Partno          DB6502_02;
+Name            DB6502_03;
+Partno          DB6502_03;
 Revision        01;
-Date            03/11/2020;
+Date            18/11/2020;
 Designer        Dawid Buchwald;
 Company         ;
 Location        Poland;
@@ -15,7 +15,7 @@ Device          p22v10;
 /*  generator.                                                                   */
 /*                                                                               */
 /*  Upload to ATF22V10C using the following command:                             */
-/*  minipro -p 'ATF22V10C' -w DB6502_02.jed                                      */
+/*  minipro -p 'ATF22V10C' -w DB6502_03.jed                                      */
 /*                                                                               */
 /*********************************************************************************/
 
@@ -92,9 +92,9 @@ RDY.AR    = 'b'0;
 RDY.SP    = 'b'0;
 RDY.D     = !DBG_RDY & 
             (WS_DISABLE #
-             !RAM1_CS #
-             !RAM2_CS #
-             IO_CS   #
-             (!ROM_CS & !RDY_M1F));
+             (!RAM1_CS & !RDY_M1F) #
+             (!RAM2_CS & !RDY_M1F) #
+             (IO_CS & !RDY_M1F)  #
+             (!ROM_CS & !RDY_M1F & !RDY_M2F));
 			 
 RDY.OE    = !RDY;
