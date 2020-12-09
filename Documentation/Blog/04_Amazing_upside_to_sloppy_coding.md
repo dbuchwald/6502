@@ -128,7 +128,7 @@ Again, BF check before write, and writing 0x41 (A). BF check before read (three 
 
 It might be tempting to use some kind of arbitrary delay between the operations - instead of playing around with the busy flag check, I could add dead loop that would basically hold the execution for certain duration. Next image I wanted to show explains why arbitrary delays are BAD, BAD idea:
 
-![04_bad_delay](/Users/dawid/Development/6502/Documentation/Blog/Images/04_bad_delay.png)
+![04_bad_delay](Images/04_bad_delay.png)
 
 As you can see, I start with write operation of 0x80 - this is "set DDRAM address" command, setting the cursor position to 00, which is beginning of first line. I skipped BF check on the screenshot, but it had been done.
 
