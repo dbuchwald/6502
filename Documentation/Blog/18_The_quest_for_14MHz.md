@@ -54,9 +54,7 @@ There are also other issues related to it, and I will tackle them as I describe 
 
 This is something I've been meaning to write about for a long time, practically from the day I left the safe and cozy world of 65XX family of peripherals. Sure, one could argue that even the ROM/RAM chips used in Ben's build are not fully 65XX compatible, but using chips like the 26C92 UART controller (especially at higher clock speed) becomes interesting challenge on its own.
 
-I mentioned another parallel project I've been working on, and it has been really interesting for one more reason: I used Z80 CPU for it and I strongly recommend you take a look at this one as well some day. 
-
-There is no shortage of projects similar to BE6502 but based on Zilog CPU, and it's really interesting to compare different chip philosophies. Noticing these differences first-hand can really deepen your understanding of computer system architecture.
+I mentioned another parallel project I've been working on, and it has been really interesting for one more reason: I used Z80 CPU for it and I strongly recommend you take a look at this one some day. There is no shortage of projects similar to BE6502, but based on Zilog CPU, and it's really interesting to compare different chip philosophies. Noticing these differences first-hand can really deepen your understanding of computer system architecture.
 
 And while it's not really relevant to what I'm writing here about, as a side note: I will probably revive my other project one day, for now I have very convenient Z80 RAM-only, Arduino Mega compatible development board with dual channel serial interface:
 
@@ -64,3 +62,8 @@ And while it's not really relevant to what I'm writing here about, as a side not
 
 I will write more about this one day, but for now it's just a nice reminder of what can be done in short amount of time and not that much effort.
 
+Bottom line: while it doesn't matter much at lower clock speeds, translation from 65XX bus to 8080 bus can present interesting challenge and cause completely different set of issues.
+
+## Summary
+
+As I mentioned at the beginning of this post - I have spent many hours trying to get DB6502v2 run correctly at 14MHz, and while I still haven't succeeded, this journey was well worth it, as it forced me to question my knowledge and learn new things. I will discuss each of these problems in details in separate project log entries, so stay tuned - more good stuff is coming. I promise!
