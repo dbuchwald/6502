@@ -48,7 +48,7 @@ Unfortunately, there is an issue here: early during clock cycle, while address l
 
 Sure, the operation would not be valid - it would be at most 10ns long, which is way below the minimum pulse length, but this is actually not a good thing. It might cause issues with chip operation stability or worse.
 
-How can anything be worse than the chip unstability? Actuall, as I have learned, certain operations can be executed, at least partially, even with very short random read pulses.
+How can anything be worse than the chip instability? Actually, as I have learned, certain operations can be executed, at least partially, even with very short random read pulses.
 
 ## What about Ben's build then?
 
