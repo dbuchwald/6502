@@ -1,6 +1,6 @@
 # It all stays in the family...
 
-One interesting thing that Ben doesn't seem to elaborate on in his videos, is the interesting issue of CPU families and resulting chip (in)compatibility. I came across this issue when started using SC26C92 Dual UART chip, but only much later, when tried pushing 6502 to 14MHz limit I noticed some significant issues.
+One interesting thing that Ben doesn't seem to elaborate on in his videos, is the interesting issue of CPU families and resulting chip (in)compatibility. I came across this issue when started using SC26C92 Dual UART chip, but only much later, when tried pushing 6502 to 14MHz limit I noticed some resulting issues.
 
 Let's start with the beginning, though. If you followed Ben's project closely, you might have noticed important difference between IC interfaces. If not, you will notice shortly...
 
@@ -77,6 +77,61 @@ Now, this is really funny how I didn't think of that and wasn't able to guess wh
 Everything seemed to work except for some random glitches. Instead of proper system prompt like so:
 
 ```
-
+OS/1 version 0.3.5C (Alpha+C)
+Welcome to OS/1 shell for DB6502 computer
+Enter HELP to get list of possible commands
 ```
 
+I would get something like that:
+
+```
+OOSS//11 version 0.3.5C (Alpha+C)
+Welcome to OS/1 shell for DB6502 computer
+Enter HELP to get list of possible commands
+```
+
+At first I didn't even notice the issue, but it also occurred in shell - each character typed in the serial terminal would be displayed twice.
+
+When printing longer strings from 6502 it would duplicate each of the first 4 characters in the string and print all the following just once. At the same time, when typing into the shell, each character would be printed twice, without the 4 character limit.
+
+Can you guess what the problem was?
+
+If you take another look at the diagram above (where I gated RD/WR signals with high clock phase), you will notice that when wait states are added, each read/write operation is performed twice, like so:
+
+![20_RD_non_stretched](Images/20_RD_non_stretched.jpg)
+
+OK, you might as, but why it happened only for first 4 characters? The answer is simple: SC26C92 contains 8 char transmit FIFO buffer, and the first 4 characters filled it up when being written twice. Afterwards, whenever single character was transmitted, UART raised interrupt causing two more duplicates of next character being written - first one stored in FIFO and second discarded as queue overflow.
+
+Obviously, when typing on the keyboard, data was sent slowly and no queue overflow ever happened, resulting in double writes for each and every character.
+
+Now that I explain it like that it seems really simple and easy to understand, but it was really strange and scary at first sight...
+
+## Another fix then...
+
+So, how to fix this issue? Basically, for wait state cycles, instead of the above diagram, you want something like that:
+
+![20_RD_stretched](Images/20_RD_stretched.jpg)
+
+You need your RD/WR signals stretched whenever wait state is in operation. Or, speaking in terms of "negative logic" (for a lack of better term), you want your RD/WR signals to go high only during the first low clock phase of any operation. During each of the consecutive low clock phase of the same operation (due to introduction of wait cycles) RD or WR signal should remain low.
+
+So, the logic gets more complex:
+
+![20_nRD_stretch_schematic](Images/20_nRD_stretch_schematic.png)
+
+And please note: there might be cases where you want to disable the wait state processing altogether (like when flashing the EEPROM from Arduino) or keep the wait state for longer, effectively overriding the RDY line - this would add to the complexity of the signal logic.
+
+However, it's not just complexity that becomes problem here, it's the timing that gets in a way, but I will write more on that next time.
+
+I was actually lucky with that part - my logic for nOE and nWR signals was encoded in the address decoding PLD. Thanks to that I could change it easily, without having to redesign the PCB, and it was immediately applied to ROM and RAM chips as well, even though these have already been placed on prototype board.
+
+**So, another lesson learned: if possible, keep your potentially mutable logic in programmable chips, or enable sourcing them from off the board with jumper headers.**
+
+Now, coming back to the CPU families, as you might be wondering how does it work with Z80 for instance - and this part is really good. Z80 will not pull nRD or nWR signals low while the address is unstable, and would pull them high prior to changing address lines. It will also keep the signals low for the whole time during wait state operation. Much more convenient, but at the expense of lower per-cycle CPU efficiency. Basically, similar operations take noticeably more clock cycles on Z80 than on 6502.
+
+I guess you can't have everything, can you?
+
+# Summary
+
+So, does it mean you should give up on Z80-compatible peripherals? No, of course not, especially that you have to work with the memory chips (both RAM and ROM) that use this different interface. You just have to understand the consequences, accept the limitations it imposes on your project and plan accordingly. You can consider running at slower speeds (so that no wait states are required) for instance, or using clock stretching instead. Each decision will have it's own pros and cons, and you just have to consider them carefully.
+
+What you should do, however, and what I strongly encourage you to do is to play around with different architectures, chip families and solutions. Ben Eater's projects are great place to start, but they also provide certain guardrails that will ensure your adventure stays safe and comfortable, when the actual fun starts when you leave the comfort zone. For me introduction of wait states and different UART controller was turning point in the project - for the first time it really challenged my understanding of the architecture and forced me to reconsider what I did and what I didn't know.
