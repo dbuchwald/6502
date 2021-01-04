@@ -60,11 +60,11 @@ Actually the problem you are looking at is not new. Sure, we do have much faster
 
 ![19_apple_i_manual](Images/19_apple_i_manual.png)
 
-This wait state circuit explains clearly what needs to be done in case of slow ROM, but it fails to explains all the details of it - how it works, how it will affect the CPU and so on. It also uses $\phi1$ clock which, according to 65C02 datasheet, should not be used:
+This wait state circuit explains clearly what needs to be done in case of slow ROM, but it fails to explains all the details of it - how it works, how it will affect the CPU and so on. It also uses PHI1 clock which, according to 65C02 datasheet, should not be used:
 
 ![19_phi1_wdc](Images/19_phi1_wdc.png)
 
-How does the wait state generator works? At each negative clock transition ($\phi1$) 7474 chip (D-type flip-flop) will "remember" previous wait state. When accessing RAM, it doesn't matter (ROM CS line will be low, so the output from the 7400 NAND gate will be high, and such value fed into RDY input). When accessing ROM (ROM CS line will be high) and in previous cycle RDY was high the 7400 NAND gate will output low value and cause CPU to wait. In next cycle ROM CS line will still be high (it will not change, since CPU is waiting), but the output of 7474 will be low, resulting in high output from 7400 NAND gate.
+How does the wait state generator works? At each negative clock transition (PHI1) 7474 chip (D-type flip-flop) will "remember" previous wait state. When accessing RAM, it doesn't matter (ROM CS line will be low, so the output from the 7400 NAND gate will be high, and such value fed into RDY input). When accessing ROM (ROM CS line will be high) and in previous cycle RDY was high the 7400 NAND gate will output low value and cause CPU to wait. In next cycle ROM CS line will still be high (it will not change, since CPU is waiting), but the output of 7474 will be low, resulting in high output from 7400 NAND gate.
 
 Very simple, elegant solution, isn't it? Unfortunately, it can't be directly applied to 65C02 build.
 
