@@ -83,3 +83,48 @@ This guarantees that data will be correctly retrieved from RAM, but what about s
 
 ### Wait state propagation delay
 
+As I wrote in my last post, one of the solutions to slow peripherals is to use wait states, in case of 6502 CPU this means using RDY pin by pulling it down when access to slower peripheral takes place. Let's look at the timing aspects of this feature.
+
+First thing (and I wrote about it last time) is that you need to pull RDY low before falling edge of the clock (effectively - before the end of the full clock cycle), respecting the CPU Control Setup Time (tPCH):
+
+![21_6502_timing_tpcs](Images/21_6502_timing_tpcs.png)
+
+In our case (running at 5V), it will be 10ns:
+
+![21_6502_tpcs](Images/21_6502_tpcs.png)
+
+So, at 14MHz we have approximately 60ns of the clock cycle when we must decide whether CPU should wait or not. Given all the above, it seems like a lot, but there is a catch or two.
+
+If you consider simplest possible example - using wait state on every other cycle (one wait state, one ready state, one wait state, one ready state and so on...), you could use simple 74AC74 D flip-flop. This will showcase the model nicely, but in reality it's of very little use. Your logic most likely will get more complex than that, and it will probably depend on the information about selected peripheral. This makes the window shrink rapidly - if you look back at the address decoding example, you might need up to 44ns just to get reliable, usable information whether slow ROM is selected or not, leaving you with just 16ns to process this information.
+
+Now, the processing of this data seems simple, but it's not really. This is the simplest real life example of wait state generator:
+
+![21_apple_i_manual](Images/21_apple_i_manual.png)
+
+As you can see, there is just one 74AC00 gate between chip select signal and the RDY pin. Given the propagation delay of 7ns in case of 74AC00, you are left with only 9ns to spare before your window closes. Pretty tight! Actually, there is another issue here - in this schematic it is assumed that your CS signal is active high, which is not true in case of Ben Eater's build. In his specific design you could use A15 signal directly here, and you save several ns spent on inverting the signal for active low ROM CS signal.
+
+Unfortunately, if you are using different address decoder (like my PLD based version), you might be stuck with active low signal. In this case you should use different gate: 74AC32, like so:
+
+![21_single_ws_active_low](Images/21_single_ws_active_low.png)
+
+Luckily this specific OR gate in the AC family has similar propagation delay of 7.5ns, so it has very little impact on the timing.
+
+![21_74ac32_tpd](Images/21_74ac32_tpd.png)
+
+You might be wondering how comes I don't take the 74AC74 delay into account. I actually do, but it just matters less, because the output state of the flip-flop is calculated at the very beginning of the cycle, on the falling edge of the clock, so it will show up there several nanoseconds after that. What you do have to consider, however, is that you have to convert falling clock edge to a rising one, probably using inverter gate. This means that output of the 74AC74 will be delayed by the time it takes to invert clock signal.
+
+There is one trick you might use, however, and it might become useful later on. Instead of this:
+
+![21_simple_phi2](Images/21_simple_phi2.png)
+
+You can actually generate PHI2 from inverting PHI1, like so:
+
+![21_alternative_phi2](Images/21_alternative_phi2.png)
+
+And yes, the first inverter is totally unnecessary, it's here just to illustrate the idea. This way your falling edge of the PHI2 clock will be converted to rising edge (required by edge-sensitive circuits) of PHI1 shortly before the rising edge of PHI2. This might save you couple of nanoseconds, but consider the implications carefully. In the context of 74AC74 flip-flop here it doesn't make any sense whatsoever.
+
+So, we have 9ns to spare, we are good to go, right? Obviously not. You have to calculate how many wait states you need, and this is where another catch comes into play. Single wait state for 150ns ROM will not be enough at 14MHz! Single wait state grants you extension of the tACC of full length of single clock cycle, so about 71ns. Considering previous calculations, where in the simplest possible case, we had only 16ns to access memory, even 71ns more will not suffice. You need two wait states for ROM.
+
+![21_double_ws_active_low](Images/21_double_ws_active_low.png)
+
+ Now, if you analyse above circuit you will notice one important thing - additional wait state here doesn't add extra delay to the wait state calculation. Sure, there is additional AND gate in the picture, but its state is determined early during clock cycle, so this specific input to the OR gate is available pretty early. ROM_CS signal comes in much later - and this is the critical path for timing analysis.

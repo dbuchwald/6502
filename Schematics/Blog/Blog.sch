@@ -183,4 +183,64 @@ Text GLabel 7600 1900 2    50   Output ~ 0
 RDN
 Wire Wire Line
 	7500 1900 7600 1900
+$Comp
+L 74xx:74HC04 U5
+U 1 1 60071BB0
+P 5700 3050
+F 0 "U5" H 5700 3367 50  0000 C CNN
+F 1 "74HC04" H 5700 3276 50  0000 C CNN
+F 2 "" H 5700 3050 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 5700 3050 50  0001 C CNN
+	1    5700 3050
+	1    0    0    -1  
+$EndComp
+Text GLabel 5300 3050 0    50   Input ~ 0
+PHI2
+Wire Wire Line
+	5300 3050 5400 3050
+Text GLabel 6100 3050 2    50   Output ~ 0
+PHI1
+Wire Wire Line
+	6000 3050 6100 3050
+$Comp
+L 74xx:74HC04 U5
+U 2 1 600761BC
+P 5700 3950
+F 0 "U5" H 5700 4267 50  0000 C CNN
+F 1 "74HC04" H 5700 4176 50  0000 C CNN
+F 2 "" H 5700 3950 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 5700 3950 50  0001 C CNN
+	2    5700 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74HC04 U6
+U 2 1 60077BC4
+P 6500 3950
+F 0 "U6" H 6500 4267 50  0000 C CNN
+F 1 "74HC04" H 6500 4176 50  0000 C CNN
+F 2 "" H 6500 3950 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 6500 3950 50  0001 C CNN
+	2    6500 3950
+	1    0    0    -1  
+$EndComp
+Text GLabel 5300 3950 0    50   Input ~ 0
+X_OUT
+Text GLabel 6900 3500 2    50   Output ~ 0
+PHI1
+Text GLabel 6900 3950 2    50   Output ~ 0
+PHI2
+Wire Wire Line
+	6800 3950 6900 3950
+Wire Wire Line
+	6000 3950 6100 3950
+Wire Wire Line
+	6100 3950 6100 3500
+Wire Wire Line
+	6100 3500 6900 3500
+Connection ~ 6100 3950
+Wire Wire Line
+	6100 3950 6200 3950
+Wire Wire Line
+	5300 3950 5400 3950
 $EndSCHEMATC
