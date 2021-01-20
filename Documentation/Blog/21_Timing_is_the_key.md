@@ -123,8 +123,26 @@ You can actually generate PHI2 from inverting PHI1, like so:
 
 And yes, the first inverter is totally unnecessary, it's here just to illustrate the idea. This way your falling edge of the PHI2 clock will be converted to rising edge (required by edge-sensitive circuits) of PHI1 shortly before the rising edge of PHI2. This might save you couple of nanoseconds, but consider the implications carefully. In the context of 74AC74 flip-flop here it doesn't make any sense whatsoever.
 
-So, we have 9ns to spare, we are good to go, right? Obviously not. You have to calculate how many wait states you need, and this is where another catch comes into play. Single wait state for 150ns ROM will not be enough at 14MHz! Single wait state grants you extension of the tACC of full length of single clock cycle, so about 71ns. Considering previous calculations, where in the simplest possible case, we had only 16ns to access memory, even 71ns more will not suffice. You need two wait states for ROM.
+So, we have 9ns to spare, we are good to go, right? Obviously not. You have to calculate how many wait states you need, and this is where another catch comes into play. Single wait state for 150ns ROM will not be enough at 14MHz! Single wait state grants you extension of the tACC of full length of single clock cycle, so about 71ns. Considering previous calculations, where in the simplest possible case, we had only 16ns to access memory, even 71ns more will not suffice. You need two wait states for ROM. How does it impact timing?
 
 ![21_double_ws_active_low](Images/21_double_ws_active_low.png)
 
- Now, if you analyse above circuit you will notice one important thing - additional wait state here doesn't add extra delay to the wait state calculation. Sure, there is additional AND gate in the picture, but its state is determined early during clock cycle, so this specific input to the OR gate is available pretty early. ROM_CS signal comes in much later - and this is the critical path for timing analysis.
+Now, if you analyse above circuit you will notice one important thing - additional wait state here doesn't add extra delay to the wait state calculation. Sure, there is additional AND gate in the picture, but its state is determined early during clock cycle, so this specific input to the OR gate is available pretty early. ROM_CS signal comes in much later - and this is the critical path for timing analysis.
+
+There is another issue to handle though - you might need several different wait state generator sources. For instance you might need zero wait states for RAM, one wait state for UART and two wait states for ROM. In this case you will need additional gate, and this one, unfortunately, will impact the critical path:
+
+![21_uart_ws](Images/21_uart_ws.png)
+
+Remember the spare 9ns we have had recently? With the additional gate another 7ns are gone, leaving us with breathing room of 2ns:
+
+![21_74ac08_tpd](Images/21_74ac08_tpd.png)
+
+This is really tight, and any voltage variance might be enough to cause timing violation. And that's not even the end of the story!
+
+### Bus translation impact
+
+Another problem you have to handle (in case you are using any peripherals not directly compatible with 6502 interface, like ROM or RAM), is the RD/WR signal stretching.
+
+## Timing summary
+
+Does that mean you should give up? No, definitely not. The whole point of this post is to help you understand all the obstacles that might get in the way of building stable 65C02 computer running at 10+ MHz frequency. It's fun to try, and I promise you will learn a lot just by trying to get there, but it will be quite a journey, so you better be prepared. You will probably need a scope and high frequency logic analyser (cheap Saleae clones might not be sufficient, due to limited bandwidth and number of channels). 
