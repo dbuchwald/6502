@@ -44,13 +44,60 @@ One of the things I hated about my first DB6502 build was that all the delays us
 
 Sure, you might think RTC will do just fine, but I came up with "better" idea. UART chip I used (SC26C92) is pretty versatile beast and it provides clock interface based on its own oscillator used for baud rate generator. This seemed as perfect solution, as the BRG clock doesn't change with the CPU clock when going into debug mode. The idea was simple: implement new version of the delay routine that would translate desired number of miliseconds to 3,6864 MHz clock ticks, kick off the UART X16 timer and poll periodically to see if the countdown is completed. Sure, I could also use IRQ for this, but wanted things simple for now. Surprisingly enough, the code worked almost the first time around. Impressed with the result (and how precise the measurements were), I have added another feature: CPU speed calculation routine - it used two clocks at the same time: one in VIA (counting CPU clock ticks) and one in UART (counting fixed 3,6864 MHz). CPU frequency could be estimated by how many clock ticks VIA counted during fixed period measured by UART. Simple, elegant solution, and it also worked beautifully.
 
-TODO: Insert image here
+```
++---------------------------+
+|                           |
+|   ####   ####     #   #   |
+|  ##  ## ##       #   ##   |
+|  #    #  ###    #   # #   |
+|  ##  ##    ##  #      #   |
+|   ####  ####  #      ###  |
+|                           |
++---------------------------+
+
+OS/1 version 0.3.5C (Alpha+C)
+Welcome to OS/1 shell for DB6502 computer
+Enter HELP to get list of possible commands
+OS/1>info
+OS/1 System Information
+System clock running at 0MHz
+
+ROM at address: 0x8000, used: 13420 out of 32768 bytes.
+System RAM at address: 0x0300, used: 1517 out of 3328 bytes.
+User RAM at address: 0x1000, used: 0 out of 28672 bytes.
+
+ROM code uses 9056 bytes.
+ROM data uses 4194 bytes.
+SYSCALLS table uses 164 bytes.
+
+VIA1 address: 0x0220
+VIA2 address: 0x0240
+Serial address: 0x0260
+
+Serial driver: SC26C92
+OS/1>info
+OS/1 System Information
+System clock running at 8MHz
+
+ROM at address: 0x8000, used: 13420 out of 32768 bytes.
+System RAM at address: 0x0300, used: 1517 out of 3328 bytes.
+User RAM at address: 0x1000, used: 0 out of 28672 bytes.
+
+ROM code uses 9056 bytes.
+ROM data uses 4194 bytes.
+SYSCALLS table uses 164 bytes.
+
+VIA1 address: 0x0220
+VIA2 address: 0x0240
+Serial address: 0x0260
+
+Serial driver: SC26C92
+OS/1>
+```
 
 Then I moved to 14MHz and strange things started happening out of a blue. The worst part was that the system would boot to shell, everything seemed fine, but during XMODEM file transfer it would fail randomly, sometimes being able to transfer one to twenty blocks of data and freezing after that. Long days of troubleshooting revealed the culprit - the UART countdown clock (used in delay routines executed during data transfer) would occassionally stop. Not the first time, not the second, but at some point in time it would just stop counting down, throwing delay routine in infinite loop.
 
 Now, I'm not 100% positive I know the reason. I think I do, and I even managed to capture some data on my logic analyser supporting the main hypothesis. The main problem with the timer function in the UART chip is how you operate it: to start the timer, you have to read from register 0x0E and to stop it, you have to read from 0x0F. Theoretically, for the chip to register the operation, read should be no shorter than 55ns, but this is one single value valid for all operations, like reading data from inbound queues. In reality, it's actually possible that your stretched nRD signal goes high a bit too late, after the 65C02 guaranteed 10ns address hold time. It all depends on the complexity of your nRD signal stretching logic, but the result is that nRD goes high during the phase in which new address is being stabilised on the address bus - and it might happen that accidentally read happens from register 0x0F, causing the countdown to stop.
-
-TODO: Insert image here
 
 I do realize that it seems like a long shot, but I actually did quite a lot of testing to confirm this hypothesis - I changed the polling code in a way that it compared last value of the counter between the checks and if detected no change for five consecutive times, it signals it on dedicated line. Then I connected my logic analyser to the bus and set this specific line transition to trigger data acqusition with large "pre-trigger" buffer. What I got was exactly as expected: series of correct reads with decreasing counter values until at certain point, during UART RX IRQ processing (when range of UART registers is being read), the counter stops decrementing. Once, just once, the data on the bus actually registered 5ns long read from 0x0F at the end of some other read operation.
 
@@ -139,10 +186,30 @@ Remember the spare 9ns we have had recently? With the additional gate another 7n
 
 This is really tight, and any voltage variance might be enough to cause timing violation. And that's not even the end of the story!
 
+### RDY low to high transition
+
+I wrote about it previously - in case of WDC 65C02 CPU you also have to consider the impact of the bidirectional property of the RDY line. If you decide to go with open-drain RDY output, you need to consider voltage rise time of the pull-up resistor. As you can see, with these tight timings it might be difficult to manage to fit in single cycle. Perhaps the best option would be to use series resistor instead, but I still need to test this approach.
+
 ### Bus translation impact
 
-Another problem you have to handle (in case you are using any peripherals not directly compatible with 6502 interface, like ROM or RAM), is the RD/WR signal stretching.
+Another problem you have to handle (in case you are using any peripherals not directly compatible with 6502 interface, like ROM or RAM), is the RD/WR signal stretching. What I came up with was the solution based on the PLD I used for address decoding itself. The rationale was that it was exactly the place where the necessary data was already being processed (state of RDY line was also computed there), so it seemed the reasonable choice.
+
+That being said, there was something off about this solution. Initially I used PLD with guaranteed propagation delay of 10ns and the system was really unstable. Half of the time it wouldn't even boot to the OS/1 shell, and even if it did, it would fail randomly. What I did notice (and was surprised by it), was that this chip was considerably, observably warmer than the surrounding chips. I even used digital thermomether to confirm this and indeed - it was warmer by almost 10 degrees celsius. When I checked datasheet it turned out that the 10ns variant consumes significantly more energy than the 15ns one, and I replaced them. Instantly it all started working much, much better. System got perfectly stable again at 8MHz, and it would work reasonably well at 14MHz. Still, there were issues at higher clock frequency (including the random infinite loop in delay function), but it was working much better.
+
+Coming back to the bus translation impact on the timing - the problem is the complexity of logical equation you need to apply at the beginning of the clock cycle: you want your nRD/nWR line to go high while the clock is low if the last cycle was the "ready" one. In negative terms that means that if your nRD/nWR line is low and the RDY line is low at the time of falling clock edge, you should keep the nRD/nWR low even though the clock line is low.
+
+So far I came up with schematics that either require calculation in PLD or are too slow for discrete chips. The problem here is that your address is stable only for 10ns after falling edge of the clock (that's the tAH part of timing characteristics of 6502). If you don't pull your nRD/nWR line high during that time you might end up in a situation where the address bus changes while the read or write line is still active. In most of the cases, even if it happens, it will not impact your system, but in my "weird delay glitch" case this was exactly what was crashing the build.
+
+What I plan to consider (but haven't designed it yet), is to use some kind of multiplexer for nRD/nWR line translation - this way the signal could be prepared "in advance", and only toggled on the falling clock edge, depending of the state of the RDY line. It feels promising, but further investigation is required.
+
+### Nobody expects Spanish Inquisition
+
+I saved this single screenshot for last. Even if you do your analysis and you get your timings right, you might see random issues, because there is one last thing to it - rise time of any digital signal, and what happens if two signals align perfectly in time. Here I have nice case: two signals being fed in the AND gate (its output is pink on the image below) - one rising and the other one falling at the same time. In theory, it should work just fine, but in practice there is very short spike where one signal hasn't fallen yet while the other has risen just enough to cause logical high for just a couple of nanoseconds - enough to mess with interfacing IC, yet not enough to be caught by logic analyser:
+
+![21_write_spike_up_close](Images/21_write_spike_up_close.png)
 
 ## Timing summary
 
-Does that mean you should give up? No, definitely not. The whole point of this post is to help you understand all the obstacles that might get in the way of building stable 65C02 computer running at 10+ MHz frequency. It's fun to try, and I promise you will learn a lot just by trying to get there, but it will be quite a journey, so you better be prepared. You will probably need a scope and high frequency logic analyser (cheap Saleae clones might not be sufficient, due to limited bandwidth and number of channels). 
+Does that mean you should give up? No, definitely not. The whole point of this post is to help you understand all the obstacles that might get in the way of building stable 65C02 computer running at 10+ MHz frequency. It's fun to try, and I promise you will learn a lot just by trying to get there, but it will be quite a journey, so you better be prepared. You will probably need a scope and high frequency logic analyser (cheap Saleae clones might not be sufficient, due to limited bandwidth and number of channels). What you could also consider (but I haven't tried that yet), is to reduce build complexity. You can get rid of ROM altogether by using slower clock to copy ROM to RAM and running the code from the RAM only. You could also use 6502-bus compatible devices only, some of which are rated for 14MHz. There are different ways of going about it, and you have to adapt your solution to the problem you are trying to solve.
+
+If there was one thing I learned while doing this is that I have approached the problem from wrong perspective. I wanted my build to run at 14MHz not because I needed it, and not because I saw any specific use for this. I consider this as interesting challenge, but this has almost drove me away from the project. It might have been too much too soon. I don't know, but right now I need to get back into the saddle and figure out better way of approaching the issue. One way or the other - you have been warned. Proceed with caution and don't give up if it doesn't work. Remember there is always plenty of other things you can try and enjoy.
