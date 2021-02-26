@@ -14,10 +14,10 @@ Comment3 "Open Source Hardware"
 Comment4 "Author: Dawid Buchwald"
 $EndDescr
 $Comp
-L Connector:Conn_01x32_Female J2
+L Connector:Conn_01x32_Female J8
 U 1 1 6014BD0C
 P 4700 6200
-F 0 "J2" H 4728 6176 50  0000 L CNN
+F 0 "J8" H 4728 6176 50  0000 L CNN
 F 1 "System Bus" H 4728 6085 50  0000 L CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x32_P2.54mm_Vertical" H 4700 6200 50  0001 C CNN
 F 3 "~" H 4700 6200 50  0001 C CNN
@@ -237,10 +237,10 @@ Wire Wire Line
 Text GLabel 2300 950  1    50   Input ~ 0
 +5V
 $Comp
-L Device:R R9
+L Device:R R11
 U 1 1 6017257F
 P 2300 1200
-F 0 "R9" H 2230 1154 50  0000 R CNN
+F 0 "R11" H 2230 1154 50  0000 R CNN
 F 1 "4K7" H 2230 1245 50  0000 R CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 2230 1200 50  0001 C CNN
 F 3 "~" H 2300 1200 50  0001 C CNN
@@ -254,10 +254,10 @@ Wire Wire Line
 Text GLabel 2000 950  1    50   Input ~ 0
 +5V
 $Comp
-L Device:R R8
+L Device:R R10
 U 1 1 6017DC7B
 P 2000 1200
-F 0 "R8" H 2070 1246 50  0000 L CNN
+F 0 "R10" H 2070 1246 50  0000 L CNN
 F 1 "4K7" H 2070 1155 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1930 1200 50  0001 C CNN
 F 3 "~" H 2000 1200 50  0001 C CNN
@@ -271,10 +271,10 @@ Wire Wire Line
 Text GLabel 1700 950  1    50   Input ~ 0
 +5V
 $Comp
-L Device:R R7
+L Device:R R9
 U 1 1 601857FE
 P 1700 1200
-F 0 "R7" H 1770 1246 50  0000 L CNN
+F 0 "R9" H 1770 1246 50  0000 L CNN
 F 1 "4K7" H 1770 1155 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1630 1200 50  0001 C CNN
 F 3 "~" H 1700 1200 50  0001 C CNN
@@ -288,10 +288,10 @@ Wire Wire Line
 Text GLabel 1400 950  1    50   Input ~ 0
 +5V
 $Comp
-L Device:R R6
+L Device:R R8
 U 1 1 601898AB
 P 1400 1200
-F 0 "R6" H 1470 1246 50  0000 L CNN
+F 0 "R8" H 1470 1246 50  0000 L CNN
 F 1 "4K7" H 1470 1155 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1330 1200 50  0001 C CNN
 F 3 "~" H 1400 1200 50  0001 C CNN
@@ -309,10 +309,10 @@ Wire Wire Line
 Text GLabel 1100 950  1    50   Input ~ 0
 +5V
 $Comp
-L Device:R R5
+L Device:R R7
 U 1 1 601C227D
 P 1100 1200
-F 0 "R5" H 1170 1246 50  0000 L CNN
+F 0 "R7" H 1170 1246 50  0000 L CNN
 F 1 "4K7" H 1170 1155 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1030 1200 50  0001 C CNN
 F 3 "~" H 1100 1200 50  0001 C CNN
@@ -381,10 +381,10 @@ Wire Wire Line
 Wire Wire Line
 	4700 1250 4950 1250
 $Comp
-L Connector:Conn_01x32_Female J3
+L Connector:Conn_01x32_Female J1
 U 1 1 60166003
 P 5150 2650
-F 0 "J3" H 5178 2626 50  0000 L CNN
+F 0 "J1" H 5178 2626 50  0000 L CNN
 F 1 "Controls" H 5178 2535 50  0000 L CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x32_P2.54mm_Vertical" H 5150 2650 50  0001 C CNN
 F 3 "~" H 5150 2650 50  0001 C CNN
@@ -404,10 +404,10 @@ Wire Wire Line
 Text GLabel 800  950  1    50   Input ~ 0
 +5V
 $Comp
-L Device:R R4
+L Device:R R6
 U 1 1 601F1941
 P 800 1200
-F 0 "R4" H 870 1246 50  0000 L CNN
+F 0 "R6" H 870 1246 50  0000 L CNN
 F 1 "4K7" H 870 1155 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 730 1200 50  0001 C CNN
 F 3 "~" H 800 1200 50  0001 C CNN
@@ -428,10 +428,10 @@ Wire Wire Line
 Wire Wire Line
 	3200 2250 4950 2250
 $Comp
-L Connector:Conn_01x32_Female J1
+L Connector:Conn_01x32_Female J7
 U 1 1 60200164
 P 2850 5250
-F 0 "J1" H 2878 5226 50  0000 L CNN
+F 0 "J7" H 2878 5226 50  0000 L CNN
 F 1 "I/O Bus" H 2878 5135 50  0000 L CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x32_P2.54mm_Vertical" H 2850 5250 50  0001 C CNN
 F 3 "~" H 2850 5250 50  0001 C CNN
@@ -557,10 +557,10 @@ Wire Wire Line
 Wire Wire Line
 	2600 2650 4950 2650
 $Comp
-L Device:R R10
+L Device:R R12
 U 1 1 604F21BB
 P 2300 2600
-F 0 "R10" H 2230 2554 50  0000 R CNN
+F 0 "R12" H 2230 2554 50  0000 R CNN
 F 1 "4K7" H 2230 2645 50  0000 R CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 2230 2600 50  0001 C CNN
 F 3 "~" H 2300 2600 50  0001 C CNN
@@ -749,10 +749,10 @@ Wire Wire Line
 Wire Wire Line
 	1400 6650 2650 6650
 $Comp
-L Device:R R11
+L Device:R R5
 U 1 1 60B17A68
 P 6850 1100
-F 0 "R11" H 6920 1146 50  0000 L CNN
+F 0 "R5" H 6920 1146 50  0000 L CNN
 F 1 "220" H 6920 1055 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 6780 1100 50  0001 C CNN
 F 3 "~" H 6850 1100 50  0001 C CNN
@@ -777,361 +777,13 @@ Wire Wire Line
 Wire Wire Line
 	6850 1750 6850 1650
 $Comp
-L 6502:USB_B J6
-U 1 1 5FB065A8
-P 8450 1100
-AR Path="/6014B4D9/5FB065A8" Ref="J6"  Part="1" 
-AR Path="/5F8F4E1E/5FB065A8" Ref="J?"  Part="1" 
-AR Path="/5F910E81/5FB065A8" Ref="J?"  Part="1" 
-F 0 "J6" H 8450 1600 50  0000 C CNN
-F 1 "USB A" H 8450 1500 50  0000 C CNN
-F 2 "Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal" H 8600 1050 50  0001 C CNN
-F 3 "" H 8600 1050 50  0001 C CNN
-	1    8450 1100
-	1    0    0    -1  
-$EndComp
-NoConn ~ 8350 1500
-Wire Wire Line
-	8450 1600 8450 1500
-$Comp
-L Device:Ferrite_Bead_Small FB1
-U 1 1 5FB065B0
-P 9300 900
-AR Path="/6014B4D9/5FB065B0" Ref="FB1"  Part="1" 
-AR Path="/5F8F4E1E/5FB065B0" Ref="FB?"  Part="1" 
-AR Path="/5F910E81/5FB065B0" Ref="FB?"  Part="1" 
-F 0 "FB1" V 9063 900 50  0000 C CNN
-F 1 "FB" V 9154 900 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9230 900 50  0001 C CNN
-F 3 "~" H 9300 900 50  0001 C CNN
-	1    9300 900 
-	0    1    1    0   
-$EndComp
-Text GLabel 10250 900  2    50   Input ~ 0
-+5V
-Wire Wire Line
-	8750 900  8950 900 
-Wire Wire Line
-	9400 900  10000 900 
-Wire Wire Line
-	8750 1200 8850 1200
-Text GLabel 10250 1350 2    50   BiDi ~ 0
-UART_A_USBD-
-Text GLabel 10250 1100 2    50   BiDi ~ 0
-UART_A_USBD+
-$Comp
-L Device:R R13
-U 1 1 5FB065BC
-P 10000 1350
-AR Path="/6014B4D9/5FB065BC" Ref="R13"  Part="1" 
-AR Path="/5F8F4E1E/5FB065BC" Ref="R?"  Part="1" 
-AR Path="/5F910E81/5FB065BC" Ref="R?"  Part="1" 
-F 0 "R13" V 10100 1350 50  0000 C CNN
-F 1 "27" V 10000 1350 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9930 1350 50  0001 C CNN
-F 3 "~" H 10000 1350 50  0001 C CNN
-	1    10000 1350
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:R R12
-U 1 1 5FB065C2
-P 10000 1100
-AR Path="/6014B4D9/5FB065C2" Ref="R12"  Part="1" 
-AR Path="/5F8F4E1E/5FB065C2" Ref="R?"  Part="1" 
-AR Path="/5F910E81/5FB065C2" Ref="R?"  Part="1" 
-F 0 "R12" V 10100 1100 50  0000 C CNN
-F 1 "27" V 10000 1100 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9930 1100 50  0001 C CNN
-F 3 "~" H 10000 1100 50  0001 C CNN
-	1    10000 1100
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	10150 1350 10250 1350
-Wire Wire Line
-	10150 1100 10250 1100
-Wire Wire Line
-	8850 1200 8850 1350
-$Comp
-L Device:C_Small C13
-U 1 1 5FB065CB
-P 9300 1550
-AR Path="/6014B4D9/5FB065CB" Ref="C13"  Part="1" 
-AR Path="/5F8F4E1E/5FB065CB" Ref="C?"  Part="1" 
-AR Path="/5F910E81/5FB065CB" Ref="C?"  Part="1" 
-F 0 "C13" H 9392 1596 50  0000 L CNN
-F 1 "47pF" H 9392 1505 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9300 1550 50  0001 C CNN
-F 3 "~" H 9300 1550 50  0001 C CNN
-	1    9300 1550
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C_Small C16
-U 1 1 5FB065D1
-P 9650 1550
-AR Path="/6014B4D9/5FB065D1" Ref="C16"  Part="1" 
-AR Path="/5F8F4E1E/5FB065D1" Ref="C?"  Part="1" 
-AR Path="/5F910E81/5FB065D1" Ref="C?"  Part="1" 
-F 0 "C16" H 9742 1596 50  0000 L CNN
-F 1 "47pF" H 9742 1505 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9650 1550 50  0001 C CNN
-F 3 "~" H 9650 1550 50  0001 C CNN
-	1    9650 1550
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8750 1100 9300 1100
-Wire Wire Line
-	8850 1350 9650 1350
-Text GLabel 10250 1750 2    50   Input ~ 0
-GND
-Wire Wire Line
-	9300 1450 9300 1100
-Connection ~ 9300 1100
-Wire Wire Line
-	9300 1100 9850 1100
-Wire Wire Line
-	9300 1650 9300 1750
-Wire Wire Line
-	9650 1750 9650 1650
-Wire Wire Line
-	9650 1450 9650 1350
-Connection ~ 9650 1350
-Wire Wire Line
-	9650 1350 9850 1350
-$Comp
-L Device:C_Small C10
-U 1 1 5FB065E2
-P 8950 1550
-AR Path="/6014B4D9/5FB065E2" Ref="C10"  Part="1" 
-AR Path="/5F8F4E1E/5FB065E2" Ref="C?"  Part="1" 
-AR Path="/5F910E81/5FB065E2" Ref="C?"  Part="1" 
-F 0 "C10" H 9042 1596 50  0000 L CNN
-F 1 "10nF" H 9042 1505 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 8950 1550 50  0001 C CNN
-F 3 "~" H 8950 1550 50  0001 C CNN
-	1    8950 1550
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8950 1450 8950 900 
-Connection ~ 8950 900 
-Wire Wire Line
-	8950 900  9200 900 
-Wire Wire Line
-	8950 1750 8950 1650
-$Comp
-L power:PWR_FLAG #FLG02
-U 1 1 5FB065EC
-P 10000 900
-AR Path="/6014B4D9/5FB065EC" Ref="#FLG02"  Part="1" 
-AR Path="/5F8F4E1E/5FB065EC" Ref="#FLG?"  Part="1" 
-AR Path="/5F910E81/5FB065EC" Ref="#FLG?"  Part="1" 
-F 0 "#FLG02" H 10000 975 50  0001 C CNN
-F 1 "PWR_FLAG" H 10000 1073 50  0000 C CNN
-F 2 "" H 10000 900 50  0001 C CNN
-F 3 "~" H 10000 900 50  0001 C CNN
-	1    10000 900 
-	1    0    0    -1  
-$EndComp
-Connection ~ 10000 900 
-Wire Wire Line
-	10000 900  10250 900 
-$Comp
-L power:PWR_FLAG #FLG01
-U 1 1 5FB065F4
-P 8450 1600
-AR Path="/6014B4D9/5FB065F4" Ref="#FLG01"  Part="1" 
-AR Path="/5F8F4E1E/5FB065F4" Ref="#FLG?"  Part="1" 
-AR Path="/5F910E81/5FB065F4" Ref="#FLG?"  Part="1" 
-F 0 "#FLG01" H 8450 1675 50  0001 C CNN
-F 1 "PWR_FLAG" V 8450 1727 50  0000 L CNN
-F 2 "" H 8450 1600 50  0001 C CNN
-F 3 "~" H 8450 1600 50  0001 C CNN
-	1    8450 1600
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	8450 1750 8450 1600
-Connection ~ 8450 1600
-Wire Wire Line
-	10250 1750 9650 1750
-Connection ~ 8950 1750
-Wire Wire Line
-	8950 1750 8450 1750
-Connection ~ 9300 1750
-Wire Wire Line
-	9300 1750 8950 1750
-Connection ~ 9650 1750
-Wire Wire Line
-	9650 1750 9300 1750
-$Comp
-L 6502:USB_B J7
-U 1 1 5FB325E0
-P 8450 2350
-AR Path="/6014B4D9/5FB325E0" Ref="J7"  Part="1" 
-AR Path="/5F8F4E1E/5FB325E0" Ref="J?"  Part="1" 
-AR Path="/5F910E81/5FB325E0" Ref="J?"  Part="1" 
-F 0 "J7" H 8450 2850 50  0000 C CNN
-F 1 "USB B" H 8450 2750 50  0000 C CNN
-F 2 "Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal" H 8600 2300 50  0001 C CNN
-F 3 "" H 8600 2300 50  0001 C CNN
-	1    8450 2350
-	1    0    0    -1  
-$EndComp
-NoConn ~ 8350 2750
-$Comp
-L Device:Ferrite_Bead_Small FB2
-U 1 1 5FB325E7
-P 9300 2150
-AR Path="/6014B4D9/5FB325E7" Ref="FB2"  Part="1" 
-AR Path="/5F8F4E1E/5FB325E7" Ref="FB?"  Part="1" 
-AR Path="/5F910E81/5FB325E7" Ref="FB?"  Part="1" 
-F 0 "FB2" V 9063 2150 50  0000 C CNN
-F 1 "FB" V 9154 2150 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9230 2150 50  0001 C CNN
-F 3 "~" H 9300 2150 50  0001 C CNN
-	1    9300 2150
-	0    1    1    0   
-$EndComp
-Text GLabel 10250 2150 2    50   Input ~ 0
-+5V
-Wire Wire Line
-	8750 2150 8950 2150
-Wire Wire Line
-	8750 2450 8850 2450
-Text GLabel 10250 2600 2    50   BiDi ~ 0
-UART_B_USBD-
-Text GLabel 10250 2350 2    50   BiDi ~ 0
-UART_B_USBD+
-$Comp
-L Device:R R15
-U 1 1 5FB325F2
-P 10000 2600
-AR Path="/6014B4D9/5FB325F2" Ref="R15"  Part="1" 
-AR Path="/5F8F4E1E/5FB325F2" Ref="R?"  Part="1" 
-AR Path="/5F910E81/5FB325F2" Ref="R?"  Part="1" 
-F 0 "R15" V 10100 2600 50  0000 C CNN
-F 1 "27" V 10000 2600 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9930 2600 50  0001 C CNN
-F 3 "~" H 10000 2600 50  0001 C CNN
-	1    10000 2600
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:R R14
-U 1 1 5FB325F8
-P 10000 2350
-AR Path="/6014B4D9/5FB325F8" Ref="R14"  Part="1" 
-AR Path="/5F8F4E1E/5FB325F8" Ref="R?"  Part="1" 
-AR Path="/5F910E81/5FB325F8" Ref="R?"  Part="1" 
-F 0 "R14" V 10100 2350 50  0000 C CNN
-F 1 "27" V 10000 2350 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9930 2350 50  0001 C CNN
-F 3 "~" H 10000 2350 50  0001 C CNN
-	1    10000 2350
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	10150 2600 10250 2600
-Wire Wire Line
-	10150 2350 10250 2350
-Wire Wire Line
-	8850 2450 8850 2600
-$Comp
-L Device:C_Small C14
-U 1 1 5FB32601
-P 9300 2800
-AR Path="/6014B4D9/5FB32601" Ref="C14"  Part="1" 
-AR Path="/5F8F4E1E/5FB32601" Ref="C?"  Part="1" 
-AR Path="/5F910E81/5FB32601" Ref="C?"  Part="1" 
-F 0 "C14" H 9392 2846 50  0000 L CNN
-F 1 "47pF" H 9392 2755 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9300 2800 50  0001 C CNN
-F 3 "~" H 9300 2800 50  0001 C CNN
-	1    9300 2800
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C_Small C17
-U 1 1 5FB32607
-P 9650 2800
-AR Path="/6014B4D9/5FB32607" Ref="C17"  Part="1" 
-AR Path="/5F8F4E1E/5FB32607" Ref="C?"  Part="1" 
-AR Path="/5F910E81/5FB32607" Ref="C?"  Part="1" 
-F 0 "C17" H 9742 2846 50  0000 L CNN
-F 1 "47pF" H 9742 2755 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9650 2800 50  0001 C CNN
-F 3 "~" H 9650 2800 50  0001 C CNN
-	1    9650 2800
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8750 2350 9300 2350
-Wire Wire Line
-	8850 2600 9650 2600
-Text GLabel 10250 3000 2    50   Input ~ 0
-GND
-Wire Wire Line
-	9300 2700 9300 2350
-Connection ~ 9300 2350
-Wire Wire Line
-	9300 2350 9850 2350
-Wire Wire Line
-	9300 2900 9300 3000
-Wire Wire Line
-	9650 3000 9650 2900
-Wire Wire Line
-	9650 2700 9650 2600
-Connection ~ 9650 2600
-Wire Wire Line
-	9650 2600 9850 2600
-$Comp
-L Device:C_Small C11
-U 1 1 5FB32618
-P 8950 2800
-AR Path="/6014B4D9/5FB32618" Ref="C11"  Part="1" 
-AR Path="/5F8F4E1E/5FB32618" Ref="C?"  Part="1" 
-AR Path="/5F910E81/5FB32618" Ref="C?"  Part="1" 
-F 0 "C11" H 9042 2846 50  0000 L CNN
-F 1 "10nF" H 9042 2755 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 8950 2800 50  0001 C CNN
-F 3 "~" H 8950 2800 50  0001 C CNN
-	1    8950 2800
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8950 2700 8950 2150
-Connection ~ 8950 2150
-Wire Wire Line
-	8950 2150 9200 2150
-Wire Wire Line
-	8950 3000 8950 2900
-Wire Wire Line
-	8450 2750 8450 3000
-Wire Wire Line
-	9400 2150 10250 2150
-Wire Wire Line
-	10250 3000 9650 3000
-Connection ~ 8950 3000
-Wire Wire Line
-	8950 3000 8450 3000
-Connection ~ 9300 3000
-Wire Wire Line
-	9300 3000 8950 3000
-Connection ~ 9650 3000
-Wire Wire Line
-	9650 3000 9300 3000
-$Comp
-L Connector:Conn_01x06_Male J9
+L Connector:Conn_01x06_Male J5
 U 1 1 5FB4D429
 P 8800 5150
-AR Path="/6014B4D9/5FB4D429" Ref="J9"  Part="1" 
+AR Path="/6014B4D9/5FB4D429" Ref="J5"  Part="1" 
 AR Path="/5F8F4E1E/5FB4D429" Ref="J?"  Part="1" 
 AR Path="/5F910E81/5FB4D429" Ref="J?"  Part="1" 
-F 0 "J9" H 8900 5600 50  0000 C CNN
+F 0 "J5" H 8900 5600 50  0000 C CNN
 F 1 "UART A" H 8900 5500 50  0000 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal" H 8800 5150 50  0001 C CNN
 F 3 "~" H 8800 5150 50  0001 C CNN
@@ -1140,10 +792,6 @@ F 3 "~" H 8800 5150 50  0001 C CNN
 $EndComp
 Text GLabel 9200 4850 2    50   Input ~ 0
 GND
-Text GLabel 9200 5150 2    50   Input ~ 0
-+5V
-Wire Wire Line
-	9200 5150 9000 5150
 Text GLabel 9200 5250 2    50   Output ~ 0
 UART_A_RxD
 Wire Wire Line
@@ -1175,13 +823,13 @@ Wire Wire Line
 Wire Wire Line
 	9000 5050 9100 5050
 $Comp
-L Connector:Conn_01x06_Male J10
+L Connector:Conn_01x06_Male J6
 U 1 1 5FB4D441
 P 9900 5150
-AR Path="/6014B4D9/5FB4D441" Ref="J10"  Part="1" 
+AR Path="/6014B4D9/5FB4D441" Ref="J6"  Part="1" 
 AR Path="/5F8F4E1E/5FB4D441" Ref="J?"  Part="1" 
 AR Path="/5F910E81/5FB4D441" Ref="J?"  Part="1" 
-F 0 "J10" H 10000 5600 50  0000 C CNN
+F 0 "J6" H 10000 5600 50  0000 C CNN
 F 1 "UART B" H 10000 5500 50  0000 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal" H 9900 5150 50  0001 C CNN
 F 3 "~" H 9900 5150 50  0001 C CNN
@@ -1190,10 +838,6 @@ F 3 "~" H 9900 5150 50  0001 C CNN
 $EndComp
 Text GLabel 10300 4850 2    50   Input ~ 0
 GND
-Text GLabel 10300 5150 2    50   Input ~ 0
-+5V
-Wire Wire Line
-	10300 5150 10100 5150
 Text GLabel 10300 5250 2    50   Output ~ 0
 UART_B_RxD
 Wire Wire Line
@@ -1273,8 +917,8 @@ L Device:CP C?
 U 1 1 5FC0FAB6
 P 7600 1300
 AR Path="/5FC0FAB6" Ref="C?"  Part="1" 
-AR Path="/6014B4D9/5FC0FAB6" Ref="C9"  Part="1" 
-F 0 "C9" H 7718 1346 50  0000 L CNN
+AR Path="/6014B4D9/5FC0FAB6" Ref="C10"  Part="1" 
+F 0 "C10" H 7718 1346 50  0000 L CNN
 F 1 "10uF" H 7718 1255 50  0000 L CNN
 F 2 "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" H 7638 1150 50  0001 C CNN
 F 3 "~" H 7600 1300 50  0001 C CNN
@@ -1292,12 +936,12 @@ Wire Wire Line
 Wire Wire Line
 	7600 1850 7600 1750
 $Comp
-L Connector:Conn_01x06_Male J5
+L Connector:Conn_01x06_Male J4
 U 1 1 5FFB5039
 P 7900 5150
-AR Path="/6014B4D9/5FFB5039" Ref="J5"  Part="1" 
+AR Path="/6014B4D9/5FFB5039" Ref="J4"  Part="1" 
 AR Path="/5F8F4E1E/5FFB5039" Ref="J?"  Part="1" 
-F 0 "J5" H 8000 5600 50  0000 C CNN
+F 0 "J4" H 8000 5600 50  0000 C CNN
 F 1 "Debug UART" H 8000 5500 50  0000 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal" H 7900 5150 50  0001 C CNN
 F 3 "~" H 7900 5150 50  0001 C CNN
@@ -1315,10 +959,6 @@ Wire Wire Line
 Connection ~ 8150 4950
 Wire Wire Line
 	8150 4950 8100 4950
-Text GLabel 8200 5150 2    50   Input ~ 0
-+5V
-Wire Wire Line
-	8200 5150 8100 5150
 NoConn ~ 8100 5450
 Wire Wire Line
 	8200 5250 8100 5250
@@ -1329,12 +969,12 @@ DBG_TxD
 Text GLabel 8200 5250 2    50   Output ~ 0
 DBG_RxD
 $Comp
-L 6502:USB_B J8
+L 6502:USB_B J3
 U 1 1 5FFE872B
 P 8450 3600
-AR Path="/6014B4D9/5FFE872B" Ref="J8"  Part="1" 
+AR Path="/6014B4D9/5FFE872B" Ref="J3"  Part="1" 
 AR Path="/5F8F4E1E/5FFE872B" Ref="J?"  Part="1" 
-F 0 "J8" H 8450 4100 50  0000 C CNN
+F 0 "J3" H 8450 4100 50  0000 C CNN
 F 1 "Debug USB" H 8450 4000 50  0000 C CNN
 F 2 "Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal" H 8600 3550 50  0001 C CNN
 F 3 "" H 8600 3550 50  0001 C CNN
@@ -1343,12 +983,12 @@ F 3 "" H 8600 3550 50  0001 C CNN
 $EndComp
 NoConn ~ 8350 4000
 $Comp
-L Device:Ferrite_Bead_Small FB3
+L Device:Ferrite_Bead_Small FB1
 U 1 1 5FFE8733
 P 9300 3400
-AR Path="/6014B4D9/5FFE8733" Ref="FB3"  Part="1" 
+AR Path="/6014B4D9/5FFE8733" Ref="FB1"  Part="1" 
 AR Path="/5F8F4E1E/5FFE8733" Ref="FB?"  Part="1" 
-F 0 "FB3" V 9063 3400 50  0000 C CNN
+F 0 "FB1" V 9063 3400 50  0000 C CNN
 F 1 "FB" V 9154 3400 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9230 3400 50  0001 C CNN
 F 3 "~" H 9300 3400 50  0001 C CNN
@@ -1366,12 +1006,12 @@ DBG_USBD-
 Text GLabel 10250 3600 2    50   BiDi ~ 0
 DBG_USBD+
 $Comp
-L Device:R R17
+L Device:R R14
 U 1 1 5FFE873E
 P 10000 3850
-AR Path="/6014B4D9/5FFE873E" Ref="R17"  Part="1" 
+AR Path="/6014B4D9/5FFE873E" Ref="R14"  Part="1" 
 AR Path="/5F8F4E1E/5FFE873E" Ref="R?"  Part="1" 
-F 0 "R17" V 10100 3850 50  0000 C CNN
+F 0 "R14" V 10100 3850 50  0000 C CNN
 F 1 "27" V 10000 3850 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9930 3850 50  0001 C CNN
 F 3 "~" H 10000 3850 50  0001 C CNN
@@ -1379,12 +1019,12 @@ F 3 "~" H 10000 3850 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:R R16
+L Device:R R13
 U 1 1 5FFE8744
 P 10000 3600
-AR Path="/6014B4D9/5FFE8744" Ref="R16"  Part="1" 
+AR Path="/6014B4D9/5FFE8744" Ref="R13"  Part="1" 
 AR Path="/5F8F4E1E/5FFE8744" Ref="R?"  Part="1" 
-F 0 "R16" V 10100 3600 50  0000 C CNN
+F 0 "R13" V 10100 3600 50  0000 C CNN
 F 1 "27" V 10000 3600 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9930 3600 50  0001 C CNN
 F 3 "~" H 10000 3600 50  0001 C CNN
@@ -1398,12 +1038,12 @@ Wire Wire Line
 Wire Wire Line
 	8850 3700 8850 3850
 $Comp
-L Device:C_Small C15
+L Device:C_Small C12
 U 1 1 5FFE874D
 P 9300 4050
-AR Path="/6014B4D9/5FFE874D" Ref="C15"  Part="1" 
+AR Path="/6014B4D9/5FFE874D" Ref="C12"  Part="1" 
 AR Path="/5F8F4E1E/5FFE874D" Ref="C?"  Part="1" 
-F 0 "C15" H 9392 4096 50  0000 L CNN
+F 0 "C12" H 9392 4096 50  0000 L CNN
 F 1 "47pF" H 9392 4005 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9300 4050 50  0001 C CNN
 F 3 "~" H 9300 4050 50  0001 C CNN
@@ -1411,12 +1051,12 @@ F 3 "~" H 9300 4050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C18
+L Device:C_Small C13
 U 1 1 5FFE8753
 P 9650 4050
-AR Path="/6014B4D9/5FFE8753" Ref="C18"  Part="1" 
+AR Path="/6014B4D9/5FFE8753" Ref="C13"  Part="1" 
 AR Path="/5F8F4E1E/5FFE8753" Ref="C?"  Part="1" 
-F 0 "C18" H 9742 4096 50  0000 L CNN
+F 0 "C13" H 9742 4096 50  0000 L CNN
 F 1 "47pF" H 9742 4005 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9650 4050 50  0001 C CNN
 F 3 "~" H 9650 4050 50  0001 C CNN
@@ -1444,12 +1084,12 @@ Connection ~ 9650 3850
 Wire Wire Line
 	9650 3850 9850 3850
 $Comp
-L Device:C_Small C12
+L Device:C_Small C11
 U 1 1 5FFE8765
 P 8950 4050
-AR Path="/6014B4D9/5FFE8765" Ref="C12"  Part="1" 
+AR Path="/6014B4D9/5FFE8765" Ref="C11"  Part="1" 
 AR Path="/5F8F4E1E/5FFE8765" Ref="C?"  Part="1" 
-F 0 "C12" H 9042 4096 50  0000 L CNN
+F 0 "C11" H 9042 4096 50  0000 L CNN
 F 1 "10nF" H 9042 4005 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 8950 4050 50  0001 C CNN
 F 3 "~" H 8950 4050 50  0001 C CNN
@@ -1463,15 +1103,13 @@ Wire Wire Line
 	8950 3400 9200 3400
 Wire Wire Line
 	8950 4250 8950 4150
-Wire Wire Line
-	9400 3400 10250 3400
 $Comp
-L Connector:AVR-ISP-6 J4
+L Connector:AVR-ISP-6 J2
 U 1 1 600EABFA
 P 7050 2900
-AR Path="/6014B4D9/600EABFA" Ref="J4"  Part="1" 
+AR Path="/6014B4D9/600EABFA" Ref="J2"  Part="1" 
 AR Path="/5F8F4E1E/600EABFA" Ref="J?"  Part="1" 
-F 0 "J4" H 6950 3000 50  0000 C CNN
+F 0 "J2" H 6950 3000 50  0000 C CNN
 F 1 "AVR ISP" H 6950 2900 50  0000 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" V 6800 2950 50  0001 C CNN
 F 3 " ~" H 5775 2350 50  0001 C CNN
@@ -1516,8 +1154,6 @@ Wire Wire Line
 	6950 2300 7050 2300
 Wire Wire Line
 	10250 4250 9650 4250
-Wire Wire Line
-	8450 4000 8450 4250
 Connection ~ 8950 4250
 Wire Wire Line
 	8950 4250 8450 4250
@@ -1527,6 +1163,60 @@ Wire Wire Line
 Connection ~ 9650 4250
 Wire Wire Line
 	9650 4250 9300 4250
+NoConn ~ 8100 5150
+NoConn ~ 9000 5150
+NoConn ~ 10100 5150
+Wire Wire Line
+	8450 4000 8450 4250
+Wire Wire Line
+	9400 3400 10250 3400
+$Comp
+L Connector:Barrel_Jack J12
+U 1 1 60416F76
+P 8450 2650
+F 0 "J12" H 8507 2975 50  0000 C CNN
+F 1 "Power plug" H 8507 2884 50  0000 C CNN
+F 2 "Connector_BarrelJack:BarrelJack_Horizontal" H 8500 2610 50  0001 C CNN
+F 3 "~" H 8500 2610 50  0001 C CNN
+	1    8450 2650
+	1    0    0    -1  
+$EndComp
+Text GLabel 9050 2550 2    50   Input ~ 0
++5V
+Text GLabel 9050 2750 2    50   Input ~ 0
+GND
+Wire Wire Line
+	8750 2550 8950 2550
+$Comp
+L power:PWR_FLAG #FLG01
+U 1 1 60469558
+P 8950 2550
+F 0 "#FLG01" H 8950 2625 50  0001 C CNN
+F 1 "PWR_FLAG" H 8950 2723 50  0000 C CNN
+F 2 "" H 8950 2550 50  0001 C CNN
+F 3 "~" H 8950 2550 50  0001 C CNN
+	1    8950 2550
+	1    0    0    -1  
+$EndComp
+Connection ~ 8950 2550
+Wire Wire Line
+	8950 2550 9050 2550
+$Comp
+L power:PWR_FLAG #FLG02
+U 1 1 6046A445
+P 8950 2750
+F 0 "#FLG02" H 8950 2825 50  0001 C CNN
+F 1 "PWR_FLAG" H 8950 2923 50  0000 C CNN
+F 2 "" H 8950 2750 50  0001 C CNN
+F 3 "~" H 8950 2750 50  0001 C CNN
+	1    8950 2750
+	-1   0    0    1   
+$EndComp
+Connection ~ 8950 2750
+Wire Wire Line
+	8950 2750 9050 2750
+Wire Wire Line
+	8750 2750 8950 2750
 Wire Bus Line
 	7700 2600 7700 2800
 Wire Bus Line
