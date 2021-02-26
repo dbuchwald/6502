@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 1
+Sheet 1 2
 Title ""
 Date ""
 Rev ""
@@ -546,4 +546,10 @@ Wire Wire Line
 Connection ~ 4100 5750
 Wire Wire Line
 	4100 5750 4200 5750
+$Sheet
+S 5450 6900 500  150 
+U 60398E8A
+F0 "RDY input" 50
+F1 "RDY input.sch" 50
+$EndSheet
 $EndSCHEMATC
