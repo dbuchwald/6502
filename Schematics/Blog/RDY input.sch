@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 2
+Sheet 2 5
 Title ""
 Date ""
 Rev ""
@@ -170,53 +170,42 @@ F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 2750 315
 $EndComp
 $Comp
 L 74xx:74HC04 U1
-U 4 1 603ADD12
-P 2750 3700
-F 0 "U1" H 2750 4017 50  0000 C CNN
-F 1 "74HC04" H 2750 3926 50  0000 C CNN
-F 2 "" H 2750 3700 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 2750 3700 50  0001 C CNN
-	4    2750 3700
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC04 U1
-U 5 1 603AE851
+U 4 1 603AE851
 P 3750 2600
 F 0 "U1" H 3750 2917 50  0000 C CNN
 F 1 "74HC04" H 3750 2826 50  0000 C CNN
 F 2 "" H 3750 2600 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3750 2600 50  0001 C CNN
-	5    3750 2600
+	4    3750 2600
 	1    0    0    -1  
 $EndComp
 $Comp
-L 74xx:74HC04 U2
-U 6 1 603AF205
+L 74xx:74HC04 U1
+U 5 1 603AF205
 P 3750 3150
-F 0 "U2" H 3750 3467 50  0000 C CNN
+F 0 "U1" H 3750 3467 50  0000 C CNN
 F 1 "74HC04" H 3750 3376 50  0000 C CNN
 F 2 "" H 3750 3150 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3750 3150 50  0001 C CNN
-	6    3750 3150
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR05
-U 1 1 603AFB4C
-P 2350 3800
-F 0 "#PWR05" H 2350 3550 50  0001 C CNN
-F 1 "GND" H 2355 3627 50  0000 C CNN
-F 2 "" H 2350 3800 50  0001 C CNN
-F 3 "" H 2350 3800 50  0001 C CNN
-	1    2350 3800
+	5    3750 3150
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR04
+U 1 1 603AFB4C
+P 2350 3250
+F 0 "#PWR04" H 2350 3000 50  0001 C CNN
+F 1 "GND" H 2355 3077 50  0000 C CNN
+F 2 "" H 2350 3250 50  0001 C CNN
+F 3 "" H 2350 3250 50  0001 C CNN
+	1    2350 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR05
 U 1 1 603B001A
 P 3350 3250
-F 0 "#PWR04" H 3350 3000 50  0001 C CNN
+F 0 "#PWR05" H 3350 3000 50  0001 C CNN
 F 1 "GND" H 3355 3077 50  0000 C CNN
 F 2 "" H 3350 3250 50  0001 C CNN
 F 3 "" H 3350 3250 50  0001 C CNN
@@ -224,20 +213,12 @@ F 3 "" H 3350 3250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2350 3800 2350 3700
-Wire Wire Line
 	2350 2600 2450 2600
 Wire Wire Line
 	2350 3150 2450 3150
 Connection ~ 2350 3150
 Wire Wire Line
 	2350 3150 2350 2600
-Wire Wire Line
-	2350 3700 2450 3700
-Connection ~ 2350 3700
-Wire Wire Line
-	2350 3700 2350 3150
-NoConn ~ 3050 3700
 NoConn ~ 3050 3150
 NoConn ~ 3050 2600
 Wire Wire Line
@@ -251,4 +232,6 @@ Wire Wire Line
 	3350 3150 3350 2600
 NoConn ~ 4050 3150
 NoConn ~ 4050 2600
+Wire Wire Line
+	2350 3150 2350 3250
 $EndSCHEMATC
