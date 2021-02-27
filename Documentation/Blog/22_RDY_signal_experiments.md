@@ -95,3 +95,85 @@ As you can see here, it takes over 10ns to propagate low signal via the buffer. 
 ![22_open_collector_low_high](Images/22_open_collector_low_high.png)
 
 Here, it measures at almost 15ns, but in reality I should be measuring time between leaving low signal range and reaching high - and this time is much longer, almost 30ns. When you consider 14MHz clock cycle of 70ns you can already see that's a lot!
+
+You can alsways try to use smaller resistor, and this is how it looks with 220 Ohm one:
+
+![22_open_collector_measured_220](Images/22_open_collector_measured_220.png)
+
+As you can see, rise time looks better at just below 10ns.
+
+### Variant 3: series resistor
+
+This one seems too simple to work, but in fact, it's pretty effective. When you consider the open collector variant above from the perspective of the WAI instruction, it's important to realize that the worst case scenario is when you have RDY pin driven low by CPU. You are dropping 5V via 470 Ohm resistor (assuming this one is used), producing current of about 10mA. Sure, if you want to shorten the rise time, you can use smaller resistor at the expense of much higher current being delivered to the CPU. The point is: the amount of current is limited only by the resistor (and, of course, your power supply).
+
+This variant is simpler: it uses series resistor instead of combination of open-collector buffer and pull-up:
+
+![22_series_resistor](Images/22_series_resistor.png)
+
+Now, as simple as it looks, it's actually pretty effective. During normal operation, where RDY line is in input mode, it will slightly delay signal propagation, and it will do it "symmetrically", so the impact on rise/fall time will be similar. When in output mode, it will have to drop the current as in the previous variant, with one difference: current will be limited by the output gate. Still, for some gates it might be more than 20mA, so you have to be careful. This is how the build looks like:
+
+![22_series_resistor_breadboard](Images/22_series_resistor_breadboard.jpeg)
+
+So, with the simplicity being obvious upside, what is the impact on timing?
+
+![22_series_resistor_1](Images/22_series_resistor_1.png)
+
+As you can see, rise/fall is now slightly delayed:
+
+![22_series_resistor_2](Images/22_series_resistor_2.png)
+
+Rise time increases to about 9-10ns realistically (here it is measured at 2.5V), which is pretty acceptable. Same goes for fall time:
+
+![22_series_resistor_3](Images/22_series_resistor_3.png)
+
+Again, you probably have to consider a bit longer period, but this is still close to the propagation delay of open-collector buffer.
+
+### Variant 4: series resistor with parallel capacitor
+
+This is solution suggested by Garth Wilson [here](http://forum.6502.org/viewtopic.php?p=40980#p40980). I have never really understood how is this supposed to work (have I mentioned that I'm like a total beginner in electronics?), so I wanted to give it a try. See what it does and how. I'm so glad I did!
+
+![22_rc](Images/22_rc.png)
+
+Again, build is very simple:
+
+![22_rc_breadboard](Images/22_rc_breadboard.jpeg)
+
+So, how does that work? Let's see it in action first:
+
+![22_rc_1](Images/22_rc_1.png)
+
+Looks pretty good, doesn't it? Well, there is some ringing here, but I will try to address it. For now, let's see the rise and fall up close:
+
+![22_rc_2](Images/22_rc_2.png)
+
+And the fall looks very similar:
+
+![22_rc_3](Images/22_rc_3.png)
+
+What bothered me a bit was the ringing, so I tried some other options. I replaced 22pF capacitor with 47pF one:
+
+![22_rc_47pF](Images/22_rc_47pF.png)
+
+As you can see, it didn't improve that much. 220pF maybe?
+
+![22_rc_220pF](Images/22_rc_220pF.png)
+
+That's much better. 
+
+What is also important - you can replace the 470Ohm resistor by something significantly stronger, like 1kOhm:
+
+![22_rc_220pF_1k](Images/22_rc_220pF_1k.png)
+
+This protects your circuit much better from high current and all the results of it.
+
+Oh, and in the end I have also tested it against 12MHz clock to see how it works:
+
+![22_rc_220pF_1k_12MHz](Images/22_rc_220pF_1k_12MHz.png)
+
+Looks like we have a winner! 
+
+## Conclusion
+
+Obviously, this is not the end. I still haven't tested it against real-world scenario with CPU in place. Chances are that the approach needs to be refined. For one, I don't understand why Garth suggested 22pF, where in my scenario it looked like 220pF (ten times more) is performing much better. I guess I will have to build it with the actual CPU and find out myself...
+
+The main takeaway here is that this kind of experiments in very limited environment can help you see for yourself how things work and test out any ideas you might have. Apparently there is always more than one way to do things and trying various options can help you make the right decision.
