@@ -142,7 +142,7 @@ So, how does that work? Let's see it in action first:
 
 ![22_rc_1](Images/22_rc_1.png)
 
-Looks pretty good, doesn't it? Well, there is some ringing here, but I will try to address it. For now, let's see the rise and fall up close:
+Looks pretty good, doesn't it? Well, there is some ringing here, and I will discuss it below. For now, let's see the rise and fall up close:
 
 ![22_rc_2](Images/22_rc_2.png)
 
@@ -165,6 +165,36 @@ What is also important - you can replace the 470Ohm resistor by something signif
 ![22_rc_220pF_1k](Images/22_rc_220pF_1k.png)
 
 This protects your circuit much better from high current and all the results of it.
+
+### Ringing issue in detail
+
+What bothered me was that I had to use ten times as large capacitor as the one suggested by Garth Wilson to prevent the ringing. I figured that maybe this ringing is not that important after all? What I did, I reverted the capacitor to 22pF and used 1kOhm resistor and measured the effect first:
+
+![22_ringing_input](Images/22_ringing_input.png)
+
+When you put the CMOS threshold in the picture it looks as if this is not very valid signal:
+
+![22_ringing_input_measured](Images/22_ringing_input_measured.png)
+
+The best I can do at the moment is to see how the resulting gate (U1F in the schematic below) interprets this pink signal. Let's move TP2 after the gate and see the resulting signal:
+
+![22_ringing_output_schematic](Images/22_ringing_output_schematic.png)
+
+The thinking goes: if the ringing (measured previously on the input of U1F gate) can cause the gate to misinterpret the signal, it will be visible as a transition on output of the gate, right? Luckily nothing like this happens:
+
+![22_ringing_output](Images/22_ringing_output.png)
+
+So, it seems like there is nothing to worry about. And, while at it, I measured how the variants 3 (only 1K resistor) and 4 (1K resistor with 22pF capacitor in parallel) impact the output of the gate:
+
+Variant 3 (single series resistor of 1kOhm):
+
+![22_output_delay_1k](Images/22_output_delay_1k.png)
+
+Variant 4 (1kOhm resistor in parallel with 22pF capacitor):
+
+![22_output_delay_1k_22pF](Images/22_output_delay_1k_22pF.png)
+
+As you can see, it's much, much faster!
 
 Oh, and in the end I have also tested it against 12MHz clock to see how it works:
 

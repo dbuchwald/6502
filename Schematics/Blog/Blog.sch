@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 5
+Sheet 1 6
 Title ""
 Date ""
 Rev ""
@@ -569,5 +569,11 @@ S 7400 6200 500  150
 U 60437255
 F0 "RDY input 4" 50
 F1 "RDY input 4.sch" 50
+$EndSheet
+$Sheet
+S 8550 5000 500  150 
+U 603BFB32
+F0 "RDY input 5" 50
+F1 "RDY input 5.sch" 50
 $EndSheet
 $EndSCHEMATC

@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 5 5
+Sheet 5 6
 Title ""
 Date ""
 Rev ""
@@ -175,109 +175,109 @@ Wire Wire Line
 $Comp
 L 74xx:74HC04 U?
 U 2 1 6044DF5D
-P 2600 2300
+P 2600 2750
 AR Path="/60398E8A/6044DF5D" Ref="U?"  Part="2" 
 AR Path="/604066AD/6044DF5D" Ref="U?"  Part="2" 
 AR Path="/60437255/6044DF5D" Ref="U1"  Part="2" 
-F 0 "U1" H 2600 2617 50  0000 C CNN
-F 1 "74HC04" H 2600 2526 50  0000 C CNN
-F 2 "" H 2600 2300 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 2600 2300 50  0001 C CNN
-	2    2600 2300
+F 0 "U1" H 2600 3067 50  0000 C CNN
+F 1 "74HC04" H 2600 2976 50  0000 C CNN
+F 2 "" H 2600 2750 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 2600 2750 50  0001 C CNN
+	2    2600 2750
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74HC04 U?
 U 3 1 6044DF63
-P 2600 2850
+P 2600 3300
 AR Path="/60398E8A/6044DF63" Ref="U?"  Part="3" 
 AR Path="/604066AD/6044DF63" Ref="U?"  Part="3" 
 AR Path="/60437255/6044DF63" Ref="U1"  Part="3" 
-F 0 "U1" H 2600 3167 50  0000 C CNN
-F 1 "74HC04" H 2600 3076 50  0000 C CNN
-F 2 "" H 2600 2850 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 2600 2850 50  0001 C CNN
-	3    2600 2850
+F 0 "U1" H 2600 3617 50  0000 C CNN
+F 1 "74HC04" H 2600 3526 50  0000 C CNN
+F 2 "" H 2600 3300 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 2600 3300 50  0001 C CNN
+	3    2600 3300
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74HC04 U?
 U 4 1 6044DF69
-P 3600 2300
+P 3600 2750
 AR Path="/60398E8A/6044DF69" Ref="U?"  Part="4" 
 AR Path="/604066AD/6044DF69" Ref="U?"  Part="4" 
 AR Path="/60437255/6044DF69" Ref="U1"  Part="4" 
-F 0 "U1" H 3600 2617 50  0000 C CNN
-F 1 "74HC04" H 3600 2526 50  0000 C CNN
-F 2 "" H 3600 2300 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3600 2300 50  0001 C CNN
-	4    3600 2300
+F 0 "U1" H 3600 3067 50  0000 C CNN
+F 1 "74HC04" H 3600 2976 50  0000 C CNN
+F 2 "" H 3600 2750 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3600 2750 50  0001 C CNN
+	4    3600 2750
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74HC04 U?
 U 5 1 6044DF6F
-P 3600 2850
+P 3600 3300
 AR Path="/60398E8A/6044DF6F" Ref="U?"  Part="5" 
 AR Path="/604066AD/6044DF6F" Ref="U?"  Part="5" 
 AR Path="/60437255/6044DF6F" Ref="U1"  Part="5" 
-F 0 "U1" H 3600 3167 50  0000 C CNN
-F 1 "74HC04" H 3600 3076 50  0000 C CNN
-F 2 "" H 3600 2850 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3600 2850 50  0001 C CNN
-	5    3600 2850
+F 0 "U1" H 3600 3617 50  0000 C CNN
+F 1 "74HC04" H 3600 3526 50  0000 C CNN
+F 2 "" H 3600 3300 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3600 3300 50  0001 C CNN
+	5    3600 3300
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 6044DF75
-P 2200 2950
+P 2200 3400
 AR Path="/60398E8A/6044DF75" Ref="#PWR?"  Part="1" 
 AR Path="/604066AD/6044DF75" Ref="#PWR?"  Part="1" 
 AR Path="/60437255/6044DF75" Ref="#PWR04"  Part="1" 
-F 0 "#PWR04" H 2200 2700 50  0001 C CNN
-F 1 "GND" H 2205 2777 50  0000 C CNN
-F 2 "" H 2200 2950 50  0001 C CNN
-F 3 "" H 2200 2950 50  0001 C CNN
-	1    2200 2950
+F 0 "#PWR04" H 2200 3150 50  0001 C CNN
+F 1 "GND" H 2205 3227 50  0000 C CNN
+F 2 "" H 2200 3400 50  0001 C CNN
+F 3 "" H 2200 3400 50  0001 C CNN
+	1    2200 3400
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 6044DF7B
-P 3200 2950
+P 3200 3400
 AR Path="/60398E8A/6044DF7B" Ref="#PWR?"  Part="1" 
 AR Path="/604066AD/6044DF7B" Ref="#PWR?"  Part="1" 
 AR Path="/60437255/6044DF7B" Ref="#PWR05"  Part="1" 
-F 0 "#PWR05" H 3200 2700 50  0001 C CNN
-F 1 "GND" H 3205 2777 50  0000 C CNN
-F 2 "" H 3200 2950 50  0001 C CNN
-F 3 "" H 3200 2950 50  0001 C CNN
-	1    3200 2950
+F 0 "#PWR05" H 3200 3150 50  0001 C CNN
+F 1 "GND" H 3205 3227 50  0000 C CNN
+F 2 "" H 3200 3400 50  0001 C CNN
+F 3 "" H 3200 3400 50  0001 C CNN
+	1    3200 3400
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2200 2300 2300 2300
+	2200 2750 2300 2750
 Wire Wire Line
-	2200 2850 2300 2850
-Connection ~ 2200 2850
+	2200 3300 2300 3300
+Connection ~ 2200 3300
 Wire Wire Line
-	2200 2850 2200 2300
-NoConn ~ 2900 2850
-NoConn ~ 2900 2300
+	2200 3300 2200 2750
+NoConn ~ 2900 3300
+NoConn ~ 2900 2750
 Wire Wire Line
-	3200 2950 3200 2850
+	3200 3400 3200 3300
 Wire Wire Line
-	3200 2300 3300 2300
+	3200 2750 3300 2750
 Wire Wire Line
-	3200 2850 3300 2850
-Connection ~ 3200 2850
+	3200 3300 3300 3300
+Connection ~ 3200 3300
 Wire Wire Line
-	3200 2850 3200 2300
-NoConn ~ 3900 2850
-NoConn ~ 3900 2300
+	3200 3300 3200 2750
+NoConn ~ 3900 3300
+NoConn ~ 3900 2750
 Wire Wire Line
-	2200 2850 2200 2950
+	2200 3300 2200 3400
 $Comp
 L Device:R R?
 U 1 1 6044DF8F
