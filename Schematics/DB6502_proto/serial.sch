@@ -257,7 +257,7 @@ AR Path="/5F8F4E1E/5F9A15C7" Ref="U?"  Part="6"
 AR Path="/5F910E81/5F9A15C7" Ref="U8"  Part="5" 
 F 0 "U8" H 1850 4167 50  0000 C CNN
 F 1 "74AC04" H 1850 4076 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 1850 3850 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1850 3850 50  0001 C CNN
 F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 1850 3850 50  0001 C CNN
 	5    1850 3850
 	1    0    0    -1  

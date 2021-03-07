@@ -471,7 +471,7 @@ U 1 1 5F9A1F2C
 P 9250 4350
 F 0 "U6" H 9250 4350 50  0000 C CNN
 F 1 "74AC138" H 9150 4250 50  0000 C CNN
-F 2 "Package_DIP:DIP-16_W7.62mm_Socket" H 9250 4350 50  0001 C CNN
+F 2 "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm" H 9250 4350 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS138" H 9250 4350 50  0001 C CNN
 	1    9250 4350
 	1    0    0    -1  
@@ -567,7 +567,7 @@ U 1 1 5FB20233
 P 5950 7300
 F 0 "U9" H 5950 7675 50  0000 C CNN
 F 1 "74HC21" H 5950 7584 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 5950 7300 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5950 7300 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 5950 7300 50  0001 C CNN
 	1    5950 7300
 	1    0    0    -1  
@@ -578,7 +578,7 @@ U 2 1 5FB22533
 P 3250 7300
 F 0 "U9" H 3250 7675 50  0000 C CNN
 F 1 "74HC21" H 3250 7584 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 3250 7300 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3250 7300 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 3250 7300 50  0001 C CNN
 	2    3250 7300
 	1    0    0    -1  
@@ -589,7 +589,7 @@ U 3 1 5FB2300D
 P 1000 7000
 F 0 "U9" H 1000 7050 50  0000 C CNN
 F 1 "74HC21" H 1000 6950 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 1000 7000 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1000 7000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 1000 7000 50  0001 C CNN
 	3    1000 7000
 	1    0    0    -1  
@@ -694,7 +694,7 @@ AR Path="/5F8F4E1E/5FDF80F5" Ref="U?"  Part="3"
 AR Path="/5FDF80F5" Ref="U5"  Part="3" 
 F 0 "U5" H 1850 7050 50  0000 C CNN
 F 1 "74AC74" H 1850 6950 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 1850 7000 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1850 7000 50  0001 C CNN
 F 3 "74xx/74hc_hct74.pdf" H 1850 7000 50  0001 C CNN
 	3    1850 7000
 	1    0    0    -1  
@@ -1468,7 +1468,7 @@ AR Path="/5F8F4E1E/5FE82338" Ref="U?"  Part="2"
 AR Path="/5FE82338" Ref="U5"  Part="2" 
 F 0 "U5" H 2650 4600 50  0000 C CNN
 F 1 "74AC74" H 2650 4500 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 2950 4200 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 2950 4200 50  0001 C CNN
 F 3 "74xx/74hc_hct74.pdf" H 2950 4200 50  0001 C CNN
 	2    2950 4200
 	1    0    0    -1  
@@ -1481,7 +1481,7 @@ AR Path="/5F8F4E1E/5FE3D22B" Ref="U?"  Part="2"
 AR Path="/5FE3D22B" Ref="U5"  Part="1" 
 F 0 "U5" H 1550 4600 50  0000 C CNN
 F 1 "74AC74" H 1550 4500 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 1850 4200 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1850 4200 50  0001 C CNN
 F 3 "74xx/74hc_hct74.pdf" H 1850 4200 50  0001 C CNN
 	1    1850 4200
 	1    0    0    -1  
@@ -1496,7 +1496,7 @@ AR Path="/5F8F4E1E/5FD6D1DD" Ref="U?"  Part="5"
 AR Path="/5FD6D1DD" Ref="U8"  Part="4" 
 F 0 "U8" H 2650 5517 50  0000 C CNN
 F 1 "74AC04" H 2650 5426 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 2650 5200 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 2650 5200 50  0001 C CNN
 F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 2650 5200 50  0001 C CNN
 	4    2650 5200
 	1    0    0    -1  
@@ -1509,7 +1509,7 @@ AR Path="/5F8F4E1E/602942AC" Ref="U?"  Part="6"
 AR Path="/602942AC" Ref="U8"  Part="6" 
 F 0 "U8" H 1850 5517 50  0000 C CNN
 F 1 "74AC04" H 1850 5426 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 1850 5200 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1850 5200 50  0001 C CNN
 F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 1850 5200 50  0001 C CNN
 	6    1850 5200
 	1    0    0    -1  
