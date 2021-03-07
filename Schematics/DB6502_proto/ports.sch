@@ -650,8 +650,6 @@ Wire Wire Line
 	6400 7550 5600 7550
 Wire Wire Line
 	5600 7550 5600 6400
-Text GLabel 4850 2750 0    50   Input ~ 0
-DBG_CLK
 Wire Wire Line
 	4850 2750 4950 2750
 Text GLabel 4850 2850 0    50   Output ~ 0
@@ -1229,4 +1227,6 @@ Wire Bus Line
 	4200 3250 4200 3950
 Wire Bus Line
 	3100 6700 4600 6700
+Text GLabel 4850 2750 0    50   Input ~ 0
+DBG_CLK
 $EndSCHEMATC
