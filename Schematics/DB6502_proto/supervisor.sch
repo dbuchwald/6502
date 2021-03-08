@@ -373,7 +373,6 @@ Wire Wire Line
 Wire Wire Line
 	10300 1250 10450 1250
 NoConn ~ 10300 1150
-NoConn ~ 10300 1050
 $Comp
 L 74xx:74HC595 U11
 U 1 1 5F9C2188
@@ -1386,6 +1385,14 @@ F 3 "~" H 4150 6700 50  0001 C CNN
 	1    4150 6700
 	1    0    0    -1  
 $EndComp
+Text GLabel 10200 650  0    50   Input ~ 0
+VBUS_SENSE
+Wire Wire Line
+	10300 1050 10350 1050
+Wire Wire Line
+	10350 1050 10350 650 
+Wire Wire Line
+	10350 650  10200 650 
 Wire Bus Line
 	3200 2200 3200 2900
 Wire Bus Line
