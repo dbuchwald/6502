@@ -1782,7 +1782,7 @@ U 1 1 6034332B
 P 4750 3350
 F 0 "JP1" H 4750 3574 50  0000 C CNN
 F 1 "PLD CLK Selector" H 4750 3483 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 4750 3350 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4750 3350 50  0001 C CNN
 F 3 "~" H 4750 3350 50  0001 C CNN
 	1    4750 3350
 	1    0    0    -1  

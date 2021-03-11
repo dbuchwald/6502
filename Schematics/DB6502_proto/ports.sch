@@ -232,21 +232,6 @@ Text GLabel 4400 1050 1    50   Input ~ 0
 ~VP
 Text GLabel 4250 1050 1    50   Output ~ 0
 6502_RDY
-Wire Wire Line
-	2300 950  2300 1050
-Text GLabel 2300 950  1    50   Input ~ 0
-+5V
-$Comp
-L Device:R R11
-U 1 1 6017257F
-P 2300 1200
-F 0 "R11" H 2230 1154 50  0000 R CNN
-F 1 "4K7" H 2230 1245 50  0000 R CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 2230 1200 50  0001 C CNN
-F 3 "~" H 2300 1200 50  0001 C CNN
-	1    2300 1200
-	-1   0    0    1   
-$EndComp
 Text GLabel 4100 1050 1    50   Output ~ 0
 BE
 Wire Wire Line
@@ -266,21 +251,6 @@ F 3 "~" H 2000 1200 50  0001 C CNN
 $EndComp
 Text GLabel 3950 1050 1    50   Output ~ 0
 ~IRQ
-Wire Wire Line
-	1700 950  1700 1050
-Text GLabel 1700 950  1    50   Input ~ 0
-+5V
-$Comp
-L Device:R R9
-U 1 1 601857FE
-P 1700 1200
-F 0 "R9" H 1770 1246 50  0000 L CNN
-F 1 "4K7" H 1770 1155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1630 1200 50  0001 C CNN
-F 3 "~" H 1700 1200 50  0001 C CNN
-	1    1700 1200
-	1    0    0    -1  
-$EndComp
 Text GLabel 3800 1050 1    50   Output ~ 0
 ~NMI
 Wire Wire Line
@@ -326,69 +296,59 @@ Wire Wire Line
 Wire Wire Line
 	1400 1350 1400 1850
 Wire Wire Line
-	1700 1350 1700 1750
-Wire Wire Line
 	2000 1350 2000 1650
 Wire Wire Line
-	2300 1350 2300 1550
-Wire Wire Line
-	3500 2050 4950 2050
+	3500 2050 5200 2050
 Wire Wire Line
 	3500 1050 3500 2050
 Connection ~ 3650 1950
 Wire Wire Line
-	3650 1950 4950 1950
+	3650 1950 5200 1950
 Wire Wire Line
 	3650 1050 3650 1950
 Wire Wire Line
-	2300 1550 4250 1550
-Wire Wire Line
-	3800 1850 4950 1850
+	3800 1850 5200 1850
 Connection ~ 3800 1850
 Wire Wire Line
 	1400 1850 3800 1850
 Wire Wire Line
 	3800 1050 3800 1850
-Connection ~ 3950 1750
 Wire Wire Line
-	1700 1750 3950 1750
-Wire Wire Line
-	3950 1750 4950 1750
+	3950 1750 5200 1750
 Wire Wire Line
 	3950 1050 3950 1750
 Connection ~ 4100 1650
 Wire Wire Line
 	2000 1650 4100 1650
 Wire Wire Line
-	4100 1650 4950 1650
+	4100 1650 5200 1650
 Wire Wire Line
 	4100 1050 4100 1650
 Wire Wire Line
-	4250 1550 4950 1550
-Connection ~ 4250 1550
+	4250 1550 5200 1550
 Wire Wire Line
 	4250 1050 4250 1550
 Wire Wire Line
-	4400 1450 4950 1450
+	4400 1450 5200 1450
 Wire Wire Line
 	4400 1050 4400 1450
 Wire Wire Line
-	4550 1350 4950 1350
+	4550 1350 5200 1350
 Wire Wire Line
 	4550 1050 4550 1350
 Wire Wire Line
 	4700 1250 4700 1050
 Wire Wire Line
-	4700 1250 4950 1250
+	4700 1250 5200 1250
 $Comp
-L Connector:Conn_01x32_Female J1
+L Connector:Conn_01x40_Female J1
 U 1 1 60166003
-P 5150 2650
-F 0 "J1" H 5178 2626 50  0000 L CNN
-F 1 "Controls" H 5178 2535 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x32_P2.54mm_Vertical" H 5150 2650 50  0001 C CNN
-F 3 "~" H 5150 2650 50  0001 C CNN
-	1    5150 2650
+P 5400 2850
+F 0 "J1" H 5428 2826 50  0000 L CNN
+F 1 "Controls" H 5428 2735 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x40_P2.54mm_Vertical" H 5400 2850 50  0001 C CNN
+F 3 "~" H 5400 2850 50  0001 C CNN
+	1    5400 2850
 	1    0    0    -1  
 $EndComp
 Text GLabel 4850 1050 1    50   Input ~ 0
@@ -396,78 +356,58 @@ Text GLabel 4850 1050 1    50   Input ~ 0
 Wire Wire Line
 	4850 1050 4850 1150
 Wire Wire Line
-	4850 1150 4950 1150
+	4850 1150 5200 1150
 Wire Wire Line
 	1100 1950 3650 1950
 Wire Wire Line
-	800  950  800  1050
-Text GLabel 800  950  1    50   Input ~ 0
-+5V
-$Comp
-L Device:R R6
-U 1 1 601F1941
-P 800 1200
-F 0 "R6" H 870 1246 50  0000 L CNN
-F 1 "4K7" H 870 1155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 730 1200 50  0001 C CNN
-F 3 "~" H 800 1200 50  0001 C CNN
-	1    800  1200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	800  2050 3500 2050
-Wire Wire Line
-	800  1350 800  2050
-Connection ~ 3500 2050
-Wire Wire Line
 	3350 1050 3350 2150
 Wire Wire Line
-	3350 2150 4950 2150
+	3350 2150 5200 2150
 Wire Wire Line
 	3200 1050 3200 2250
 Wire Wire Line
-	3200 2250 4950 2250
+	3200 2250 5200 2250
 $Comp
-L Connector:Conn_01x32_Female J7
+L Connector:Conn_01x40_Female J7
 U 1 1 60200164
-P 2850 5250
-F 0 "J7" H 2878 5226 50  0000 L CNN
-F 1 "I/O Bus" H 2878 5135 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x32_P2.54mm_Vertical" H 2850 5250 50  0001 C CNN
-F 3 "~" H 2850 5250 50  0001 C CNN
-	1    2850 5250
+P 2850 5450
+F 0 "J7" H 2878 5426 50  0000 L CNN
+F 1 "I/O Bus" H 2878 5335 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x40_P2.54mm_Vertical" H 2850 5450 50  0001 C CNN
+F 3 "~" H 2850 5450 50  0001 C CNN
+	1    2850 5450
 	1    0    0    -1  
 $EndComp
-Text Label 2500 3750 0    50   ~ 0
+Text Label 2450 3750 0    50   ~ 0
 a0
-Text Label 2500 3850 0    50   ~ 0
+Text Label 2450 3850 0    50   ~ 0
 a1
-Text Label 2500 3950 0    50   ~ 0
+Text Label 2450 3950 0    50   ~ 0
 a2
-Text Label 2500 4050 0    50   ~ 0
+Text Label 2450 4050 0    50   ~ 0
 a3
-Text Label 2500 4150 0    50   ~ 0
+Text Label 2450 4150 0    50   ~ 0
 a4
 Wire Wire Line
-	2500 4150 2650 4150
+	2450 4150 2650 4150
 Wire Wire Line
-	2500 4050 2650 4050
+	2450 4050 2650 4050
 Wire Wire Line
-	2500 3950 2650 3950
+	2450 3950 2650 3950
 Wire Wire Line
-	2500 3850 2650 3850
+	2450 3850 2650 3850
 Wire Wire Line
-	2500 3750 2650 3750
+	2450 3750 2650 3750
 Entry Wire Line
-	2400 3650 2500 3750
+	2350 3650 2450 3750
 Entry Wire Line
-	2400 3750 2500 3850
+	2350 3750 2450 3850
 Entry Wire Line
-	2400 3850 2500 3950
+	2350 3850 2450 3950
 Entry Wire Line
-	2400 3950 2500 4050
+	2350 3950 2450 4050
 Entry Wire Line
-	2400 4050 2500 4150
+	2350 4050 2450 4150
 Text GLabel 2000 4950 1    50   Input ~ 0
 ~LATCH
 Text GLabel 1850 4950 1    50   Input ~ 0
@@ -537,25 +477,7 @@ EXRAM
 Wire Wire Line
 	3050 1050 3050 2350
 Wire Wire Line
-	3050 2350 4950 2350
-Text GLabel 2900 1050 1    50   Input ~ 0
-SR_DAT
-Text GLabel 2750 1050 1    50   Input ~ 0
-SR_CLK
-Text GLabel 2600 1050 1    50   Input ~ 0
-SR_OUT
-Wire Wire Line
-	2900 1050 2900 2450
-Wire Wire Line
-	2900 2450 4950 2450
-Wire Wire Line
-	2750 1050 2750 2550
-Wire Wire Line
-	2750 2550 4950 2550
-Wire Wire Line
-	2600 1050 2600 2650
-Wire Wire Line
-	2600 2650 4950 2650
+	3050 2350 5200 2350
 $Comp
 L Device:R R12
 U 1 1 604F21BB
@@ -600,14 +522,14 @@ Wire Wire Line
 	6200 6650 6200 6400
 Wire Wire Line
 	6200 6650 6400 6650
-Text GLabel 2550 6850 0    50   Input ~ 0
+Text GLabel 2550 7450 0    50   Input ~ 0
 GND
-Text GLabel 2550 6750 0    50   Input ~ 0
+Text GLabel 2550 7350 0    50   Input ~ 0
 +5V
 Wire Wire Line
-	2550 6750 2650 6750
+	2550 7350 2650 7350
 Wire Wire Line
-	2550 6850 2650 6850
+	2550 7450 2650 7450
 Text GLabel 6400 7100 2    50   Input ~ 0
 6502_CLK
 Wire Wire Line
@@ -626,22 +548,22 @@ Wire Wire Line
 	6400 7400 5700 7400
 Wire Wire Line
 	5700 7400 5700 6400
-Text GLabel 950  6850 3    50   Input ~ 0
-CLK
+Text GLabel 950  7150 3    50   Input ~ 0
+6502_CLK
 Wire Wire Line
-	950  6850 950  6350
+	950  7150 950  6350
 Wire Wire Line
 	950  6350 2650 6350
-Text GLabel 800  6850 3    50   Input ~ 0
+Text GLabel 800  7150 3    50   Input ~ 0
 R~W
 Wire Wire Line
-	800  6850 800  6250
+	800  7150 800  6250
 Wire Wire Line
 	800  6250 2650 6250
-Text GLabel 650  6850 3    50   Input ~ 0
+Text GLabel 650  7150 3    50   Input ~ 0
 ~6502_RES
 Wire Wire Line
-	650  6850 650  6150
+	650  7150 650  6150
 Wire Wire Line
 	650  6150 2650 6150
 Text GLabel 6400 7550 2    50   Input ~ 0
@@ -651,7 +573,7 @@ Wire Wire Line
 Wire Wire Line
 	5600 7550 5600 6400
 Wire Wire Line
-	4850 2750 4950 2750
+	4850 2750 5200 2750
 Text GLabel 4850 2850 0    50   Output ~ 0
 RDY_M1F
 Text GLabel 4850 2950 0    50   Output ~ 0
@@ -663,15 +585,15 @@ DBG_WAIT
 Text GLabel 4850 3250 0    50   Input ~ 0
 6502_RDY
 Wire Wire Line
-	4850 2850 4950 2850
+	4850 2850 5200 2850
 Wire Wire Line
-	4850 2950 4950 2950
+	4850 2950 5200 2950
 Wire Wire Line
-	4850 3050 4950 3050
+	4850 3050 5200 3050
 Wire Wire Line
-	4850 3150 4950 3150
+	4850 3150 5200 3150
 Wire Wire Line
-	4850 3250 4950 3250
+	4850 3250 5200 3250
 Text Label 4300 3350 0    50   ~ 0
 d0
 Text Label 4300 3450 0    50   ~ 0
@@ -689,21 +611,21 @@ d6
 Text Label 4300 4050 0    50   ~ 0
 d7
 Wire Wire Line
-	4300 3350 4950 3350
+	4300 3350 5200 3350
 Wire Wire Line
-	4300 3450 4950 3450
+	4300 3450 5200 3450
 Wire Wire Line
-	4300 3550 4950 3550
+	4300 3550 5200 3550
 Wire Wire Line
-	4300 3650 4950 3650
+	4300 3650 5200 3650
 Wire Wire Line
-	4300 3750 4950 3750
+	4300 3750 5200 3750
 Wire Wire Line
-	4300 3850 4950 3850
+	4300 3850 5200 3850
 Wire Wire Line
-	4300 3950 4950 3950
+	4300 3950 5200 3950
 Wire Wire Line
-	4300 4050 4950 4050
+	4300 4050 5200 4050
 Entry Wire Line
 	4200 3250 4300 3350
 Entry Wire Line
@@ -720,30 +642,30 @@ Entry Wire Line
 	4200 3850 4300 3950
 Entry Wire Line
 	4200 3950 4300 4050
-Text GLabel 4850 4250 0    50   Input ~ 0
+Text GLabel 4850 4850 0    50   Input ~ 0
 GND
-Text GLabel 4850 4150 0    50   Input ~ 0
+Text GLabel 4850 4750 0    50   Input ~ 0
 +5V
 Wire Wire Line
-	4850 4150 4950 4150
+	4850 4750 5200 4750
 Wire Wire Line
-	4850 4250 4950 4250
-Text GLabel 1100 6850 3    50   Input ~ 0
+	4850 4850 5200 4850
+Text GLabel 1100 7150 3    50   Input ~ 0
 RAM1_~CS
 Wire Wire Line
-	1100 6850 1100 6450
+	1100 7150 1100 6450
 Wire Wire Line
 	1100 6450 2650 6450
-Text GLabel 1250 6850 3    50   Input ~ 0
+Text GLabel 1250 7150 3    50   Input ~ 0
 RAM2_~CS
-Text GLabel 1400 6850 3    50   Input ~ 0
+Text GLabel 1400 7150 3    50   Input ~ 0
 ROM_~CS
 Wire Wire Line
-	1250 6850 1250 6550
+	1250 7150 1250 6550
 Wire Wire Line
 	1250 6550 2650 6550
 Wire Wire Line
-	1400 6850 1400 6650
+	1400 7150 1400 6650
 Wire Wire Line
 	1400 6650 2650 6650
 $Comp
@@ -1214,10 +1136,46 @@ Wire Wire Line
 Connection ~ 9250 3400
 Wire Wire Line
 	9250 3400 9350 3400
+Text GLabel 2450 3450 1    50   Input ~ 0
+GND
+Text GLabel 2550 3450 1    50   Input ~ 0
++5V
+Wire Wire Line
+	2550 3450 2550 3550
+Wire Wire Line
+	2450 3650 2650 3650
+Wire Wire Line
+	2450 3450 2450 3650
+Wire Wire Line
+	2550 3550 2650 3550
+Text GLabel 1550 7150 3    50   Input ~ 0
+~VIA2_IRQ
+Text GLabel 1700 7150 3    50   Input ~ 0
+~EXT_IRQ
+Wire Wire Line
+	1550 7150 1550 6750
+Wire Wire Line
+	1550 6750 2650 6750
+Wire Wire Line
+	1700 7150 1700 6850
+Wire Wire Line
+	1700 6850 2650 6850
+Text GLabel 5000 850  1    50   Input ~ 0
+GND
+Text GLabel 5100 850  1    50   Input ~ 0
++5V
+Wire Wire Line
+	5100 850  5100 950 
+Wire Wire Line
+	5100 950  5200 950 
+Wire Wire Line
+	5000 1050 5200 1050
+Wire Wire Line
+	5000 850  5000 1050
 Wire Bus Line
 	7700 2600 7700 2800
 Wire Bus Line
-	2400 3650 2400 4050
+	2350 3650 2350 4050
 Wire Bus Line
 	4700 6700 5400 6700
 Wire Bus Line
