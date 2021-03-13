@@ -453,8 +453,6 @@ Text GLabel 7550 5050 2    50   Input ~ 0
 IN12
 Text GLabel 7550 4950 2    50   Input ~ 0
 IO13
-Text GLabel 5050 5550 2    50   Input ~ 0
-WS_DISABLE
 Text GLabel 7550 4750 2    50   Input ~ 0
 IO15
 Text GLabel 7550 4650 2    50   Output ~ 0
@@ -651,24 +649,8 @@ Wire Wire Line
 	5100 7050 5100 7450
 Wire Wire Line
 	5100 7450 5650 7450
-$Comp
-L Device:R R2
-U 1 1 5FC6DB04
-P 4550 7000
-F 0 "R2" V 4450 7000 50  0000 C CNN
-F 1 "4K7" V 4550 7000 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4480 7000 50  0001 C CNN
-F 3 "~" H 4550 7000 50  0001 C CNN
-	1    4550 7000
-	1    0    0    -1  
-$EndComp
-Text GLabel 4550 6800 1    50   Input ~ 0
+Text GLabel 4450 6550 1    50   Input ~ 0
 +5V
-Wire Wire Line
-	4550 6800 4550 6850
-Wire Wire Line
-	4550 7450 5100 7450
-Connection ~ 5100 7450
 Text GLabel 2850 7150 0    50   Input ~ 0
 GND
 Text GLabel 2850 7250 0    50   Input ~ 0
@@ -734,28 +716,6 @@ Wire Wire Line
 Connection ~ 1850 6550
 Wire Wire Line
 	1850 6550 1850 6600
-$Comp
-L Device:R R3
-U 1 1 6011A69F
-P 4750 7000
-F 0 "R3" V 4650 7000 50  0000 C CNN
-F 1 "4K7" V 4750 7000 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4680 7000 50  0001 C CNN
-F 3 "~" H 4750 7000 50  0001 C CNN
-	1    4750 7000
-	1    0    0    -1  
-$EndComp
-Text GLabel 4750 6800 1    50   Input ~ 0
-+5V
-Wire Wire Line
-	4750 6800 4750 6850
-Wire Wire Line
-	4550 7150 4550 7450
-Wire Wire Line
-	4750 7150 4750 7350
-Wire Wire Line
-	4750 7350 5250 7350
-Connection ~ 5250 7350
 Wire Wire Line
 	7450 4550 8450 4550
 Text Label 8750 4550 2    50   ~ 0
@@ -1611,159 +1571,8 @@ $EndComp
 Connection ~ 2150 5900
 Wire Wire Line
 	2150 5900 2250 5900
-$Comp
-L Jumper:Jumper_2_Open JP2
-U 1 1 604CBBF5
-P 4750 3950
-F 0 "JP2" H 4750 4185 50  0000 C CNN
-F 1 "PLD ~WR" H 4750 4094 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4750 3950 50  0001 C CNN
-F 3 "~" H 4750 3950 50  0001 C CNN
-	1    4750 3950
-	1    0    0    -1  
-$EndComp
-Text GLabel 4450 3950 0    50   Input ~ 0
-~PLD_WR
-Wire Wire Line
-	4450 3950 4550 3950
-Text GLabel 4450 4350 0    50   Input ~ 0
-~PLD_RD
-$Comp
-L Jumper:Jumper_2_Open JP3
-U 1 1 60561701
-P 4750 4350
-F 0 "JP3" H 4750 4597 50  0000 C CNN
-F 1 "PLD ~RD" H 4750 4499 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4750 4350 50  0001 C CNN
-F 3 "~" H 4750 4350 50  0001 C CNN
-	1    4750 4350
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4450 4350 4550 4350
-Text GLabel 5050 3950 2    50   Output ~ 0
-~WR
-Text GLabel 5050 4350 2    50   Output ~ 0
-~RD
-Wire Wire Line
-	4950 3950 5050 3950
-Wire Wire Line
-	4950 4350 5050 4350
-Text GLabel 4450 4750 0    50   Input ~ 0
-IO16
-$Comp
-L Jumper:Jumper_2_Open JP4
-U 1 1 605E4A7C
-P 4750 4750
-F 0 "JP4" H 4750 4985 50  0000 C CNN
-F 1 "PLD RDY" H 4750 4894 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4750 4750 50  0001 C CNN
-F 3 "~" H 4750 4750 50  0001 C CNN
-	1    4750 4750
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4450 4750 4550 4750
-Text GLabel 5050 4750 2    50   Output ~ 0
-6502_RDY
-Wire Wire Line
-	5050 4750 4950 4750
-$Comp
-L Device:R R4
-U 1 1 6068BEB8
-P 4950 7000
-F 0 "R4" V 4850 7000 50  0000 C CNN
-F 1 "4K7" V 4950 7000 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4880 7000 50  0001 C CNN
-F 3 "~" H 4950 7000 50  0001 C CNN
-	1    4950 7000
-	1    0    0    -1  
-$EndComp
-Text GLabel 4950 6800 1    50   Input ~ 0
-+5V
-Wire Wire Line
-	4950 6800 4950 6850
-Wire Wire Line
-	4950 7150 4950 7250
-Wire Wire Line
-	4950 7250 5400 7250
-Connection ~ 5400 7250
-Text GLabel 5050 5150 2    50   Input ~ 0
-DBG_WAIT
-$Comp
-L Jumper:Jumper_2_Open JP5
-U 1 1 606CFBB5
-P 4750 5150
-F 0 "JP5" H 4750 5385 50  0000 C CNN
-F 1 "PLD DBG_WAIT" H 4750 5294 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4750 5150 50  0001 C CNN
-F 3 "~" H 4750 5150 50  0001 C CNN
-	1    4750 5150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4450 5150 4550 5150
-Text GLabel 4450 5150 0    50   Output ~ 0
-IO15
-Wire Wire Line
-	4950 5150 5050 5150
-$Comp
-L Jumper:Jumper_2_Open JP6
-U 1 1 60715332
-P 4750 5550
-F 0 "JP6" H 4750 5785 50  0000 C CNN
-F 1 "PLD WS_DISABLE" H 4750 5694 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4750 5550 50  0001 C CNN
-F 3 "~" H 4750 5550 50  0001 C CNN
-	1    4750 5550
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4950 5550 5050 5550
 Text GLabel 7550 4850 2    50   Input ~ 0
 IO14
-Text GLabel 4450 5550 0    50   Output ~ 0
-IO14
-Wire Wire Line
-	4450 5550 4550 5550
-$Comp
-L Jumper:Jumper_2_Open JP7
-U 1 1 6077FFB1
-P 4750 5950
-F 0 "JP7" H 4750 6185 50  0000 C CNN
-F 1 "PLD RDY_M1F" H 4750 6094 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4750 5950 50  0001 C CNN
-F 3 "~" H 4750 5950 50  0001 C CNN
-	1    4750 5950
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4950 5950 5050 5950
-Text GLabel 4450 5950 0    50   Output ~ 0
-IO13
-Wire Wire Line
-	4450 5950 4550 5950
-$Comp
-L Jumper:Jumper_2_Open JP8
-U 1 1 607A3E01
-P 4750 6350
-F 0 "JP8" H 4750 6585 50  0000 C CNN
-F 1 "PLD RDY_M2F" H 4750 6494 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4750 6350 50  0001 C CNN
-F 3 "~" H 4750 6350 50  0001 C CNN
-	1    4750 6350
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4950 6350 5050 6350
-Text GLabel 4450 6350 0    50   Output ~ 0
-IN12
-Wire Wire Line
-	4450 6350 4550 6350
-Text GLabel 5050 5950 2    50   Input ~ 0
-RDY_M2F
-Text GLabel 5050 6350 2    50   Input ~ 0
-RDY_M1F
 Wire Wire Line
 	6350 3850 6350 3950
 Wire Wire Line
@@ -1793,6 +1602,39 @@ Text GLabel 5100 3600 2    50   Output ~ 0
 PLD_CLK
 Text GLabel 6350 3850 1    50   Input ~ 0
 PLD_CLK
+$Comp
+L Device:R_Network04 RN1
+U 1 1 6054D542
+P 4650 6850
+F 0 "RN1" H 4838 6896 50  0000 L CNN
+F 1 "4K7" H 4838 6805 50  0000 L CNN
+F 2 "Resistor_THT:R_Array_SIP5" V 4925 6850 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 4650 6850 50  0001 C CNN
+	1    4650 6850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 6550 4450 6650
+Wire Wire Line
+	4750 7050 4750 7150
+Wire Wire Line
+	4750 7150 5550 7150
+Connection ~ 5550 7150
+Wire Wire Line
+	4650 7050 4650 7250
+Wire Wire Line
+	4650 7250 5400 7250
+Connection ~ 5400 7250
+Wire Wire Line
+	4550 7050 4550 7350
+Wire Wire Line
+	4550 7350 5250 7350
+Connection ~ 5250 7350
+Wire Wire Line
+	4450 7050 4450 7450
+Wire Wire Line
+	4450 7450 5100 7450
+Connection ~ 5100 7450
 Wire Bus Line
 	8500 4150 8500 4350
 Wire Bus Line
