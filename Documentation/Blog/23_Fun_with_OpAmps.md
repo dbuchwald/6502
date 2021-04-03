@@ -81,11 +81,11 @@ There are two differences here:
 
 So, what does it do? In general, for the non-inverting amplifier, there is this equation stating that the amplification factor is equal to 1 + R5/R6. You can look it up, there is some simple math behind this, and it's pretty easy to remember. 
 
-Please note: sometimes R6 is connected to GND, and the circuit behaves in similar manner, but the "reference voltage" is then 0V instead of the 2.5V (achieved using R2/R4 voltage divider between +5V and GND) here. In my case I wanted to achieve amplification of the difference between the middle point (2.5V) and signal coming out of RV1 - hence the setup.
+Please note: sometimes R6 is connected to GND, and the circuit behaves in similar manner, but the "reference voltage" is then 0V instead of the 2,5V (achieved using R2/R4 voltage divider between +5V and GND) here. In my case I wanted to achieve amplification of the difference between the middle point (2,5V) and signal coming out of RV1 - hence the setup.
 
 Going back to voltage follower case: the amplification factor is 1, because 1 + 0/infinity is just 1. Amplification factor of 1 means the input is just copied to output. Note also that in that case the "reference voltage" (so the point used to calculate amplified output voltage against) is irrelevant - you can calculate the output voltage as difference between 5V and non-inverting input and you end up with the same result as if you calculated it as difference between 0V and non-inverting input.
 
-Look at the equation again. I expected amplification factor of 11, so any change of 0,1V on RV1 output measured at TP3 (compared against 2.5V reference voltage measured at TP1) should result in about 1,1V change on output measured on TP2. Let's see if it worked:
+Look at the equation again. I expected amplification factor of 11, so any change of 0,1V on RV1 output measured at TP3 (compared against 2,5V reference voltage measured at TP1) should result in about 1,1V change on output measured on TP2. Let's see if it worked:
 
 ![23_noninv_amp_wrong_roll](Images/23_noninv_amp_wrong_roll.png)
 
@@ -105,7 +105,7 @@ Ok, so now that I know my OpAmp is broken, maybe I could get at least the invert
 
 <img src="Images/23_inv_amp_wrong.png" alt="23_inv_amp_wrong" style="zoom:50%;" />
 
-When you look for this schematic online, you will find out that the amplification factor should be -1 * R5/R6. In this specific case output signal should be inverted around 2.5V axis, and be 10 times amplified. So, does it work?
+When you look for this schematic online, you will find out that the amplification factor should be -1 * R5/R6. In this specific case output signal should be inverted around 2,5V axis, and be 10 times amplified. So, does it work?
 
 Channel 1 (yellow) is connected to TP3 and channel 2 (pink) is connected to TP2:
 
@@ -131,7 +131,7 @@ Well, for one, it's not really broken. Obviously. However, the problem is that i
 
 <img src="Images/23_noninv_amp_wrong.png" alt="23_noninv_amp_wrong" style="zoom:50%;" />
 
-For this circuit to work as expected we would have to ensure that voltage measured at TP1 is constantly 2.5V and whatever happens on OpAmp output can't change it. However, in this case, this is not true. Let's imagine (for simplicity sake) that OpAmp output is 5V. We end up with this simplified circuit:
+For this circuit to work as expected we would have to ensure that voltage measured at TP1 is constantly 2,5V and whatever happens on OpAmp output can't change it. However, in this case, this is not true. Let's imagine (for simplicity sake) that OpAmp output is 5V. We end up with this simplified circuit:
 
 <img src="Images/23_noninv_amp_wrong_simple.png" alt="23_noninv_amp_wrong_simple" style="zoom:50%;" />
 
@@ -145,7 +145,7 @@ You can treat R2/R4 voltage divider as output driver, but one with high output i
 
 The same goes for inputs - you want these to be high impedance to ensure that reading the input doesn't change the level of actual voltage, which would have happened if R6+R5 was significantly smaller resistor.
 
-This was my "eureka" moment, when I understood what's the story about input/output impedance, and this is when I realized what I needed to do to fix my "broken" OpAmp. Sure, I could use stronger resistors (like the aforementioned 10 Ohm ones), but this would only result in excessive current going through the circuit: 5V over 20 Ohm gives 0,25A. This is way too high for voltage divider, and would probably burn most of the typical resistors (0,25A * 2,5V = 625mW, which is too much even for 1W resistors). There is, however, good solution to the problem: using the most "useless" circuit described above. 
+This was my "eureka" moment, when I understood what's the story about input/output impedance, and this is when I realized what I needed to do to fix my "broken" OpAmp. Sure, I could use stronger resistors (like the aforementioned 10 Ohm ones), but this would only result in excessive current going through the circuit: 5V over 20 Ohm gives 0,25A. This is way too high for voltage divider, and would probably burn most of the typical resistors (0,25A * 2,5V = 625mW, which might be too much even for 1W resistors). There is, however, good solution to the problem: using the most "useless" circuit described above. 
 
 See, the main point of the voltage follower circuit is that it acts like a buffer with very high input impedance and very low output impedance. It will convert high impedance output of R2/R4 voltage divider into low impedance one, preventing reference voltage changes.
 
