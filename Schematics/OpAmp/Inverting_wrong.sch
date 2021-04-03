@@ -1,0 +1,244 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 5 8
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:R R?
+U 1 1 606C65EE
+P 1750 1950
+AR Path="/606C65EE" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/606C65EE" Ref="R1"  Part="1" 
+F 0 "R1" H 1820 1996 50  0000 L CNN
+F 1 "47K" H 1820 1905 50  0000 L CNN
+F 2 "" V 1680 1950 50  0001 C CNN
+F 3 "~" H 1750 1950 50  0001 C CNN
+	1    1750 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 606C65F4
+P 1750 2750
+AR Path="/606C65F4" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/606C65F4" Ref="R3"  Part="1" 
+F 0 "R3" H 1820 2796 50  0000 L CNN
+F 1 "47K" H 1820 2705 50  0000 L CNN
+F 2 "" V 1680 2750 50  0001 C CNN
+F 3 "~" H 1750 2750 50  0001 C CNN
+	1    1750 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_POT RV?
+U 1 1 606C65FA
+P 1750 2300
+AR Path="/606C65FA" Ref="RV?"  Part="1" 
+AR Path="/606C0B0F/606C65FA" Ref="RV1"  Part="1" 
+F 0 "RV1" H 1681 2346 50  0000 R CNN
+F 1 "10K" H 1681 2255 50  0000 R CNN
+F 2 "" H 1750 2300 50  0001 C CNN
+F 3 "~" H 1750 2300 50  0001 C CNN
+	1    1750 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 606C6600
+P 2300 1950
+AR Path="/606C6600" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/606C6600" Ref="R2"  Part="1" 
+F 0 "R2" H 2370 1996 50  0000 L CNN
+F 1 "10K" H 2370 1905 50  0000 L CNN
+F 2 "" V 2230 1950 50  0001 C CNN
+F 3 "~" H 2300 1950 50  0001 C CNN
+	1    2300 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 606C6606
+P 2300 2750
+AR Path="/606C6606" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/606C6606" Ref="R4"  Part="1" 
+F 0 "R4" H 2370 2796 50  0000 L CNN
+F 1 "10K" H 2370 2705 50  0000 L CNN
+F 2 "" V 2230 2750 50  0001 C CNN
+F 3 "~" H 2300 2750 50  0001 C CNN
+	1    2300 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 606C660C
+P 1750 3100
+AR Path="/606C660C" Ref="#PWR?"  Part="1" 
+AR Path="/606C0B0F/606C660C" Ref="#PWR02"  Part="1" 
+F 0 "#PWR02" H 1750 2850 50  0001 C CNN
+F 1 "GND" H 1755 2927 50  0000 C CNN
+F 2 "" H 1750 3100 50  0001 C CNN
+F 3 "" H 1750 3100 50  0001 C CNN
+	1    1750 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 606C6612
+P 1750 1600
+AR Path="/606C6612" Ref="#PWR?"  Part="1" 
+AR Path="/606C0B0F/606C6612" Ref="#PWR01"  Part="1" 
+F 0 "#PWR01" H 1750 1450 50  0001 C CNN
+F 1 "+5V" H 1765 1773 50  0000 C CNN
+F 2 "" H 1750 1600 50  0001 C CNN
+F 3 "" H 1750 1600 50  0001 C CNN
+	1    1750 1600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 1600 1750 1700
+Wire Wire Line
+	1750 1700 2300 1700
+Wire Wire Line
+	2300 1700 2300 1800
+Connection ~ 1750 1700
+Wire Wire Line
+	1750 1700 1750 1800
+Wire Wire Line
+	1750 2100 1750 2150
+Wire Wire Line
+	1750 2450 1750 2600
+Wire Wire Line
+	1750 2900 1750 3000
+Wire Wire Line
+	1750 3000 2300 3000
+Wire Wire Line
+	2300 3000 2300 2900
+Connection ~ 1750 3000
+Wire Wire Line
+	1750 3000 1750 3100
+Wire Wire Line
+	2300 2100 2300 2500
+Wire Wire Line
+	4000 2400 4100 2400
+Connection ~ 4000 2400
+Wire Wire Line
+	4000 2400 4000 1900
+Wire Wire Line
+	3950 2400 4000 2400
+$Comp
+L Connector:TestPoint TP?
+U 1 1 606C6629
+P 4100 2400
+AR Path="/606C6629" Ref="TP?"  Part="1" 
+AR Path="/606C0B0F/606C6629" Ref="TP2"  Part="1" 
+F 0 "TP2" H 4158 2518 50  0000 L CNN
+F 1 "Vout" H 4158 2427 50  0000 L CNN
+F 2 "" H 4300 2400 50  0001 C CNN
+F 3 "~" H 4300 2400 50  0001 C CNN
+	1    4100 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Amplifier_Operational:LM358 U?
+U 2 1 606C662F
+P 3650 2400
+AR Path="/606C662F" Ref="U?"  Part="2" 
+AR Path="/606C0B0F/606C662F" Ref="U1"  Part="2" 
+F 0 "U1" H 3650 2033 50  0000 C CNN
+F 1 "LM358" H 3650 2124 50  0000 C CNN
+F 2 "" H 3650 2400 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2904-n.pdf" H 3650 2400 50  0001 C CNN
+	2    3650 2400
+	1    0    0    1   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 606C6635
+P 3000 2300
+AR Path="/606C6635" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/606C6635" Ref="R6"  Part="1" 
+F 0 "R6" V 2793 2300 50  0000 C CNN
+F 1 "1K" V 2884 2300 50  0000 C CNN
+F 2 "" V 2930 2300 50  0001 C CNN
+F 3 "~" H 3000 2300 50  0001 C CNN
+	1    3000 2300
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3150 2300 3250 2300
+$Comp
+L Device:R R?
+U 1 1 606C663C
+P 3650 1900
+AR Path="/606C663C" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/606C663C" Ref="R5"  Part="1" 
+F 0 "R5" V 3443 1900 50  0000 C CNN
+F 1 "10K" V 3534 1900 50  0000 C CNN
+F 2 "" V 3580 1900 50  0001 C CNN
+F 3 "~" H 3650 1900 50  0001 C CNN
+	1    3650 1900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3500 1900 3250 1900
+Wire Wire Line
+	3250 1900 3250 2300
+Connection ~ 3250 2300
+Wire Wire Line
+	3250 2300 3350 2300
+Wire Wire Line
+	3800 1900 4000 1900
+Connection ~ 2300 2500
+Wire Wire Line
+	2300 2500 2300 2600
+$Comp
+L Connector:TestPoint TP?
+U 1 1 606C6649
+P 2750 2600
+AR Path="/606C6649" Ref="TP?"  Part="1" 
+AR Path="/606C0B0F/606C6649" Ref="TP1"  Part="1" 
+F 0 "TP1" H 2692 2626 50  0000 R CNN
+F 1 "V2" H 2692 2717 50  0000 R CNN
+F 2 "" H 2950 2600 50  0001 C CNN
+F 3 "~" H 2950 2600 50  0001 C CNN
+	1    2750 2600
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2300 2500 2750 2500
+Wire Wire Line
+	2750 2600 2750 2500
+Connection ~ 2750 2500
+Wire Wire Line
+	2750 2500 3350 2500
+Wire Wire Line
+	1900 2300 2650 2300
+$Comp
+L Connector:TestPoint TP?
+U 1 1 606C6654
+P 2650 2200
+AR Path="/606C6654" Ref="TP?"  Part="1" 
+AR Path="/606C0B0F/606C6654" Ref="TP3"  Part="1" 
+F 0 "TP3" H 2708 2318 50  0000 L CNN
+F 1 "V1" H 2708 2227 50  0000 L CNN
+F 2 "" H 2850 2200 50  0001 C CNN
+F 3 "~" H 2850 2200 50  0001 C CNN
+	1    2650 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2650 2200 2650 2300
+Connection ~ 2650 2300
+Wire Wire Line
+	2650 2300 2850 2300
+$EndSCHEMATC
