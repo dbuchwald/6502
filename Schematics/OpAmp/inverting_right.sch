@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 8
+Sheet 8 8
 Title ""
 Date ""
 Rev ""
@@ -13,4 +13,271 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Comp
+L Device:R R?
+U 1 1 6071B3F6
+P 1150 1500
+AR Path="/6071B3F6" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/6071B3F6" Ref="R?"  Part="1" 
+AR Path="/606F408E/6071B3F6" Ref="R1"  Part="1" 
+F 0 "R1" H 1220 1546 50  0000 L CNN
+F 1 "47K" H 1220 1455 50  0000 L CNN
+F 2 "" V 1080 1500 50  0001 C CNN
+F 3 "~" H 1150 1500 50  0001 C CNN
+	1    1150 1500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6071B3FC
+P 1150 2300
+AR Path="/6071B3FC" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/6071B3FC" Ref="R?"  Part="1" 
+AR Path="/606F408E/6071B3FC" Ref="R3"  Part="1" 
+F 0 "R3" H 1220 2346 50  0000 L CNN
+F 1 "47K" H 1220 2255 50  0000 L CNN
+F 2 "" V 1080 2300 50  0001 C CNN
+F 3 "~" H 1150 2300 50  0001 C CNN
+	1    1150 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_POT RV?
+U 1 1 6071B402
+P 1150 1850
+AR Path="/6071B402" Ref="RV?"  Part="1" 
+AR Path="/606C0B0F/6071B402" Ref="RV?"  Part="1" 
+AR Path="/606F408E/6071B402" Ref="RV1"  Part="1" 
+F 0 "RV1" H 1081 1896 50  0000 R CNN
+F 1 "10K" H 1081 1805 50  0000 R CNN
+F 2 "" H 1150 1850 50  0001 C CNN
+F 3 "~" H 1150 1850 50  0001 C CNN
+	1    1150 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6071B408
+P 1700 1500
+AR Path="/6071B408" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/6071B408" Ref="R?"  Part="1" 
+AR Path="/606F408E/6071B408" Ref="R2"  Part="1" 
+F 0 "R2" H 1770 1546 50  0000 L CNN
+F 1 "10K" H 1770 1455 50  0000 L CNN
+F 2 "" V 1630 1500 50  0001 C CNN
+F 3 "~" H 1700 1500 50  0001 C CNN
+	1    1700 1500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6071B40E
+P 1700 2300
+AR Path="/6071B40E" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/6071B40E" Ref="R?"  Part="1" 
+AR Path="/606F408E/6071B40E" Ref="R4"  Part="1" 
+F 0 "R4" H 1770 2346 50  0000 L CNN
+F 1 "10K" H 1770 2255 50  0000 L CNN
+F 2 "" V 1630 2300 50  0001 C CNN
+F 3 "~" H 1700 2300 50  0001 C CNN
+	1    1700 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 6071B414
+P 1150 2650
+AR Path="/6071B414" Ref="#PWR?"  Part="1" 
+AR Path="/606C0B0F/6071B414" Ref="#PWR?"  Part="1" 
+AR Path="/606F408E/6071B414" Ref="#PWR02"  Part="1" 
+F 0 "#PWR02" H 1150 2400 50  0001 C CNN
+F 1 "GND" H 1155 2477 50  0000 C CNN
+F 2 "" H 1150 2650 50  0001 C CNN
+F 3 "" H 1150 2650 50  0001 C CNN
+	1    1150 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6071B41A
+P 1150 1150
+AR Path="/6071B41A" Ref="#PWR?"  Part="1" 
+AR Path="/606C0B0F/6071B41A" Ref="#PWR?"  Part="1" 
+AR Path="/606F408E/6071B41A" Ref="#PWR01"  Part="1" 
+F 0 "#PWR01" H 1150 1000 50  0001 C CNN
+F 1 "+5V" H 1165 1323 50  0000 C CNN
+F 2 "" H 1150 1150 50  0001 C CNN
+F 3 "" H 1150 1150 50  0001 C CNN
+	1    1150 1150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1150 1150 1150 1250
+Wire Wire Line
+	1150 1250 1700 1250
+Wire Wire Line
+	1700 1250 1700 1350
+Connection ~ 1150 1250
+Wire Wire Line
+	1150 1250 1150 1350
+Wire Wire Line
+	1150 1650 1150 1700
+Wire Wire Line
+	1150 2000 1150 2150
+Wire Wire Line
+	1150 2450 1150 2550
+Wire Wire Line
+	1150 2550 1700 2550
+Wire Wire Line
+	1700 2550 1700 2450
+Connection ~ 1150 2550
+Wire Wire Line
+	1150 2550 1150 2650
+Wire Wire Line
+	1700 1650 1700 2050
+Wire Wire Line
+	4400 1950 4500 1950
+Connection ~ 4400 1950
+Wire Wire Line
+	4400 1950 4400 1450
+Wire Wire Line
+	4350 1950 4400 1950
+$Comp
+L Connector:TestPoint TP?
+U 1 1 6071B431
+P 4500 1950
+AR Path="/6071B431" Ref="TP?"  Part="1" 
+AR Path="/606C0B0F/6071B431" Ref="TP?"  Part="1" 
+AR Path="/606F408E/6071B431" Ref="TP2"  Part="1" 
+F 0 "TP2" H 4558 2068 50  0000 L CNN
+F 1 "Vout" H 4558 1977 50  0000 L CNN
+F 2 "" H 4700 1950 50  0001 C CNN
+F 3 "~" H 4700 1950 50  0001 C CNN
+	1    4500 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Amplifier_Operational:LM358 U?
+U 2 1 6071B437
+P 4050 1950
+AR Path="/6071B437" Ref="U?"  Part="2" 
+AR Path="/606C0B0F/6071B437" Ref="U?"  Part="2" 
+AR Path="/606F408E/6071B437" Ref="U1"  Part="2" 
+F 0 "U1" H 4050 1583 50  0000 C CNN
+F 1 "LM358" H 4050 1674 50  0000 C CNN
+F 2 "" H 4050 1950 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2904-n.pdf" H 4050 1950 50  0001 C CNN
+	2    4050 1950
+	1    0    0    1   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6071B43D
+P 3400 1750
+AR Path="/6071B43D" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/6071B43D" Ref="R?"  Part="1" 
+AR Path="/606F408E/6071B43D" Ref="R6"  Part="1" 
+F 0 "R6" V 3193 1750 50  0000 C CNN
+F 1 "1K" V 3284 1750 50  0000 C CNN
+F 2 "" V 3330 1750 50  0001 C CNN
+F 3 "~" H 3400 1750 50  0001 C CNN
+	1    3400 1750
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3550 1750 3650 1750
+$Comp
+L Device:R R?
+U 1 1 6071B444
+P 4050 1450
+AR Path="/6071B444" Ref="R?"  Part="1" 
+AR Path="/606C0B0F/6071B444" Ref="R?"  Part="1" 
+AR Path="/606F408E/6071B444" Ref="R5"  Part="1" 
+F 0 "R5" V 3843 1450 50  0000 C CNN
+F 1 "10K" V 3934 1450 50  0000 C CNN
+F 2 "" V 3980 1450 50  0001 C CNN
+F 3 "~" H 4050 1450 50  0001 C CNN
+	1    4050 1450
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3900 1450 3650 1450
+Wire Wire Line
+	3650 1450 3650 1750
+Wire Wire Line
+	4200 1450 4400 1450
+Connection ~ 1700 2050
+Wire Wire Line
+	1700 2050 1700 2150
+$Comp
+L Connector:TestPoint TP?
+U 1 1 6071B451
+P 2150 2150
+AR Path="/6071B451" Ref="TP?"  Part="1" 
+AR Path="/606C0B0F/6071B451" Ref="TP?"  Part="1" 
+AR Path="/606F408E/6071B451" Ref="TP3"  Part="1" 
+F 0 "TP3" H 2092 2176 50  0000 R CNN
+F 1 "V2" H 2092 2267 50  0000 R CNN
+F 2 "" H 2350 2150 50  0001 C CNN
+F 3 "~" H 2350 2150 50  0001 C CNN
+	1    2150 2150
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	1700 2050 2150 2050
+Wire Wire Line
+	2150 2150 2150 2050
+Connection ~ 2150 2050
+Wire Wire Line
+	2150 2050 3750 2050
+Wire Wire Line
+	1300 1850 2050 1850
+$Comp
+L Connector:TestPoint TP?
+U 1 1 6071B45C
+P 2050 1750
+AR Path="/6071B45C" Ref="TP?"  Part="1" 
+AR Path="/606C0B0F/6071B45C" Ref="TP?"  Part="1" 
+AR Path="/606F408E/6071B45C" Ref="TP1"  Part="1" 
+F 0 "TP1" H 2108 1868 50  0000 L CNN
+F 1 "V1" H 2108 1777 50  0000 L CNN
+F 2 "" H 2250 1750 50  0001 C CNN
+F 3 "~" H 2250 1750 50  0001 C CNN
+	1    2050 1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2050 1750 2050 1850
+Wire Wire Line
+	3650 1750 3650 1850
+Wire Wire Line
+	3650 1850 3750 1850
+Connection ~ 3650 1750
+$Comp
+L Amplifier_Operational:LM358 U1
+U 1 1 607200A1
+P 2750 1750
+F 0 "U1" H 2750 2117 50  0000 C CNN
+F 1 "LM358" H 2750 2026 50  0000 C CNN
+F 2 "" H 2750 1750 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2904-n.pdf" H 2750 1750 50  0001 C CNN
+	1    2750 1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3050 1750 3150 1750
+Wire Wire Line
+	2050 1850 2450 1850
+Connection ~ 2050 1850
+Wire Wire Line
+	2450 1650 2350 1650
+Wire Wire Line
+	2350 1650 2350 1250
+Wire Wire Line
+	2350 1250 3150 1250
+Wire Wire Line
+	3150 1250 3150 1750
+Connection ~ 3150 1750
+Wire Wire Line
+	3150 1750 3250 1750
 $EndSCHEMATC

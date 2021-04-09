@@ -1,0 +1,229 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:C C1
+U 1 1 606F3DED
+P 1950 1950
+F 0 "C1" H 2065 1996 50  0000 L CNN
+F 1 "100nF" H 2065 1905 50  0000 L CNN
+F 2 "" H 1988 1800 50  0001 C CNN
+F 3 "~" H 1950 1950 50  0001 C CNN
+	1    1950 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Reference_Voltage:TL431LP U1
+U 1 1 606F4877
+P 2450 1750
+F 0 "U1" V 2496 1680 50  0000 R CNN
+F 1 "TL431LP" V 2405 1680 50  0000 R CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 2450 1600 50  0001 C CIN
+F 3 "http://www.ti.com/lit/ds/symlink/tl431.pdf" H 2450 1750 50  0001 C CIN
+	1    2450 1750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Amplifier_Operational:LM358 U2
+U 1 1 606F61EA
+P 3950 2100
+F 0 "U2" H 3950 1733 50  0000 C CNN
+F 1 "LM358" H 3950 1824 50  0000 C CNN
+F 2 "" H 3950 2100 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2904-n.pdf" H 3950 2100 50  0001 C CNN
+	1    3950 2100
+	1    0    0    1   
+$EndComp
+$Comp
+L Device:R R1
+U 1 1 6070A624
+P 2450 1300
+F 0 "R1" H 2520 1346 50  0000 L CNN
+F 1 "1K" H 2520 1255 50  0000 L CNN
+F 2 "" V 2380 1300 50  0001 C CNN
+F 3 "~" H 2450 1300 50  0001 C CNN
+	1    2450 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R2
+U 1 1 6070BDAB
+P 3000 1800
+F 0 "R2" H 3070 1846 50  0000 L CNN
+F 1 "5K" H 3070 1755 50  0000 L CNN
+F 2 "" V 2930 1800 50  0001 C CNN
+F 3 "~" H 3000 1800 50  0001 C CNN
+	1    3000 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_POT RV1
+U 1 1 6070C80E
+P 3000 2200
+F 0 "RV1" H 2930 2246 50  0000 R CNN
+F 1 "1K" H 2930 2155 50  0000 R CNN
+F 2 "" H 3000 2200 50  0001 C CNN
+F 3 "~" H 3000 2200 50  0001 C CNN
+	1    3000 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2450 1450 2450 1550
+Wire Wire Line
+	2450 1550 3000 1550
+Wire Wire Line
+	3000 1550 3000 1650
+Connection ~ 2450 1550
+Wire Wire Line
+	2450 1550 2450 1650
+Wire Wire Line
+	3000 1950 3000 2050
+Wire Wire Line
+	2350 1750 2250 1750
+Wire Wire Line
+	2450 1050 2450 1150
+Wire Wire Line
+	2450 1050 1950 1050
+Wire Wire Line
+	1950 1050 1950 1800
+Connection ~ 2450 1050
+Wire Wire Line
+	3000 2950 3000 2350
+Wire Wire Line
+	3000 2950 2450 2950
+Connection ~ 3000 2950
+Wire Wire Line
+	2450 2950 1950 2950
+Wire Wire Line
+	1950 2950 1950 2100
+Connection ~ 2450 2950
+Wire Wire Line
+	2450 1850 2450 2950
+Wire Wire Line
+	2250 1750 2250 1550
+Wire Wire Line
+	2250 1550 2450 1550
+Wire Wire Line
+	3150 2200 3650 2200
+Wire Wire Line
+	3500 2400 3500 2000
+Wire Wire Line
+	3500 2000 3650 2000
+Wire Wire Line
+	5050 1050 2450 1050
+Connection ~ 5050 1050
+Wire Wire Line
+	5050 1900 5050 1050
+Wire Wire Line
+	5050 2400 5050 2500
+Connection ~ 5050 2400
+Wire Wire Line
+	5050 2400 3500 2400
+Wire Wire Line
+	5050 2950 3000 2950
+Connection ~ 5050 2950
+Wire Wire Line
+	5050 2800 5050 2950
+Wire Wire Line
+	5050 2300 5050 2400
+Wire Wire Line
+	5300 2950 5050 2950
+Wire Wire Line
+	5300 3050 5300 2950
+Wire Wire Line
+	5300 1050 5050 1050
+Wire Wire Line
+	5300 950  5300 1050
+$Comp
+L power:GND #PWR02
+U 1 1 6070FCA1
+P 5300 3050
+F 0 "#PWR02" H 5300 2800 50  0001 C CNN
+F 1 "GND" H 5305 2877 50  0000 C CNN
+F 2 "" H 5300 3050 50  0001 C CNN
+F 3 "" H 5300 3050 50  0001 C CNN
+	1    5300 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:VCC #PWR01
+U 1 1 6070DD9C
+P 5300 950
+F 0 "#PWR01" H 5300 800 50  0001 C CNN
+F 1 "VCC" H 5315 1123 50  0000 C CNN
+F 2 "" H 5300 950 50  0001 C CNN
+F 3 "" H 5300 950 50  0001 C CNN
+	1    5300 950 
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R4
+U 1 1 607094E8
+P 5050 2650
+F 0 "R4" H 5120 2696 50  0000 L CNN
+F 1 "0,15" H 5120 2605 50  0000 L CNN
+F 2 "" V 4980 2650 50  0001 C CNN
+F 3 "~" H 5050 2650 50  0001 C CNN
+	1    5050 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:IRLZ34N Q1
+U 1 1 607059F6
+P 4950 2100
+F 0 "Q1" H 5154 2146 50  0000 L CNN
+F 1 "IRLZ34N" H 5154 2055 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 5200 2025 50  0001 L CIN
+F 3 "http://www.infineon.com/dgdl/irlz34npbf.pdf?fileId=5546d462533600a40153567206892720" H 4950 2100 50  0001 L CNN
+	1    4950 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R3
+U 1 1 6071AB2A
+P 4500 2100
+F 0 "R3" V 4293 2100 50  0000 C CNN
+F 1 "220" V 4384 2100 50  0000 C CNN
+F 2 "" V 4430 2100 50  0001 C CNN
+F 3 "~" H 4500 2100 50  0001 C CNN
+	1    4500 2100
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4650 2100 4750 2100
+Wire Wire Line
+	4250 2100 4350 2100
+$Comp
+L Amplifier_Operational:LM358 U2
+U 3 1 6071BC46
+P 1600 1950
+F 0 "U2" H 1558 1996 50  0000 L CNN
+F 1 "LM358" H 1558 1905 50  0000 L CNN
+F 2 "" H 1600 1950 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2904-n.pdf" H 1600 1950 50  0001 C CNN
+	3    1600 1950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1500 2250 1500 2950
+Wire Wire Line
+	1500 2950 1950 2950
+Connection ~ 1950 2950
+Wire Wire Line
+	1500 1650 1500 1050
+Wire Wire Line
+	1500 1050 1950 1050
+Connection ~ 1950 1050
+$EndSCHEMATC
