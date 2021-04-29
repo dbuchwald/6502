@@ -649,7 +649,7 @@ Wire Wire Line
 	5100 7050 5100 7450
 Wire Wire Line
 	5100 7450 5650 7450
-Text GLabel 4450 6550 1    50   Input ~ 0
+Text GLabel 3800 5950 1    50   Input ~ 0
 +5V
 Text GLabel 2850 7150 0    50   Input ~ 0
 GND
@@ -1603,38 +1603,62 @@ PLD_CLK
 Text GLabel 6350 3850 1    50   Input ~ 0
 PLD_CLK
 $Comp
-L Device:R_Network04 RN1
+L Device:R_Network08 RN1
 U 1 1 6054D542
-P 4650 6850
-F 0 "RN1" H 4838 6896 50  0000 L CNN
-F 1 "4K7" H 4838 6805 50  0000 L CNN
-F 2 "Resistor_THT:R_Array_SIP5" V 4925 6850 50  0001 C CNN
-F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 4650 6850 50  0001 C CNN
-	1    4650 6850
+P 4200 6250
+F 0 "RN1" H 4600 6300 50  0000 L CNN
+F 1 "4K7" H 4600 6200 50  0000 L CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 4475 6250 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 4200 6250 50  0001 C CNN
+	1    4200 6250
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4450 6550 4450 6650
+	3800 5950 3800 6050
 Wire Wire Line
-	4750 7050 4750 7150
+	4100 6450 4100 7150
 Wire Wire Line
-	4750 7150 5550 7150
+	4100 7150 5550 7150
 Connection ~ 5550 7150
 Wire Wire Line
-	4650 7050 4650 7250
+	4000 6450 4000 7250
 Wire Wire Line
-	4650 7250 5400 7250
+	4000 7250 5400 7250
 Connection ~ 5400 7250
 Wire Wire Line
-	4550 7050 4550 7350
+	3900 6450 3900 7350
 Wire Wire Line
-	4550 7350 5250 7350
+	3900 7350 5250 7350
 Connection ~ 5250 7350
 Wire Wire Line
-	4450 7050 4450 7450
+	3800 6450 3800 7450
 Wire Wire Line
-	4450 7450 5100 7450
+	3800 7450 5100 7450
 Connection ~ 5100 7450
+Text GLabel 4600 6550 2    50   Output ~ 0
+BE
+Wire Wire Line
+	4500 6550 4500 6450
+Text GLabel 4600 6700 2    50   Output ~ 0
+~NMI
+Wire Wire Line
+	4500 6550 4600 6550
+Wire Wire Line
+	4600 6700 4400 6700
+Wire Wire Line
+	4400 6700 4400 6450
+Text GLabel 4600 6850 2    50   Output ~ 0
+~SO
+Wire Wire Line
+	4300 6450 4300 6850
+Wire Wire Line
+	4300 6850 4600 6850
+Text GLabel 4600 7000 2    50   Output ~ 0
+SR_OUT
+Wire Wire Line
+	4600 7000 4200 7000
+Wire Wire Line
+	4200 7000 4200 6450
 Wire Bus Line
 	8500 4150 8500 4350
 Wire Bus Line

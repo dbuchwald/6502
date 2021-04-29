@@ -1173,41 +1173,6 @@ Text GLabel 4250 1100 1    50   Input ~ 0
 ROM_~CS
 Text GLabel 4250 5000 3    50   Input ~ 0
 IOCS
-$Comp
-L Device:R_Network04 RN?
-U 1 1 608210F8
-P 7300 5500
-F 0 "RN?" H 7488 5546 50  0000 L CNN
-F 1 "4K7" H 7488 5455 50  0000 L CNN
-F 2 "Resistor_THT:R_Array_SIP5" V 7575 5500 50  0001 C CNN
-F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 7300 5500 50  0001 C CNN
-	1    7300 5500
-	1    0    0    -1  
-$EndComp
-Text GLabel 7200 5200 2    50   Input ~ 0
-+5V
-Wire Wire Line
-	7200 5200 7100 5200
-Wire Wire Line
-	7100 5200 7100 5300
-Text GLabel 7500 5800 2    50   Output ~ 0
-BE
-Wire Wire Line
-	7400 5800 7400 5700
-Text GLabel 7500 5950 2    50   Output ~ 0
-~NMI
-Wire Wire Line
-	7400 5800 7500 5800
-Wire Wire Line
-	7500 5950 7300 5950
-Wire Wire Line
-	7300 5950 7300 5700
-Text GLabel 7500 6100 2    50   Output ~ 0
-~SO
-Wire Wire Line
-	7200 5700 7200 6100
-Wire Wire Line
-	7200 6100 7500 6100
 Wire Wire Line
 	4400 1100 4400 2600
 Text GLabel 7750 4450 1    50   Output ~ 0
@@ -1294,6 +1259,8 @@ Wire Wire Line
 	6650 5000 6650 4800
 Wire Wire Line
 	6650 4800 6850 4800
+Text GLabel 1500 4600 3    50   Output ~ 0
+~NMI
 Wire Bus Line
 	10750 2150 10750 2350
 Wire Bus Line
@@ -1304,6 +1271,4 @@ Wire Bus Line
 	2650 1600 2650 2300
 Wire Bus Line
 	3100 6700 4600 6700
-Text GLabel 1500 4600 3    50   Output ~ 0
-~NMI
 $EndSCHEMATC

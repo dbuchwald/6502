@@ -600,7 +600,7 @@ U 1 1 60BD3EE7
 P 9250 850
 F 0 "RV1" V 9150 850 50  0000 C CNN
 F 1 "10K" V 9250 850 50  0000 C CNN
-F 2 "Potentiometer_THT:Potentiometer_Piher_PT-10-V10_Vertical" H 9250 850 50  0001 C CNN
+F 2 "Potentiometer_THT:Potentiometer_Bourns_3386F_Vertical" H 9250 850 50  0001 C CNN
 F 3 "~" H 9250 850 50  0001 C CNN
 	1    9250 850 
 	0    1    1    0   
@@ -894,6 +894,10 @@ Entry Wire Line
 	9200 5150 9300 5250
 Entry Wire Line
 	9200 5250 9300 5350
+Text GLabel 6300 3900 2    50   Output ~ 0
+BLINK_OUT
+Text GLabel 6700 4350 0    50   Input ~ 0
+BLINK_IN
 Wire Bus Line
 	7500 850  7500 1250
 Wire Bus Line
@@ -910,8 +914,4 @@ Wire Bus Line
 	9200 3350 9200 5250
 Wire Bus Line
 	5650 850  5650 2950
-Text GLabel 6300 3900 2    50   Output ~ 0
-BLINK_OUT
-Text GLabel 6700 4350 0    50   Input ~ 0
-BLINK_IN
 $EndSCHEMATC

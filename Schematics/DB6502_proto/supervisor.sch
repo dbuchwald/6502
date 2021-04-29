@@ -799,8 +799,6 @@ Wire Wire Line
 	5150 7200 5250 7200
 NoConn ~ 5850 7300
 Wire Wire Line
-	9650 5500 9750 5500
-Wire Wire Line
 	9750 5700 9850 5700
 $Comp
 L 74xx:74LS08 U17
@@ -821,30 +819,6 @@ Text GLabel 10550 5600 2    50   Output ~ 0
 SR_LATCH
 Wire Wire Line
 	10450 5600 10550 5600
-$Comp
-L Device:R R?
-U 1 1 5FCB90E3
-P 9750 5250
-AR Path="/5FCB90E3" Ref="R?"  Part="1" 
-AR Path="/5F8F4E1E/5FCB90E3" Ref="R13"  Part="1" 
-F 0 "R13" V 9650 5250 50  0000 C CNN
-F 1 "4K7" V 9750 5250 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9680 5250 50  0001 C CNN
-F 3 "~" H 9750 5250 50  0001 C CNN
-	1    9750 5250
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	9750 5400 9750 5500
-Connection ~ 9750 5500
-Wire Wire Line
-	9750 5500 9850 5500
-Text GLabel 9650 5000 0    50   Input ~ 0
-+5V
-Wire Wire Line
-	9650 5000 9750 5000
-Wire Wire Line
-	9750 5000 9750 5100
 Wire Wire Line
 	10450 1250 10450 1150
 Wire Wire Line
@@ -1357,4 +1331,6 @@ Wire Bus Line
 	3200 2200 3200 2900
 Wire Bus Line
 	3950 1300 3950 3900
+Wire Wire Line
+	9650 5500 9850 5500
 $EndSCHEMATC
