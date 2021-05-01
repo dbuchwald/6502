@@ -1635,14 +1635,8 @@ Wire Wire Line
 Wire Wire Line
 	3800 7450 5100 7450
 Connection ~ 5100 7450
-Text GLabel 4600 6550 2    50   Output ~ 0
-BE
-Wire Wire Line
-	4500 6550 4500 6450
 Text GLabel 4600 6700 2    50   Output ~ 0
 ~NMI
-Wire Wire Line
-	4500 6550 4600 6550
 Wire Wire Line
 	4600 6700 4400 6700
 Wire Wire Line

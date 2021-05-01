@@ -1327,10 +1327,10 @@ Text GLabel 7600 3750 2    50   Output ~ 0
 CLK_2
 Text GLabel 7600 3850 2    50   Output ~ 0
 CLK_4
+Wire Wire Line
+	9650 5500 9850 5500
 Wire Bus Line
 	3200 2200 3200 2900
 Wire Bus Line
 	3950 1300 3950 3900
-Wire Wire Line
-	9650 5500 9850 5500
 $EndSCHEMATC
