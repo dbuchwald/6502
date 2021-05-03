@@ -464,15 +464,15 @@ Wire Wire Line
 	6400 7550 5600 7550
 Wire Wire Line
 	5600 7550 5600 6400
-Text GLabel 4350 5000 3    50   Input ~ 0
-RDY_M1F
-Text GLabel 4450 5000 3    50   Input ~ 0
-RDY_M2F
-Text GLabel 4550 5000 3    50   Input ~ 0
-WS_DISABLE
 Text GLabel 4650 5000 3    50   Input ~ 0
+RDY_M1F
+Text GLabel 4750 5000 3    50   Input ~ 0
+RDY_M2F
+Text GLabel 4850 5000 3    50   Input ~ 0
+WS_DISABLE
+Text GLabel 4950 5000 3    50   Input ~ 0
 DBG_WAIT
-Text GLabel 4750 5000 3    50   Output ~ 0
+Text GLabel 5050 5000 3    50   Output ~ 0
 6502_RDY
 Wire Wire Line
 	1500 4600 1500 3900
@@ -492,7 +492,7 @@ U 1 1 60B17A68
 P 9850 1000
 F 0 "R2" H 9920 1046 50  0000 L CNN
 F 1 "470" H 9920 955 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9780 1000 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 9780 1000 50  0001 C CNN
 F 3 "~" H 9850 1000 50  0001 C CNN
 	1    9850 1000
 	1    0    0    -1  
@@ -989,14 +989,14 @@ Wire Wire Line
 Wire Wire Line
 	6650 900  6650 1100
 $Comp
-L Connector_Generic:Conn_02x12_Odd_Even J5
+L Connector_Generic:Conn_02x13_Odd_Even J5
 U 1 1 606B3BDC
-P 8650 1850
-F 0 "J5" H 8700 2567 50  0000 C CNN
-F 1 "JPR" H 8700 2476 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x12_P2.54mm_Vertical" H 8650 1850 50  0001 C CNN
-F 3 "~" H 8650 1850 50  0001 C CNN
-	1    8650 1850
+P 8650 1950
+F 0 "J5" H 8700 2750 50  0000 C CNN
+F 1 "JPR" H 8700 2650 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x13_P2.54mm_Vertical" H 8650 1950 50  0001 C CNN
+F 3 "~" H 8650 1950 50  0001 C CNN
+	1    8650 1950
 	1    0    0    -1  
 $EndComp
 Text GLabel 9150 1950 2    50   Input ~ 0
@@ -1139,9 +1139,9 @@ F 3 "~" H 7750 4700 50  0001 C CNN
 	1    7750 4700
 	-1   0    0    1   
 $EndComp
-Text GLabel 5050 5000 3    50   Input ~ 0
+Text GLabel 5350 5000 3    50   Input ~ 0
 ~PLD_WR
-Text GLabel 4900 5000 3    50   Input ~ 0
+Text GLabel 5200 5000 3    50   Input ~ 0
 ~PLD_RD
 Text GLabel 4100 5000 3    50   Input ~ 0
 RAM2_~CS
@@ -1149,7 +1149,7 @@ Text GLabel 4100 1100 1    50   Input ~ 0
 RAM1_~CS
 Text GLabel 4250 1100 1    50   Input ~ 0
 ROM_~CS
-Text GLabel 4250 5000 3    50   Input ~ 0
+Text GLabel 4550 5000 3    50   Input ~ 0
 IOCS
 Wire Wire Line
 	4400 1100 4400 2600
@@ -1163,15 +1163,15 @@ Wire Wire Line
 	4100 1100 4100 2800
 Wire Wire Line
 	4100 2800 6850 2800
-Text GLabel 5200 5000 3    50   Input ~ 0
-IO16
-Text GLabel 5300 5000 3    50   Input ~ 0
-IO15
-Text GLabel 5400 5000 3    50   Input ~ 0
-IO14
 Text GLabel 5500 5000 3    50   Input ~ 0
+IO16
+Text GLabel 5600 5000 3    50   Input ~ 0
+IO15
+Text GLabel 5700 5000 3    50   Input ~ 0
+IO14
+Text GLabel 5800 5000 3    50   Input ~ 0
 IO13
-Text GLabel 5600 5000 3    50   Output ~ 0
+Text GLabel 5900 5000 3    50   Output ~ 0
 IN12
 Wire Wire Line
 	4100 5000 4100 2900
@@ -1182,29 +1182,29 @@ Wire Wire Line
 Wire Wire Line
 	4250 3000 6850 3000
 Wire Wire Line
-	4350 5000 4350 3100
+	4400 5000 4400 3100
 Wire Wire Line
-	4350 3100 6850 3100
+	4400 3100 6850 3100
 Wire Wire Line
-	4450 5000 4450 3200
+	4550 5000 4550 3200
 Wire Wire Line
-	4450 3200 6850 3200
+	4550 3200 6850 3200
 Wire Wire Line
-	4550 5000 4550 3300
+	4650 5000 4650 3300
 Wire Wire Line
-	4550 3300 6850 3300
+	4650 3300 6850 3300
 Wire Wire Line
-	4650 5000 4650 3400
+	4750 5000 4750 3400
 Wire Wire Line
-	4650 3400 6850 3400
+	4750 3400 6850 3400
 Wire Wire Line
-	4750 5000 4750 3500
+	4850 5000 4850 3500
 Wire Wire Line
-	4750 3500 6850 3500
+	4850 3500 6850 3500
 Wire Wire Line
-	4900 5000 4900 3600
+	4950 5000 4950 3600
 Wire Wire Line
-	4900 3600 6850 3600
+	4950 3600 6850 3600
 Wire Wire Line
 	5050 5000 5050 3700
 Wire Wire Line
@@ -1214,21 +1214,21 @@ Wire Wire Line
 Wire Wire Line
 	5200 3800 6850 3800
 Wire Wire Line
-	5300 5000 5300 3900
+	5350 5000 5350 3900
 Wire Wire Line
-	5300 3900 6850 3900
+	5350 3900 6850 3900
 Wire Wire Line
-	5400 5000 5400 4000
+	5500 5000 5500 4000
 Wire Wire Line
-	5400 4000 6850 4000
+	5500 4000 6850 4000
 Wire Wire Line
-	5500 5000 5500 4100
+	5600 5000 5600 4100
 Wire Wire Line
-	5500 4100 6850 4100
+	5600 4100 6850 4100
 Wire Wire Line
-	5600 5000 5600 4200
+	5700 5000 5700 4200
 Wire Wire Line
-	5600 4200 6850 4200
+	5700 4200 6850 4200
 Text GLabel 1650 4600 3    50   Output ~ 0
 ~NMI
 Text GLabel 6500 1100 1    50   Input ~ 0
@@ -1247,6 +1247,34 @@ Wire Wire Line
 	6400 7700 5500 7700
 Wire Wire Line
 	5500 7700 5500 6400
+Text GLabel 5900 1100 1    50   Input ~ 0
+6502_RDY_IN
+Text GLabel 4250 5000 3    50   Input ~ 0
+~UART
+Text GLabel 4400 5000 3    50   Input ~ 0
+~VIA1
+Wire Wire Line
+	5800 5000 5800 4300
+Wire Wire Line
+	5800 4300 6850 4300
+Wire Wire Line
+	5900 5000 5900 4400
+Wire Wire Line
+	5900 4400 6850 4400
+Text GLabel 6000 5000 3    50   Input ~ 0
+LATCH_CP
+Wire Wire Line
+	6000 5000 6000 4500
+Wire Wire Line
+	6000 4500 6850 4500
+Text GLabel 8250 2550 0    50   Input ~ 0
+LATCH_Q7
+Wire Wire Line
+	8250 2550 8450 2550
+Text GLabel 9150 2550 2    50   Output ~ 0
+EXRAM
+Wire Wire Line
+	8950 2550 9150 2550
 Wire Bus Line
 	10750 2150 10750 2350
 Wire Bus Line
@@ -1257,6 +1285,4 @@ Wire Bus Line
 	2650 1600 2650 2300
 Wire Bus Line
 	2300 6700 3800 6700
-Text GLabel 5900 1100 1    50   Input ~ 0
-6502_RDY_IN
 $EndSCHEMATC

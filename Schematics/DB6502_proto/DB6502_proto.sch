@@ -562,23 +562,12 @@ $EndSheet
 $Comp
 L 74xx:74LS21 U9
 U 1 1 5FB20233
-P 5950 7300
-F 0 "U9" H 5950 7675 50  0000 C CNN
-F 1 "74HC21" H 5950 7584 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5950 7300 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 5950 7300 50  0001 C CNN
-	1    5950 7300
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74LS21 U9
-U 2 1 5FB22533
-P 3250 7300
-F 0 "U9" H 3250 7675 50  0000 C CNN
-F 1 "74HC21" H 3250 7584 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3250 7300 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 3250 7300 50  0001 C CNN
-	2    3250 7300
+P 4950 7300
+F 0 "U9" H 4950 7675 50  0000 C CNN
+F 1 "74HC21" H 4950 7584 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4950 7300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 4950 7300 50  0001 C CNN
+	1    4950 7300
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -625,49 +614,32 @@ Wire Wire Line
 Connection ~ 1000 7550
 Wire Wire Line
 	1000 7550 1000 7500
-Text GLabel 5550 7050 1    50   Input ~ 0
+Text GLabel 4550 7050 1    50   Input ~ 0
 ~VIA1_IRQ
 Wire Wire Line
-	5550 7050 5550 7150
+	4550 7050 4550 7150
 Wire Wire Line
-	5550 7150 5650 7150
-Text GLabel 5250 7050 1    50   Input ~ 0
+	4550 7150 4650 7150
+Text GLabel 4250 7050 1    50   Input ~ 0
 ~UART_IRQ
-Text GLabel 5100 7050 1    50   Input ~ 0
+Text GLabel 4100 7050 1    50   Input ~ 0
 ~EXT_IRQ
-Text GLabel 6350 7300 2    50   Output ~ 0
+Text GLabel 5350 7300 2    50   Output ~ 0
 ~IRQ
 Wire Wire Line
-	6250 7300 6350 7300
+	5250 7300 5350 7300
 Wire Wire Line
-	5400 7250 5650 7250
+	4400 7250 4650 7250
 Wire Wire Line
-	5250 7050 5250 7350
+	4250 7050 4250 7350
 Wire Wire Line
-	5250 7350 5650 7350
+	4250 7350 4650 7350
 Wire Wire Line
-	5100 7050 5100 7450
+	4100 7050 4100 7450
 Wire Wire Line
-	5100 7450 5650 7450
-Text GLabel 3800 5950 1    50   Input ~ 0
+	4100 7450 4650 7450
+Text GLabel 2750 7450 0    50   Input ~ 0
 +5V
-Text GLabel 2850 7150 0    50   Input ~ 0
-GND
-Text GLabel 2850 7250 0    50   Input ~ 0
-GND
-Text GLabel 2850 7350 0    50   Input ~ 0
-GND
-Text GLabel 2850 7450 0    50   Input ~ 0
-GND
-Wire Wire Line
-	2850 7450 2950 7450
-Wire Wire Line
-	2850 7350 2950 7350
-Wire Wire Line
-	2850 7250 2950 7250
-Wire Wire Line
-	2850 7150 2950 7150
-NoConn ~ 3550 7300
 $Comp
 L 74xx:74HC74 U?
 U 3 1 5FDF80F5
@@ -1358,10 +1330,10 @@ Wire Wire Line
 Connection ~ 10200 1000
 Wire Wire Line
 	10200 1000 10200 1250
-Text GLabel 5400 7050 1    50   Input ~ 0
+Text GLabel 4400 7050 1    50   Input ~ 0
 ~VIA2_IRQ
 Wire Wire Line
-	5400 7050 5400 7250
+	4400 7050 4400 7250
 Wire Wire Line
 	3400 4100 3250 4100
 Wire Wire Line
@@ -1501,7 +1473,7 @@ U 1 1 603D7C7F
 P 1800 5800
 F 0 "R1" V 1700 5800 50  0000 C CNN
 F 1 "470" V 1800 5800 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1730 5800 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 1730 5800 50  0001 C CNN
 F 3 "~" H 1800 5800 50  0001 C CNN
 	1    1800 5800
 	0    1    1    0   
@@ -1605,54 +1577,47 @@ PLD_CLK
 $Comp
 L Device:R_Network08 RN1
 U 1 1 6054D542
-P 4200 6250
-F 0 "RN1" H 4600 6300 50  0000 L CNN
-F 1 "4K7" H 4600 6200 50  0000 L CNN
-F 2 "Resistor_THT:R_Array_SIP9" V 4475 6250 50  0001 C CNN
-F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 4200 6250 50  0001 C CNN
-	1    4200 6250
-	1    0    0    -1  
+P 3050 7050
+F 0 "RN1" H 3450 7100 50  0000 L CNN
+F 1 "4K7" H 3450 7000 50  0000 L CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 3325 7050 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 3050 7050 50  0001 C CNN
+	1    3050 7050
+	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	3800 5950 3800 6050
-Wire Wire Line
-	4100 6450 4100 7150
-Wire Wire Line
-	4100 7150 5550 7150
-Connection ~ 5550 7150
-Wire Wire Line
-	4000 6450 4000 7250
-Wire Wire Line
-	4000 7250 5400 7250
-Connection ~ 5400 7250
-Wire Wire Line
-	3900 6450 3900 7350
-Wire Wire Line
-	3900 7350 5250 7350
-Connection ~ 5250 7350
-Wire Wire Line
-	3800 6450 3800 7450
-Wire Wire Line
-	3800 7450 5100 7450
-Connection ~ 5100 7450
-Text GLabel 4600 6700 2    50   Output ~ 0
+	2750 7450 2850 7450
+Connection ~ 4550 7150
+Connection ~ 4400 7250
+Connection ~ 4250 7350
+Connection ~ 4100 7450
+Text GLabel 3800 6850 1    50   Output ~ 0
 ~NMI
-Wire Wire Line
-	4600 6700 4400 6700
-Wire Wire Line
-	4400 6700 4400 6450
-Text GLabel 4600 6850 2    50   Output ~ 0
+Text GLabel 3600 6750 1    50   Output ~ 0
 ~SO
-Wire Wire Line
-	4300 6450 4300 6850
-Wire Wire Line
-	4300 6850 4600 6850
-Text GLabel 4600 7000 2    50   Output ~ 0
+Text GLabel 3950 6950 1    50   Output ~ 0
 SR_OUT
 Wire Wire Line
-	4600 7000 4200 7000
+	3250 7450 4100 7450
 Wire Wire Line
-	4200 7000 4200 6450
+	3250 7350 4250 7350
+Wire Wire Line
+	3250 7250 4400 7250
+Wire Wire Line
+	3250 7150 4550 7150
+Wire Wire Line
+	3250 6950 3800 6950
+Wire Wire Line
+	3800 6950 3800 6850
+Wire Wire Line
+	3600 6750 3600 6850
+Wire Wire Line
+	3600 6850 3250 6850
+Wire Wire Line
+	3950 7050 3950 6950
+Wire Wire Line
+	3250 7050 3950 7050
+NoConn ~ 3250 6750
 Wire Bus Line
 	8500 4150 8500 4350
 Wire Bus Line
@@ -1687,4 +1652,6 @@ Wire Bus Line
 	4050 650  4050 2050
 Wire Bus Line
 	1600 2150 1600 3400
+Text GLabel 7000 3800 1    50   Output ~ 0
+~LATCH
 $EndSCHEMATC

@@ -866,7 +866,7 @@ AR Path="/5F8F4E1E/5FF0FFAF" Ref="R11"  Part="1"
 AR Path="/5F910E81/5FF0FFAF" Ref="R?"  Part="1" 
 F 0 "R11" V 9850 2150 50  0000 C CNN
 F 1 "470" V 9750 2150 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9680 2150 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 9680 2150 50  0001 C CNN
 F 3 "~" H 9750 2150 50  0001 C CNN
 	1    9750 2150
 	0    -1   -1   0   
@@ -916,7 +916,7 @@ AR Path="/5F8F4E1E/5FF0FFC5" Ref="R12"  Part="1"
 AR Path="/5F910E81/5FF0FFC5" Ref="R?"  Part="1" 
 F 0 "R12" V 9850 2450 50  0000 C CNN
 F 1 "470" V 9750 2450 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9680 2450 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 9680 2450 50  0001 C CNN
 F 3 "~" H 9750 2450 50  0001 C CNN
 	1    9750 2450
 	0    -1   -1   0   
@@ -1138,28 +1138,6 @@ Wire Wire Line
 	4650 2100 4650 1800
 Wire Wire Line
 	2200 5000 2300 5000
-$Comp
-L 74xx:74LS08 U17
-U 3 1 5FA8DB46
-P 5550 6750
-AR Path="/5F8F4E1E/5FA8DB46" Ref="U17"  Part="3" 
-AR Path="/5FA8DB46" Ref="U?"  Part="2" 
-F 0 "U17" H 5550 7075 50  0000 C CNN
-F 1 "74AC08" H 5550 6984 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5550 6750 50  0001 C CNN
-F 3 "https://www.ti.com/lit/ds/symlink/sn74ac08.pdf" H 5550 6750 50  0001 C CNN
-	3    5550 6750
-	1    0    0    -1  
-$EndComp
-Text GLabel 5150 6650 0    50   Input ~ 0
-GND
-Text GLabel 5150 6850 0    50   Input ~ 0
-GND
-Wire Wire Line
-	5150 6850 5250 6850
-Wire Wire Line
-	5150 6650 5250 6650
-NoConn ~ 5850 6750
 Text GLabel 6100 1100 1    50   Output ~ 0
 WS_DISABLE
 Wire Wire Line
