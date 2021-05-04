@@ -1317,6 +1317,18 @@ Text GLabel 2850 5000 3    50   Input ~ 0
 +5V
 Text GLabel 2950 5000 3    50   Input ~ 0
 GND
+Text GLabel 4900 6800 3    50   Input ~ 0
+RDY_M1F
+Text GLabel 5000 6800 3    50   Input ~ 0
+RDY_M2F
+Wire Wire Line
+	4800 6800 4800 6400
+Wire Wire Line
+	4900 6800 4900 6400
+Text GLabel 4800 6800 3    50   Input ~ 0
+6502_RDY
+Wire Wire Line
+	5000 6800 5000 6400
 Wire Bus Line
 	10750 2150 10750 2350
 Wire Bus Line
