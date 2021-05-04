@@ -1313,6 +1313,10 @@ Wire Wire Line
 	2450 5000 2450 4400
 Wire Wire Line
 	2450 4400 3050 4400
+Text GLabel 2850 5000 3    50   Input ~ 0
++5V
+Text GLabel 2950 5000 3    50   Input ~ 0
+GND
 Wire Bus Line
 	10750 2150 10750 2350
 Wire Bus Line
@@ -1323,8 +1327,4 @@ Wire Bus Line
 	2650 1600 2650 2300
 Wire Bus Line
 	2300 6700 3800 6700
-Text GLabel 2850 5000 3    50   Input ~ 0
-+5V
-Text GLabel 2950 5000 3    50   Input ~ 0
-GND
 $EndSCHEMATC

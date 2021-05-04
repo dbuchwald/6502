@@ -38,84 +38,79 @@ Wire Wire Line
 	900  1850 1600 1850
 Text Label 1450 1550 0    50   ~ 0
 a3
-Text Label 1900 900  3    50   ~ 0
+Text Label 1900 750  3    50   ~ 0
 a2
-Text Label 2100 900  3    50   ~ 0
+Text Label 2100 750  3    50   ~ 0
 a1
-Text Label 2300 900  3    50   ~ 0
+Text Label 2300 750  3    50   ~ 0
 a0
-NoConn ~ 2200 1250
-Text GLabel 2500 950  1    50   Input ~ 0
+Text GLabel 2500 800  1    50   Input ~ 0
 +5V
 Wire Wire Line
 	1600 1550 1450 1550
 Wire Wire Line
-	1900 1250 1900 900 
+	1900 1250 1900 750 
 Wire Wire Line
-	2100 1250 2100 900 
+	2100 1250 2100 750 
 Wire Wire Line
-	2300 1250 2300 900 
+	2300 1250 2300 750 
 Entry Wire Line
 	1350 1450 1450 1550
 Entry Wire Line
-	1800 800  1900 900 
+	1800 650  1900 750 
 Entry Wire Line
-	2000 800  2100 900 
+	2000 650  2100 750 
 Entry Wire Line
-	2200 800  2300 900 
+	2200 650  2300 750 
 Wire Bus Line
-	1350 1450 1350 800 
+	1350 1450 1350 650 
 Wire Bus Line
-	1250 800  1350 800 
-Connection ~ 1350 800 
-Text GLabel 1250 800  0    50   Input ~ 0
+	1250 650  1350 650 
+Connection ~ 1350 650 
+Text GLabel 1250 650  0    50   Input ~ 0
 a[0..15]
 Wire Wire Line
-	2500 950  2500 1050
+	2500 800  2500 900 
 $Comp
 L Device:C_Small C26
 U 1 1 5F932BB1
-P 2700 1050
-F 0 "C26" V 2471 1050 50  0000 C CNN
-F 1 "0,1uF" V 2562 1050 50  0000 C CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 2700 1050 50  0001 C CNN
-F 3 "~" H 2700 1050 50  0001 C CNN
-	1    2700 1050
+P 2700 900
+F 0 "C26" V 2471 900 50  0000 C CNN
+F 1 "0,1uF" V 2562 900 50  0000 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 2700 900 50  0001 C CNN
+F 3 "~" H 2700 900 50  0001 C CNN
+	1    2700 900 
 	0    1    1    0   
 $EndComp
-Text GLabel 2900 1050 2    50   Input ~ 0
+Text GLabel 2900 900  2    50   Input ~ 0
 GND
 Wire Wire Line
-	2500 1050 2600 1050
-Connection ~ 2500 1050
+	2500 900  2600 900 
+Connection ~ 2500 900 
 Wire Wire Line
-	2500 1050 2500 1250
+	2500 900  2500 1250
 Wire Wire Line
-	2800 1050 2900 1050
-NoConn ~ 2600 1250
-NoConn ~ 2700 1250
-NoConn ~ 2800 1250
-NoConn ~ 2900 1250
-Text GLabel 3300 1650 2    50   Input ~ 0
+	2800 900  2900 900 
+Text GLabel 3500 1650 2    50   Input ~ 0
 UART_RES
-Text GLabel 3300 1500 2    50   Input ~ 0
+Text GLabel 3500 1500 2    50   Input ~ 0
 ~UART
 Wire Wire Line
-	3200 1650 3300 1650
+	3200 1650 3500 1650
 Wire Wire Line
 	3200 1550 3250 1550
 Wire Wire Line
 	3250 1550 3250 1500
 Wire Wire Line
-	3250 1500 3300 1500
-Text GLabel 3300 1950 2    50   Input ~ 0
+	3250 1500 3500 1500
+Text GLabel 3500 1950 2    50   Input ~ 0
 UART_A_RxD
-Text GLabel 3300 2150 2    50   Output ~ 0
+Text GLabel 3500 2150 2    50   Output ~ 0
 UART_A_TxD
 Wire Wire Line
-	3200 1950 3300 1950
+	3200 1950 3500 1950
 Wire Wire Line
-	3200 2150 3300 2150
+	3200 2150 3500 2150
 Text Label 1900 3250 1    50   ~ 0
 d1
 Text Label 2000 3250 1    50   ~ 0
@@ -178,132 +173,126 @@ Wire Wire Line
 	1750 3100 2500 3100
 Wire Wire Line
 	2500 3100 2500 2850
-Text GLabel 1500 1950 0    50   Input ~ 0
+Text GLabel 1250 1950 0    50   Input ~ 0
 UART_B_RxD
-Text GLabel 1500 2150 0    50   Output ~ 0
+Text GLabel 1250 2150 0    50   Output ~ 0
 UART_B_TxD
 Wire Wire Line
-	1500 1950 1600 1950
+	1250 1950 1600 1950
 Wire Wire Line
-	1500 2150 1600 2150
+	1250 2150 1600 2150
 $Comp
 L Device:Crystal_Small Y2
 U 1 1 5F93DD15
-P 3950 1800
-F 0 "Y2" V 3904 1888 50  0000 L CNN
-F 1 "3,6864MHz" V 3995 1888 50  0000 L CNN
-F 2 "Crystal:Crystal_HC49-U_Vertical" H 3950 1800 50  0001 C CNN
-F 3 "~" H 3950 1800 50  0001 C CNN
-	1    3950 1800
+P 4150 1800
+F 0 "Y2" V 4104 1888 50  0000 L CNN
+F 1 "3,6864MHz" V 4195 1888 50  0000 L CNN
+F 2 "Crystal:Crystal_HC49-U_Vertical" H 4150 1800 50  0001 C CNN
+F 3 "~" H 4150 1800 50  0001 C CNN
+	1    4150 1800
 	0    1    1    0   
 $EndComp
 $Comp
 L Device:C_Small C27
 U 1 1 5F93E98E
-P 3950 1500
-F 0 "C27" H 3858 1454 50  0000 R CNN
-F 1 "22pF" H 3858 1545 50  0000 R CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 3950 1500 50  0001 C CNN
-F 3 "~" H 3950 1500 50  0001 C CNN
-	1    3950 1500
+P 4150 1500
+F 0 "C27" H 4058 1454 50  0000 R CNN
+F 1 "22pF" H 4058 1545 50  0000 R CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 4150 1500 50  0001 C CNN
+F 3 "~" H 4150 1500 50  0001 C CNN
+	1    4150 1500
 	-1   0    0    1   
 $EndComp
 $Comp
 L Device:C_Small C28
 U 1 1 5F93F1BF
-P 3950 2100
-F 0 "C28" H 3858 2054 50  0000 R CNN
-F 1 "22pF" H 3858 2145 50  0000 R CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 3950 2100 50  0001 C CNN
-F 3 "~" H 3950 2100 50  0001 C CNN
-	1    3950 2100
+P 4150 2100
+F 0 "C28" H 4058 2054 50  0000 R CNN
+F 1 "22pF" H 4058 2145 50  0000 R CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 4150 2100 50  0001 C CNN
+F 3 "~" H 4150 2100 50  0001 C CNN
+	1    4150 2100
 	-1   0    0    1   
 $EndComp
-Text GLabel 3950 2300 3    50   Input ~ 0
+Text GLabel 4150 2300 3    50   Input ~ 0
 GND
-Text GLabel 3950 1300 1    50   Input ~ 0
+Text GLabel 4150 1300 1    50   Input ~ 0
 GND
 Wire Wire Line
-	3950 1300 3950 1400
+	4150 1300 4150 1400
 Wire Wire Line
-	3950 1600 3950 1650
+	4150 1600 4150 1650
 Wire Wire Line
-	3950 1900 3950 1950
+	4150 1900 4150 1950
 Wire Wire Line
-	3950 2200 3950 2300
+	4150 2200 4150 2300
 Wire Wire Line
-	3200 1850 3850 1850
+	3200 1850 4050 1850
 Wire Wire Line
-	3850 1850 3850 1950
+	4050 1850 4050 1950
 Wire Wire Line
-	3850 1950 3950 1950
-Connection ~ 3950 1950
+	4050 1950 4150 1950
+Connection ~ 4150 1950
 Wire Wire Line
-	3950 1950 3950 2000
+	4150 1950 4150 2000
 Wire Wire Line
-	3200 1750 3850 1750
+	3200 1750 4050 1750
 Wire Wire Line
-	3850 1750 3850 1650
+	4050 1750 4050 1650
 Wire Wire Line
-	3850 1650 3950 1650
-Connection ~ 3950 1650
+	4050 1650 4150 1650
+Connection ~ 4150 1650
 Wire Wire Line
-	3950 1650 3950 1700
+	4150 1650 4150 1700
 $Comp
 L 74xx:74LS04 U?
 U 5 1 5F9A15C7
-P 1850 3850
+P 4150 5650
 AR Path="/5F8F4E1E/5F9A15C7" Ref="U?"  Part="6" 
 AR Path="/5F910E81/5F9A15C7" Ref="U8"  Part="5" 
-F 0 "U8" H 1850 4167 50  0000 C CNN
-F 1 "74AC04" H 1850 4076 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1850 3850 50  0001 C CNN
-F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 1850 3850 50  0001 C CNN
-	5    1850 3850
+F 0 "U8" H 4150 5967 50  0000 C CNN
+F 1 "74AC04" H 4150 5876 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4150 5650 50  0001 C CNN
+F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 4150 5650 50  0001 C CNN
+	5    4150 5650
 	1    0    0    -1  
 $EndComp
-Text GLabel 2250 3850 2    50   Output ~ 0
+Text GLabel 4550 5650 2    50   Output ~ 0
 UART_RES
-Text GLabel 1350 3850 0    50   Input ~ 0
+Text GLabel 3650 5650 0    50   Input ~ 0
 ~6502_RES
 Wire Wire Line
-	1350 3850 1550 3850
+	3650 5650 3850 5650
 Wire Wire Line
-	2150 3850 2250 3850
-NoConn ~ 3200 2350
-NoConn ~ 1600 2350
-NoConn ~ 1600 2450
-NoConn ~ 1600 2550
-NoConn ~ 3200 2550
-NoConn ~ 3200 2450
-Text GLabel 3300 2300 2    50   Output ~ 0
+	4450 5650 4550 5650
+Text GLabel 3500 2300 2    50   Output ~ 0
 UART_A_~RTS
 Wire Wire Line
-	3200 2250 3250 2250
+	3200 2250 3400 2250
 Wire Wire Line
-	3250 2250 3250 2300
+	3400 2250 3400 2300
 Wire Wire Line
-	3250 2300 3300 2300
-Text GLabel 1500 2300 0    50   Output ~ 0
+	3400 2300 3500 2300
+Text GLabel 1250 2300 0    50   Output ~ 0
 UART_B_~RTS
 Wire Wire Line
-	1500 2300 1550 2300
+	1250 2300 1350 2300
 Wire Wire Line
-	1550 2300 1550 2250
+	1350 2300 1350 2250
 Wire Wire Line
-	1550 2250 1600 2250
+	1350 2250 1600 2250
 Text GLabel 1200 1550 1    50   Input ~ 0
 UART_A_~CTS
 Wire Wire Line
 	1200 1550 1200 1650
 Wire Wire Line
 	1200 1650 1600 1650
-Text GLabel 3300 1150 2    50   Input ~ 0
+Text GLabel 3300 1000 2    50   Input ~ 0
 UART_B_~CTS
 Wire Wire Line
-	3300 1150 2000 1150
+	3300 1000 2000 1000
 Wire Wire Line
-	2000 1150 2000 1250
+	2000 1000 2000 1250
 $Comp
 L 6502:65C22S U19
 U 1 1 60B5BF49
@@ -1092,136 +1081,136 @@ Connection ~ 5450 7600
 $Comp
 L 74xx:74HCT574 U21
 U 1 1 60DE9676
-P 3350 5350
-F 0 "U21" H 3150 6050 50  0000 C CNN
-F 1 "74AC574" H 3600 6050 50  0000 C CNN
-F 2 "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm" H 3350 5350 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74HCT574" H 3350 5350 50  0001 C CNN
-	1    3350 5350
+P 1900 5500
+F 0 "U21" H 1700 6200 50  0000 C CNN
+F 1 "74AC574" H 2150 6200 50  0000 C CNN
+F 2 "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm" H 1900 5500 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74HCT574" H 1900 5500 50  0001 C CNN
+	1    1900 5500
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2750 5750 2850 5750
-Text GLabel 2650 6250 0    50   Input ~ 0
+	1300 5900 1400 5900
+Text GLabel 1200 6400 0    50   Input ~ 0
 GND
 Wire Wire Line
-	2650 6250 2750 6250
+	1200 6400 1300 6400
 Wire Wire Line
-	2750 6250 2750 5850
+	1300 6400 1300 6000
 Wire Wire Line
-	2750 5850 2850 5850
+	1300 6000 1400 6000
 Wire Wire Line
-	3350 6150 3350 6250
+	1900 6300 1900 6400
 Wire Wire Line
-	3350 6250 2750 6250
-Connection ~ 2750 6250
+	1900 6400 1300 6400
+Connection ~ 1300 6400
 $Comp
 L Device:C_Small C30
 U 1 1 60E5ED64
-P 3550 4450
-F 0 "C30" V 3321 4450 50  0000 C CNN
-F 1 "0,1uF" V 3412 4450 50  0000 C CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 3550 4450 50  0001 C CNN
-F 3 "~" H 3550 4450 50  0001 C CNN
-	1    3550 4450
+P 2100 4600
+F 0 "C30" V 1871 4600 50  0000 C CNN
+F 1 "0,1uF" V 1962 4600 50  0000 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 2100 4600 50  0001 C CNN
+F 3 "~" H 2100 4600 50  0001 C CNN
+	1    2100 4600
 	0    1    1    0   
 $EndComp
-Text GLabel 3750 4450 2    50   Input ~ 0
+Text GLabel 2300 4600 2    50   Input ~ 0
 GND
 Wire Wire Line
-	3750 4450 3650 4450
-Text GLabel 3350 4350 1    50   Input ~ 0
+	2300 4600 2200 4600
+Text GLabel 1900 4500 1    50   Input ~ 0
 +5V
 Wire Wire Line
-	3350 4350 3350 4450
+	1900 4500 1900 4600
 Wire Wire Line
-	3350 4450 3450 4450
+	1900 4600 2000 4600
 Wire Wire Line
-	3350 4450 3350 4550
-Connection ~ 3350 4450
-Text Label 2700 4850 0    50   ~ 0
+	1900 4600 1900 4700
+Connection ~ 1900 4600
+Text Label 1250 5000 0    50   ~ 0
 d0
-Text Label 2700 4950 0    50   ~ 0
+Text Label 1250 5100 0    50   ~ 0
 d1
-Text Label 2700 5050 0    50   ~ 0
+Text Label 1250 5200 0    50   ~ 0
 d2
-Text Label 2700 5150 0    50   ~ 0
+Text Label 1250 5300 0    50   ~ 0
 d3
-Text Label 2700 5250 0    50   ~ 0
+Text Label 1250 5400 0    50   ~ 0
 d4
-Text Label 2700 5350 0    50   ~ 0
+Text Label 1250 5500 0    50   ~ 0
 d5
-Text Label 2700 5450 0    50   ~ 0
+Text Label 1250 5600 0    50   ~ 0
 d6
-Text Label 2700 5550 0    50   ~ 0
+Text Label 1250 5700 0    50   ~ 0
 d7
 Wire Wire Line
-	2700 5550 2850 5550
+	1250 5700 1400 5700
 Wire Wire Line
-	2700 5450 2850 5450
+	1250 5600 1400 5600
 Wire Wire Line
-	2700 5350 2850 5350
+	1250 5500 1400 5500
 Wire Wire Line
-	2700 5250 2850 5250
+	1250 5400 1400 5400
 Wire Wire Line
-	2700 5150 2850 5150
+	1250 5300 1400 5300
 Wire Wire Line
-	2700 5050 2850 5050
+	1250 5200 1400 5200
 Wire Wire Line
-	2700 4950 2850 4950
+	1250 5100 1400 5100
 Wire Wire Line
-	2700 4850 2850 4850
+	1250 5000 1400 5000
 Entry Wire Line
-	2600 5450 2700 5550
+	1150 5600 1250 5700
 Entry Wire Line
-	2600 5350 2700 5450
+	1150 5500 1250 5600
 Entry Wire Line
-	2600 5250 2700 5350
+	1150 5400 1250 5500
 Entry Wire Line
-	2600 5150 2700 5250
+	1150 5300 1250 5400
 Entry Wire Line
-	2600 5050 2700 5150
+	1150 5200 1250 5300
 Entry Wire Line
-	2600 4950 2700 5050
+	1150 5100 1250 5200
 Entry Wire Line
-	2600 4850 2700 4950
+	1150 5000 1250 5100
 Entry Wire Line
-	2600 4750 2700 4850
-Text GLabel 3950 4850 2    50   Output ~ 0
+	1150 4900 1250 5000
+Text GLabel 2500 5000 2    50   Output ~ 0
 LATCH_Q0
 Wire Wire Line
-	3850 4850 3950 4850
-Text GLabel 3950 4950 2    50   Output ~ 0
+	2400 5000 2500 5000
+Text GLabel 2500 5100 2    50   Output ~ 0
 LATCH_Q1
-Text GLabel 3950 5050 2    50   Output ~ 0
+Text GLabel 2500 5200 2    50   Output ~ 0
 LATCH_Q2
-Text GLabel 3950 5150 2    50   Output ~ 0
+Text GLabel 2500 5300 2    50   Output ~ 0
 LATCH_Q3
-Text GLabel 3950 5250 2    50   Output ~ 0
+Text GLabel 2500 5400 2    50   Output ~ 0
 LATCH_Q4
-Text GLabel 3950 5350 2    50   Output ~ 0
+Text GLabel 2500 5500 2    50   Output ~ 0
 LATCH_Q5
-Text GLabel 3950 5450 2    50   Output ~ 0
+Text GLabel 2500 5600 2    50   Output ~ 0
 LATCH_Q6
-Text GLabel 3950 5550 2    50   Output ~ 0
+Text GLabel 2500 5700 2    50   Output ~ 0
 LATCH_Q7
 Wire Wire Line
-	3850 4950 3950 4950
+	2400 5100 2500 5100
 Wire Wire Line
-	3850 5050 3950 5050
+	2400 5200 2500 5200
 Wire Wire Line
-	3850 5150 3950 5150
+	2400 5300 2500 5300
 Wire Wire Line
-	3850 5250 3950 5250
+	2400 5400 2500 5400
 Wire Wire Line
-	3850 5350 3950 5350
+	2400 5500 2500 5500
 Wire Wire Line
-	3850 5450 3950 5450
+	2400 5600 2500 5600
 Wire Wire Line
-	3850 5550 3950 5550
+	2400 5700 2500 5700
 Text GLabel 4300 6950 2    50   Output ~ 0
 LATCH_CP
-Text GLabel 2750 5750 0    50   Input ~ 0
+Text GLabel 1300 5900 0    50   Input ~ 0
 LATCH_CP
 $Comp
 L Connector:TestPoint TP3
@@ -1241,10 +1230,69 @@ Wire Wire Line
 Connection ~ 4200 6950
 Wire Wire Line
 	4200 6950 4300 6950
+Text Label 3200 2350 0    50   ~ 0
+op2
+Text Label 3200 2450 0    50   ~ 0
+op4
+Text Label 3200 2550 0    50   ~ 0
+op6
+Text Label 1600 2350 2    50   ~ 0
+op3
+Text Label 1600 2450 2    50   ~ 0
+op5
+Text Label 1600 2550 2    50   ~ 0
+op7
+Text Label 2900 1250 1    50   ~ 0
+ip2
+Text Label 2800 1250 1    50   ~ 0
+ip6
+Text Label 2700 1250 1    50   ~ 0
+ip5
+Text Label 2600 1250 1    50   ~ 0
+ip4
+Text Label 2200 1250 1    50   ~ 0
+ip3
+$Comp
+L Connector_Generic:Conn_02x06_Odd_Even J13
+U 1 1 60A20A5D
+P 4100 3400
+F 0 "J13" H 4150 3817 50  0000 C CNN
+F 1 "Conn_02x06_Odd_Even" H 4150 3726 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_2x06_P2.54mm_Vertical" H 4100 3400 50  0001 C CNN
+F 3 "~" H 4100 3400 50  0001 C CNN
+	1    4100 3400
+	-1   0    0    -1  
+$EndComp
+Text Label 3800 3200 2    50   ~ 0
+ip2
+Text Label 3800 3300 2    50   ~ 0
+ip3
+Text Label 3800 3400 2    50   ~ 0
+ip4
+Text Label 3800 3500 2    50   ~ 0
+ip5
+Text Label 3800 3600 2    50   ~ 0
+ip6
+Text Label 4300 3200 0    50   ~ 0
+op2
+Text Label 4300 3300 0    50   ~ 0
+op3
+Text Label 4300 3400 0    50   ~ 0
+op4
+Text Label 4300 3500 0    50   ~ 0
+op5
+Text Label 4300 3600 0    50   ~ 0
+op6
+Text Label 4300 3700 0    50   ~ 0
+op7
+Text GLabel 3700 3700 0    50   Input ~ 0
+GND
+Wire Wire Line
+	3700 3700 3800 3700
 Wire Bus Line
 	7500 850  7500 1250
 Wire Bus Line
-	1350 800  2200 800 
+	1350 650  2200 650 
 Wire Bus Line
 	7500 1350 7500 1650
 Wire Bus Line
@@ -1252,7 +1300,7 @@ Wire Bus Line
 Wire Bus Line
 	9100 1450 9100 2250
 Wire Bus Line
-	2600 4750 2600 5450
+	1150 4900 1150 5600
 Wire Bus Line
 	1700 3350 2800 3350
 Wire Bus Line
