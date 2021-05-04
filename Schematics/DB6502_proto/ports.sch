@@ -1329,6 +1329,18 @@ Text GLabel 4800 6800 3    50   Input ~ 0
 6502_RDY
 Wire Wire Line
 	5000 6800 5000 6400
+Text GLabel 5100 6800 3    50   Input ~ 0
+SR_QE
+Text GLabel 5200 6800 3    50   Input ~ 0
+SR_QF
+Text GLabel 5300 6800 3    50   Input ~ 0
+SR_QG
+Wire Wire Line
+	5100 6800 5100 6400
+Wire Wire Line
+	5200 6800 5200 6400
+Wire Wire Line
+	5300 6800 5300 6400
 Wire Bus Line
 	10750 2150 10750 2350
 Wire Bus Line

@@ -753,9 +753,6 @@ Wire Wire Line
 	6750 1600 6850 1600
 Wire Wire Line
 	6750 1500 6850 1500
-NoConn ~ 5550 1600
-NoConn ~ 5550 1700
-NoConn ~ 5550 1800
 Wire Wire Line
 	5650 1200 5650 1100
 Wire Wire Line
@@ -1307,6 +1304,18 @@ Text GLabel 7600 3850 2    50   Output ~ 0
 CLK_4
 Wire Wire Line
 	9650 5500 9850 5500
+Text GLabel 5650 1600 2    50   Output ~ 0
+SR_QE
+Text GLabel 5650 1700 2    50   Output ~ 0
+SR_QF
+Text GLabel 5650 1800 2    50   Output ~ 0
+SR_QG
+Wire Wire Line
+	5550 1800 5650 1800
+Wire Wire Line
+	5550 1700 5650 1700
+Wire Wire Line
+	5550 1600 5650 1600
 Wire Bus Line
 	3200 2200 3200 2900
 Wire Bus Line
