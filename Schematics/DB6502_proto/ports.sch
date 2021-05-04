@@ -441,21 +441,21 @@ Wire Wire Line
 Text GLabel 1200 2400 1    50   Input ~ 0
 6502_CLK
 Wire Wire Line
-	1350 4600 1350 3800
+	1750 5000 1750 3800
 Wire Wire Line
-	1350 3800 3050 3800
+	1750 3800 3050 3800
 Text GLabel 1350 2400 1    50   Input ~ 0
 R~W
 Wire Wire Line
-	1200 4600 1200 3700
+	1600 5000 1600 3700
 Wire Wire Line
-	1200 3700 3050 3700
-Text GLabel 1050 4600 3    50   Input ~ 0
+	1600 3700 3050 3700
+Text GLabel 1450 5000 3    50   Input ~ 0
 ~6502_RES
 Wire Wire Line
-	1050 4600 1050 3600
+	1450 5000 1450 3600
 Wire Wire Line
-	1050 3600 3050 3600
+	1450 3600 3050 3600
 Text GLabel 6400 7400 2    50   Input ~ 0
 SYNC
 Wire Wire Line
@@ -473,17 +473,17 @@ DBG_WAIT
 Text GLabel 5050 5000 3    50   Output ~ 0
 6502_RDY
 Wire Wire Line
-	1500 4600 1500 3900
+	1900 5000 1900 3900
 Wire Wire Line
-	1500 3900 3050 3900
+	1900 3900 3050 3900
 Wire Wire Line
-	1650 4600 1650 4000
+	2050 5000 2050 4000
 Wire Wire Line
-	1650 4000 3050 4000
+	2050 4000 3050 4000
 Wire Wire Line
-	1800 4600 1800 4100
+	2150 5000 2150 4100
 Wire Wire Line
-	1800 4100 3050 4100
+	2150 4100 3050 4100
 $Comp
 L Device:R R2
 U 1 1 60B17A68
@@ -962,9 +962,9 @@ Wire Wire Line
 	2850 900  2850 1100
 Wire Wire Line
 	2950 1000 3050 1000
-Text GLabel 1200 4600 3    50   Output ~ 0
+Text GLabel 1600 5000 3    50   Output ~ 0
 ~VIA2_IRQ
-Text GLabel 1350 4600 3    50   Output ~ 0
+Text GLabel 1750 5000 3    50   Output ~ 0
 ~EXT_IRQ
 Wire Wire Line
 	2250 5000 2250 4200
@@ -1227,7 +1227,7 @@ Wire Wire Line
 	5700 5000 5700 4200
 Wire Wire Line
 	5700 4200 6850 4200
-Text GLabel 1500 4600 3    50   Output ~ 0
+Text GLabel 1900 5000 3    50   Output ~ 0
 ~NMI
 Text GLabel 6500 1100 1    50   Input ~ 0
 ~6502_RES
@@ -1273,21 +1273,21 @@ Text GLabel 9150 2550 2    50   Output ~ 0
 EXRAM
 Wire Wire Line
 	8950 2550 9150 2550
-Text GLabel 2950 5000 3    50   Input ~ 0
-LATCH_Q7
-Text GLabel 2850 5000 3    50   Input ~ 0
-LATCH_Q6
 Text GLabel 2750 5000 3    50   Input ~ 0
-LATCH_Q5
+LATCH_Q7
 Text GLabel 2650 5000 3    50   Input ~ 0
-LATCH_Q4
+LATCH_Q6
 Text GLabel 2550 5000 3    50   Input ~ 0
-LATCH_Q3
+LATCH_Q5
 Text GLabel 2450 5000 3    50   Input ~ 0
-LATCH_Q2
+LATCH_Q4
 Text GLabel 2350 5000 3    50   Input ~ 0
-LATCH_Q1
+LATCH_Q3
 Text GLabel 2250 5000 3    50   Input ~ 0
+LATCH_Q2
+Text GLabel 2150 5000 3    50   Input ~ 0
+LATCH_Q1
+Text GLabel 2050 5000 3    50   Input ~ 0
 LATCH_Q0
 Wire Wire Line
 	2950 5000 2950 4900
@@ -1323,4 +1323,8 @@ Wire Bus Line
 	2650 1600 2650 2300
 Wire Bus Line
 	2300 6700 3800 6700
+Text GLabel 2850 5000 3    50   Input ~ 0
++5V
+Text GLabel 2950 5000 3    50   Input ~ 0
+GND
 $EndSCHEMATC
