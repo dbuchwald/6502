@@ -337,16 +337,14 @@ Entry Wire Line
 Entry Wire Line
 	2750 1500 2850 1600
 Text GLabel 2400 2400 1    50   Input ~ 0
-~LATCH
-Text GLabel 2250 2400 1    50   Input ~ 0
 ~VIA2
-Text GLabel 2100 2400 1    50   Input ~ 0
+Text GLabel 2250 2400 1    50   Input ~ 0
 ~IOCS0
-Text GLabel 1950 2400 1    50   Input ~ 0
+Text GLabel 2100 2400 1    50   Input ~ 0
 ~IOCS1
-Text GLabel 1800 2400 1    50   Input ~ 0
+Text GLabel 1950 2400 1    50   Input ~ 0
 ~IOCS2
-Text GLabel 1650 2400 1    50   Input ~ 0
+Text GLabel 1800 2400 1    50   Input ~ 0
 ~IOCS3
 Wire Wire Line
 	2400 2400 2400 2600
@@ -384,9 +382,9 @@ Wire Wire Line
 	2550 2400 2550 2500
 Wire Wire Line
 	2550 2500 3050 2500
-Text GLabel 1500 2400 1    50   Input ~ 0
+Text GLabel 1650 2400 1    50   Input ~ 0
 ~RD
-Text GLabel 1350 2400 1    50   Input ~ 0
+Text GLabel 1500 2400 1    50   Input ~ 0
 ~WR
 Wire Wire Line
 	1050 2400 1050 3500
@@ -440,19 +438,19 @@ Wire Wire Line
 	6400 7400 5700 7400
 Wire Wire Line
 	5700 7400 5700 6400
-Text GLabel 1050 2400 1    50   Input ~ 0
+Text GLabel 1200 2400 1    50   Input ~ 0
 6502_CLK
 Wire Wire Line
 	1350 4600 1350 3800
 Wire Wire Line
 	1350 3800 3050 3800
-Text GLabel 1200 2400 1    50   Input ~ 0
+Text GLabel 1350 2400 1    50   Input ~ 0
 R~W
 Wire Wire Line
 	1200 4600 1200 3700
 Wire Wire Line
 	1200 3700 3050 3700
-Text GLabel 1200 4600 3    50   Input ~ 0
+Text GLabel 1050 4600 3    50   Input ~ 0
 ~6502_RES
 Wire Wire Line
 	1050 4600 1050 3600
@@ -734,7 +732,7 @@ AR Path="/6014B4D9/5FFE873E" Ref="R10"  Part="1"
 AR Path="/5F8F4E1E/5FFE873E" Ref="R?"  Part="1" 
 F 0 "R10" V 10100 3850 50  0000 C CNN
 F 1 "27" V 10000 3850 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9930 3850 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 9930 3850 50  0001 C CNN
 F 3 "~" H 10000 3850 50  0001 C CNN
 	1    10000 3850
 	0    -1   -1   0   
@@ -747,7 +745,7 @@ AR Path="/6014B4D9/5FFE8744" Ref="R9"  Part="1"
 AR Path="/5F8F4E1E/5FFE8744" Ref="R?"  Part="1" 
 F 0 "R9" V 10100 3600 50  0000 C CNN
 F 1 "27" V 10000 3600 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9930 3600 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 9930 3600 50  0001 C CNN
 F 3 "~" H 10000 3600 50  0001 C CNN
 	1    10000 3600
 	0    -1   -1   0   
@@ -919,7 +917,7 @@ U 1 1 604AB578
 P 9000 3400
 F 0 "R7" V 8900 3400 50  0000 C CNN
 F 1 "4K7" V 9000 3400 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 8930 3400 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 8930 3400 50  0001 C CNN
 F 3 "~" H 9000 3400 50  0001 C CNN
 	1    9000 3400
 	0    1    1    0   
@@ -930,7 +928,7 @@ U 1 1 604AC544
 P 9500 3400
 F 0 "R8" V 9400 3400 50  0000 C CNN
 F 1 "10K" V 9500 3400 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 9430 3400 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 9430 3400 50  0001 C CNN
 F 3 "~" H 9500 3400 50  0001 C CNN
 	1    9500 3400
 	0    1    1    0   
@@ -964,18 +962,18 @@ Wire Wire Line
 	2850 900  2850 1100
 Wire Wire Line
 	2950 1000 3050 1000
-Text GLabel 1350 4600 3    50   Output ~ 0
+Text GLabel 1200 4600 3    50   Output ~ 0
 ~VIA2_IRQ
-Text GLabel 1500 4600 3    50   Output ~ 0
+Text GLabel 1350 4600 3    50   Output ~ 0
 ~EXT_IRQ
 Wire Wire Line
-	1950 4600 1950 4200
+	2250 5000 2250 4200
 Wire Wire Line
-	1950 4200 3050 4200
+	2250 4200 3050 4200
 Wire Wire Line
-	2100 4600 2100 4300
+	2350 5000 2350 4300
 Wire Wire Line
-	2100 4300 3050 4300
+	2350 4300 3050 4300
 Text GLabel 6650 900  1    50   Input ~ 0
 GND
 Text GLabel 6750 900  1    50   Input ~ 0
@@ -1134,7 +1132,7 @@ U 1 1 604F21BB
 P 7750 4700
 F 0 "R6" H 7680 4654 50  0000 R CNN
 F 1 "4K7" H 7680 4745 50  0000 R CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 7680 4700 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 7680 4700 50  0001 C CNN
 F 3 "~" H 7750 4700 50  0001 C CNN
 	1    7750 4700
 	-1   0    0    1   
@@ -1229,7 +1227,7 @@ Wire Wire Line
 	5700 5000 5700 4200
 Wire Wire Line
 	5700 4200 6850 4200
-Text GLabel 1650 4600 3    50   Output ~ 0
+Text GLabel 1500 4600 3    50   Output ~ 0
 ~NMI
 Text GLabel 6500 1100 1    50   Input ~ 0
 ~6502_RES
@@ -1239,7 +1237,7 @@ Text GLabel 6200 1100 1    50   Input ~ 0
 ~ML
 Text GLabel 6350 1100 1    50   Input ~ 0
 SYNC
-Text GLabel 1050 4600 3    50   Input ~ 0
+Text GLabel 1050 2400 1    50   Input ~ 0
 ~6502_CLK
 Text GLabel 6400 7700 2    50   Input ~ 0
 ~6502_CLK
@@ -1275,6 +1273,46 @@ Text GLabel 9150 2550 2    50   Output ~ 0
 EXRAM
 Wire Wire Line
 	8950 2550 9150 2550
+Text GLabel 2950 5000 3    50   Input ~ 0
+LATCH_Q7
+Text GLabel 2850 5000 3    50   Input ~ 0
+LATCH_Q6
+Text GLabel 2750 5000 3    50   Input ~ 0
+LATCH_Q5
+Text GLabel 2650 5000 3    50   Input ~ 0
+LATCH_Q4
+Text GLabel 2550 5000 3    50   Input ~ 0
+LATCH_Q3
+Text GLabel 2450 5000 3    50   Input ~ 0
+LATCH_Q2
+Text GLabel 2350 5000 3    50   Input ~ 0
+LATCH_Q1
+Text GLabel 2250 5000 3    50   Input ~ 0
+LATCH_Q0
+Wire Wire Line
+	2950 5000 2950 4900
+Wire Wire Line
+	2950 4900 3050 4900
+Wire Wire Line
+	2850 5000 2850 4800
+Wire Wire Line
+	2850 4800 3050 4800
+Wire Wire Line
+	2750 5000 2750 4700
+Wire Wire Line
+	2750 4700 3050 4700
+Wire Wire Line
+	2650 5000 2650 4600
+Wire Wire Line
+	2650 4600 3050 4600
+Wire Wire Line
+	2550 5000 2550 4500
+Wire Wire Line
+	2550 4500 3050 4500
+Wire Wire Line
+	2450 5000 2450 4400
+Wire Wire Line
+	2450 4400 3050 4400
 Wire Bus Line
 	10750 2150 10750 2350
 Wire Bus Line

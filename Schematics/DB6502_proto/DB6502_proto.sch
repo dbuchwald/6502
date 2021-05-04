@@ -1618,6 +1618,8 @@ Wire Wire Line
 Wire Wire Line
 	3250 7050 3950 7050
 NoConn ~ 3250 6750
+Text GLabel 7000 3800 1    50   Output ~ 0
+~LATCH
 Wire Bus Line
 	8500 4150 8500 4350
 Wire Bus Line
@@ -1652,6 +1654,4 @@ Wire Bus Line
 	4050 650  4050 2050
 Wire Bus Line
 	1600 2150 1600 3400
-Text GLabel 7000 3800 1    50   Output ~ 0
-~LATCH
 $EndSCHEMATC
