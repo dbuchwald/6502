@@ -1341,6 +1341,34 @@ Wire Wire Line
 	5200 6800 5200 6400
 Wire Wire Line
 	5300 6800 5300 6400
+Text GLabel 6200 5000 3    50   Input ~ 0
+CLK_1
+Text GLabel 6300 5000 3    50   Input ~ 0
+CLK_2
+Text GLabel 6400 5000 3    50   Input ~ 0
+CLK_4
+Wire Wire Line
+	6400 5000 6400 4900
+Wire Wire Line
+	6400 4900 6850 4900
+Wire Wire Line
+	6300 5000 6300 4800
+Wire Wire Line
+	6300 4800 6850 4800
+Wire Wire Line
+	6200 5000 6200 4700
+Wire Wire Line
+	6200 4700 6850 4700
+Wire Wire Line
+	6100 5000 6100 4600
+Wire Wire Line
+	6100 4600 6850 4600
+Text GLabel 6100 5000 3    50   Output ~ 0
+EXT_BE
+Text GLabel 5400 6800 3    50   Input ~ 0
+BE
+Wire Wire Line
+	5400 6800 5400 6400
 Wire Bus Line
 	10750 2150 10750 2350
 Wire Bus Line

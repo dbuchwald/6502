@@ -1617,9 +1617,12 @@ Wire Wire Line
 	3950 7050 3950 6950
 Wire Wire Line
 	3250 7050 3950 7050
-NoConn ~ 3250 6750
-Text GLabel 7000 3800 1    50   Output ~ 0
-~LATCH
+Text GLabel 3450 6650 1    50   Output ~ 0
+EXT_BE
+Wire Wire Line
+	3250 6750 3450 6750
+Wire Wire Line
+	3450 6750 3450 6650
 Wire Bus Line
 	8500 4150 8500 4350
 Wire Bus Line

@@ -424,22 +424,22 @@ NoConn ~ 5550 2100
 $Comp
 L 74xx:74LS04 U8
 U 2 1 5F92D3FA
-P 8300 5600
-F 0 "U8" H 8300 5917 50  0000 C CNN
-F 1 "74AC04" H 8300 5826 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 8300 5600 50  0001 C CNN
-F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 8300 5600 50  0001 C CNN
-	2    8300 5600
+P 5550 6600
+F 0 "U8" H 5550 6917 50  0000 C CNN
+F 1 "74AC04" H 5550 6826 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5550 6600 50  0001 C CNN
+F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 5550 6600 50  0001 C CNN
+	2    5550 6600
 	1    0    0    -1  
 $EndComp
-Text GLabel 7900 5600 0    50   Input ~ 0
+Text GLabel 5150 6600 0    50   Input ~ 0
 ~DBG_BE
 Wire Wire Line
-	7900 5600 8000 5600
-Text GLabel 8700 5600 2    50   Output ~ 0
+	5150 6600 5250 6600
+Text GLabel 6650 6700 2    50   Output ~ 0
 BE
 Wire Wire Line
-	8600 5600 8700 5600
+	5850 6600 5950 6600
 $Comp
 L 74xx:74LS04 U8
 U 7 1 5F946300
@@ -778,23 +778,14 @@ Wire Wire Line
 $Comp
 L 74xx:74LS08 U17
 U 4 1 5FBB5F74
-P 5550 7300
-F 0 "U17" H 5550 7625 50  0000 C CNN
-F 1 "74AC08" H 5550 7534 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5550 7300 50  0001 C CNN
-F 3 "https://www.ti.com/lit/ds/symlink/sn74ac08.pdf" H 5550 7300 50  0001 C CNN
-	4    5550 7300
+P 6250 6700
+F 0 "U17" H 6250 7025 50  0000 C CNN
+F 1 "74AC08" H 6250 6934 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6250 6700 50  0001 C CNN
+F 3 "https://www.ti.com/lit/ds/symlink/sn74ac08.pdf" H 6250 6700 50  0001 C CNN
+	4    6250 6700
 	1    0    0    -1  
 $EndComp
-Text GLabel 5150 7400 0    50   Input ~ 0
-GND
-Text GLabel 5150 7200 0    50   Input ~ 0
-GND
-Wire Wire Line
-	5150 7400 5250 7400
-Wire Wire Line
-	5150 7200 5250 7200
-NoConn ~ 5850 7300
 Wire Wire Line
 	9750 5700 9850 5700
 $Comp
@@ -1316,6 +1307,12 @@ Wire Wire Line
 	5550 1700 5650 1700
 Wire Wire Line
 	5550 1600 5650 1600
+Wire Wire Line
+	6550 6700 6650 6700
+Text GLabel 5850 6800 0    50   Input ~ 0
+EXT_BE
+Wire Wire Line
+	5850 6800 5950 6800
 Wire Bus Line
 	3200 2200 3200 2900
 Wire Bus Line
