@@ -1623,6 +1623,21 @@ Wire Wire Line
 	3250 6750 3450 6750
 Wire Wire Line
 	3450 6750 3450 6650
+$Comp
+L Connector:TestPoint TP4
+U 1 1 60966778
+P 4500 5150
+F 0 "TP4" H 4500 5450 50  0000 L CNN
+F 1 "TestPoint" H 4500 5350 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5005-5009_Compact" H 4700 5150 50  0001 C CNN
+F 3 "~" H 4700 5150 50  0001 C CNN
+	1    4500 5150
+	1    0    0    -1  
+$EndComp
+Text GLabel 4500 5250 3    50   Input ~ 0
+GND
+Wire Wire Line
+	4500 5250 4500 5150
 Wire Bus Line
 	8500 4150 8500 4350
 Wire Bus Line

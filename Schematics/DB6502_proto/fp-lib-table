@@ -1,2 +1,3 @@
 (fp_lib_table
+  (lib (name DB6502_proto)(type KiCad)(uri ${KIPRJMOD}/DB6502_proto.pretty)(options "")(descr ""))
 )
