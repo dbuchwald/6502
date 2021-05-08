@@ -1486,7 +1486,7 @@ AR Path="/5F8F4E1E/603D8F83" Ref="C?"  Part="1"
 AR Path="/603D8F83" Ref="C7"  Part="1" 
 F 0 "C7" V 1950 6000 50  0000 C CNN
 F 1 "22pF" V 2050 6000 50  0000 C CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 1800 6000 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 1800 6000 50  0001 C CNN
 F 3 "~" H 1800 6000 50  0001 C CNN
 	1    1800 6000
 	0    1    1    0   

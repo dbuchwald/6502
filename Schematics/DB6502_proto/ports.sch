@@ -656,7 +656,7 @@ AR Path="/5FC0FAB6" Ref="C?"  Part="1"
 AR Path="/6014B4D9/5FC0FAB6" Ref="C10"  Part="1" 
 F 0 "C10" H 10718 1246 50  0000 L CNN
 F 1 "10uF" H 10718 1155 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" H 10638 1050 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D4.0mm_P1.50mm" H 10638 1050 50  0001 C CNN
 F 3 "~" H 10600 1200 50  0001 C CNN
 	1    10600 1200
 	1    0    0    -1  
@@ -764,7 +764,7 @@ AR Path="/6014B4D9/5FFE874D" Ref="C11"  Part="1"
 AR Path="/5F8F4E1E/5FFE874D" Ref="C?"  Part="1" 
 F 0 "C11" H 9392 4096 50  0000 L CNN
 F 1 "47pF" H 9392 4005 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9300 4050 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 9300 4050 50  0001 C CNN
 F 3 "~" H 9300 4050 50  0001 C CNN
 	1    9300 4050
 	1    0    0    -1  
@@ -777,7 +777,7 @@ AR Path="/6014B4D9/5FFE8753" Ref="C12"  Part="1"
 AR Path="/5F8F4E1E/5FFE8753" Ref="C?"  Part="1" 
 F 0 "C12" H 9742 4096 50  0000 L CNN
 F 1 "47pF" H 9742 4005 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9650 4050 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 9650 4050 50  0001 C CNN
 F 3 "~" H 9650 4050 50  0001 C CNN
 	1    9650 4050
 	1    0    0    -1  
