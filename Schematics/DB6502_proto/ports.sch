@@ -817,8 +817,6 @@ F 3 " ~" H 8825 1900 50  0001 C CNN
 $EndComp
 Text GLabel 10100 2950 2    50   Input ~ 0
 GND
-Text GLabel 10100 1850 2    50   Input ~ 0
-+5V
 Text GLabel 10600 2550 2    50   Output ~ 0
 ~RES
 Wire Wire Line
@@ -842,15 +840,11 @@ Entry Wire Line
 Entry Wire Line
 	10650 2450 10750 2350
 Wire Wire Line
-	10000 1850 10000 1950
-Wire Wire Line
 	10000 2850 10000 2950
 Text GLabel 2550 2400 1    50   Input ~ 0
 IOCS
 Wire Wire Line
 	10100 2950 10000 2950
-Wire Wire Line
-	10000 1850 10100 1850
 Wire Wire Line
 	10250 4250 9650 4250
 Connection ~ 9300 4250
@@ -1369,6 +1363,7 @@ Text GLabel 5400 6800 3    50   Input ~ 0
 BE
 Wire Wire Line
 	5400 6800 5400 6400
+NoConn ~ 10000 1950
 Wire Bus Line
 	10750 2150 10750 2350
 Wire Bus Line

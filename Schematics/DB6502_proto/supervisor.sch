@@ -949,8 +949,6 @@ Wire Wire Line
 	5350 5800 5350 5700
 Wire Wire Line
 	5250 5800 5350 5800
-Text GLabel 5250 5800 0    50   Input ~ 0
-+5V
 Wire Wire Line
 	4250 5000 4350 5000
 Wire Wire Line
@@ -980,8 +978,6 @@ Wire Wire Line
 	4250 5000 4250 5100
 Wire Wire Line
 	4250 5800 4250 5700
-Text GLabel 4150 5800 0    50   Input ~ 0
-+5V
 Text GLabel 4350 5000 2    50   Input ~ 0
 +5V
 NoConn ~ 4550 5500
@@ -1317,4 +1313,8 @@ Wire Bus Line
 	3200 2200 3200 2900
 Wire Bus Line
 	3950 1300 3950 3900
+Text GLabel 4150 5800 0    50   Input ~ 0
+~RES
+Text GLabel 5250 5800 0    50   Input ~ 0
+~RES
 $EndSCHEMATC
