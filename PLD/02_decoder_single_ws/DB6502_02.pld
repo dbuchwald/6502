@@ -97,4 +97,4 @@ RDY.D     = !DBG_RDY &
              IO_CS   #
              (!ROM_CS & !RDY_M1F));
 			 
-RDY.OE    = !RDY;
+RDY.OE    = 'b'1;
