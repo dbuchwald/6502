@@ -6,7 +6,7 @@ Designer Dawid Buchwald;
 Company  ;
 Assembly None;
 Location Poland;
-Device   p22v10;
+Device   g22v10;
 
 ORDER: CLK, %3, 
        RW, %2, 

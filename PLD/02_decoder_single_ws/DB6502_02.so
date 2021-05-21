@@ -1,7 +1,7 @@
 CSIM(WM): CUPL Simulation Program
 Version 5.0a Serial# 
 Copyright (c) 1983, 1998 Logical Devices, Inc.
-CREATED Thu May 20 23:45:02 2021
+CREATED Fri May 21 20:11:20 2021
 
 LISTING FOR SIMULATION FILE: DB6502_02.si
 
@@ -13,7 +13,7 @@ LISTING FOR SIMULATION FILE: DB6502_02.si
    6: Company  ;
    7: Assembly None;
    8: Location Poland;
-   9: Device   p22v10;
+   9: Device   g22v10;
   10: 
   11: FIELD Address = [A15,A14,A13,A12,A11,A10,A9,A8];
   12:
@@ -50,7 +50,7 @@ LISTING FOR SIMULATION FILE: DB6502_02.si
       CLK RW EXR RD1F RD2F WSD DBGR  ADDRESS WR# RD# RAM1# RAM2# ROM# IO RDY
       --- -- --- ---- ---- --- ---- -------- --- --- ----- ----- ---- -- ---
       Clocking in ready state...
-0001: 0   0  0   1    1    1   0    00000000   H   H     L     H    H  L  L
+0001: 0   0  0   1    1    1   0    00000000   L   H     L     H    H  L  L
 0002: 1   0  0   1    1    1   0    00000000   L   H     L     H    H  L  H
       Testing pure address decoding...
 0003: 0   0  0   X    X    X   X    00000000   H   H     L     H    H  L  H
@@ -152,14 +152,14 @@ LISTING FOR SIMULATION FILE: DB6502_02.si
 0091: 1   0  X   0    X    0   0    11111111   L   H     H     H    L  L  H
       Testing if nRD/nWR is stretched during WS_DISABLE and DBG_WAIT ...
 0092: 0   0  X   0    X    1   1    00000000   H   H     L     H    H  L  H
-0093: 1   0  X   0    X    1   1    00000000   L   H     L     H    H  L  L
-0094: 0   1  X   0    X    1   1    00000000   H   H     L     H    H  L  L
-0095: 1   1  X   0    X    1   1    00000000   H   L     L     H    H  L  L
-0096: 0   0  X   0    X    1   1    00000010   H   H     H     H    H  H  L
-0097: 1   0  X   0    X    1   1    00000010   L   H     H     H    H  H  L
-0098: 0   1  X   0    X    1   1    00000010   H   H     H     H    H  H  L
-0099: 1   1  X   0    X    1   1    00000010   H   L     H     H    H  H  L
-0100: 0   0  X   0    X    1   1    11111111   H   H     H     H    L  L  L
-0101: 1   0  X   0    X    1   1    11111111   L   H     H     H    L  L  L
-0102: 0   1  X   0    X    1   1    11111111   H   H     H     H    L  L  L
-0103: 1   1  X   0    X    1   1    11111111   H   L     H     H    L  L  L
+0093: 1   0  X   0    X    1   1    00000000   L   H     L     H    H  L  H
+0094: 0   1  X   0    X    1   1    00000000   H   H     L     H    H  L  H
+0095: 1   1  X   0    X    1   1    00000000   H   L     L     H    H  L  H
+0096: 0   0  X   0    X    1   1    00000010   H   H     H     H    H  H  H
+0097: 1   0  X   0    X    1   1    00000010   L   H     H     H    H  H  H
+0098: 0   1  X   0    X    1   1    00000010   H   H     H     H    H  H  H
+0099: 1   1  X   0    X    1   1    00000010   H   L     H     H    H  H  H
+0100: 0   0  X   0    X    1   1    11111111   H   H     H     H    L  L  H
+0101: 1   0  X   0    X    1   1    11111111   L   H     H     H    L  L  H
+0102: 0   1  X   0    X    1   1    11111111   H   H     H     H    L  L  H
+0103: 1   1  X   0    X    1   1    11111111   H   L     H     H    L  L  H

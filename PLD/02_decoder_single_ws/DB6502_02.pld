@@ -6,7 +6,7 @@ Designer        Dawid Buchwald;
 Company         ;
 Location        Poland;
 Assembly        None;
-Device          p22v10;
+Device          g22v10;
 
 /*********************************************************************************/
 /*                                                                               */
@@ -81,8 +81,8 @@ IO_SHADOW = Address:[0200..02FF];
 RAM_EXTRA = Address:[8000..BFFF];
 ROM       = Address:[8000..FFFF];
 
-!WR       = !RW & (CLK # (!RDY & !WS_DISABLE));
-!RD       = RW & (CLK # (!RDY & !WS_DISABLE));
+!WR       = !RW & (CLK # !RDY);
+!RD       = RW & (CLK # !RDY);
 !RAM1_CS  = RAM & !IO_SHADOW;
 !RAM2_CS  = EXRAM & RAM_EXTRA;
 !ROM_CS   = ROM & !(EXRAM & RAM_EXTRA);
@@ -90,11 +90,11 @@ IO_CS     = IO_SHADOW;
 
 RDY.AR    = 'b'0;
 RDY.SP    = 'b'0;
-RDY.D     = !DBG_RDY & 
-            (WS_DISABLE #
-             !RAM1_CS #
-             !RAM2_CS #
-             IO_CS   #
-             (!ROM_CS & !RDY_M1F));
+RDY.D     = WS_DISABLE #
+            (!DBG_RDY & 
+             (!RAM1_CS #
+              !RAM2_CS #
+              IO_CS   #
+              (!ROM_CS & !RDY_M1F)));
 			 
 RDY.OE    = 'b'1;
