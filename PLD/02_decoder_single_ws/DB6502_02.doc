@@ -4,8 +4,8 @@
 *******************************************************************************
 
 CUPL(WM)        5.0a Serial# 60008009
-Device          g22v10  Library DLIB-h-40-1
-Created         Fri May 21 20:11:17 2021
+Device          p22v10  Library DLIB-h-40-17
+Created         Fri May 21 20:17:26 2021
 Name            DB6502_02
 Partno          DB6502_02
 Revision        01

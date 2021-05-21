@@ -7,7 +7,7 @@
 #H Company  ;
 #H Assembly None;
 #H Location Poland;
-#H Device   g22v10;
+#H Device   p22v10;
 #H 
 #F Address = [A15,A14,A13,A12,A11,A10,A9,A8];
 

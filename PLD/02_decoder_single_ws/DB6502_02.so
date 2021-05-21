@@ -1,7 +1,7 @@
 CSIM(WM): CUPL Simulation Program
 Version 5.0a Serial# 
 Copyright (c) 1983, 1998 Logical Devices, Inc.
-CREATED Fri May 21 20:11:20 2021
+CREATED Fri May 21 20:17:29 2021
 
 LISTING FOR SIMULATION FILE: DB6502_02.si
 
@@ -13,7 +13,7 @@ LISTING FOR SIMULATION FILE: DB6502_02.si
    6: Company  ;
    7: Assembly None;
    8: Location Poland;
-   9: Device   g22v10;
+   9: Device   p22v10;
   10: 
   11: FIELD Address = [A15,A14,A13,A12,A11,A10,A9,A8];
   12:

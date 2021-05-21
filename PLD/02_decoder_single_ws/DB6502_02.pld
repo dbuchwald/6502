@@ -6,7 +6,7 @@ Designer        Dawid Buchwald;
 Company         ;
 Location        Poland;
 Assembly        None;
-Device          g22v10;
+Device          p22v10;
 
 /*********************************************************************************/
 /*                                                                               */
