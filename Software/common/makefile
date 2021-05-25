@@ -37,7 +37,10 @@ CP_FLAGS=-f
 
 # Picocom settings
 PICOCOM_BINARY=picocom
-PICOCOM_FLAGS=-b 19200 -fh --send-cmd 'sz -X'
+PICOCOM_FLAGS=-fh --send-cmd 'sz -X'
+TERMINAL_SPEED=-b115200
+DBGTERM_SPEED=-b230400
+
 
 # Python binary
 PYTHON_BINARY=python
@@ -106,7 +109,7 @@ COMMON_SOURCES=syscalls.s       \
                modem.s          \
                string.s         \
                utils.s          \
-							 $(TIMING_DRIVER) \
+               $(TIMING_DRIVER) \
                via.s            \
                via_utils.s      \
                tty.s            \
@@ -239,7 +242,10 @@ emu: $(FIRMWARE_BINARY)
 	$(X6502_BINARY) $<
 
 terminal:
-	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) /dev/tty.usbserial-DN4KYF7O
+	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) $(TERMINAL_SPEED) /dev/tty.usbserial-FTATHSS6
+
+dbgterm:
+	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) $(DBGTERM_SPEED) /dev/tty.usbserial-D3089797
 
 # Clean generated files
 clean:

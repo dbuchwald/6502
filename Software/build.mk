@@ -2,8 +2,8 @@
 # There are two predefined versions, but you can choose custom and configure below
 
 # Possible values are DB6502v01, DB6502v2, custom
-BOARD_VERSION = DB6502v01
-# BOARD_VERSION = DB6502v02
+# BOARD_VERSION = DB6502v01
+BOARD_VERSION = DB6502v02
 # BOARD_VERSION = custom
 
 ifeq ($(BOARD_VERSION), DB6502v01)
