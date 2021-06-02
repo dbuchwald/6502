@@ -141,7 +141,7 @@ Yellow is VIA_CS, purple is IO_CS (active high). As you can see, it's ringing a 
 
 ![26_viacs_vs_a7](Images/26_viacs_vs_a7.png)
 
-This time purple is the A7 signal. Nipe, not that one either. Then I checked A5 and this was the one:
+This time purple is the A7 signal. Nope, not that one either. Then I checked A5 and this was the one:
 
 ![26_viacs_vs_a5_1](Images/26_viacs_vs_a5_1.png)
 
@@ -151,7 +151,7 @@ It's even better visible here:
 
 So, what the hell? It seems like the A5 line is suffering from something strange that causes the line to produce very weak signal. Initially I thought it was the CPU that was driving the line poorly or something like that, but it just didn't seem so likely.
 
-It all seemed like there was something trying to "drive" the A5 line, like the signal was struggling to reach high levels, like it was pulled down. I turned the whole device down, and in desperate attempt measured resistance between A5 and A6 line, and took a picture so I never ever forget:
+It all seemed like there was something trying to "drive" the A5 line, like the signal was struggling to reach high levels, like it was pulled down. I turned the whole device off, and in desperate attempt measured resistance between A5 and A6 line, and took a picture so I never ever forget:
 
 <img src="Images/26_a5_a6_resistance.jpeg" alt="26_a5_a6_resistance"/>
 
