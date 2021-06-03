@@ -89,6 +89,8 @@ So the software bug manifests itself only at higher CPU frequencies? And do I ca
 
 This time I decided to investigate further and what I found was... amazing!
 
+Before I take you on this fascinating journey, I need to explain something very, very important: in my testing I was using the VIA chip (and I/O in general) heavily, it's not like I was just blinking led. The same VIA port was used for communication with the onboard LCD, and it worked just fine. The same goes for the UART, which was being used for both asynchronous, interrupt-driven serial communication and as timing reference (for delays and CPU speed calculation). So, it wasn't just simple blink on/off, there was this whole I/O subsystem that was, it is very important, functioning correctly, except for one register and one bit in one situation only.
+
 ### Problem 2a: VIA_CS signal quality
 
 I tried to investigate the issue using my logic analyser, but failed. For some reason connecting it to the system bus interfered with UART operation and without proper shell I couldn't test it correctly. This is still an open question and one I'm dedicated to answering. What I did notice was that connecting logic analyser to VIA_CS signal caused the UART to fail, so I decided to look closer at this particular signal with a scope.
@@ -113,11 +115,11 @@ I decided to test it, and what I did is I placed another 74AC138 next to the PCB
 
 ![26_8mhz_viacs_clk](Images/26_8mhz_viacs_clk.png)
 
-So, what is the difference here? I'm not 100% positive that I do know the reason, but I'm almost certain that the cause of the failure is my lousy routing of the +5V line on the PCB:
+So, what is the difference here? I was almost certain that the cause of the failure is my lousy routing of the +5V line on the PCB:
 
 ![26_pcb_5v](Images/26_pcb_5v.png)
 
-See that large white cross at the bottom of the board - this is where 74AC138 is located. It's almost a far end of very long power line with plenty of chips along the way to suck the power. Now, I'm not entirely sure this is the reason, but it's the best one I can come up for now. I will try to add another wire to connect the chip VCC to some better location and see if that helps.
+See that large white cross at the bottom of the board - this is where 74AC138 is located. It's almost a far end of very long power line with plenty of chips along the way to suck the power. I wasn't sure it was this, but seriously, what else could it be? I was sure I will not be able to solve this issue in this revision of the board, but I had backup plan - I could use correct signals routed from the external 74AC138.
 
 ### Lesson learned for PCB design
 
@@ -168,6 +170,36 @@ Now the reading is still in megaohm range, while there should be no contact what
 Again, this is obvious - boys and girls, it doesn't matter how pretty you are on the inside, if you don't wash your private parts properly. Same goes for PCB :)
 
 It was first time ever that I was affected by this, but I learned my lesson. I actually plan to test few other bits of the board now and clean it few more times just to be safe.
+
+### Problem 2a again: round two
+
+This is when I was almost ready to post this entry online, but I decided to ask someone way more experienced and much smarter than myself to proof-read it and provide feedback.
+
+What I got was pure gold indeed. 
+
+I received comment that my power distribution was not that shitty after all, and most likely it didn't cause the observed issue. Yeah, it wouldn't work for high voltages or high currents, but with the circuit in question I should be fine. My mentor suggested I check the voltage at input of my 74AC138 chip to check if there are any power fluctuations there that would explain this drop in quality of VIA_CS signal. I have tried something similar before, but I wasn't able to focus the scope on the actual problem and the reading was inconclusive. Since the chip in question is in SOIC package, you need to hold your probe in place touching the pin - it's not easy and you can't hold it steady forever.
+
+This time I decided to spend some more time to figure out proper scope trigger setup for problem analysis. I tried runt mode, but it wasn't able to set it up to trigger on the correct signal. Then, after reiterating the problem aloud I realised that I need to catch slow rising slope on VIA_CS signal - and this is what I did set up. 
+
+See, you think buying scope is hard? Sure, it is, after all it's pretty difficult decision to make. The problem is that, contrary to popular belief, owning one doesn't make you instantly smarter and sadly, it doesn't solve any problems on its own. You have to spend considerable amount of time to learn to use the device, speak its language and understand how it works (and when it doesn't). So, when you finally get to the point where you manage to see EXACTLY what you were looking for, the feeling of achievement is overwhelming. Trust me, I have Platinum Trophy in Bloodborne, I do know hard work :)
+
+Anyway, when I caught the signal in question, I had my probe touching the nearest decoupling capacitor, and the reading contradicted the initial hypothesis of shitty power distribution: power was pretty solid just next to the chip. Yellow signal is the VIA_CS signal, purple is the +5V side of the cap:
+
+![26_viacs_pwr_cap](Images/26_viacs_pwr_cap.png)
+
+So, if the power was fine just next to the chip, it should be fine at the chip too. I tested another chip, next to 74AC138:
+
+![26_viacs_pwr_chip](Images/26_viacs_pwr_chip.png)
+
+This was being measured at the last chip on the long power line - still, the power fluctuates only just a bit.
+
+Finally, I tested the 74AC138 power input (between the cap and the chip) by touching the probe to VCC pin and this is what I got:
+
+![26_viacs_pwr_138](Images/26_viacs_pwr_138.png)
+
+What the hell?
+
+I noticed one more thing - the stronger I pushed the pin down, the less likely scope was to trigger, up to a point where the scope would not trigger anymore.
 
 ## Summary
 
