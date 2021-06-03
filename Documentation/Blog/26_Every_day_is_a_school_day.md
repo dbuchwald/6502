@@ -165,6 +165,8 @@ How did it happen? Leftover flux from soldering. Apparently I didn't clean it go
 
 Now the reading is still in megaohm range, while there should be no contact whatsoever, but it's sufficient enough to work correctly. With the VIA_CS signal routed from the external chip I have now perfectly stable blink LED on my board, even at 8MHz.
 
+Even though - the A5 signal seems quite low anyway. No worries, will come back to that.
+
 ### Lesson learned for PCB design
 
 Again, this is obvious - boys and girls, it doesn't matter how pretty you are on the inside, if you don't wash your private parts properly. Same goes for PCB :)
@@ -179,15 +181,15 @@ What I got was pure gold indeed.
 
 I received comment that my power distribution was not that shitty after all, and most likely it didn't cause the observed issue. Yeah, it wouldn't work for high voltages or high currents, but with the circuit in question I should be fine. My mentor suggested I check the voltage at input of my 74AC138 chip to check if there are any power fluctuations there that would explain this drop in quality of VIA_CS signal. I have tried something similar before, but I wasn't able to focus the scope on the actual problem and the reading was inconclusive. Since the chip in question is in SOIC package, you need to hold your probe in place touching the pin - it's not easy and you can't hold it steady forever.
 
-This time I decided to spend some more time to figure out proper scope trigger setup for problem analysis. I tried runt mode, but it wasn't able to set it up to trigger on the correct signal. Then, after reiterating the problem aloud I realised that I need to catch slow rising slope on VIA_CS signal - and this is what I did set up. 
+This time I decided to spend some more time to figure out proper scope trigger setup for problem analysis. I tried runt mode, but it wasn't able to set it up to trigger on the correct signal. Then, after reiterating the problem aloud I realised that I need to catch slow rising slope on VIA_CS signal - and this is what I did set up. Rising slope from 2.3V to 3.5V in more than 50ns.
 
-See, you think buying scope is hard? Sure, it is, after all it's pretty difficult decision to make. The problem is that, contrary to popular belief, owning one doesn't make you instantly smarter and sadly, it doesn't solve any problems on its own. You have to spend considerable amount of time to learn to use the device, speak its language and understand how it works (and when it doesn't). So, when you finally get to the point where you manage to see EXACTLY what you were looking for, the feeling of achievement is overwhelming. Trust me, I have Platinum Trophy in Bloodborne, I do know hard work :)
+See, you think buying scope is hard? Sure, it is, after all it's pretty difficult decision to make. The problem is that, contrary to popular belief, owning one doesn't make you instantly smarter and sadly, it doesn't solve any problems on its own. You have to spend considerable amount of time to learn to use the device, speak its language and understand how it works (and when it doesn't). So, when you finally get to the point where you manage to see EXACTLY what you were looking for, the feeling of achievement is overwhelming.
 
 Anyway, when I caught the signal in question, I had my probe touching the nearest decoupling capacitor, and the reading contradicted the initial hypothesis of shitty power distribution: power was pretty solid just next to the chip. Yellow signal is the VIA_CS signal, purple is the +5V side of the cap:
 
 ![26_viacs_pwr_cap](Images/26_viacs_pwr_cap.png)
 
-So, if the power was fine just next to the chip, it should be fine at the chip too. I tested another chip, next to 74AC138:
+So, if the power was fine just next to the chip, maybe it gets worse down the line? Nope:
 
 ![26_viacs_pwr_chip](Images/26_viacs_pwr_chip.png)
 
@@ -197,10 +199,40 @@ Finally, I tested the 74AC138 power input (between the cap and the chip) by touc
 
 ![26_viacs_pwr_138](Images/26_viacs_pwr_138.png)
 
-What the hell?
+What the hell? Power is fine just before entering 74AC138 and it's perfectly good right after it. That doesn't make sense, does it?
 
-I noticed one more thing - the stronger I pushed the pin down, the less likely scope was to trigger, up to a point where the scope would not trigger anymore.
+I noticed one more thing - the stronger I pushed the pin down, the less events did the scope capture, up to a point where it would not trigger anymore. I tried measuring resistance between the 74AC138 VCC input and the power jack +5V input (obviously with the device powered down), and guess what - this explains it perfectly. When pressing the pin from the top, it reads (as expected):
+
+![26_pwr_res_top](Images/26_pwr_res_top.jpeg)
+
+Now, when touching gently the pin from the side:
+
+![26_pwr_res_side](Images/26_pwr_res_side.jpeg)
+
+So, it wasn't power distribution that was bad on my board. Sure, it could have been better, but still, this was good enough for the purpose. It was simple bad solder joint. After I fixed it with just a dab of extra solder my "software bug" causing blink to fail - stopped occurring. At the same time it fixed my power distribution on the board :)
+
+Seriously though, I need you to let that sink in: 74AC138 chip was being used each time I sent data to LCD and read its status, and the LCD was running fine. It was also used for enabling UART, and the serial communication was working perfectly. The only thing that failed to work, and only under certain conditions was the blink LED. Only one bit of data sent to VIA DDR register failed due to something that would seem catastrophic - failure to connect power to the I/O selector chip correctly.
+
+### Lesson learned for PCB design
+
+When testing the board, don't assume that things working most of the time imply the build or design is correct. Even very serious issues (like disconnecting power from glue logic chip or disconnecting ground from reset controller in log 15) do not have to cause spectacular failures and can haunt you in a form of very rare and mysterious glitches.
+
+And, most of all, test your hypothesis each time. I was really sure it was an error in PCB design that caused issues with power delivery, and I was about to start the process all over. I would waste a lot of time and money on something that took hour to find and five minutes to fix - just because somebody challenged my theory.
+
+### Problem 2b: round two
+
+Remember the strangely low A5 signal during VIA_CS operation? The one that I fixed a bit by cleaning the flux off? This is what I got back then:
+
+![26_viacs_vs_a5_after](Images/26_viacs_vs_a5_after.png)
+
+It was a bit on the low side, right?
+
+Probably this is where the 74AC138 got the power from (together with the IO_CS signal), because after fixing the power issue this is what I see:
+
+![26_viacs_vs_a5_final](Images/26_viacs_vs_a5_final.png)
+
+So yeah, I had plenty of clues that I didn't read correctly, but as the title says - every day is a school day!
 
 ## Summary
 
-Actually the outcome is very, very optimistic: I did run into three serious issues with my latest board (so far, there are probably more!), but I'm very, very happy that I managed to find them and at least approximate the possible cause. It was great exercise, I learned a lot and I'm sure my next board will get better thanks to the things I learned.
+Actually the outcome is very, very optimistic: I did run into three serious issues with my latest board (so far, there are probably more!), but I'm very, very happy that I managed to find them and the underlying cause. It was great exercise, I learned a lot and I feel much more confident in my adventures with electronic design.
