@@ -179,6 +179,10 @@ _handle_serial_irq:
         bra @not_tx_irq       
 @transmit_char:
         tay
+        lda serial_tx_buffer_ptr,x
+        sta serial_buffer_tmp_ptr
+        lda serial_tx_buffer_ptr+1,x
+        sta serial_buffer_tmp_ptr+1
         lda (serial_buffer_tmp_ptr),y
         sta DUART_W_TxA
         ; Increase read buffer pointer
