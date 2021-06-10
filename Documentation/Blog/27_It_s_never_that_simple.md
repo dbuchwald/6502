@@ -122,6 +122,26 @@ I executed the scenario number of times with the logic analyser connected, captu
 
 TODO: Add rough screenshot here
 
-I tried looking for odd-looking data, but this was just stupid. There was nothing really out of order there. I started checking the actual instances of wrong data being sent (by searching decoded 8080 bus data for specific values). If you take a look at the first sample (`12-45-7890ABCDEFGHIJ`)  I first traced the flow of the correct characters (`1` and `2`) and it was exactly as I expected - data is first read from the UART (indicated by the nUART chip select signal)
+I tried looking for odd-looking data, but this was just stupid. There was nothing really out of order there. I started checking the actual instances of wrong data being sent (by searching decoded 8080 bus data for specific values). If you take a look at the first sample (`12-45-7890ABCDEFGHIJ`)  I first traced the flow of the correct characters (`1` and `2`) and it was exactly as I expected - data is first read from the UART (indicated by the nUART chip select signal), saved to RX buffer, copied over to TX buffer (to echo on the screen) and then copied over to TX FIFO (again, indicated by nUART chip select).
 
-, and then looked for `-`. I didn't like what I found - there was nothing wrong with the signal and it seemed that the strange character 
+TODO: Show readouts from LA
+
+Then looked for `-`. I didn't like what I found - there was nothing wrong with the signal and it seemed that the strange character was being read from memory, and this was the part that I couldn't wrap my head around. How comes it seems to be stored in memory correctly (and read from it, when you LIST the program), but then it is read incorrectly. Another timing violation? And if so, how to find it?
+
+Luckily, it was much simpler, and I noticed it when looked closer at the data captured by logic analyser. As it turns out, I was reading from RX RAM buffer when copying data to TX UART FIFO.
+
+Still, how comes it happened only sometimes, and only at high frequencies? As it turns out, the problem was occurring only with specific order of send/receive operations, and it happened only if the TX FIFO was being serviced during RX interrupts.
+
+## Is that it?
+
+It would have been too easy if it just ended here, right? I fixed the code, uploaded it to ROM using my onboard EEPROM programmer and I tested the whole thing again.
+
+Just to see it fail.
+
+Exactly the same way.
+
+Bloody hell.
+
+So I pull out my logic analyser again, capture the same sequence again, and indeed, it's happening the very same way. Actually, it's all too similar. Didn't I just add several new instructions to my IRQ handler? It should be at least a bit different.
+
+Took me a short while to confirm this. Indeed, the ROM contents haven't changed at all. Weird, I was sure the upload worked. 
