@@ -1,0 +1,162 @@
+
+*******************************************************************************
+                                   DB6502_04
+*******************************************************************************
+
+CUPL(WM)        5.0a Serial# 60008009
+Device          p22v10  Library DLIB-h-40-17
+Created         Sun Jun 13 20:17:50 2021
+Name            DB6502_04
+Partno          DB6502_04
+Revision        01
+Date            13/06/2021
+Designer        Dawid Buchwald
+Company         
+Assembly        None
+Location        Poland
+
+===============================================================================
+                            Expanded Product Terms
+===============================================================================
+
+Address =>
+    A15 , A14 , A13 , A12 , A11 , A10 , A9 , A8
+
+IO_CS =>
+    !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
+
+IO_SHADOW =>
+    !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
+
+RAM =>
+    !A15
+
+!RAM1_CS =>
+    A14 & !A15
+  # A13 & !A15
+  # A12 & !A15
+  # A11 & !A15
+  # A10 & !A15
+  # !A9 & !A15
+  # A8 & !A15
+
+!RAM2_CS =>
+    !A14 & A15 & EXRAM
+
+RAM_EXTRA =>
+    !A14 & A15
+
+!RD =>
+    !RDY & RW & !WS_DISABLE
+  # CLK & RW
+
+RDY.d  =>
+    !DBG_RDY & WS_DISABLE
+  # !DBG_RDY & !RAM1_CS
+  # !DBG_RDY & !RAM2_CS
+  # !DBG_RDY & !RDY_M1F & !RDY_M2F & !ROM_CS
+  # !DBG_RDY & IO_CS & !RDY_M1F
+
+RDY.ar  =>
+    0 
+
+RDY.oe  =>
+    1 
+
+RDY.sp  =>
+    0 
+
+ROM =>
+    A15
+
+!ROM_CS =>
+    A15 & !EXRAM
+  # A14 & A15
+
+!WR =>
+    !RDY & !RW & !WS_DISABLE
+  # CLK & !RW
+
+DBG_RDY.oe  =>
+    0 
+
+IO_CS.oe  =>
+    1 
+
+RAM1_CS.oe  =>
+    1 
+
+RAM2_CS.oe  =>
+    1 
+
+RD.oe  =>
+    1 
+
+RDY_M2F.oe  =>
+    0 
+
+ROM_CS.oe  =>
+    1 
+
+WR.oe  =>
+    1 
+
+WS_DISABLE.oe  =>
+    0 
+
+
+===============================================================================
+                                 Symbol Table
+===============================================================================
+
+Pin Variable                                    Pterms   Max     Min    
+Pol   Name              Ext     Pin     Type     Used   Pterms  Level   
+--- --------            ---     ---     ----    ------  ------  -----   
+
+    A8                          11       V        -       -       -     
+    A9                          10       V        -       -       -     
+    A10                         9        V        -       -       -     
+    A11                         8        V        -       -       -     
+    A12                         7        V        -       -       -     
+    A13                         6        V        -       -       -     
+    A14                         5        V        -       -       -     
+    A15                         4        V        -       -       -     
+    Address                     0        F        -       -       -     
+    CLK                         1        V        -       -       -     
+    DBG_RDY                     16       V        -       -       -     
+    EXRAM                       3        V        -       -       -     
+    IO_CS                       18       V        1       16      1     
+    IO_SHADOW                   0        I        1       -       -     
+    RAM                         0        I        1       -       -     
+    RAM1_CS                     21       V        7       12      1     
+    RAM2_CS                     20       V        1       14      1     
+    RAM_EXTRA                   0        I        1       -       -     
+    RD                          22       V        2       10      1     
+    RDY                         17       V        -       -       -     
+    RDY                 d       17       X        5       14      1     
+    RDY                 ar      17       X        1       1       1     
+    RDY                 oe      17       X        1       1       1     
+    RDY                 sp      17       X        1       1       1     
+    RDY_M1F                     13       V        -       -       -     
+    RDY_M2F                     14       V        -       -       -     
+    ROM                         0        I        1       -       -     
+    ROM_CS                      19       V        2       16      1     
+    RW                          2        V        -       -       -     
+    WR                          23       V        2       8       1     
+    WS_DISABLE                  15       V        -       -       -     
+    DBG_RDY             oe      16       D        1       1       0     
+    IO_CS               oe      18       D        1       1       0     
+    RAM1_CS             oe      21       D        1       1       0     
+    RAM2_CS             oe      20       D        1       1       0     
+    RD                  oe      22       D        1       1       0     
+    RDY_M2F             oe      14       D        1       1       0     
+    ROM_CS              oe      19       D        1       1       0     
+    WR                  oe      23       D        1       1       0     
+    WS_DISABLE          oe      15       D        1       1       0     
+
+
+LEGEND    D : default variable         F : field      G : group
+          I : intermediate variable    N : node       M : extended node
+          U : undefined                V : variable   X : extended variable
+          T : function
+
