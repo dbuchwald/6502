@@ -1,0 +1,144 @@
+Name     DB6502_04;
+PartNo   DB6502_04;
+Date     13/06/2021;
+Revision 01;
+Designer Dawid Buchwald;
+Company  ;
+Assembly None;
+Location Poland;
+Device   p22v10;
+
+ORDER: CLK, %3, 
+       RW, %2, 
+       EXRAM, %3,
+       RDY_M1F, %4,
+       RDY_M2F, %4,
+       WS_DISABLE, %3,
+       DBG_RDY, %4,	   
+       Address, %3, 
+       WR, %3, 
+       RD, %5, 
+       RAM1_CS, %5, 
+       RAM2_CS, %4, 
+       ROM_CS, %2, 
+       IO_CS, %2,
+       RDY;
+
+VECTORS:
+$MSG  "                        1-WS Address decoder test               ";
+$MSG  "      CLK RW EXR RD1F RD2F WSD DBGR  ADDRESS WR# RD# RAM1# RAM2# ROM# IO RDY";
+$MSG  "      --- -- --- ---- ---- --- ---- -------- --- --- ----- ----- ---- -- ---";
+$MSG  "      Clocking in ready state...";
+000 11 10 '00' ****** *
+100 11 10 '00' ****** *
+$MSG  "      Testing pure address decoding...";
+000 XX XX '00' **LHHL *
+001 XX XX '00' **LHHL *
+000 XX XX '01' **LHHL *
+000 XX XX '02' **HHHH *
+001 XX XX '02' **HHHH *
+000 XX XX '03' **LHHL *
+001 XX XX '03' **LHHL *
+000 XX XX '7F' **LHHL *
+001 XX XX '7F' **LHHL *
+000 XX XX '80' **HHLL *
+001 XX XX '80' **HLHL *
+000 XX XX 'BF' **HHLL *
+001 XX XX 'BF' **HLHL *
+000 XX XX 'C0' **HHLL *
+001 XX XX 'C0' **HHLL *
+000 XX XX 'FF' **HHLL *
+001 XX XX 'FF' **HHLL *
+$MSG  "      Clocking in ready state...";
+000 XX 10 '00' ****** *
+100 XX 10 '00' ****** *
+$MSG  "      Testing basic nWR and nRD signals...";
+00X XX 10 '00' HH**** *
+01X XX 10 '00' HH**** *
+10X XX 10 '00' LH**** *
+11X XX 10 '00' HL**** *
+$MSG  "      Clocking in ready state...";
+000 XX 10 '00' ****** *
+100 XX 10 '00' ****** *
+$MSG  "      Testing basic ready states (no WS)...";
+0XX 1X 00 '00' **LHHL H
+1XX 1X 00 '00' **LHHL H
+0XX 1X 00 '02' **HHHH H
+1XX 1X 00 '02' **HHHH H
+0X1 1X 00 'BF' **HLHL H
+1X1 1X 00 'BF' **HLHL H
+$MSG  "      Testing single WS (ROM access)...";
+0XX 1X 00 'FF' **HHLL H
+1XX 1X 00 'FF' **HHLL L
+0XX 1X 00 'FF' **HHLL L
+1XX 0X 00 'FF' **HHLL H
+$MSG  "      Testing nWR and nRD signal stretching...";
+00X 0X 00 '00' HH**** H
+10X 1X 00 '00' LH**** H
+01X 1X 00 '00' HH**** H
+11X 1X 00 '00' HL**** H
+00X 1X 00 '02' HH**** H
+10X 1X 00 '02' LH**** H
+01X 1X 00 '02' HH**** H
+11X 1X 00 '02' HL**** H
+00X 1X 00 'FF' HH**** H
+10X 1X 00 'FF' LH**** L
+00X 1X 00 'FF' LH**** L
+10X 0X 00 'FF' LH**** H
+01X 0X 00 'FF' HH**** H
+11X 1X 00 'FF' HL**** L
+01X 1X 00 'FF' HL**** L
+11X 0X 00 'FF' HL**** H
+$MSG  "      Testing wait states disable operation...";
+00X 0X 10 '00' HH**** H
+10X 1X 10 '00' LH**** H
+01X 1X 10 '00' HH**** H
+11X 1X 10 '00' HL**** H
+00X 1X 10 '02' HH**** H
+10X 1X 10 '02' LH**** H
+01X 1X 10 '02' HH**** H
+11X 1X 10 '02' HL**** H
+00X 1X 10 'FF' HH**** H
+10X 1X 10 'FF' LH**** H
+00X 1X 10 'FF' HH**** H
+10X 1X 10 'FF' LH**** H
+01X 1X 10 'FF' HH**** H
+11X 1X 10 'FF' HL**** H
+01X 1X 10 'FF' HH**** H
+11X 1X 10 'FF' HL**** H
+$MSG  "      Testing debug wait state operation...";
+00X 1X 01 '00' HH**** H
+10X 1X 01 '00' LH**** L
+00X 1X 01 '00' LH**** L
+10X 0X 00 '00' LH**** H
+00X 0X 01 '02' HH**** H
+10X 1X 01 '02' LH**** L
+00X 1X 01 '02' LH**** L
+10X 0X 01 '02' LH**** L
+00X 0X 01 '02' LH**** L
+10X 0X 00 '02' LH**** H
+00X 0X 01 '03' HH**** H
+10X 1X 01 '03' LH**** L
+00X 1X 01 '03' LH**** L
+10X 0X 01 '03' LH**** L
+00X 0X 00 '03' LH**** L
+10X 0X 00 '03' LH**** H
+00X 0X 01 'FF' HH**** H
+10X 1X 01 'FF' LH**** L
+00X 1X 01 'FF' LH**** L
+10X 0X 01 'FF' LH**** L
+00X 0X 00 'FF' LH**** L
+10X 0X 00 'FF' LH**** H
+$MSG  "      Testing if nRD/nWR is stretched during WS_DISABLE and DBG_WAIT ...";
+00X 0X 11 '00' HH**** *
+10X 0X 11 '00' LH**** *
+01X 0X 11 '00' HH**** *
+11X 0X 11 '00' HL**** *
+00X 0X 11 '02' HH**** *
+10X 0X 11 '02' LH**** *
+01X 0X 11 '02' HH**** *
+11X 0X 11 '02' HL**** *
+00X 0X 11 'FF' HH**** *
+10X 0X 11 'FF' LH**** *
+01X 0X 11 'FF' HH**** *
+11X 0X 11 'FF' HL**** *
