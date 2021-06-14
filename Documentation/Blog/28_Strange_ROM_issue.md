@@ -54,5 +54,70 @@ Just as a reminder, this is the circuit responsible for calculation of the nRD s
 
 When I measured the nRD (or RDN on the schematic above) signal produced by the redesigned nRD/nWR circuit, it indeed rang like expected:
 
+![28_nRD_ringing](Images/28_nRD_ringing.png)
 
+So, it's a start - I have a solid confirmation of what I saw on the logic analyser output. Time to trace back to the offending signal. First, I checked the upper input of the OR gate (pin 1 of U2A in schematic above):
 
+![28_nrW_not_ringing](Images/28_nrW_not_ringing.png)
+
+Nope. The signal is ringing a bit, but well below the range where it could cause issues. Checking the other input (pin 2 on U2A) and output of the AND gate then:
+
+![28_RDY_nCLK_ringing](Images/28_RDY_nCLK_ringing.png)
+
+Yeah, that's where the distortion is coming from. So, which of the two inputs of the AND gate is causing the issue? Ready (pin 1 on U3A gate) maybe:
+
+![28_RDY_not_ringing](Images/28_RDY_not_ringing.png)
+
+Nope, it's noisy a bit again, but doesn't look that bad. It must be the inverted clock signal then (nCLK), since it's the last signal to check:
+
+![28_nCLK_not_ringing](Images/28_nCLK_not_ringing.png)
+
+And this is what I really hate. Once I connected my probe to nCLK signal (pin 2 of U3A gate) the issue stopped occurring. Just like that.
+
+Put the probe on nCLK - no issue.
+
+Take the probe away from nCLK - issue is back.
+
+Ha, easy. All I have to do is to is to add oscilloscope to the BOM of my project and expose test points for connecting probe to fix the problem!
+
+Seriously though, I don't know how to properly explain what is going on. After thinking about it for a while I came up with the following explanation: this nCLK signal is actually routed to number of input gates, and since these are CMOS chips, they each work as little capacitors, storing a bit of charge each time the signal is high. After it falls back to low, this charge has to go somewhere, causing the short spike that is sufficient to trigger other input gate, but not being able to overcome probe tip capacitance.
+
+I don't know, maybe it doesn't make sense, please let me know what you think. There is however something valuable to learn here, even if I'm wrong. 
+
+For one, and this is probably obvious to you, but it was an inportant discovery for me. It means that there is a way to measure this kind of freak signals. If they are sufficient to drive input of a gate, then instead of trying to measure them directly (because it clearly doesn't work), measure them going through a gate - this will prevent probe capacitance to alter the signal.
+
+There is, however, another takeaway from this. If probe capacitance is enough to clean the signal, then the "solution" to problem like that can be adding one small capacitor (I used 22pF) between the signal and ground. It worked immediately, nCLK signal got much nicer, it doesn't ring as much anymore.
+
+## Bonus glitch - buy one, get one free
+
+When I was doing the analysis of the signals, I noticed something weird - RDY signal not being as nice and clean as expected. These two images will show it clearly (they are both taken from single scope run, note the frame number at the bottom):
+
+![28_RDY_high](Images/28_RDY_high.png)
+
+And just a few frames later:
+
+![28_RDY_not_so_high](Images/28_RDY_not_so_high.png)
+
+Got me worried for a second, and indeed, it's a design flaw that needs addressing. Luckily, not as severe as it might seem.
+
+And the good thing is I actually tested one of the designed features of my build, just did so unintentionally.
+
+What's going on here? 
+
+Let's start with the good news: this not-that-high RDY signal comes from design feature I described in RDY signal experiments entry. In short, sometimes the RDY input on the 6502 can become output producing low signal, and this is what happened here: wait state circuit is driving the RDY signal high, while CPU is driving the same line low. There is 470Ohm resistor between the two (in parallel with 22pF capacitor) which is acting like a voltage divider, causing the signal to drop a bit on one end and rise a bit on the other, but it works. The only note here is that next time I should use a bit larger value, like 1K, to ensure that the drop and rise are not as strong.
+
+There is bad news, however. See, the reason RDY line was pulled low by 6502 was that it executed WAI instruction, and it executed it during EEPROM flashing. You might be thinking that the CPU should not execute any instructions during programming and you would be quite right.
+
+As it turns out (and I hinted this at the beginning), when playing with PLD setup I have introduced a bug - when both WS_DISABLE (disable wait states entirely) and WS_DEBUG (force RDY signal low) are high, the wait state circuitry in PLD should generate low RDY signal, but it was doing the opposite - it was generating high RDY. Fixing this part would be easy, but it required changing the nRD/nWR stretching logic as well.
+
+See, in previous entry I wrote that the nRD/nWR signal translation is easy - it should stretch indefinitely during low RDY and act normally with RDY being high. WS_DISABLE and WS_DEBUG were supposed to be handled "automatically" (the former driving RDY high and the latter driving it low), but during EEPROM programming this is not the case. You want to disable wait states entirely (because you are using slow, AVR based, clock) and you want to pull the RDY line low, so both signals are high at the same time. This is the schematic I came up with:
+
+![28_new_nRDnWR](Images/28_new_nRDnWR.png)
+
+This way, even if RDY signal is driven low by wait state generator, WS_DISABLE will prevent indefinite stretching of nWR/nRD signals. Yeah, sometimes the solution is really simple.
+
+## Conclusion
+
+I'm slowly getting there. I keep running into smaller and bigger obstacles, but the project, overall, is progressing nicely. Solving these issues one by one feels good, and hopefully I can share more optimistic news next time.
+
+Please, let me know what you think, and if you understand what the hell is going on with these ringing signals, I would really appreciate the explanation!
