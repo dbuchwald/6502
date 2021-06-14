@@ -134,9 +134,9 @@ _get_cpu_mhz:
       lda #$ff
       sta VIA1_T1CH
 
-; wait for 4.102 ms
-      lda #$b1
-      ldx #$03
+; wait for 2.051 ms
+      lda #$d8
+      ldx #$01
       jsr delay_internal
 
 ; get current state (high latch only, ignore the low one)
@@ -148,8 +148,7 @@ _get_cpu_mhz:
       clc
       adc #$02
 
-; MHz count in 4 most significant bits, so divide by 16
-      lsr
+; MHz count in 5 most significant bits, so divide by 8
       lsr
       lsr
       lsr
