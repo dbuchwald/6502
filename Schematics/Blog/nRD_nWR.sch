@@ -77,10 +77,10 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS08" H 2850 2650 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	3150 3250 3250 3250
-Text GLabel 2350 2550 0    50   Input ~ 0
+Text GLabel 1750 2450 0    50   Input ~ 0
 RDY
 Wire Wire Line
-	2350 2550 2550 2550
+	2450 2550 2550 2550
 Wire Wire Line
 	3150 2650 3250 2650
 Wire Wire Line
@@ -106,4 +106,23 @@ Wire Wire Line
 Connection ~ 2450 3000
 Text GLabel 3250 3250 2    50   Output ~ 0
 PHI2
+$Comp
+L 74xx:74LS32 U?
+U 2 1 60C815BD
+P 2150 2550
+AR Path="/60C815BD" Ref="U?"  Part="1" 
+AR Path="/60B96DC5/60C815BD" Ref="U2"  Part="2" 
+F 0 "U2" H 2150 2875 50  0000 C CNN
+F 1 "74HC32" H 2150 2784 50  0000 C CNN
+F 2 "" H 2150 2550 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 2150 2550 50  0001 C CNN
+	2    2150 2550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 2450 1850 2450
+Text GLabel 1750 2650 0    50   Input ~ 0
+WS_DISABLE
+Wire Wire Line
+	1750 2650 1850 2650
 $EndSCHEMATC
