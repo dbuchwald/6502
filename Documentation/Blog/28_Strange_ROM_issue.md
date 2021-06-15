@@ -22,7 +22,9 @@ Anyway, what I'm trying to say is that apparently my project is getting to the l
 
 Back to where I left off last time - I fixed simple OS/1 code issue and it should have worked. It didn't, because when I tried flashing ROM via the onboard AVR programmer it would just fail silently. Even worse - it failed, but claimed to have succeeded.
 
-Now, I've been meaning to write about it for some time now, but haven't gotten around to it yet. See, there are two ways to write to the ROM memory: you can write a byte (or page of 64 consecutive of these at a time) and wait for 10ms, or you can perform write and just wait for the chip to finish. These chips have this nice feature where after write operation, you can read any address and there will be two bits that you can use to determine if the write is complete. It has actually already caused one issue in the past, so I wasn't surprised to see it happening again.
+Now, I've been meaning to write about it for some time now, but haven't gotten around to it yet. See, there are two ways to write to the ROM memory: you can write a byte (or page of 64 consecutive of these at a time) and wait for 10ms, or you can perform write and just wait for the chip to finish. These chips have this nice feature where after performing write operation you can read any address and there will be two bits that you can use to determine if the previous write is complete. It makes the whole process much faster, because in most (if not all cases) you don't have to wait full 10ms.
+
+Thing is - it has actually already caused one issue in the past, so I wasn't surprised to see it happening again.
 
 ![28_ROM_write_polling](Images/28_ROM_write_polling.jpg)
 
@@ -30,7 +32,7 @@ This is how the process starts. In this particular scenario, I'm running simple 
 
 All the r/W, CLK, BE signals are coming from AVR, the ROM_CS (at the bottom) is calculated by PLD as usual. Actually, RDY is also calculated by PLD and if you look closely, you will notice another problem, but I will deal with this one later.
 
-Anyway, you can see the sequence working as expected: read `0xA2`, write `0x5D`, keep reading the same address until the two consecutive reads yield the same value - this indicates that the write operation is completed. Unfortunately, this is not what happened:
+Anyway, you can see the sequence working as expected: read `0xA2`, write `0x5D`, keep reading the same address until the two consecutive reads yield the same value on bit 6 - this indicates that the write operation is completed. Unfortunately, this is not what happened:
 
 ![28_ROM_write_fail](Images/28_ROM_write_fail.jpg)
 
