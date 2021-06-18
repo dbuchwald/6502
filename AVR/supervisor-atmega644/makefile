@@ -16,9 +16,13 @@ PARTNO := usbasp
 # Windows10/CygWin
 # DEVICE := COM8
 # USBASP
-DEVICE = usb
-BAUDRATE := 19200
+DEVICE := usb
 AVRDUDE_FLAGS := -F -v
+
+# ATMega644 setup
+EFUSE := 0xfd
+HFUSE := 0xd5
+LFUSE := 0xf7
 
 CC := avr-gcc
 OBJCOPY := avr-objcopy
@@ -35,7 +39,10 @@ $(BUILD_FOLDER):
 	mkdir $(BUILD_FOLDER)
 
 flash: $(HEX)
-	avrdude $(AVRDUDE_FLAGS) -c $(PARTNO) -p $(MCU_AVRDUDE) -P $(DEVICE) -b $(BAUDRATE) -U flash:w:$(HEX)
+	avrdude $(AVRDUDE_FLAGS) -c $(PARTNO) -p $(MCU_AVRDUDE) -P $(DEVICE) -U flash:w:$(HEX)
+
+fuses:
+	avrdude $(AVRDUDE_FLAGS) -c $(PARTNO) -p $(MCU_AVRDUDE) -P $(DEVICE) -U efuse:w:$(EFUSE):m -U hfuse:w:$(HFUSE):m -U lfuse:w:$(LFUSE):m
 
 bridge:
 	socat -v -x /dev/cu.usbserial-DN5B2BNG,ispeed=230400,ospeed=230400,raw,echo=0 PTY,link=/tmp/ttyV0,raw,echo=0 2>~/serial.log

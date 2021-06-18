@@ -32,6 +32,7 @@
 
 #define ALL_INPUT    0x00
 #define ALL_OUTPUT   0xff
+#define NO_PULL_UP   0x00
 #define ALL_PULL_UP  0xff
 
 #endif

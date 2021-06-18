@@ -9,37 +9,48 @@
 static uint8_t control_register;
 
 void assumeBusControl(void) {
-  // start by stopping clock and 
-  updateControlRegister(CLKSEL_BIT | BE_BIT | RDY_BIT | WSDIS_BIT, 
-                        CLKSEL_BIT | BE_BIT | RDY_BIT | WSDIS_BIT);
-  // we will control RW now
-  CONTROL_DDR  |= RW_BIT;
   // lower the clock, we will raise it only when needed
   CONTROL_POUT &= ~CLK_BIT;
-  // address and data buses are all output
+  // start by stopping clock 
+  updateControlRegister(CLKSEL_BIT, 
+                        CLKSEL_BIT);
+  // wait for it to become active
+  _delay_loop_1(10);
+  // toggle remaining bits
+  updateControlRegister(BE_BIT | RDY_BIT | WSDIS_BIT, 
+                        BE_BIT | RDY_BIT | WSDIS_BIT);
+
+  // we will control RW now
+  CONTROL_DDR  |= RW_BIT;
+  // address bus is all output
   ADDRMSB_DDR  = ALL_OUTPUT;
   ADDRLSB_DDR  = ALL_OUTPUT;
+  // data bus is input
   DATA_DDR     = ALL_INPUT;
-  // enable pull-up on DATA
-  DATA_POUT    = ALL_PULL_UP;
+  // disable pull-up on DATA
+  DATA_POUT    = NO_PULL_UP;
 }
 
 void returnBusControl(void) {
-  // rw and sync all input
-  CONTROL_DDR  &= ~(SYNC_BIT | RW_BIT);
-  // enable pull-ups on input bits
-  CONTROL_POUT |= (SYNC_BIT | RW_BIT);
+  // rw input
+  CONTROL_DDR  &= ~RW_BIT;
+  // enable pull-up on input
+  CONTROL_POUT |= RW_BIT;
 
   // address and data buses are all input
   ADDRMSB_DDR  = ALL_INPUT;
   ADDRLSB_DDR  = ALL_INPUT;
   DATA_DDR     = ALL_INPUT;
-  // enable pull-ups on inputs
-  ADDRMSB_POUT = ALL_PULL_UP;
-  ADDRLSB_POUT = ALL_PULL_UP;
-  DATA_POUT    = ALL_PULL_UP;
-  // restore clock, BE and RDY operation
-  updateControlRegister(0x00, CLKSEL_BIT | BE_BIT | RDY_BIT | WSDIS_BIT);
+  // disable pull-ups on inputs
+  ADDRMSB_POUT = NO_PULL_UP;
+  ADDRLSB_POUT = NO_PULL_UP;
+  DATA_POUT    = NO_PULL_UP;
+  // restore BE and RDY operation
+  updateControlRegister(0x00, BE_BIT | RDY_BIT | WSDIS_BIT);
+  // wait for it to become active
+  _delay_loop_1(10);
+  // restore clock operation
+  updateControlRegister(0x00, CLKSEL_BIT);
 }
 
 // assumes bus is already under our control
@@ -83,9 +94,5 @@ void updateControlRegister(const uint8_t value, const uint8_t mask) {
   }
   // pulse latch 
   CONTROL_POUT |= SR_OUT;
-  // TODO: Might need delay
-  //delay(1);
   CONTROL_POUT &= ~SR_OUT;
-  // TODO: Might need delay
-  //delay(1);
 }
