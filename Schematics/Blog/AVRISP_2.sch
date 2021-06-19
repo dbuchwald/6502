@@ -1,0 +1,250 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 9 10
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L 6502:DS1813 U?
+U 1 1 60D5C275
+P 1800 2400
+AR Path="/60D223E0/60D5C275" Ref="U?"  Part="1" 
+AR Path="/60D551FE/60D5C275" Ref="U2"  Part="1" 
+F 0 "U2" H 1572 2446 50  0000 R CNN
+F 1 "DS1813" H 1572 2355 50  0000 R CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 1800 2000 50  0001 C CNN
+F 3 "" H 1800 2400 50  0001 C CNN
+	1    1800 2400
+	1    0    0    -1  
+$EndComp
+Text GLabel 1700 1750 0    50   Input ~ 0
++5V
+Text GLabel 1700 3050 0    50   Input ~ 0
+GND
+Wire Wire Line
+	1700 3050 1800 3050
+Wire Wire Line
+	1800 3050 1800 2950
+Wire Wire Line
+	1700 1750 1800 1750
+Wire Wire Line
+	1800 1750 1800 1850
+$Comp
+L Switch:SW_Push SW?
+U 1 1 60D5C281
+P 2300 2700
+AR Path="/60D223E0/60D5C281" Ref="SW?"  Part="1" 
+AR Path="/60D551FE/60D5C281" Ref="SW1"  Part="1" 
+F 0 "SW1" V 2254 2848 50  0000 L CNN
+F 1 "SW_Push" V 2345 2848 50  0000 L CNN
+F 2 "" H 2300 2900 50  0001 C CNN
+F 3 "~" H 2300 2900 50  0001 C CNN
+	1    2300 2700
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1800 3050 2300 3050
+Wire Wire Line
+	2300 3050 2300 2900
+Connection ~ 1800 3050
+Wire Wire Line
+	2200 2400 2300 2400
+Wire Wire Line
+	2300 2400 2300 2500
+$Comp
+L Connector:AVR-ISP-6 J?
+U 1 1 60D5C28C
+P 3050 1400
+AR Path="/60D223E0/60D5C28C" Ref="J?"  Part="1" 
+AR Path="/60D551FE/60D5C28C" Ref="J1"  Part="1" 
+F 0 "J1" V 2583 1450 50  0000 C CNN
+F 1 "AVR-ISP-6" V 2674 1450 50  0000 C CNN
+F 2 "" V 2800 1450 50  0001 C CNN
+F 3 " ~" H 1775 850 50  0001 C CNN
+	1    3050 1400
+	0    1    1    0   
+$EndComp
+Text GLabel 2550 1300 0    50   Input ~ 0
+GND
+Wire Wire Line
+	2550 1300 2650 1300
+Connection ~ 2300 2400
+$Comp
+L MCU_Microchip_ATmega:ATmega328P-PU U?
+U 1 1 60D5C297
+P 4950 3200
+AR Path="/60D223E0/60D5C297" Ref="U?"  Part="1" 
+AR Path="/60D551FE/60D5C297" Ref="U3"  Part="1" 
+F 0 "U3" V 4850 3250 50  0000 C CNN
+F 1 "ATmega328P-PU" V 4750 3200 50  0000 C CNN
+F 2 "Package_DIP:DIP-28_W7.62mm" H 4950 3200 50  0001 C CIN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328_P%20AVR%20MCU%20with%20picoPower%20Technology%20Data%20Sheet%2040001984A.pdf" H 4950 3200 50  0001 C CNN
+	1    4950 3200
+	0    -1   -1   0   
+$EndComp
+Text GLabel 3050 3100 0    50   Input ~ 0
++5V
+Wire Wire Line
+	3050 3100 3150 3100
+Wire Wire Line
+	3350 3100 3350 3200
+Wire Wire Line
+	3350 3200 3450 3200
+Connection ~ 3350 3100
+Wire Wire Line
+	3350 3100 3450 3100
+Text GLabel 6550 3200 2    50   Input ~ 0
+GND
+Wire Wire Line
+	6550 3200 6450 3200
+Wire Wire Line
+	3050 1800 3050 2500
+Wire Wire Line
+	3050 2500 4250 2500
+Wire Wire Line
+	4250 2500 4250 2600
+Wire Wire Line
+	4150 2600 4150 1900
+Wire Wire Line
+	4150 1900 3250 1900
+Wire Wire Line
+	3250 1900 3250 1800
+Wire Wire Line
+	3150 1800 3150 2000
+Wire Wire Line
+	3150 2000 4050 2000
+Wire Wire Line
+	4050 2000 4050 2600
+$Comp
+L Device:C_Small C?
+U 1 1 60D5C2B1
+P 2000 1750
+AR Path="/60D223E0/60D5C2B1" Ref="C?"  Part="1" 
+AR Path="/60D551FE/60D5C2B1" Ref="C1"  Part="1" 
+F 0 "C1" V 2229 1750 50  0000 C CNN
+F 1 "100nF" V 2138 1750 50  0000 C CNN
+F 2 "" H 2000 1750 50  0001 C CNN
+F 3 "~" H 2000 1750 50  0001 C CNN
+	1    2000 1750
+	0    -1   -1   0   
+$EndComp
+Text GLabel 2200 1750 2    50   Input ~ 0
+GND
+Wire Wire Line
+	1800 1750 1900 1750
+Connection ~ 1800 1750
+Wire Wire Line
+	2100 1750 2200 1750
+$Comp
+L Device:C_Small C?
+U 1 1 60D5C2BB
+P 3400 3900
+AR Path="/60D223E0/60D5C2BB" Ref="C?"  Part="1" 
+AR Path="/60D551FE/60D5C2BB" Ref="C3"  Part="1" 
+F 0 "C3" V 3171 3900 50  0000 C CNN
+F 1 "100nF" V 3262 3900 50  0000 C CNN
+F 2 "" H 3400 3900 50  0001 C CNN
+F 3 "~" H 3400 3900 50  0001 C CNN
+	1    3400 3900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3500 3900 3750 3900
+Wire Wire Line
+	3750 3900 3750 3800
+Text GLabel 3200 3900 0    50   Input ~ 0
+GND
+Wire Wire Line
+	3200 3900 3300 3900
+$Comp
+L Device:C_Small C?
+U 1 1 60D5C2C5
+P 3150 3300
+AR Path="/60D223E0/60D5C2C5" Ref="C?"  Part="1" 
+AR Path="/60D551FE/60D5C2C5" Ref="C2"  Part="1" 
+F 0 "C2" H 3242 3346 50  0000 L CNN
+F 1 "100nF" H 3242 3255 50  0000 L CNN
+F 2 "" H 3150 3300 50  0001 C CNN
+F 3 "~" H 3150 3300 50  0001 C CNN
+	1    3150 3300
+	1    0    0    -1  
+$EndComp
+Text GLabel 3050 3500 0    50   Input ~ 0
+GND
+Wire Wire Line
+	3050 3500 3150 3500
+Wire Wire Line
+	3150 3500 3150 3400
+Wire Wire Line
+	3150 3200 3150 3100
+Connection ~ 3150 3100
+Wire Wire Line
+	3150 3100 3350 3100
+$Comp
+L Connector:TestPoint TP?
+U 1 1 60D5C2D1
+P 5250 2200
+AR Path="/60D223E0/60D5C2D1" Ref="TP?"  Part="1" 
+AR Path="/60D551FE/60D5C2D1" Ref="TP1"  Part="1" 
+F 0 "TP1" H 5308 2318 50  0000 L CNN
+F 1 "TestPoint" H 5308 2227 50  0000 L CNN
+F 2 "" H 5450 2200 50  0001 C CNN
+F 3 "~" H 5450 2200 50  0001 C CNN
+	1    5250 2200
+	1    0    0    -1  
+$EndComp
+NoConn ~ 3550 1300
+$Comp
+L 74xx:74LS08 U1
+U 1 1 60D69161
+P 4850 2300
+F 0 "U1" H 4850 2625 50  0000 C CNN
+F 1 "74AC08" H 4850 2534 50  0000 C CNN
+F 2 "" H 4850 2300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS08" H 4850 2300 50  0001 C CNN
+	1    4850 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5150 2300 5250 2300
+Wire Wire Line
+	5250 2300 5250 2600
+Wire Wire Line
+	5250 2200 5250 2300
+Connection ~ 5250 2300
+Wire Wire Line
+	2950 1800 2950 2200
+Wire Wire Line
+	2950 2200 4300 2200
+Wire Wire Line
+	2300 2400 4550 2400
+$Comp
+L Device:R R1
+U 1 1 60D70B7B
+P 4300 1950
+F 0 "R1" H 4370 1996 50  0000 L CNN
+F 1 "4K7" H 4370 1905 50  0000 L CNN
+F 2 "" V 4230 1950 50  0001 C CNN
+F 3 "~" H 4300 1950 50  0001 C CNN
+	1    4300 1950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4300 2100 4300 2200
+Connection ~ 4300 2200
+Wire Wire Line
+	4300 2200 4550 2200
+Text GLabel 4300 1700 1    50   Input ~ 0
++5V
+Wire Wire Line
+	4300 1700 4300 1800
+$EndSCHEMATC

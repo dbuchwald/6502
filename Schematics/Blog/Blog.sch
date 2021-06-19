@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 7
+Sheet 1 10
 Title ""
 Date ""
 Rev ""
@@ -581,5 +581,23 @@ S 8550 5400 500  150
 U 60B96DC5
 F0 "nRD/nWR" 50
 F1 "nRD_nWR.sch" 50
+$EndSheet
+$Sheet
+S 8550 5800 500  150 
+U 60D223E0
+F0 "AVR ISP" 50
+F1 "AVRISP.sch" 50
+$EndSheet
+$Sheet
+S 8550 6200 500  150 
+U 60D551FE
+F0 "AVR ISP 2" 50
+F1 "AVRISP_2.sch" 50
+$EndSheet
+$Sheet
+S 9700 5000 500  150 
+U 60D7CF98
+F0 "AVR ISP 3" 50
+F1 "AVRISP_3.sch" 50
 $EndSheet
 $EndSCHEMATC
