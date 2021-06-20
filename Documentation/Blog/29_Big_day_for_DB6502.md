@@ -211,17 +211,17 @@ See, with 5V input this 800mV is way above something that could be guaranteed to
 
 Still, where were these spikes coming from?
 
-Now, I can't say for sure, but the explanation I came up with was the following: I assumed that USBASP can easily pull down RESET line, but in fact, it has pretty limited sink capability, restricted by 270 Ohm RS resistor as seen [here](https://www.fischl.de/usbasp/):
+Now, I can't say for sure, but the explanation I came up with was the following: I assumed that USBASP can easily pull down RESET line, but in fact, it has pretty limited sink capability, restricted by 270 Ohm R6 resistor as seen [here](https://www.fischl.de/usbasp/):
 
 ![29_USBASP_sink](Images/29_USBASP_sink.png)
 
-With 5V supply it should be able to sink no more than 18mA. Probably this is reduced by some parasitic capacitance (?) on the programmer, and each next time it's just not enough to keep the voltage low enough, causing this strange behavior.
+With 5V supply it should be able to sink no more than 18mA. Probably this is reduced by some parasitic capacitance (?) on the programmer input, and each next time it's just not enough to keep the voltage low enough, causing this strange behavior.
 
 Maybe you have some better explanation for it? I would love to hear in the comments below.
 
 ## Solving the problem
 
-Basically I needed a way to pull the RESET line to GND stronger than the USBASP does that. I tried two options, and they both worked. One is to connect USBASP RESET output to P-MOSFET gate (with pull-up resistor) and pull the RESET line via source and drain to GND.
+Basically I needed a way to pull the RESET line to GND stronger than the USBASP does that. I tried two options, and surprisingly, they both worked. One is to connect USBASP RESET output to P-MOSFET gate (with pull-up resistor) and pull the RESET line via source and drain to GND.
 
 ![29_mosfet](Images/29_mosfet.png)
 
@@ -245,11 +245,11 @@ So it's pretty obvious that the MOSFET itself can't pull the reset line all the 
 
 What is also surprising is that this build does work each time. After all, this 720mV is not that much lower than the observed spikes in initial setup. Still, I didn't want to risk another issue with next revision PCB, so I gave up MOSFET idea.
 
-Alternative solution is very simple:
+Alternative solution is actually very simple:
 
 ![29_AVR_ISP_and](Images/29_AVR_ISP_and.png)
 
-This way you never get your reset supervisor fighting your AVR programmer. And the signal looks much better:
+This way you never get your reset supervisor fighting your AVR programmer, and the signal looks much better:
 
 ![29_and_first](Images/29_and_first.png)
 
@@ -257,7 +257,7 @@ The second run also looks pretty good:
 
 ![29_and_second](Images/29_and_second.png)
 
-There is that spike again! Closer look reveals that it's actually deliberate action from USBASP:
+There is that spike again! Closer look reveals that it might be deliberate action from USBASP:
 
 ![29_and_second_closeup](Images/29_and_second_closeup.png)
 
@@ -270,3 +270,11 @@ Oh, and as it turns out, it happens also at the first run, just much sooner:
 So yeah, maybe there is more to the AVR ISP interface than I can see.
 
 And, what's worse, the problem is not solved yet, but this entry is already long enough. Remember the data bus lines? Yeah, they cause issues too and I will handle them next time. It was still fun though!
+
+## Summary
+
+It was amazing to see the build finally work as designed, but it would have never happened if not for a comment I got on Reddit, suggesting to check the faster PLD again. This also means that you can reach your goals, it just takes persistence and a bit of faith. I wasn't sure if PCB can resolve issues I had with breadboard build, but apparently it did. Sure, it doesn't mean that breadboards are useless, it's just a reminder that sometimes going with your gut feeling is the right way to do.
+
+As for the AVR adventure - I should have seen this coming. My initial design was overly optimistic and I should have anticipated issues. I still don't understand how comes I haven't noticed it before, but frankly? I might have missed it among plethora of smaller bugs and glitches haunting previous revision of my build.
+
+Bottom line: after documenting second part of the AVR ISP glitch I will move forward with OS/1 implementation - I still have this memory banking thing to play with - and in parallel I might actually go forward with the final version 2 PCB for DB6502 that I could share with other people. Exciting times ahead!
