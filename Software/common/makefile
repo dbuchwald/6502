@@ -101,6 +101,7 @@ BASE_LIBRARY=$(COMMON_ROOT)/none.lib
 COMMON_SOURCES=syscalls.s       \
                serial.s         \
                $(SERIAL_DRIVER) \
+							 latch.s          \
                blink.s          \
                core.s           \
                keyboard.s       \
@@ -147,11 +148,11 @@ OBJECTS = $(ASM_SOURCES:%.s=$(BUILD_FOLDER)/%.o) $(C_SOURCES:%.c=$(BUILD_FOLDER)
 
 ifeq ($(BUILD_TYPE),load)
 # Choose configuration file for firmware (determines addressing mode)
-FIRMWARE_CFG=../../common/load.cfg
+FIRMWARE_CFG=../../common/load.$(ADDRESS_MODE).cfg
 # Resulting binary file (ROM to be uploaded)
-FIRMWARE_RAW=$(ROM_FOLDER)/$(PROJECT_NAME)/$(PROJECT_NAME).load.raw
-FIRMWARE_BINARY=$(ROM_FOLDER)/$(PROJECT_NAME).load.bin
-FIRMWARE_MAP=$(ROM_FOLDER)/$(PROJECT_NAME)/$(PROJECT_NAME).load.map
+FIRMWARE_RAW=$(ROM_FOLDER)/$(PROJECT_NAME)/$(PROJECT_NAME).load.$(ADDRESS_MODE).raw
+FIRMWARE_BINARY=$(ROM_FOLDER)/$(PROJECT_NAME).load.$(ADDRESS_MODE).bin
+FIRMWARE_MAP=$(ROM_FOLDER)/$(PROJECT_NAME)/$(PROJECT_NAME).load.$(ADDRESS_MODE).map
 else
 # Choose configuration file for firmware (determines addressing mode)
 FIRMWARE_CFG=../../common/firmware.$(ADDRESS_MODE).cfg
@@ -242,10 +243,10 @@ emu: $(FIRMWARE_BINARY)
 	$(X6502_BINARY) $<
 
 terminal:
-	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) $(TERMINAL_SPEED) /dev/tty.usbserial-FTATHSS6
+	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) $(TERMINAL_SPEED) $(TERMINAL_DEVICE)
 
 dbgterm:
-	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) $(DBGTERM_SPEED) /dev/tty.usbserial-D3089797
+	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) $(DBGTERM_SPEED) $(DBGTERM_DEVICE)
 
 # Clean generated files
 clean:

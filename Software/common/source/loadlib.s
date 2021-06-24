@@ -2,6 +2,7 @@
 
 ; Init routines
         .export _system_init
+        .export _latch_init
         .export _blink_init
         .export _lcd_init
         .export _serial_init
@@ -20,6 +21,12 @@
         .export _convert_hex_to_dec
         .export convert_hex_to_dec
         .export _get_cpu_mhz
+; Latch routinex
+        .export _latch_write
+        .export latch_write
+        .export _latch_set
+        .export _latch_reset
+        .export _latch_get
 ; Blink routines
         .export _blink_led
         .export _strobe_led
@@ -102,6 +109,9 @@
 _system_init:
         jmp (_syscall__system_init)
 
+_latch_init:
+        jmp (_syscall__latch_init)
+
 _blink_init:
         jmp (_syscall__blink_init)
 
@@ -151,6 +161,23 @@ convert_hex_to_dec:
 
 _get_cpu_mhz:
         jmp (_syscall__get_cpu_mhz)
+
+; Latch routines
+        .export _latch_write
+_latch_write:
+        jmp (_syscall__latch_write)
+
+latch_write:
+        jmp (_syscall_latch_write)
+
+_latch_set:
+        jmp (_syscall__latch_set)
+
+_latch_reset:
+        jmp (_syscall__latch_reset)
+
+_latch_get:
+        jmp (_syscall__latch_get)
 
 ; Blink routines
 _blink_led:

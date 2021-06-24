@@ -1,5 +1,6 @@
         .include "core.inc"
         .include "blink.inc"
+        .include "latch.inc"
         .include "lcd.inc"
         .include "serial.inc"
         .include "keyboard.inc"
@@ -32,6 +33,13 @@
         .export _syscall__convert_hex_to_dec
         .export _syscall_convert_hex_to_dec
         .export _syscall__get_cpu_mhz
+; Latch routines
+        .export _syscall__latch_init
+        .export _syscall_latch_write
+        .export _syscall__latch_write
+        .export _syscall__latch_set
+        .export _syscall__latch_reset
+        .export _syscall__latch_get
 ; Blink routines
         .export _syscall__blink_led
         .export _syscall__strobe_led
@@ -120,6 +128,8 @@
 
 _syscall__system_init:
         SYSCALL_VECTOR _system_init
+_syscall__latch_init:
+        SYSCALL_VECTOR _latch_init
 _syscall__blink_init:
         SYSCALL_VECTOR _blink_init
 _syscall__lcd_init:
@@ -152,6 +162,16 @@ _syscall_convert_hex_to_dec:
         SYSCALL_VECTOR convert_hex_to_dec
 _syscall__get_cpu_mhz:
         SYSCALL_VECTOR _get_cpu_mhz
+_syscall_latch_write:
+        SYSCALL_VECTOR latch_write
+_syscall__latch_write:
+        SYSCALL_VECTOR _latch_write
+_syscall__latch_set:
+        SYSCALL_VECTOR _latch_set
+_syscall__latch_reset:
+        SYSCALL_VECTOR _latch_reset
+_syscall__latch_get:
+        SYSCALL_VECTOR _latch_get
 _syscall__blink_led:
         SYSCALL_VECTOR _blink_led
 _syscall__strobe_led:

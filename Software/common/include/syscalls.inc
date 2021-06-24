@@ -18,6 +18,13 @@
         .forceimport _syscall__convert_hex_to_dec
         .forceimport _syscall_convert_hex_to_dec
         .forceimport _syscall__get_cpu_mhz
+; Latch routines
+        .forceimport _syscall__latch_init
+        .forceimport _syscall_latch_write
+        .forceimport _syscall__latch_write
+        .forceimport _syscall__latch_set
+        .forceimport _syscall__latch_reset
+        .forceimport _syscall__latch_get
 ; Blink routines
         .forceimport _syscall__blink_led
         .forceimport _syscall__strobe_led

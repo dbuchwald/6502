@@ -1,6 +1,7 @@
 .globalzp sp
 .globalzp sreg
 .globalzp regsave
+.globalzp latch_register
 .globalzp tmp1
 .globalzp tmp2
 .globalzp tmp3

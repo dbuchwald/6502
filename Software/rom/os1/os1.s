@@ -79,7 +79,7 @@ init:
       .segment "RODATA"
 
 os1_version:
-      .asciiz "OS/1 version 0.3.5C"
+      .asciiz "OS/1 version 0.4.0"
 keyboard_disconnected:
       .asciiz "No keyboard"
 keyboard_connected:

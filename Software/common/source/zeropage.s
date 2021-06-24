@@ -6,6 +6,7 @@
 sp:                    .res 2
 sreg:                  .res 2
 regsave:               .res 4
+latch_register:        .res 1
 ptr1:                  .res 2
 ptr2:                  .res 2
 ptr3:                  .res 2

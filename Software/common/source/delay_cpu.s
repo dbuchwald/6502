@@ -5,6 +5,7 @@
       .export _delay_ms
       .export _delay_sec
       .export _get_cpu_mhz
+      .export TIMER_DRIVER_STRING
 
       .code
 ; POSITIVE C COMPLIANT
@@ -105,3 +106,7 @@ exit_delay_sec:
 _get_cpu_mhz:
       lda #(clock_mhz)
       rts
+
+      .segment "RODATA"
+TIMER_DRIVER_STRING:
+      .asciiz "CPU"

@@ -170,6 +170,9 @@ _process_info:
         write_tty #serial_drv_msg
         write_tty #SERIAL_DRIVER_STRING
         jsr _tty_send_newline
+        write_tty #timer_drv_msg
+        write_tty #TIMER_DRIVER_STRING
+        jsr _tty_send_newline
         rts
 
 system_break_handler:
@@ -247,6 +250,8 @@ acia_addr_msg:
         .asciiz "Serial address: 0x"
 serial_drv_msg:
         .asciiz "Serial driver: "
+timer_drv_msg:
+        .asciiz "Timer driver: "
 os1prompt:
         .asciiz "OS/1>"
 msgemptyline:

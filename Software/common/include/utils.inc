@@ -6,6 +6,7 @@
         .import _convert_hex_to_dec
         .import convert_hex_to_dec
         .import _get_cpu_mhz
+        .import TIMER_DRIVER_STRING
 
         .macro convert_hex_to_dec hex_num, dec_buffer
         .if (.match (.left (1, {dec_buffer}), #))

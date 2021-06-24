@@ -19,6 +19,7 @@ DUART_W_CTPL  = __SERIAL_START__ + $07
       .export _delay_ms
       .export _delay_sec
       .export _get_cpu_mhz
+      .export TIMER_DRIVER_STRING
 
       .code
 ; POSITIVE C COMPLIANT
@@ -173,3 +174,6 @@ delay_internal:
       .segment "RODATA"
 ms_multipliers:
       .byte $e6, $00, $cd, $01, $9a, $03, $33, $07,$66, $0e, $cd, $1c, $9a, $39, $33, $73
+
+TIMER_DRIVER_STRING:
+      .asciiz "CPU"

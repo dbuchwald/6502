@@ -4,6 +4,7 @@
         .include "lcd.inc"
         .include "serial.inc"
         .include "blink.inc"
+        .include "latch.inc"
         .include "keyboard.inc"
         .include "sys_const.inc"
 
@@ -36,6 +37,8 @@ _system_init:
         sta system_break_address+1
         lda #$ff
         sta system_break_sp
+        ; initialize latch
+        jsr _latch_init
         ; Set user break to null
         stz user_break_address
         stz user_break_address+1
@@ -57,6 +60,9 @@ _system_init:
         sta sp
         lda #>(__USERRAM_START__ + __USERRAM_SIZE__)
         sta sp+1
+        ; enable extended RAM
+        lda EXRAM_FLAG
+        jsr _latch_set
         ; Initialize LCD
         jsr _lcd_init
         ; Initialize ACIA
