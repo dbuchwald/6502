@@ -106,18 +106,27 @@ parse_hex_byte:
         ; preserve tmp1
         lda tmp1
         pha
+        stz tmp1
         ; ; Copy pointer to preserve during strtoupper operation
         ; copy_ptr ptr1, parsed_token_pointer
         ; Check length (expect two chars only)
         strlength parsed_token_pointer
-        cmp #$02
-        bne @error
+        ; preserve for now
+        tay
+        cmp #$00
+        beq @error
+        cmp #$03
+        bcs @error
         ; Convert whole token uppercase for comparison
         strtoupper parsed_token_pointer
         ; Copy pointer back to dereference
         copy_ptr parsed_token_pointer, ptr1
-        ; get first char
+        ; skip first char if only one passed
+        tya
         ldy #$00
+        cmp #$01
+        beq @single_digit
+        ; get first char
         lda (ptr1),y
         jsr parse_hex_char
         bcc @error
@@ -127,6 +136,7 @@ parse_hex_byte:
         asl
         sta tmp1
         iny
+@single_digit:
         lda (ptr1),y
         jsr parse_hex_char
         bcc @error
@@ -181,12 +191,13 @@ parse_hex_word:
         stx parsed_token_pointer+1
         ; preserve Y
         phy
-        ; preserve tmp1
+        ; preserve tmp1 and tmp2
         lda tmp1
         pha
         lda tmp2
         pha
         stz tmp1
+        stz tmp2
         ; ; Copy pointer to preserve during strtoupper operation
         ; copy_ptr ptr1, parsed_token_pointer
         ; Convert whole token uppercase for comparison
@@ -197,10 +208,16 @@ parse_hex_word:
         ldy #$00
         ; Check length
         strlength parsed_token_pointer
+        cmp #$00
+        beq @error
+        cmp #$01
+        beq @zeropage_single
         cmp #$02
-        beq @zeropage
-        cmp #$04
-        bne @error
+        beq @zeropage_double
+        cmp #$03
+        beq @absolute_single
+        cmp #$05
+        bcs @error
         ; get first char
         lda (ptr1),y
         jsr parse_hex_char
@@ -211,6 +228,7 @@ parse_hex_word:
         asl
         sta tmp1
         iny
+@absolute_single:
         lda (ptr1),y
         jsr parse_hex_char
         bcc @error
@@ -218,7 +236,7 @@ parse_hex_word:
         adc tmp1
         sta tmp1
         iny
-@zeropage:
+@zeropage_double:
         lda (ptr1),y
         jsr parse_hex_char
         bcc @error
@@ -228,6 +246,7 @@ parse_hex_word:
         asl
         sta tmp2
         iny
+@zeropage_single:
         lda (ptr1),y
         jsr parse_hex_char
         bcc @error
