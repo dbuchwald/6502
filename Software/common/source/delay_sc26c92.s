@@ -176,4 +176,4 @@ ms_multipliers:
       .byte $e6, $00, $cd, $01, $9a, $03, $33, $07,$66, $0e, $cd, $1c, $9a, $39, $33, $73
 
 TIMER_DRIVER_STRING:
-      .asciiz "CPU"
+      .asciiz "SC26C92"

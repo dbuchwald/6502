@@ -1,5 +1,6 @@
         .setcpu "65C02"
         .include "tty.inc"
+        .include "latch.inc"
         .include "string.inc"
         .include "utils.inc"
         .include "menu.inc"
@@ -346,6 +347,29 @@ _get_zero:
         lda #$00
         sta end_address+1
         jmp _print_memory_range
+
+_set_exram:
+        sta tokens_pointer
+        stx tokens_pointer+1
+
+        strgettoken tokens_pointer, 1
+        copy_ptr ptr1, value_pointer
+
+        parse_onoff value_pointer
+        bcc @error
+        cmp #$00
+        beq @turn_off
+        lda #(EXRAM_FLAG)
+        jsr _latch_set
+        rts
+@turn_off:
+        lda #(EXRAM_FLAG)
+        jsr _latch_reset
+        rts
+@error:
+        writeln_tty #parseerr
+        rts
+
 
 _disasm_address:
         sta tokens_pointer
@@ -703,7 +727,7 @@ msgput_at_address:
 msgdisasm:
         .asciiz "Displaying code starting at "
 parseerr:
-        .asciiz "Unable to parse given address"
+        .asciiz "Unable to parse parameters"
 prompt:
         .asciiz "OS/1 Monitor>"
 colon:
@@ -718,6 +742,7 @@ menu:
         menuitem put_cmd,    4, put_desc,    _put_value
         menuitem stack_cmd,  1, stack_desc,  _get_stack
         menuitem zero_cmd,   1, zero_desc,   _get_zero
+        menuitem exram_cmd,  2, exram_desc,  _set_exram
         menuitem disasm_cmd, 2, disasm_desc, _disasm_address
         endmenu 
 
@@ -739,6 +764,10 @@ zero_cmd:
         .asciiz "ZERO"
 zero_desc:
         .asciiz "ZERO - display zeropage contents"
+exram_cmd:
+        .asciiz "EXRAM"
+exram_desc:
+        .asciiz "EXRAM ON/OFF - toggle RAM/ROM bank at 8000:bfff"
 disasm_cmd:
         .asciiz "DISASM"
 disasm_desc:
