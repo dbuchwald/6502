@@ -9,6 +9,9 @@
 // defined in chip datasheet
 #define TOGGLE_BIT    _BV(6)
 
+#define EXRAM_FLAG 0x80
+#define LATCH_ADDRESS 0x0200
+
 void writeSingleByteInternal(const uint16_t address, const uint8_t data);
 uint8_t waitForWriteEnd();
 
@@ -116,6 +119,7 @@ uint8_t waitForWriteEnd() {
 }
 
 uint8_t eraseChip(void) {
+  disableExtraRAM();
   writeSingleByteInternal(0x5555+ROM_START, 0xaa);
   writeSingleByteInternal(0x2aaa+ROM_START, 0x55);
   writeSingleByteInternal(0x5555+ROM_START, 0x80);
@@ -155,6 +159,7 @@ uint8_t enableDataProtection(void) {
 
 uint8_t checkDataProtection(void) {
   uint8_t old_value, new_value;
+  disableExtraRAM();
   // read old value (to restore it later if SDP is disabled)
   old_value = readSingleByte(ROM_START);
   new_value = ~old_value;
@@ -178,4 +183,12 @@ uint8_t checkDataProtection(void) {
     // data restored to original value
     return SDP_DISABLED;
   }
+}
+
+void enableExtraRAM(void) {
+  writeSingleByteInternal(LATCH_ADDRESS, EXRAM_FLAG);
+}
+
+void disableExtraRAM(void) {
+  writeSingleByteInternal(LATCH_ADDRESS, 0x00);
 }

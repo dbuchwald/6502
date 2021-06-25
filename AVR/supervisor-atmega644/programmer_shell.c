@@ -17,6 +17,8 @@ static void disableSDP(void);
 static void flashEEPROM(void);
 static void zeroEEPROM(void);
 static void eraseEEPROM(void);
+static void enableEXRAM(void);
+static void disableEXRAM(void);
 
 static uint8_t upload_callback(uint16_t packet_no, uint8_t *buffer, uint16_t size);
 
@@ -58,6 +60,12 @@ void runProgrammerShell(void) {
       case 'R':
         eraseEEPROM();
         break;
+      case 'N':
+        enableEXRAM();
+        break;
+      case 'M':
+        disableEXRAM();
+        break;
       default:
         printf("ERROR: Unrecognized command %c [%02x], type 'h' for help...\n", c, c);
     }
@@ -73,6 +81,8 @@ void displayHelp(void) {
   printf(" [f]lash - write EEPROM with bin file sent over XMODEM protocol\n");
   printf(" [z]ero - fill EEPROM with nulls (0x00)\n");
   printf(" e[r]ase - erase EEPROM using 6-byte code (writes 0xff to each cell)\n");
+  printf(" e[n]able EXRAM - enable extra RAM\n");
+  printf(" disable EXRA[M] - disable extra RAM\n");
   printf(" [h]elp - display this information\n");
   printf(" [q]uit - leave shell\n");
 }
@@ -292,4 +302,20 @@ void eraseEEPROM(void) {
   resetSystem();
   printf("done!\n");
   returnBusControl();
+}
+
+void enableEXRAM(void) {
+  printf("Enabling extra RAM...");
+  assumeBusControl();
+  enableExtraRAM();
+  returnBusControl();
+  printf("done!\n");
+}
+
+void disableEXRAM(void) {
+  printf("Disabling extra RAM...");
+  assumeBusControl();
+  disableExtraRAM();
+  returnBusControl();
+  printf("done!\n");
 }

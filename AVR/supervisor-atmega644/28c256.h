@@ -22,5 +22,8 @@ uint8_t enableDataProtection(void);
 
 uint8_t checkDataProtection(void);
 
+void enableExtraRAM(void);
+void disableExtraRAM(void);
+
 
 #endif /* __28C256_H__DEFINED */
