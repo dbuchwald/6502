@@ -6,11 +6,11 @@
 
 static menuitem menu[3];
 
-void process_cmenu(unsigned char tokens_buffer[] __attribute__((unused))) {
+void process_cmenu(char tokens_buffer[] __attribute__((unused))) {
   tty_writeln("Menu item activated!");
 }
 
-void process_caddr(unsigned char tokens_buffer[]) {
+void process_caddr(char tokens_buffer[]) {
   unsigned char address[2];
   if (parse_hex_word(strgettoken(tokens_buffer, 1), address)) {
     tty_write("Parsed successfully: 0x");
@@ -22,7 +22,7 @@ void process_caddr(unsigned char tokens_buffer[]) {
   }
 }
 
-void process_cdec(unsigned char tokens_buffer[]) {
+void process_cdec(char tokens_buffer[]) {
   unsigned char address[2];
   if (parse_dec_word(strgettoken(tokens_buffer, 1), address)) {
     tty_write("Parsed successfully: 0x");

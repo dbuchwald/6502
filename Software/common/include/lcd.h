@@ -9,7 +9,7 @@
 #define LCD_DM_DISPLAY_ON     0b00000100
 
 extern void __fastcall__ lcd_init(void);
-extern void __fastcall__ lcd_print(const unsigned char string[]);
+extern void __fastcall__ lcd_print(const char string[]);
 extern void __fastcall__ lcd_print_char(const unsigned char c);
 extern void __fastcall__ lcd_clear(void);
 extern void __fastcall__ lcd_backspace(void);
