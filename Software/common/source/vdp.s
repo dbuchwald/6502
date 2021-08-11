@@ -1,4 +1,5 @@
     .include "vdp_const.inc"
+    .include "blink.inc"
 
     .import __VDP_START__
     
@@ -263,22 +264,26 @@ vdp_clear_screen:
   
   lda #<VDP_NAME_TABLE_BASE
   sta VDP_REG    
-  lda #(>VDP_NAME_TABLE_BASE | VDP_WRITE_VRAM_SELECT)
+  lda #>VDP_NAME_TABLE_BASE | VDP_WRITE_VRAM_SELECT
   sta VDP_REG 
 
-  lda #$C0-1
+  lda #$C0
   sta VDP_PATTERN_INIT 
 
-  lda #$03 
+  lda #$04 
   sta VDP_PATTERN_INIT_HI
 
 
-  lda #' ' 
+  
 vdp_name_table_loop:
+  
+  lda #$20 
   sta VDP_VRAM
 
   dec VDP_PATTERN_INIT
   bne vdp_name_table_loop ; will be true after $FF
+
+  jsr _strobe_led
 
   dec VDP_PATTERN_INIT_HI
   bne vdp_name_table_loop
@@ -289,7 +294,7 @@ vdp_name_table_loop:
 
 ;------------------------------------------------------------------------------
 ;
-; Initialize Name Table
+; Enable Display
 ;
 ;------------------------------------------------------------------------------
 vdp_enable_display:
