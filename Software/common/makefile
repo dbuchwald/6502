@@ -41,7 +41,7 @@ PICOCOM_BINARY=picocom
 PICOCOM_FLAGS=-b 19200 -fh --send-cmd 'sz -X'
 
 # Python binary
-PYTHON_BINARY=python
+PYTHON_BINARY=python2
 PYTHON_PROGRAM=../../common/loadtrim.py
 
 # Build folder
@@ -102,7 +102,7 @@ BASE_LIBRARY=$(COMMON_ROOT)/none.lib
 # Common objects to be linked
 COMMON_SOURCES=syscalls.s    \
 							 acia.s        \
-               blink.s       \
+               				 blink.s       \
 							 core.s        \
 							 keyboard.s    \
 							 lcd.s         \
@@ -112,6 +112,7 @@ COMMON_SOURCES=syscalls.s    \
 							 utils.s       \
 							 via.s         \
 							 via_utils.s   \
+							 vdp.s         \
 							 tty.s         \
 							 parse.s       \
 							 menu.s
