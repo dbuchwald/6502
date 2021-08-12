@@ -1,5 +1,7 @@
     .include "vdp_const.inc"
     .include "blink.inc"
+    .include "vdp_macro.inc"
+    .include "zeropage.inc"
 
     .import __VDP_START__
     
@@ -16,8 +18,8 @@
 
     ; TODO: don't leave these here!
     ; zero page addresses
-VDP_PATTERN_INIT = $30
-VDP_PATTERN_INIT_HI = $31
+;VDP_PATTERN_INIT = $30
+;VDP_PATTERN_INIT_HI = $31
 
   ; TODO how to manage addresses defined by our config?
 VDP_PATTERN_TABLE_BASE_HI = $08
@@ -30,6 +32,9 @@ VDP_NAME_TABLE_BASE_LOW = $0000
 
 VDP_REG = __VDP_START__ + VDP_REGISTER_OFFSET
 VDP_VRAM = __VDP_START__ + VDP_VRAM_OFFSET
+
+
+
 
 
 VDP_TEXT_PATTERNS_START:
@@ -170,7 +175,7 @@ VDP_TEXT_PATTERNS_END:
 
 vdp_text_mode_register_inits:
 vdp_text_mode_register_0: .byte VDP_REG0_MODE_BIT_M3_DISABLE | VDP_REG_0_GRAPHICS_MODE_II_DISABLE
-vdp_text_mode_register_1: .byte VDP_REG1_RAM_16K | VDP_REG1_SCREEN_BLANK
+vdp_text_mode_register_1: .byte VDP_REG1_RAM_16K | VDP_REG1_TEXT_MODE_ENABLE | VDP_REG1_SCREEN_BLANK
 vdp_text_mode_register_2: .byte VDP_REG2_NAME_TABLE_BASE_0000
 vdp_text_mode_register_3: .byte VDP_REG3_COLOR_TABLE_BASE_0D00
 vdp_text_mode_register_4: .byte VDP_REG4_PATTERN_TABLE_BASE_0800
@@ -229,23 +234,23 @@ vdp_reg_reset_loop:
     sta VDP_REG    
     
     lda #<VDP_TEXT_PATTERNS_START
-    sta VDP_PATTERN_INIT
+    sta vdp_scratch
     lda #>VDP_TEXT_PATTERNS_START
-    sta VDP_PATTERN_INIT_HI
+    sta vdp_scratch+1
 vdp_pattern_text_table_loop:
-    lda (VDP_PATTERN_INIT)
+    lda (vdp_scratch)
     sta VDP_VRAM
 
-    lda VDP_PATTERN_INIT
+    lda vdp_scratch
     clc
     adc #1
-    sta VDP_PATTERN_INIT
+    sta vdp_scratch
     lda #0
-    adc VDP_PATTERN_INIT_HI
-    sta VDP_PATTERN_INIT_HI
+    adc vdp_scratch+1
+    sta vdp_scratch+1
     cmp #>VDP_TEXT_PATTERNS_END
     bne vdp_pattern_text_table_loop
-    lda VDP_PATTERN_INIT
+    lda vdp_scratch
     cmp #<VDP_TEXT_PATTERNS_END
     bne vdp_pattern_text_table_loop
   
@@ -268,24 +273,22 @@ vdp_clear_screen:
   sta VDP_REG 
 
   lda #$C0
-  sta VDP_PATTERN_INIT 
+  sta vdp_scratch 
 
   lda #$04 
-  sta VDP_PATTERN_INIT_HI
-
-
+  sta vdp_scratch+1
   
 vdp_name_table_loop:
   
   lda #$20 
   sta VDP_VRAM
 
-  dec VDP_PATTERN_INIT
+  dec vdp_scratch
   bne vdp_name_table_loop ; will be true after $FF
 
   jsr _strobe_led
 
-  dec VDP_PATTERN_INIT_HI
+  dec vdp_scratch+1
   bne vdp_name_table_loop
 
   pla

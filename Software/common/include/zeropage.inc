@@ -26,4 +26,5 @@
 .globalzp user_break_address
 .globalzp user_break_sp
 .globalzp user_irq_address
+.globalzp vdp_scratch
 
