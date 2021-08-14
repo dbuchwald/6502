@@ -27,4 +27,6 @@
 .globalzp user_break_sp
 .globalzp user_irq_address
 .globalzp vdp_scratch
+.globalzp vdp_buffer_address 
+.globalzp vdp_vram_address
 

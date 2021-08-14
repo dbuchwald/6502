@@ -16,26 +16,13 @@
     .export vdp_clear_screen
     .export vdp_enable_display
 
-    ; TODO: don't leave these here!
-    ; zero page addresses
-;VDP_PATTERN_INIT = $30
-;VDP_PATTERN_INIT_HI = $31
 
   ; TODO how to manage addresses defined by our config?
-VDP_PATTERN_TABLE_BASE_HI = $08
-VDP_PATTERN_TABLE_BASE_LOW = $00
-
+VDP_PATTERN_TABLE_BASE = $0800
 VDP_NAME_TABLE_BASE = $0000
-VDP_NAME_TABLE_BASE_HI = $0000
-VDP_NAME_TABLE_BASE_LOW = $0000
-
 
 VDP_REG = __VDP_START__ + VDP_REGISTER_OFFSET
 VDP_VRAM = __VDP_START__ + VDP_VRAM_OFFSET
-
-
-
-
 
 VDP_TEXT_PATTERNS_START:
 ; line drawing
@@ -191,7 +178,6 @@ vdp_text_mode_register_inits_end:
 ; TODO: Parameterize the Color, at least
 ;
 ;------------------------------------------------------------------------------
-
 vdp_init_text_mode:
   pha
   phx
@@ -222,35 +208,30 @@ vdp_reg_reset_loop:
 ; TODO: Parameterize the table address
 ;
 ;------------------------------------------------------------------------------
-
   vdp_initialize_text_pattern_table:
-    ; initialize the pattern table to the 16 hex digits
     pha
     phx
-    
-    lda #VDP_PATTERN_TABLE_BASE_LOW
-    sta VDP_REG    
-    lda #(VDP_PATTERN_TABLE_BASE_HI | VDP_WRITE_VRAM_SELECT)
-    sta VDP_REG    
+
+    vdp_set_vram_addr VDP_PATTERN_TABLE_BASE  
     
     lda #<VDP_TEXT_PATTERNS_START
-    sta vdp_scratch
+    sta vdp_vram_address
     lda #>VDP_TEXT_PATTERNS_START
-    sta vdp_scratch+1
+    sta vdp_vram_address+1
 vdp_pattern_text_table_loop:
-    lda (vdp_scratch)
+    lda (vdp_vram_address)
     sta VDP_VRAM
 
-    lda vdp_scratch
+    lda vdp_vram_address
     clc
     adc #1
-    sta vdp_scratch
+    sta vdp_vram_address
     lda #0
-    adc vdp_scratch+1
-    sta vdp_scratch+1
+    adc vdp_vram_address+1
+    sta vdp_vram_address+1
     cmp #>VDP_TEXT_PATTERNS_END
     bne vdp_pattern_text_table_loop
-    lda vdp_scratch
+    lda vdp_vram_address
     cmp #<VDP_TEXT_PATTERNS_END
     bne vdp_pattern_text_table_loop
   
@@ -267,28 +248,25 @@ vdp_pattern_text_table_loop:
 vdp_clear_screen:
   pha
   
-  lda #<VDP_NAME_TABLE_BASE
-  sta VDP_REG    
-  lda #>VDP_NAME_TABLE_BASE | VDP_WRITE_VRAM_SELECT
-  sta VDP_REG 
+  vdp_set_vram_addr VDP_NAME_TABLE_BASE
 
   lda #$C0
-  sta vdp_scratch 
+  sta vdp_vram_address 
 
   lda #$04 
-  sta vdp_scratch+1
+  sta vdp_vram_address+1
   
 vdp_name_table_loop:
   
   lda #$20 
   sta VDP_VRAM
 
-  dec vdp_scratch
+  dec vdp_vram_address
   bne vdp_name_table_loop ; will be true after $FF
 
   jsr _strobe_led
 
-  dec vdp_scratch+1
+  dec vdp_vram_address+1
   bne vdp_name_table_loop
 
   pla

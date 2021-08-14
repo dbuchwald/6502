@@ -30,4 +30,5 @@ system_break_sp:       .res 1
 user_break_address:    .res 2
 user_break_sp:         .res 1
 user_irq_address:      .res 2
-vdp_scratch:           .res 2 
+vdp_buffer_address:    .res 2 
+vdp_vram_address:      .res 2 
