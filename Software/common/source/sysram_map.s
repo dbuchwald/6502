@@ -4,6 +4,7 @@
         .export acia_tx_buffer
         .export keyboard_buffer
         .export lcd_line_buffer
+        .export text_screen_buffer
 
         .segment "SYSRAM"
         .align 256
@@ -16,4 +17,8 @@ keyboard_buffer:
         .res KEYBOARD_BUFFER_SIZE
 lcd_line_buffer:
         .res LCD_COLUMNS
+text_screen_buffer:
+        .res TEXT_SCREEN_BUFFER_SIZE        
+
+
 
