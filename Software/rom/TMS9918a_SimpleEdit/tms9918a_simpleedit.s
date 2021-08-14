@@ -30,13 +30,11 @@ init:
 
       vdp_set_vram_addr $00 
 
-      lda #PROMPT
-      sta VDP_VRAM
       
       lda #$00
       sta vdp_line
-      lda #$01
-      sta vdp_char_pos
+
+      jsr setup_prompt
 
       jsr _strobe_led
 
@@ -54,23 +52,30 @@ wait:
 
       cmp #KEY_BACKSPACE
       bne not_backspace
-      jsr setup_backspace
-      bra output_char
+      jsr do_backspace
+      bra wait
 
 not_backspace:
-
       cmp #KEY_ENTER
-      bne not_return
-      jsr setup_return
-      bra output_char
+      bne not_enter
 
-not_return:
-      jsr advance_char_position
-      
-output_char:      
+      jsr advance_line
+      jsr setup_prompt
+      bra wait
+
+not_enter:
+      cmp #KEY_ESCAPE
+      bne not_escape
+
+      jsr clear_line
+      jsr setup_prompt
+      bra wait
+
+not_escape:
       jsr load_vram_char_position
       sta VDP_VRAM
 
+      jsr advance_char_position    
       bra wait
 
 handle_irq:
@@ -97,44 +102,89 @@ not_via:
       pla
       rti
 
-setup_backspace:
+;------------------------------------------------------------------------------
+;
+; DoBackspace
+; Back up to the last character, replace it with a space, and stay there
+;
+;------------------------------------------------------------------------------
+do_backspace:
       .scope
-      cmp #KEY_BACKSPACE
-      bne dont_backspace
-
       ldx vdp_char_pos
       beq dont_backspace
-;     dex 
-;     beq dont_backspace
+      dex 
+      beq dont_backspace
 
-;      dec vdp_char_pos
       dec vdp_char_pos
       lda #KEY_SPACE
+      jsr load_vram_char_position
+      sta VDP_VRAM
 
 dont_backspace:
       rts
       .endscope
 
 
-setup_return:
+;------------------------------------------------------------------------------
+;
+; SetupPrompt
+; Move to beginning of line; output a prompt, and advance
+;
+;------------------------------------------------------------------------------
+setup_prompt:
       .scope
-      cmp #KEY_ENTER
-      bne dont_return
-
-      ldx vdp_line
-      cmp #VDP_TEXT_MODE_LINE_COUNT - 1
-
-      beq dont_return
+      pha
 
       lda #0
       sta vdp_char_pos
-      inc vdp_line
-      lda #PROMPT
 
-dont_return:
+      lda #PROMPT
+      jsr load_vram_char_position
+      sta VDP_VRAM
+
+      jsr advance_char_position
+
+      pla
       rts
       .endscope
 
+
+
+;------------------------------------------------------------------------------
+;
+; ClearLine
+; Clear current line - does not change the character position
+;
+;------------------------------------------------------------------------------
+clear_line:
+      .scope
+      pha
+
+      ldx #0
+      stx vdp_char_pos
+
+      lda #' '
+      jsr load_vram_char_position
+
+loop:
+      sta VDP_VRAM
+      inx
+      cpx #VDP_TEXT_MODE_LINE_LENGTH
+      bne loop      
+ 
+      pla
+      rts
+      .endscope
+
+
+
+
+;------------------------------------------------------------------------------
+;
+; AdvanceChar
+; Move to the next character position
+;
+;------------------------------------------------------------------------------
 advance_char_position:
       .scope
       pha
@@ -150,6 +200,34 @@ do_not_advance_char:
       rts
       .endscope
 
+;------------------------------------------------------------------------------
+;
+; AdvanceLine
+; Move to the next line on the screen; does NOT currenly change char pos
+;
+;------------------------------------------------------------------------------
+advance_line:
+      .scope
+      pha
+
+      lda vdp_line
+      cmp #VDP_TEXT_MODE_LINE_COUNT-1
+      beq dont_advance_line
+
+      inc
+      sta vdp_line
+
+dont_advance_line:
+      pla
+      rts
+      .endscope      
+
+;------------------------------------------------------------------------------
+;
+; LoadVRAMCharPosition
+; Loads the VDP VRAM address that corresponds to (vdp_line, vdp_char_pos)
+;
+;------------------------------------------------------------------------------
 load_vram_char_position:
       .scope
       pha
