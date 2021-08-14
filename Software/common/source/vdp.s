@@ -1,5 +1,4 @@
     .include "vdp_const.inc"
-    .include "blink.inc"
     .include "vdp_macro.inc"
     .include "zeropage.inc"
 
@@ -15,6 +14,9 @@
     .export vdp_initialize_text_pattern_table
     .export vdp_clear_screen
     .export vdp_enable_display
+
+    .export vdp_vram_write_buffer
+    .export vdp_vram_read_buffer
 
 
   ; TODO how to manage addresses defined by our config?
@@ -264,8 +266,6 @@ vdp_name_table_loop:
   dec vdp_vram_address
   bne vdp_name_table_loop ; will be true after $FF
 
-  jsr _strobe_led
-
   dec vdp_vram_address+1
   bne vdp_name_table_loop
 
@@ -281,7 +281,7 @@ vdp_name_table_loop:
 vdp_enable_display:
   pha
 
-  lda VDP_REG
+  lda vdp_text_mode_register_1
   ora #VDP_REG1_SCREEN_ACTIVE
   sta VDP_REG
 
@@ -292,3 +292,83 @@ vdp_enable_display:
   rts
 
 
+;------------------------------------------------------------------------------
+;
+; VDP Read Buffer
+; No buffer version
+; vdp_ram_address 0/1 = lsb/msb of screen position offset to write (NAME_TABLE)
+; vpd_buffer_address = lsb/msb where screen data will be stored
+;
+;------------------------------------------------------------------------------
+vdp_vram_read_buffer:
+.scope
+  pha
+  phy
+
+  lda #<VDP_NAME_TABLE_BASE
+  clc
+  adc vdp_vram_address 
+
+  bcc no_carry
+  inc vdp_vram_address+1 
+no_carry:
+;  lda #0
+  sta VDP_REG                   ; Write LSB of address
+  
+  lda #>VDP_NAME_TABLE_BASE
+  adc vdp_vram_address+1
+  ora #VDP_READ_VRAM_SELECT
+  sta VDP_REG                   ; Write MSB of address
+
+  ldy #0                         ; starting read position
+vdp_read_buffer_loop:
+  lda VDP_VRAM
+  sta (vdp_buffer_address),y
+  iny
+
+  cpy #40                        ; temp - check done
+  bne vdp_read_buffer_loop
+  
+  ply
+  pla
+  rts
+.endscope
+;------------------------------------------------------------------------------
+;
+; VDP Write Buffer
+; No buffer version
+; vdp_ram_address 0/1 = lsb/msb of screen position offset to write (NAME_TABLE)
+; vpd_buffer_address = lsb/msb where screen data will be stored
+;
+;------------------------------------------------------------------------------
+vdp_vram_write_buffer:
+.scope  
+  pha
+  phy
+
+  lda #<VDP_NAME_TABLE_BASE
+  clc
+  adc vdp_vram_address 
+  bcc no_carry
+  inc vdp_vram_address+1 
+no_carry:
+  sta VDP_REG
+  
+  lda #>VDP_NAME_TABLE_BASE
+  adc vdp_vram_address+1
+  ora #VDP_WRITE_VRAM_SELECT
+  sta VDP_REG
+
+  ldy #0
+vdp_write_buffer_loop:
+  lda (vdp_buffer_address),y
+  sta VDP_VRAM
+  iny
+
+  cpy #40                        ; temp - check done
+  bne vdp_write_buffer_loop
+  
+  ply
+  pla
+  rts
+.endscope

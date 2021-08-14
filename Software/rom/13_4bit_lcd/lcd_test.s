@@ -1,5 +1,6 @@
       .setcpu "65C02"
       .include "lcd.inc"
+      .include "blink.inc"
 
       .segment "VECTORS"
 
@@ -10,23 +11,51 @@
       .code
 
 init:
+    
+      jsr _blink_init
+      
+      lda #BLINK_LED_ON
+      jsr _blink_led
+
       jsr _lcd_init
 
-      write_lcd #hello_msg
+      lda #BLINK_LED_OFF
+      jsr _blink_led
 
-      ldx #$00
-char_loop:
-      lda chars_msg,x
-      beq end_loop
+;     write_lcd #hello_msg
+
+;     write_lcd #hello_msg
+
+;     write_lcd #hello_msg            
+
+      lda #BLINK_LED_ON
+      jsr _blink_led
+      lda #('H')
       jsr _lcd_print_char
-      inx
-      bra char_loop
+      lda #BLINK_LED_OFF
+      jsr _blink_led
+
+      lda #BLINK_LED_ON
+      jsr _blink_led
+      lda #('i')
+      jsr _lcd_print_char
+      lda #BLINK_LED_OFF
+      jsr _blink_led
+
+      lda #BLINK_LED_ON
+      jsr _blink_led
+      lda #('!')
+      jsr _lcd_print_char
+      lda #BLINK_LED_OFF
+      jsr _blink_led
+
 end_loop:
+      jsr _strobe_led
       bra end_loop
 
       .segment "RODATA"
 
 hello_msg:
-      .byte "Hello 4-bit!", $00
+      .byte "Hi! ", $00
 chars_msg:
       .byte " Chars!",$00
