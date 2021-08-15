@@ -32,3 +32,4 @@ user_break_sp:         .res 1
 user_irq_address:      .res 2
 vdp_buffer_address:    .res 2 
 vdp_vram_address:      .res 2 
+vdp_char_count:        .res 2 

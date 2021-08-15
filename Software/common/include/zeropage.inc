@@ -29,4 +29,5 @@
 .globalzp vdp_scratch
 .globalzp vdp_buffer_address 
 .globalzp vdp_vram_address
+.globalzp vdp_char_count
 
