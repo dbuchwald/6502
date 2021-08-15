@@ -101,20 +101,21 @@ BASE_LIBRARY=$(COMMON_ROOT)/none.lib
 
 # Common objects to be linked
 COMMON_SOURCES=syscalls.s    \
-							 acia.s        \
-               				 blink.s       \
-							 core.s        \
-							 keyboard.s    \
-							 lcd.s         \
-							 $(LCD_MODULE) \
-							 modem.s       \
-							 string.s      \
-							 utils.s       \
-							 via.s         \
-							 via_utils.s   \
-							 vdp.s         \
-							 tty.s         \
-							 parse.s       \
+							 acia.s          \
+               				 blink.s         \
+							 core.s          \
+							 keyboard.s      \
+							 lcd.s           \
+							 $(LCD_MODULE)   \
+							 modem.s         \
+							 string.s        \
+							 utils.s         \
+							 via.s           \
+							 via_utils.s     \
+							 vdp.s           \
+							 vdp_text_mode.s \
+							 tty.s           \
+							 parse.s         \
 							 menu.s
 
 COMMON_OBJECTS=$(COMMON_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.o)
