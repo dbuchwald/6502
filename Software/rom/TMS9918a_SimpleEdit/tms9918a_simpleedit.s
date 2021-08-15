@@ -13,6 +13,8 @@
 
 VDP_NAME_TABLE_BASE = $0000
 PROMPT = '>'
+CURSOR = '_'
+SPACE = ' '
 
       .segment "VECTORS"
       .word   $0000
@@ -52,30 +54,63 @@ wait:
 
       cmp #KEY_BACKSPACE
       bne not_backspace
+
+      jsr load_vram_char_position  
+      ldx #SPACE
+      stx VDP_VRAM
+
+
       jsr do_backspace
-      bra wait
+      bra set_cursor
 
 not_backspace:
       cmp #KEY_ENTER
       bne not_enter
 
+      jsr load_vram_char_position  
+      ldx #SPACE
+      stx VDP_VRAM
+
       jsr advance_line
       jsr setup_prompt
-      bra wait
+      bra set_cursor
 
 not_enter:
       cmp #KEY_ESCAPE
       bne not_escape
 
+      jsr load_vram_char_position  
+      ldx #SPACE
+      stx VDP_VRAM
+
       jsr clear_line
       jsr setup_prompt
-      bra wait
-
+      bra set_cursor
+     
 not_escape:
+      cmp #KEY_TAB
+      bne not_tab
+
+; this is silly - just a placeholder
+      jsr advance_char_position  
+      jsr advance_char_position  
+      jsr advance_char_position  
+      jsr advance_char_position 
+      bra set_cursor       
+
+not_tab:
       jsr load_vram_char_position
       sta VDP_VRAM
 
-      jsr advance_char_position    
+      jsr advance_char_position  
+
+      
+      ; to do  - add cursor blink under VIA timer unterupt.
+set_cursor:      
+      jsr load_vram_char_position  
+      lda #CURSOR
+      sta VDP_VRAM
+
       bra wait
 
 handle_irq:
@@ -240,11 +275,12 @@ load_vram_char_position:
       ldx vdp_line
       beq done
 
-      clc
 next_line:
+      clc
       adc #VDP_TEXT_MODE_LINE_LENGTH
       bcc no_carry     
       inc vdp_vram_address+1
+
 no_carry:      
       dex
       bne next_line
