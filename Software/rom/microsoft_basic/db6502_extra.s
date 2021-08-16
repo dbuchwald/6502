@@ -4,6 +4,7 @@
       .include "acia.inc"
       .include "keyboard.inc"
       .include "syscalls.inc"
+      .include "vdp_text_mode.inc"
 
 .segment "CODE"
 ; ISCNTC:
@@ -28,8 +29,9 @@ init:
       jsr _system_init
 
       write_lcd #ms_basic
+      ;write_vdp #ms_basic
 
-      lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL)
+      lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL| TTY_CONFIG_OUTPUT_VDP )
       jsr _tty_init      
 
       ; lda #(ACIA_PARITY_DISABLE | ACIA_ECHO_DISABLE | ACIA_TX_INT_DISABLE_RTS_LOW | ACIA_RX_INT_DISABLE | ACIA_DTR_LOW)

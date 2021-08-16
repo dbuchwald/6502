@@ -5,6 +5,7 @@
         .include "keyboard.inc"
         .include "utils.inc"
         .include "macros.inc"
+        .include "vdp_text_mode.inc"
 
         .export _tty_init
         .export _tty_read_line
@@ -20,6 +21,7 @@ TTY_CONFIG_INPUT_SERIAL   = %00000001
 TTY_CONFIG_INPUT_KEYBOARD = %00000010
 TTY_CONFIG_OUTPUT_SERIAL  = %00000100
 TTY_CONFIG_OUTPUT_LCD     = %00001000
+TTY_CONFIG_OUTPUT_VDP     = %00010000      
 
 ENTER                   = $0d
 BACKSPACE               = $08
@@ -119,6 +121,7 @@ tty_read_line:
 
 ; POSITIVE C COMPLIANT
 ; Write null terminated string to output
+; Assume input pointer in A (lsb),X (msb)
 _tty_write:
         phy
         tay
@@ -129,6 +132,7 @@ _tty_write:
         ; Send series of characters for backspace
         tya
         jsr _acia_write_string
+
 @skip_serial:
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_LCD)
@@ -137,7 +141,15 @@ _tty_write:
         ; Send string to lcd
         tya
         jsr _lcd_print
+
 @skip_lcd:
+        lda tty_config
+        and #TTY_CONFIG_OUTPUT_VDP
+        beq @skip_vdp
+        tya
+        jsr vdp_write_string
+
+@skip_vdp:
         ply
         rts
 
@@ -192,6 +204,7 @@ tty_write_byte:
         ; get char code back from storage
         txa
         jsr _acia_write_byte
+
 @skip_serial:
         ; do the same for LCD
         lda tty_config
@@ -200,7 +213,15 @@ tty_write_byte:
         ; get char code back from storage
         txa 
         jsr _lcd_print_char
+
 @skip_lcd:
+        lda tty_config
+        and #TTY_CONFIG_OUTPUT_VDP
+        beq @skip_vdp
+        txa
+        jsr vdp_write_char
+
+@skip_vdp:
         ; either way, restore character
         txa
         plx
@@ -274,13 +295,21 @@ _tty_send_newline:
         push_ptr ptr1
         write_acia #acia_newline
         pull_ptr ptr1
+
 @skip_serial:
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_LCD)
         ; lcd output disabled
         beq @skip_lcd
         jsr _lcd_newline
+
 @skip_lcd:
+        lda tty_config
+        and #TTY_CONFIG_OUTPUT_VDP
+        beq @skip_vdp
+        jsr vdp_newline
+
+@skip_vdp:
         pla
         rts
 
@@ -299,6 +328,7 @@ _tty_send_character:
         ; pull_ptr ptr1
         tya
         jsr _acia_write_byte
+
 @skip_serial:
         lda tty_config
         and #(TTY_CONFIG_OUTPUT_LCD)
@@ -306,8 +336,15 @@ _tty_send_character:
         beq @skip_lcd
         tya
         jsr _lcd_print_char
+
 @skip_lcd:
+        lda tty_config
+        and #TTY_CONFIG_OUTPUT_VDP
+        beq @skip_vdp
         tya
+        jsr vdp_write_char
+
+@skip_vdp:        
         ply
         rts
 
@@ -330,6 +367,12 @@ tty_send_backspace:
         beq @skip_lcd
         jsr _lcd_backspace
 @skip_lcd:
+        lda tty_config
+        and #TTY_CONFIG_OUTPUT_VDP
+        beq @skip_vdp
+        jsr vdp_backspace
+
+@skip_vdp:
         pla
         rts
 
@@ -343,6 +386,13 @@ tty_enable_cursor:
         lda #(LCD_DM_DISPLAY_ON | LCD_DM_CURSOR_BLINK)
         jsr _lcd_display_mode
 @skip_lcd:
+        lda tty_config  
+        and #TTY_CONFIG_OUTPUT_VDP
+        bne @skip_vdp
+
+        ; jsr vdp_enble_cursor
+
+@skip_vdp:
         pla
         rts
 

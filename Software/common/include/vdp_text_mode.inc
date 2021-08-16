@@ -11,3 +11,21 @@
 
     .forceimport vdp_line
     .forceimport vdp_char_pos
+
+
+        .macro write_vdp string
+        pha
+        phx
+        .if (.match (.left (1, {string}), #))
+            ; immediate mode
+            lda #<(.right (.tcount ({string})-1, {string}))
+            ldx #>(.right (.tcount ({string})-1, {string}))
+        .else
+            ; assume absolute or zero page
+            lda string
+            ldx 1+(string)
+        .endif
+        jsr vdp_write_string
+        plx
+        pla
+        .endmacro

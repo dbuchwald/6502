@@ -25,6 +25,8 @@
 
 PROMPT = '>'
 SPACE = ' '
+LINE_FEED = $0A
+CARRIAGE_RETURN = $0D
 
 
 
@@ -46,6 +48,11 @@ vdp_text_init:
   jsr vdp_initialize_text_pattern_table
   jsr vdp_clear_screen
   jsr vdp_enable_display
+
+  lda #0
+  sta vdp_line
+  sta vdp_char_pos
+
   rts
 
 
@@ -53,49 +60,49 @@ vdp_text_init:
 ;
 ; AdvanceChar
 ; Move to the next character position
+; TODO: future - scroll line right to allow longer lines
 ;
 ;------------------------------------------------------------------------------
 vdp_advance_char_position:
-      .scope
       pha
 
       lda vdp_char_pos
       cmp #VDP_TEXT_MODE_LINE_LENGTH - 1
 
-      beq do_not_advance_char
+      beq @do_not_advance_char
 
       inc vdp_char_pos
-do_not_advance_char:      
+@do_not_advance_char:      
       pla
       rts
-      .endscope
 
 ;------------------------------------------------------------------------------
 ;
 ; AdvanceLine
-; Move to the next line on the screen; does NOT currenly change char pos
+; Move to the next line on the screen and set position to the first character
 ;
 ;------------------------------------------------------------------------------
 vdp_newline:
-      .scope
       pha
 
       lda vdp_line
       cmp #VDP_TEXT_MODE_LINE_COUNT-1
-      beq scroll_required
+      beq @scroll_required
 
       inc
       sta vdp_line
-      bra done
+      bra @done
 
-scroll_required:
+@scroll_required:
       jsr vdp_scroll_line
       jsr vdp_clear_line
 
-done:
+@done:
+      lda #0        
+      sta vdp_char_pos
+
       pla
       rts
-      .endscope      
 
 
 
@@ -108,8 +115,7 @@ done:
 ;
 ;------------------------------------------------------------------------------
 vdp_write_char:
-      jsr load_vram_char_position
-      sta VDP_VRAM
+      jsr vdp_out_char
 
       jsr vdp_advance_char_position  
       rts
@@ -121,8 +127,22 @@ vdp_write_char:
 ;
 ;------------------------------------------------------------------------------
 vdp_out_char:
+    cmp #LINE_FEED
+    bne @not_line_feed        
+    jsr vdp_newline
+    bra @done
+
+@not_line_feed:
+    cmp #CARRIAGE_RETURN
+    bne @not_carriage_return   
+    lda #0
+    sta vdp_char_pos
+    bra @done
+
+@not_carriage_return:
       jsr load_vram_char_position
       sta VDP_VRAM
+@done:
       rts      
 
 ;------------------------------------------------------------------------------
@@ -133,25 +153,25 @@ vdp_out_char:
 ;
 ;------------------------------------------------------------------------------
 vdp_write_string:
-    .scope
     sta vdp_buffer_address
-    stx vdp_buffer_address +1
-
+    stx vdp_buffer_address + 1
     jsr load_vram_char_position
 
     phy
     ldy #0
-write_loop:
-    lda (vdp_buffer_address),Y
-    beq write_end
-    sta VDP_VRAM
+@write_loop:
+    lda (vdp_buffer_address),y
+    beq @done
+    jsr vdp_write_char    ; note inefficiency of rewriting VDP RAM Address here
+  
     iny
-    bra write_loop  
+    bra @write_loop  
 
-write_end:
+@done:
     jsr vdp_advance_char_position  
+
+    ply
     rts
-    .endscope
 
 
 
