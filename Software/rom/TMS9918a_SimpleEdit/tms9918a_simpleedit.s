@@ -5,11 +5,14 @@
       .include "vdp.inc"
       .include "vdp_const.inc"
       .include "vdp_macro.inc"
+      .include "vdp_text_mode.inc"
       .include "via.inc"
-      .include "via_const.inc"      
+      .include "via_const.inc" 
+    
       .include "keyboard.inc"
       .include "blink.inc"
       .include "zeropage.inc"
+
 
 VDP_NAME_TABLE_BASE = $0000
 PROMPT = '>'
@@ -30,9 +33,17 @@ init:
       jsr vdp_reset
       jsr _blink_init
 
-      vdp_set_vram_addr $00 
+      ; lda #VIA_ACR_T1_CONT_SQUARE_PB7
+      ; sta VIA2_ACR
+      ; lda #(VIA_IER_SET_FLAGS | VIA_IER_TIMER1_FLAG)
+      ; sta VIA2_IER
 
-      
+      ; lda #$00
+      ; sta VIA2_T1CL
+      ; lda #$80
+      ; sta VIA2_T1CH
+
+      vdp_set_vram_addr $00     
       lda #$00
       sta vdp_line
 
@@ -92,6 +103,10 @@ not_escape:
       bne not_tab
 
 ; this is silly - just a placeholder
+      jsr load_vram_char_position  
+      ldx #SPACE
+      stx VDP_VRAM
+
       jsr advance_char_position  
       jsr advance_char_position  
       jsr advance_char_position  
@@ -115,14 +130,8 @@ set_cursor:
 
 handle_irq:
       pha
-
-      lda #BLINK_LED_ON
-      jsr _blink_led
-      lda #BLINK_LED_OFF
-      jsr _blink_led
-
       lda VIA1_IFR
-      bpl not_via
+      bpl not_via1
 
       phx
       tax
@@ -133,7 +142,18 @@ handle_irq:
 not_keyboard:
       plx      
 
-not_via:
+not_via1:
+      ; lda VIA2_IFR
+      ; bpl not_via2
+
+      ; and #VIA_IFR_TIME_OUT_T1
+      ; bne not_via2_timer1
+
+      ; lda #VIA_IFR_TIME_OUT_T1      ; Clear the Timer interrupt
+      ; sta VIA2_IFR
+
+not_via2_timer1:
+not_via2:
       pla
       rti
 
@@ -247,15 +267,23 @@ advance_line:
 
       lda vdp_line
       cmp #VDP_TEXT_MODE_LINE_COUNT-1
-      beq dont_advance_line
+      beq scroll_required
 
       inc
       sta vdp_line
+      bra done
 
-dont_advance_line:
+scroll_required:
+      jsr scroll_line
+      jsr clear_line
+
+done:
       pla
       rts
       .endscope      
+
+
+
 
 ;------------------------------------------------------------------------------
 ;
@@ -305,8 +333,8 @@ done:
 
       .segment "BSS"
 last_keyboard_status:  .byte $00
-vdp_line:              .byte $00
-vdp_char_pos:          .byte $00 
+;vdp_line:              .byte $00
+;vdp_char_pos:          .byte $00 
 
       .segment "RODATA"
 

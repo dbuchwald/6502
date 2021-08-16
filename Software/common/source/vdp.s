@@ -1,6 +1,7 @@
     .include "vdp_const.inc"
     .include "vdp_macro.inc"
     .include "zeropage.inc"
+    .include "blink.inc"
 
     .import __VDP_START__
     
@@ -26,6 +27,7 @@ VDP_NAME_TABLE_BASE = $0000
 VDP_REG = __VDP_START__ + VDP_REGISTER_OFFSET
 VDP_VRAM = __VDP_START__ + VDP_VRAM_OFFSET
 
+      .segment "RODATA"
 VDP_TEXT_PATTERNS_START:
 ; line drawing
   .byte $00,$00,$00,$FF,$FF,$00,$00,$00 ; lr
@@ -173,7 +175,7 @@ vdp_text_mode_register_6: .byte VDP_REG6_SPRITE_PATTERN_TABLE_BASE_0000
 vdp_text_mode_register_7: .byte (VDP_REG7_FOREGROUND_COLOR_MASK & VDP_COLOR_WHITE) | ( VDP_REG7_BACKGROUND_COLOR_MASK & VDP_COLOR_DARK_BLUE)
 vdp_text_mode_register_inits_end:
 
-
+  .code
 ;------------------------------------------------------------------------------
 ;
 ; Initialize VDP To Text Mode
@@ -298,37 +300,48 @@ vdp_enable_display:
 ; No buffer version
 ; vdp_ram_address 0/1 = lsb/msb of screen position offset to write (NAME_TABLE)
 ; vpd_buffer_address = lsb/msb where screen data will be stored
+; vdp_char_count = number of bytes to read
 ;
 ;------------------------------------------------------------------------------
 vdp_vram_read_buffer:
 .scope
   pha
   phy
+  phx
 
   lda #<VDP_NAME_TABLE_BASE
   clc
   adc vdp_vram_address 
-
-  bcc no_carry
+  bcc no_readaddress_carry
   inc vdp_vram_address+1 
-no_carry:
-;  lda #0
+no_readaddress_carry:
   sta VDP_REG                   ; Write LSB of address
   
   lda #>VDP_NAME_TABLE_BASE
+  clc
   adc vdp_vram_address+1
   ora #VDP_READ_VRAM_SELECT
   sta VDP_REG                   ; Write MSB of address
 
   ldy #0                         ; starting read position
+  ldx #0
 vdp_read_buffer_loop:
   lda VDP_VRAM
   sta (vdp_buffer_address),y
   iny
 
-  cpy #40                        ; temp - check done
+  bne no_readchar_carry
+  inx
+  inc vdp_buffer_address + 1
+
+no_readchar_carry:
+  cpy vdp_char_count            ; temp - check done
   bne vdp_read_buffer_loop
-  
+
+  cpx vdp_char_count + 1
+  bne vdp_read_buffer_loop
+
+  plx
   ply
   pla
   rts
@@ -339,12 +352,14 @@ vdp_read_buffer_loop:
 ; No buffer version
 ; vdp_ram_address 0/1 = lsb/msb of screen position offset to write (NAME_TABLE)
 ; vpd_buffer_address = lsb/msb where screen data will be stored
+; vdp_char_count = number of bytes to write
 ;
 ;------------------------------------------------------------------------------
 vdp_vram_write_buffer:
 .scope  
   pha
   phy
+  phx
 
   lda #<VDP_NAME_TABLE_BASE
   clc
@@ -355,19 +370,32 @@ no_carry:
   sta VDP_REG
   
   lda #>VDP_NAME_TABLE_BASE
+  clc
   adc vdp_vram_address+1
   ora #VDP_WRITE_VRAM_SELECT
   sta VDP_REG
 
-  ldy #0
+  ldy #0                                    ; low byte
+  ldx #0                                    ; high byte
 vdp_write_buffer_loop:
   lda (vdp_buffer_address),y
   sta VDP_VRAM
   iny
+  bne no_writechar_carry
 
-  cpy #40                        ; temp - check done
+  inx
+  inc vdp_buffer_address + 1
+
+no_writechar_carry:
+  cpy vdp_char_count                        ; temp - check done
   bne vdp_write_buffer_loop
+
+  cpx vdp_char_count + 1
+  bne vdp_write_buffer_loop
+
+  jsr _strobe_led
   
+  plx
   ply
   pla
   rts
