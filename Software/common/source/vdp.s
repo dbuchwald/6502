@@ -392,9 +392,7 @@ no_writechar_carry:
 
   cpx vdp_char_count + 1
   bne vdp_write_buffer_loop
-
-  jsr _strobe_led
-  
+ 
   plx
   ply
   pla
