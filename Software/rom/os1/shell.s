@@ -32,10 +32,12 @@
         .import __VIA1_START__
         .import __VIA2_START__
         .import __ACIA_START__
+        .import __VDP_START__
 
         .code
 _run_shell:
-        lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL)
+       ;lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL)
+       lda #(TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_VDP)
         jsr _tty_init
 
         ; Display banner
@@ -160,11 +162,17 @@ _process_info:
         write_tty #via1_addr_msg
         write_tty_address #__VIA1_START__
         jsr _tty_send_newline
+ 
         write_tty #via2_addr_msg
         write_tty_address #__VIA2_START__
         jsr _tty_send_newline
+ 
         write_tty #acia_addr_msg
         write_tty_address #__ACIA_START__
+        jsr _tty_send_newline
+ 
+        write_tty #vdp_addr_msg
+        write_tty_address #__VDP_START__
         jsr _tty_send_newline
         rts
 
@@ -241,6 +249,8 @@ via2_addr_msg:
         .asciiz "VIA2 address: 0x"
 acia_addr_msg:
         .asciiz "ACIA address: 0x"
+vdp_addr_msg:
+        .asciiz "VDP address: 0x"
 os1prompt:
         .asciiz "OS/1>"
 msgemptyline:
