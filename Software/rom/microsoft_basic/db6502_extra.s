@@ -41,6 +41,7 @@ init:
 
 ; Display startup message
 ShowStartMsg:
+      writeln_tty #ms_basic
       writeln_tty #StartupMessage
 	; LDA	StartupMessage,Y
 	; BEQ	WaitForKeypress
@@ -88,11 +89,20 @@ MONRDKEY:
   jsr _acia_is_data_available
   ; skip, no data available at this point
   cmp #(ACIA_NO_DATA_AVAILABLE)
-  beq NoDataIn
+  beq @NoAsicDataIn
   jsr _acia_read_byte
   sec
   rts
-NoDataIn:
+
+@NoAsicDataIn:
+  jsr _keyboard_is_data_available
+  cmp #KEYBOARD_DATA_AVAILABLE
+  bne  @no_data_available
+  jsr _keyboard_read_char
+  sec
+  rts
+
+@no_data_available:
   clc
 	RTS
 
@@ -129,7 +139,7 @@ Backspace:
   .byte $1B,"[D ",$1B,"[D",$00
 
 ms_basic:
-  .asciiz "Microsoft BASIC"
+  .asciiz "Kyle's 6502 based on DB6502"
 
 LOAD:
 	RTS
