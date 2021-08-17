@@ -147,6 +147,10 @@ LOAD:
 SAVE:
 	RTS
 
+CLEAR_SCREEN:
+  jsr vdp_clear_text_screen
+  rts  
+
 .segment "VECTORS"
 
       .word   $0000

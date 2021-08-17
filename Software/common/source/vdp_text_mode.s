@@ -15,6 +15,7 @@
     .export vdp_advance_char_position
     .export vdp_newline
     .export vdp_clear_line
+    .export vdp_clear_text_screen
 
     .export vdp_backspace
     .export vdp_set_prompt
@@ -245,6 +246,23 @@ loop:
       rts
       .endscope
 
+
+;------------------------------------------------------------------------------
+;
+; VDPClearScreen
+;
+;------------------------------------------------------------------------------
+vdp_clear_text_screen:
+      pha
+
+    jsr vdp_clear_screen
+
+    lda #0
+    sta vdp_char_pos
+    sta vdp_line
+ 
+      pla
+      rts
 
 ;------------------------------------------------------------------------------
 ;

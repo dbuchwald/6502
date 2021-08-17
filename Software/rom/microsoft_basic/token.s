@@ -43,6 +43,7 @@
 .ifndef KBD
 		keyword_rts "LOAD", LOAD
 		keyword_rts "SAVE", SAVE
+		keyword_rts "CLS", CLEAR_SCREEN
 .endif
 .ifdef CONFIG_CBM_ALL
 		keyword_rts "VERIFY", VERIFY

@@ -8,6 +8,7 @@
     .import vdp_clear_line
     .import vdp_backspace
     .import vdp_set_prompt
+    .import vdp_clear_text_screen
 
     .forceimport vdp_line
     .forceimport vdp_char_pos
