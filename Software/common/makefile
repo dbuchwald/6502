@@ -114,6 +114,7 @@ COMMON_SOURCES=syscalls.s    \
 							 via_utils.s     \
 							 vdp.s           \
 							 vdp_text_mode.s \
+							 sn76489.s       \
 							 tty.s           \
 							 parse.s         \
 							 menu.s

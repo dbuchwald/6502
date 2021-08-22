@@ -30,4 +30,6 @@
 .globalzp vdp_buffer_address 
 .globalzp vdp_vram_address
 .globalzp vdp_char_count
+.globalzp sn76489_freq_lsn
+.globalzp sn76489_freq_msb
 

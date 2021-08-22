@@ -33,3 +33,8 @@ user_irq_address:      .res 2
 vdp_buffer_address:    .res 2 
 vdp_vram_address:      .res 2 
 vdp_char_count:        .res 2 
+sn76489_freq_lsn:      .res 1
+sn76489_freq_msb:      .res 1
+
+
+
