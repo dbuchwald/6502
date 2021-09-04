@@ -35,6 +35,5 @@ vdp_vram_address:      .res 2
 vdp_char_count:        .res 2 
 sn76489_freq_lsn:      .res 1
 sn76489_freq_msb:      .res 1
-
-
-
+midi_tick_countdown:   .res 4
+next_midi_event:       .res 2

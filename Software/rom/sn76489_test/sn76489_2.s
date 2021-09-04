@@ -28,13 +28,21 @@ init:
 
 start:
 
-      lda #( SN76489_REG1_T1_ATTN | SN76489_ATTEN_OFF ) 
+      lda #( SN76489_T1_ATTN | SN76489_ATTEN_OFF ) 
       sta SN76489_LEFT
       sta SN76489_RIGHT
 
       jsr _strobe_led
 
-      lda #( SN76489_REG1_T1_ATTN | SN76489_ATTEN_2DB ) 
+      lda #( SN76489_T1_ATTN | SN76489_ATTEN_8DB ) 
+      sta SN76489_LEFT
+      sta SN76489_RIGHT
+
+      lda #( SN76489_NOISE_CTRL | SN76489_NOISE_SHIFT_L | SN76489_NOISE_PERIODIC ) 
+      sta SN76489_LEFT
+      sta SN76489_RIGHT
+
+      lda #( SN76489_NOISE_ATTN | SN76489_ATTEN_4DB ) 
       sta SN76489_LEFT
       sta SN76489_RIGHT
 
@@ -45,13 +53,13 @@ next_note:
       beq start   
 
       lda notes, x
-      ora #SN76489_REG0_T1_FREQ
+      ora #SN76489_T1_FREQ
       sta SN76489_LEFT
       sta SN76489_RIGHT
       inx
 
       lda notes, x
-      ora #SN76489_REG_FREQ_BYTE_2
+      ora #SN76489_FREQ_H6
       sta SN76489_LEFT
       sta SN76489_RIGHT
       inx      

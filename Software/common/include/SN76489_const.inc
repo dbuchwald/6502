@@ -4,15 +4,15 @@
 ; All except Freq are single byte writes with embedded register address
 ; Freq writes have a second write for the 'high' bits of the addr
 ;
-SN76489_REG0_T1_FREQ = $80
-SN76489_REG_FREQ_BYTE_2 = $00
-SN76489_REG1_T1_ATTN = $90
+SN76489_T1_FREQ = $80
+SN76489_FREQ_H6 = $00
+SN76489_T1_ATTN = $90
 
-SN76489_REG2_T2_FREQ = $20
-SN76489_REG3_T2_ATTN = $B0
+SN76489_T2_FREQ = $A0
+SN76489_T2_ATTN = $B0
 
-SN76489_REG4_T3_FREQ = $40
-SN76489_REG5_T3_ATTN = $D0
+SN76489_T3_FREQ = $C0
+SN76489_T3_ATTN = $D0
 
 ;
 ; Attenuation Bits
@@ -30,8 +30,8 @@ SN76489_ATTEN_OFF  = $0F
 ;
 ; Noise Generator
 ;
-SN76489_REG6_NOISE_CTRL = $E0
-SN76489_REG7_NOISE_ATTN = $F0
+SN76489_NOISE_CTRL = $E0
+SN76489_NOISE_ATTN = $F0
 
 ;
 ; Noise Control

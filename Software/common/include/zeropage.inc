@@ -32,4 +32,5 @@
 .globalzp vdp_char_count
 .globalzp sn76489_freq_lsn
 .globalzp sn76489_freq_msb
-
+.globalzp midi_tick_countdown
+.globalzp next_midi_event

@@ -1,7 +1,7 @@
-PROJECT_NAME=sn76489_2
+PROJECT_NAME=midi_demo
 BUILD_TYPE=rom
 
-ASM_SOURCES=sn76489_2.s
+ASM_SOURCES=midi_demo.s
 C_SOURCES=
 
 include ../../common/makefile
