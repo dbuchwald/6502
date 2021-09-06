@@ -231,7 +231,6 @@ irq_handler:
 
 midi_data:
 
-   .byte  $00   ;  wallTime = 0, Time=0us, 0 ticks
    .byte  SN76489_T1_FREQ|NOTE_G3_L4, NOTE_G3_H6, (SN76489_T1_ATTN | $03)
 
    .byte  $81, $3b   ;  wallTime = 187, Time=486948us, 187 ticks
@@ -278,6 +277,8 @@ midi_data:
 
    .byte  $81, $42   ;  wallTime = 1531, Time=505176us, 194 ticks
    .byte  SN76489_T1_FREQ|NOTE_G4_L4, NOTE_G4_H6, SN76489_T1_ATTN | SN76489_ATTEN_OFF
+
+   .byte $00
 midi_data_end1 = *
 
 ; midi_data:

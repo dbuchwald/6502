@@ -21,10 +21,15 @@ y_test:
     
 
     .code
+
+; TODO: Init
+; Read/load the first time
+
+
 ;------------------------------------------------------------------------------
 ;
 ; Play the next Note Event
-; Leave next_midi_event pointing to the next event
+; Leave next_midi_event pointing to the next NOTE event
 ; and load midi_tick_count with the number of ticks
 ; until the next event
 ;
@@ -34,7 +39,9 @@ midi_update:
       phy
 
       ; y will index bytes until event completed
-      jsr load_midi_tick_count
+
+
+      ldy #0  
 
       ;sty y_test
 
@@ -56,8 +63,10 @@ midi_update:
       sta SN76489_RIGHT
       iny
 
+      jsr load_midi_tick_count
+
 ;      lda next_midi_event
-;     sta y_test  
+ ;     sta y_test  
 
       ; now update next_midi_event
       tya
@@ -110,7 +119,7 @@ load_midi_tick_count:
       stz midi_tick_countdown + 1
       stz midi_tick_countdown + 2
       stz midi_tick_countdown + 3       ; msb
-      ldy #0
+      
 @next_byte:
       lda (next_midi_event), y          ; get byte of variable-length value
       bpl @last_byte
