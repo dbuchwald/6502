@@ -1366,7 +1366,7 @@ Wire Wire Line
 Wire Wire Line
 	3600 6850 3250 6850
 Text GLabel 3450 6650 1    50   Output ~ 0
-EXT_BE
+BE
 Wire Wire Line
 	3250 6750 3450 6750
 Wire Wire Line
@@ -1507,6 +1507,9 @@ Text GLabel 2000 4500 1    50   Output ~ 0
 ~RES
 Wire Wire Line
 	2000 4500 2000 4600
+Connection ~ 2000 4600
+Wire Wire Line
+	2000 4600 2400 4600
 Wire Bus Line
 	8500 4050 8500 4250
 Wire Bus Line
@@ -1541,7 +1544,4 @@ Wire Bus Line
 	4050 650  4050 2050
 Wire Bus Line
 	1600 2150 1600 3400
-Connection ~ 2000 4600
-Wire Wire Line
-	2000 4600 2400 4600
 $EndSCHEMATC
