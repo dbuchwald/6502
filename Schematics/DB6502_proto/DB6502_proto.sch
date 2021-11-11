@@ -231,7 +231,7 @@ Wire Wire Line
 Wire Wire Line
 	3150 1450 2900 1450
 Text GLabel 3300 1150 1    50   Input ~ 0
-6502_CLK
+PHI2
 Wire Wire Line
 	3300 1150 3300 1550
 Wire Wire Line
@@ -248,232 +248,12 @@ Wire Wire Line
 	3600 1150 3600 1850
 Wire Wire Line
 	3600 1850 2900 1850
-$Comp
-L 6502:22V10C U7
-U 1 1 5F680A6E
-P 6950 4500
-F 0 "U7" H 6700 5300 50  0000 C CNN
-F 1 "22V10C" H 6700 5200 50  0000 C CNN
-F 2 "Package_DIP:DIP-24_W7.62mm_Socket" H 6950 3800 50  0001 C CNN
-F 3 "http://www.farnell.com/datasheets/1627189.pdf" H 6950 4500 50  0001 C CNN
-	1    6950 4500
-	1    0    0    -1  
-$EndComp
-Text GLabel 6200 3850 1    50   Input ~ 0
-R~W
-Wire Wire Line
-	6350 3950 6450 3950
-Wire Wire Line
-	6200 3850 6200 4050
-Wire Wire Line
-	6200 4050 6450 4050
-Text Label 6250 4250 0    50   ~ 0
-a15
-Text Label 6250 4350 0    50   ~ 0
-a14
-Text Label 6250 4450 0    50   ~ 0
-a13
-Text Label 6250 4550 0    50   ~ 0
-a12
-Text Label 6250 4650 0    50   ~ 0
-a11
-Text Label 6250 4750 0    50   ~ 0
-a10
-Text Label 6250 4850 0    50   ~ 0
-a9
-Text Label 6250 4950 0    50   ~ 0
-a8
-Text GLabel 6050 3850 1    50   Input ~ 0
-EXRAM
-Wire Wire Line
-	6250 4950 6450 4950
-Wire Wire Line
-	6250 4850 6450 4850
-Wire Wire Line
-	6250 4750 6450 4750
-Wire Wire Line
-	6250 4650 6450 4650
-Wire Wire Line
-	6250 4550 6450 4550
-Wire Wire Line
-	6250 4450 6450 4450
-Wire Wire Line
-	6250 4350 6450 4350
-Wire Wire Line
-	6250 4250 6450 4250
-Entry Wire Line
-	6150 4350 6250 4250
-Entry Wire Line
-	6150 4450 6250 4350
-Entry Wire Line
-	6150 4550 6250 4450
-Entry Wire Line
-	6150 4650 6250 4550
-Entry Wire Line
-	6150 4750 6250 4650
-Entry Wire Line
-	6150 4850 6250 4750
-Entry Wire Line
-	6150 4950 6250 4850
-Entry Wire Line
-	6150 5050 6250 4950
-Wire Wire Line
-	7450 3950 7550 3950
-Wire Wire Line
-	7550 3950 7550 3750
-Text GLabel 6350 5150 3    50   Input ~ 0
-GND
-Wire Wire Line
-	6350 5150 6350 5050
-Wire Wire Line
-	6350 5050 6450 5050
-Wire Wire Line
-	6050 3850 6050 4150
-Wire Wire Line
-	6050 4150 6450 4150
-Text GLabel 7700 3850 1    50   Output ~ 0
-~PLD_WR
-Text GLabel 7850 3850 1    50   Output ~ 0
-~PLD_RD
-Wire Wire Line
-	7700 3850 7700 4050
-Wire Wire Line
-	7700 4050 7450 4050
-Wire Wire Line
-	7850 3850 7850 4150
-Wire Wire Line
-	7850 4150 7450 4150
-Text GLabel 8000 3850 1    50   Output ~ 0
-RAM1_~CS
-Wire Wire Line
-	8000 3850 8000 4250
-Wire Wire Line
-	8000 4250 7450 4250
-Text GLabel 8150 3850 1    50   Output ~ 0
-RAM2_~CS
-Wire Wire Line
-	8150 3850 8150 4350
-Wire Wire Line
-	8150 4350 7450 4350
-Text GLabel 8300 3850 1    50   Output ~ 0
-ROM_~CS
-Wire Wire Line
-	8300 3850 8300 4450
-Wire Wire Line
-	8300 4450 7450 4450
-Text Label 8600 4250 0    50   ~ 0
-a7
-Text Label 8600 4150 0    50   ~ 0
-a6
-Text Label 8600 4050 0    50   ~ 0
-a5
-Entry Wire Line
-	8500 4150 8600 4050
-Entry Wire Line
-	8500 4250 8600 4150
-Entry Wire Line
-	8500 4350 8600 4250
-Wire Wire Line
-	8600 4050 8750 4050
-Wire Wire Line
-	8600 4150 8750 4150
-Wire Wire Line
-	8600 4250 8750 4250
-Text GLabel 9350 3700 2    50   Input ~ 0
-+5V
-Wire Wire Line
-	9350 3700 9250 3700
-Text GLabel 9350 5150 2    50   Input ~ 0
-GND
-Wire Wire Line
-	9350 5150 9250 5150
-Wire Wire Line
-	9250 5150 8650 5150
-Wire Wire Line
-	8650 5150 8650 4750
-Wire Wire Line
-	8650 4750 8750 4750
-Connection ~ 9250 5150
-Wire Wire Line
-	9250 5150 9250 5050
-Wire Wire Line
-	8650 4750 8650 4650
-Wire Wire Line
-	8650 4650 8750 4650
-Connection ~ 8650 4750
-Text GLabel 9850 3950 1    50   Output ~ 0
-~LATCH
-Wire Wire Line
-	9750 4050 9850 4050
-Wire Wire Line
-	9850 4050 9850 3950
-Text GLabel 10000 3950 1    50   Output ~ 0
-~VIA1
-Wire Wire Line
-	10000 3950 10000 4150
-Wire Wire Line
-	10000 4150 9750 4150
-Text GLabel 10150 3950 1    50   Output ~ 0
-~VIA2
-Wire Wire Line
-	10150 3950 10150 4250
-Wire Wire Line
-	10150 4250 9750 4250
-Text GLabel 10300 3950 1    50   Output ~ 0
-~UART
-Wire Wire Line
-	10300 3950 10300 4350
-Wire Wire Line
-	10300 4350 9750 4350
-Text GLabel 9850 4850 3    50   Output ~ 0
-~IOCS3
-Text GLabel 10000 4850 3    50   Output ~ 0
-~IOCS2
-Text GLabel 10150 4850 3    50   Output ~ 0
-~IOCS1
-Text GLabel 10300 4850 3    50   Output ~ 0
-~IOCS0
-Wire Wire Line
-	9850 4850 9850 4750
-Wire Wire Line
-	9850 4750 9750 4750
-Wire Wire Line
-	9750 4650 10000 4650
-Wire Wire Line
-	10000 4650 10000 4850
-Wire Wire Line
-	9750 4550 10150 4550
-Wire Wire Line
-	10150 4550 10150 4850
-Wire Wire Line
-	9750 4450 10300 4450
-Wire Wire Line
-	10300 4450 10300 4850
-Text GLabel 7550 5050 2    50   Input ~ 0
-IN12
-Text GLabel 7550 4950 2    50   Input ~ 0
-IO13
-Text GLabel 7550 4750 2    50   Input ~ 0
-IO15
-Text GLabel 7550 4650 2    50   Output ~ 0
-IO16
 $Sheet
 S 8700 5950 750  350 
 U 6014B4D9
 F0 "ports" 50
 F1 "ports.sch" 50
 $EndSheet
-$Comp
-L 74xx:74LS138 U6
-U 1 1 5F9A1F2C
-P 9250 4350
-F 0 "U6" H 9250 4350 50  0000 C CNN
-F 1 "74AC138" H 9150 4250 50  0000 C CNN
-F 2 "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm" H 9250 4350 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS138" H 9250 4350 50  0001 C CNN
-	1    9250 4350
-	1    0    0    -1  
-$EndComp
 $Comp
 L 6502:65C02S U4
 U 1 1 5F5A65C1
@@ -487,12 +267,6 @@ F 3 "" H 2250 3100 50  0001 C CNN
 $EndComp
 Wire Bus Line
 	3200 2750 3300 2750
-$Sheet
-S 6950 5950 700  350 
-U 5F8F4E1E
-F0 "supervisor" 50
-F1 "supervisor.sch" 50
-$EndSheet
 $Comp
 L Device:C_Small C4
 U 1 1 5FFF1E28
@@ -511,204 +285,12 @@ Text GLabel 900  2350 3    50   Input ~ 0
 GND
 Wire Wire Line
 	900  2350 900  2250
-Text GLabel 7550 3650 1    50   Input ~ 0
-+5V
-$Comp
-L Device:C_Small C6
-U 1 1 600EDE42
-P 7350 3750
-F 0 "C6" V 7121 3750 50  0000 C CNN
-F 1 "0,1uF" V 7212 3750 50  0000 C CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 7350 3750 50  0001 C CNN
-F 3 "~" H 7350 3750 50  0001 C CNN
-	1    7350 3750
-	0    1    1    0   
-$EndComp
-Text GLabel 7150 3750 0    50   Input ~ 0
-GND
-Wire Wire Line
-	7150 3750 7250 3750
-Wire Wire Line
-	7450 3750 7550 3750
-Connection ~ 7550 3750
-Wire Wire Line
-	7550 3750 7550 3650
-$Comp
-L Device:C_Small C5
-U 1 1 60156577
-P 9050 3700
-F 0 "C5" V 8821 3700 50  0000 C CNN
-F 1 "0,1uF" V 8912 3700 50  0000 C CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 9050 3700 50  0001 C CNN
-F 3 "~" H 9050 3700 50  0001 C CNN
-	1    9050 3700
-	0    1    1    0   
-$EndComp
-Text GLabel 8850 3700 0    50   Input ~ 0
-GND
-Wire Wire Line
-	8850 3700 8950 3700
-Wire Wire Line
-	9150 3700 9250 3700
-Connection ~ 9250 3700
-Wire Wire Line
-	9250 3700 9250 3750
 $Sheet
 S 7800 5950 750  350 
 U 5F910E81
 F0 "serial" 50
 F1 "serial.sch" 50
 $EndSheet
-$Comp
-L 74xx:74LS21 U9
-U 1 1 5FB20233
-P 4950 7300
-F 0 "U9" H 4950 7675 50  0000 C CNN
-F 1 "74HC21" H 4950 7584 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4950 7300 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 4950 7300 50  0001 C CNN
-	1    4950 7300
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74LS21 U9
-U 3 1 5FB2300D
-P 1000 7000
-F 0 "U9" H 1000 7050 50  0000 C CNN
-F 1 "74HC21" H 1000 6950 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1000 7000 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 1000 7000 50  0001 C CNN
-	3    1000 7000
-	1    0    0    -1  
-$EndComp
-Text GLabel 900  6450 0    50   Input ~ 0
-+5V
-Text GLabel 900  7550 0    50   Input ~ 0
-GND
-Wire Wire Line
-	900  7550 1000 7550
-Wire Wire Line
-	1000 6500 1000 6450
-$Comp
-L Device:C_Small C8
-U 1 1 5FB8CE95
-P 1300 7000
-F 0 "C8" H 1392 7046 50  0000 L CNN
-F 1 "0,1uF" H 1392 6955 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 1300 7000 50  0001 C CNN
-F 3 "~" H 1300 7000 50  0001 C CNN
-	1    1300 7000
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1300 6900 1300 6450
-Wire Wire Line
-	1300 6450 1000 6450
-Connection ~ 1000 6450
-Wire Wire Line
-	1000 6450 900  6450
-Wire Wire Line
-	1000 7550 1300 7550
-Wire Wire Line
-	1300 7550 1300 7100
-Connection ~ 1000 7550
-Wire Wire Line
-	1000 7550 1000 7500
-Text GLabel 4550 7050 1    50   Input ~ 0
-~VIA1_IRQ
-Wire Wire Line
-	4550 7050 4550 7150
-Wire Wire Line
-	4550 7150 4650 7150
-Text GLabel 4250 7050 1    50   Input ~ 0
-~UART_IRQ
-Text GLabel 4100 7050 1    50   Input ~ 0
-~EXT_IRQ
-Text GLabel 5350 7300 2    50   Output ~ 0
-~IRQ
-Wire Wire Line
-	5250 7300 5350 7300
-Wire Wire Line
-	4400 7250 4650 7250
-Wire Wire Line
-	4250 7050 4250 7350
-Wire Wire Line
-	4250 7350 4650 7350
-Wire Wire Line
-	4100 7050 4100 7450
-Wire Wire Line
-	4100 7450 4650 7450
-Text GLabel 2750 7450 0    50   Input ~ 0
-+5V
-$Comp
-L 74xx:74HC74 U?
-U 3 1 5FDF80F5
-P 1850 7000
-AR Path="/5F8F4E1E/5FDF80F5" Ref="U?"  Part="3" 
-AR Path="/5FDF80F5" Ref="U5"  Part="3" 
-F 0 "U5" H 1850 7050 50  0000 C CNN
-F 1 "74AC74" H 1850 6950 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1850 7000 50  0001 C CNN
-F 3 "74xx/74hc_hct74.pdf" H 1850 7000 50  0001 C CNN
-	3    1850 7000
-	1    0    0    -1  
-$EndComp
-Text GLabel 1750 7450 0    50   Input ~ 0
-GND
-Wire Wire Line
-	1750 7450 1850 7450
-Text GLabel 1750 6550 0    50   Input ~ 0
-+5V
-Wire Wire Line
-	1750 6550 1850 6550
-$Comp
-L Device:C_Small C?
-U 1 1 5FDF80FF
-P 2200 7000
-AR Path="/5F8F4E1E/5FDF80FF" Ref="C?"  Part="1" 
-AR Path="/5FDF80FF" Ref="C9"  Part="1" 
-F 0 "C9" H 2292 7046 50  0000 L CNN
-F 1 "0,1uF" H 2292 6955 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 2200 7000 50  0001 C CNN
-F 3 "~" H 2200 7000 50  0001 C CNN
-	1    2200 7000
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1850 7450 2200 7450
-Wire Wire Line
-	2200 7450 2200 7100
-Connection ~ 1850 7450
-Wire Wire Line
-	1850 7450 1850 7400
-Wire Wire Line
-	2200 6900 2200 6550
-Wire Wire Line
-	2200 6550 1850 6550
-Connection ~ 1850 6550
-Wire Wire Line
-	1850 6550 1850 6600
-Wire Wire Line
-	7450 4550 8450 4550
-Text Label 8750 4550 2    50   ~ 0
-io_cs
-Text GLabel 8450 4650 3    50   Output ~ 0
-IOCS
-Wire Wire Line
-	8450 4650 8450 4550
-Connection ~ 8450 4550
-Wire Wire Line
-	8450 4550 8750 4550
-Wire Wire Line
-	7450 4850 7550 4850
-Wire Wire Line
-	7450 5050 7550 5050
-Wire Wire Line
-	7450 4950 7550 4950
-Wire Wire Line
-	7450 4650 7550 4650
-Wire Wire Line
-	7450 4750 7550 4750
 Text GLabel 4250 2650 3    50   Input ~ 0
 GND
 Wire Wire Line
@@ -1330,304 +912,11 @@ Wire Wire Line
 Connection ~ 10200 1000
 Wire Wire Line
 	10200 1000 10200 1250
-Text GLabel 4400 7050 1    50   Input ~ 0
-~VIA2_IRQ
-Wire Wire Line
-	4400 7050 4400 7250
-Wire Wire Line
-	3400 4100 3250 4100
-Wire Wire Line
-	3400 4200 3400 4100
-Text GLabel 3400 4200 3    50   Output ~ 0
-RDY_M2F
-Wire Wire Line
-	2300 4100 2650 4100
-Connection ~ 2300 4100
-Wire Wire Line
-	2300 4200 2300 4100
-Text GLabel 2300 4200 3    50   Output ~ 0
-RDY_M1F
-Text GLabel 3050 3800 2    50   Input ~ 0
-~6502_RES
-Wire Wire Line
-	1850 3800 1850 3900
-Wire Wire Line
-	1950 3800 1850 3800
-Text GLabel 1950 3800 2    50   Input ~ 0
-~6502_RES
-Wire Wire Line
-	1350 4100 1550 4100
-Text GLabel 1350 4100 0    50   Input ~ 0
-6502_RDY
-NoConn ~ 2150 4300
-Wire Wire Line
-	2150 4100 2300 4100
-Connection ~ 1450 4750
-Wire Wire Line
-	2450 4200 2650 4200
-Wire Wire Line
-	2450 4750 2450 4200
-Wire Wire Line
-	1450 4750 2450 4750
-Wire Wire Line
-	1450 4200 1550 4200
-Wire Wire Line
-	1450 4750 1450 4200
-Wire Wire Line
-	1350 4750 1450 4750
-Wire Wire Line
-	1850 4600 1850 4500
-Wire Wire Line
-	1750 4600 1850 4600
-Text GLabel 1750 4600 0    50   Input ~ 0
-+5V
-Wire Wire Line
-	2950 3800 3050 3800
-Wire Wire Line
-	2950 3900 2950 3800
-Wire Wire Line
-	2950 4600 2950 4500
-Wire Wire Line
-	2850 4600 2950 4600
-NoConn ~ 3250 4300
-Text GLabel 2850 4600 0    50   Input ~ 0
-+5V
-$Comp
-L 74xx:74HC74 U?
-U 2 1 5FE82338
-P 2950 4200
-AR Path="/5F8F4E1E/5FE82338" Ref="U?"  Part="2" 
-AR Path="/5FE82338" Ref="U5"  Part="2" 
-F 0 "U5" H 2650 4600 50  0000 C CNN
-F 1 "74AC74" H 2650 4500 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 2950 4200 50  0001 C CNN
-F 3 "74xx/74hc_hct74.pdf" H 2950 4200 50  0001 C CNN
-	2    2950 4200
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC74 U?
-U 1 1 5FE3D22B
-P 1850 4200
-AR Path="/5F8F4E1E/5FE3D22B" Ref="U?"  Part="2" 
-AR Path="/5FE3D22B" Ref="U5"  Part="1" 
-F 0 "U5" H 1550 4600 50  0000 C CNN
-F 1 "74AC74" H 1550 4500 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1850 4200 50  0001 C CNN
-F 3 "74xx/74hc_hct74.pdf" H 1850 4200 50  0001 C CNN
-	1    1850 4200
-	1    0    0    -1  
-$EndComp
-Text GLabel 3050 5200 2    50   Output ~ 0
-6502_CLK
-$Comp
-L 74xx:74LS04 U?
-U 4 1 5FD6D1DD
-P 2650 5200
-AR Path="/5F8F4E1E/5FD6D1DD" Ref="U?"  Part="5" 
-AR Path="/5FD6D1DD" Ref="U8"  Part="4" 
-F 0 "U8" H 2650 5517 50  0000 C CNN
-F 1 "74AC04" H 2650 5426 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 2650 5200 50  0001 C CNN
-F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 2650 5200 50  0001 C CNN
-	4    2650 5200
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74LS04 U?
-U 6 1 602942AC
-P 1850 5200
-AR Path="/5F8F4E1E/602942AC" Ref="U?"  Part="6" 
-AR Path="/602942AC" Ref="U8"  Part="6" 
-F 0 "U8" H 1850 5517 50  0000 C CNN
-F 1 "74AC04" H 1850 5426 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1850 5200 50  0001 C CNN
-F 3 "https://www.ti.com/lit/ds/symlink/sn74ac04.pdf" H 1850 5200 50  0001 C CNN
-	6    1850 5200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3050 5200 2950 5200
-Text GLabel 1450 5200 0    50   Input ~ 0
-6502_CLK_IN
-Wire Wire Line
-	1450 5200 1550 5200
-Wire Wire Line
-	2150 5200 2250 5200
-Text GLabel 3050 5450 2    50   Output ~ 0
-~6502_CLK
-Wire Wire Line
-	2250 5200 2250 5450
-Wire Wire Line
-	2250 5450 3050 5450
-Connection ~ 2250 5200
-Wire Wire Line
-	2250 5200 2350 5200
-Text GLabel 1350 4750 0    50   Input ~ 0
-~6502_CLK
-Text GLabel 1350 5900 0    50   Input ~ 0
-6502_RDY
-$Comp
-L Device:R R1
-U 1 1 603D7C7F
-P 1800 5800
-F 0 "R1" V 1700 5800 50  0000 C CNN
-F 1 "470" V 1800 5800 50  0000 C CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 1730 5800 50  0001 C CNN
-F 3 "~" H 1800 5800 50  0001 C CNN
-	1    1800 5800
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:C_Small C?
-U 1 1 603D8F83
-P 1800 6000
-AR Path="/5F8F4E1E/603D8F83" Ref="C?"  Part="1" 
-AR Path="/603D8F83" Ref="C7"  Part="1" 
-F 0 "C7" V 1950 6000 50  0000 C CNN
-F 1 "22pF" V 2050 6000 50  0000 C CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 1800 6000 50  0001 C CNN
-F 3 "~" H 1800 6000 50  0001 C CNN
-	1    1800 6000
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	1350 5900 1450 5900
-Wire Wire Line
-	1550 5900 1550 5800
-Wire Wire Line
-	1550 5800 1650 5800
-Wire Wire Line
-	1550 5900 1550 6000
-Wire Wire Line
-	1550 6000 1700 6000
-Connection ~ 1550 5900
-Wire Wire Line
-	1950 5800 2050 5800
-Wire Wire Line
-	2050 5800 2050 5900
-Wire Wire Line
-	2050 6000 1900 6000
-Text GLabel 2250 5900 2    50   Output ~ 0
-6502_RDY_IN
-Wire Wire Line
-	2050 5900 2150 5900
-Connection ~ 2050 5900
-Wire Wire Line
-	2050 5900 2050 6000
 $Comp
 L Connector:TestPoint TP1
-U 1 1 604AAD74
-P 1450 5900
-F 0 "TP1" H 1450 6200 50  0000 R CNN
-F 1 "TestPoint" H 1450 6100 50  0000 R CNN
-F 2 "TestPoint:TestPoint_Keystone_5005-5009_Compact" H 1650 5900 50  0001 C CNN
-F 3 "~" H 1650 5900 50  0001 C CNN
-	1    1450 5900
-	1    0    0    -1  
-$EndComp
-Connection ~ 1450 5900
-Wire Wire Line
-	1450 5900 1550 5900
-$Comp
-L Connector:TestPoint TP2
-U 1 1 604ABD44
-P 2150 5900
-F 0 "TP2" H 2150 6200 50  0000 L CNN
-F 1 "TestPoint" H 2150 6100 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5005-5009_Compact" H 2350 5900 50  0001 C CNN
-F 3 "~" H 2350 5900 50  0001 C CNN
-	1    2150 5900
-	1    0    0    -1  
-$EndComp
-Connection ~ 2150 5900
-Wire Wire Line
-	2150 5900 2250 5900
-Text GLabel 7550 4850 2    50   Input ~ 0
-IO14
-Wire Wire Line
-	6350 3850 6350 3950
-Wire Wire Line
-	4750 3500 4750 3600
-Wire Wire Line
-	5100 3350 5000 3350
-Wire Wire Line
-	4400 3350 4500 3350
-Text GLabel 5100 3350 2    50   Input ~ 0
-~6502_CLK
-Text GLabel 4400 3350 0    50   Input ~ 0
-6502_CLK
-$Comp
-L Jumper:Jumper_3_Open JP1
-U 1 1 6034332B
-P 4750 3350
-F 0 "JP1" H 4750 3574 50  0000 C CNN
-F 1 "PLD CLK Selector" H 4750 3483 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4750 3350 50  0001 C CNN
-F 3 "~" H 4750 3350 50  0001 C CNN
-	1    4750 3350
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4750 3600 5100 3600
-Text GLabel 5100 3600 2    50   Output ~ 0
-PLD_CLK
-Text GLabel 6350 3850 1    50   Input ~ 0
-PLD_CLK
-$Comp
-L Device:R_Network08 RN1
-U 1 1 6054D542
-P 3050 7050
-F 0 "RN1" H 3450 7100 50  0000 L CNN
-F 1 "4K7" H 3450 7000 50  0000 L CNN
-F 2 "Resistor_THT:R_Array_SIP9" V 3325 7050 50  0001 C CNN
-F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 3050 7050 50  0001 C CNN
-	1    3050 7050
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	2750 7450 2850 7450
-Connection ~ 4550 7150
-Connection ~ 4400 7250
-Connection ~ 4250 7350
-Connection ~ 4100 7450
-Text GLabel 3800 6850 1    50   Output ~ 0
-~NMI
-Text GLabel 3600 6750 1    50   Output ~ 0
-~SO
-Text GLabel 3950 6950 1    50   Output ~ 0
-SR_OUT
-Wire Wire Line
-	3250 7450 4100 7450
-Wire Wire Line
-	3250 7350 4250 7350
-Wire Wire Line
-	3250 7250 4400 7250
-Wire Wire Line
-	3250 7150 4550 7150
-Wire Wire Line
-	3250 6950 3800 6950
-Wire Wire Line
-	3800 6950 3800 6850
-Wire Wire Line
-	3600 6750 3600 6850
-Wire Wire Line
-	3600 6850 3250 6850
-Wire Wire Line
-	3950 7050 3950 6950
-Wire Wire Line
-	3250 7050 3950 7050
-Text GLabel 3450 6650 1    50   Output ~ 0
-EXT_BE
-Wire Wire Line
-	3250 6750 3450 6750
-Wire Wire Line
-	3450 6750 3450 6650
-$Comp
-L Connector:TestPoint TP4
 U 1 1 60966778
 P 4500 5150
-F 0 "TP4" H 4500 5450 50  0000 L CNN
+F 0 "TP1" H 4500 5450 50  0000 L CNN
 F 1 "TestPoint" H 4500 5350 50  0000 L CNN
 F 2 "TestPoint:TestPoint_Keystone_5005-5009_Compact" H 4700 5150 50  0001 C CNN
 F 3 "~" H 4700 5150 50  0001 C CNN
@@ -1638,8 +927,65 @@ Text GLabel 4500 5250 3    50   Input ~ 0
 GND
 Wire Wire Line
 	4500 5250 4500 5150
-Wire Bus Line
-	8500 4150 8500 4350
+$Sheet
+S 9600 5950 750  350 
+U 618DD0B9
+F0 "control" 50
+F1 "control.sch" 50
+$EndSheet
+Text GLabel 1900 4300 0    50   Input ~ 0
+6502_RDY
+$Comp
+L Device:R R1
+U 1 1 61F290B3
+P 2350 4200
+AR Path="/61F290B3" Ref="R1"  Part="1" 
+AR Path="/618DD0B9/61F290B3" Ref="R?"  Part="1" 
+F 0 "R1" V 2250 4200 50  0000 C CNN
+F 1 "470" V 2350 4200 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 2280 4200 50  0001 C CNN
+F 3 "~" H 2350 4200 50  0001 C CNN
+	1    2350 4200
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C_Small C?
+U 1 1 61F290B9
+P 2350 4400
+AR Path="/5F8F4E1E/61F290B9" Ref="C?"  Part="1" 
+AR Path="/61F290B9" Ref="C5"  Part="1" 
+AR Path="/618DD0B9/61F290B9" Ref="C?"  Part="1" 
+F 0 "C5" V 2500 4400 50  0000 C CNN
+F 1 "22pF" V 2600 4400 50  0000 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 2350 4400 50  0001 C CNN
+F 3 "~" H 2350 4400 50  0001 C CNN
+	1    2350 4400
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2100 4300 2100 4200
+Wire Wire Line
+	2100 4200 2200 4200
+Wire Wire Line
+	2100 4300 2100 4400
+Wire Wire Line
+	2100 4400 2250 4400
+Connection ~ 2100 4300
+Wire Wire Line
+	2500 4200 2600 4200
+Wire Wire Line
+	2600 4200 2600 4300
+Wire Wire Line
+	2600 4400 2450 4400
+Text GLabel 2800 4300 2    50   Output ~ 0
+6502_RDY_IN
+Connection ~ 2600 4300
+Wire Wire Line
+	2600 4300 2600 4400
+Wire Wire Line
+	1900 4300 2100 4300
+Wire Wire Line
+	2600 4300 2800 4300
 Wire Bus Line
 	4050 2350 4050 2950
 Wire Bus Line
@@ -1662,8 +1008,6 @@ Wire Bus Line
 	3200 2850 3200 3550
 Wire Bus Line
 	3200 2050 3200 2750
-Wire Bus Line
-	6150 4350 6150 5050
 Wire Bus Line
 	8800 650  8800 2050
 Wire Bus Line
