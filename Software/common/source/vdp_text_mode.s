@@ -3,11 +3,11 @@
     .include "vdp.inc"
     .include "vdp_const.inc"
     .include "vdp_macro.inc"
-    .include "sysram_map.inc"
     .include "zeropage.inc"
     .include "blink.inc"
 
     .export vdp_text_init
+    .export vdp_graphics1_init
     .export vdp_scroll_line
     .export vdp_line
     .export vdp_char_pos
@@ -55,6 +55,19 @@ vdp_text_init:
   sta vdp_char_pos
 
   rts
+
+vdp_graphics1_init:
+  jsr vdp_init_graphics1_mode
+  jsr vdp_initialize_text_pattern_table
+  jsr vdp_clear_screen
+  jsr vdp_enable_display
+
+  lda #0
+  sta vdp_line
+  sta vdp_char_pos
+
+  rts
+
 
 
 ;------------------------------------------------------------------------------

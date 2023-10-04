@@ -33,7 +33,13 @@ user_irq_address:      .res 2
 vdp_buffer_address:    .res 2 
 vdp_vram_address:      .res 2 
 vdp_char_count:        .res 2 
+vdp_option_control_1:  .res 1 ; mirror of vdp option register, reg 1 (!)      
 sn76489_freq_lsn:      .res 1
 sn76489_freq_msb:      .res 1
 midi_tick_countdown:   .res 4
 next_midi_event:       .res 2
+vdp_page_status:       .res 1
+sd_address:            .res 2 
+sd_currentsector:      .res 4
+fat32_variables:       .res 24
+wozmon_zp:             .res 8

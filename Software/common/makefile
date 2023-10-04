@@ -9,9 +9,10 @@ ARCH_FLAG=-t none
 CLOCK_FLAG=-Dclock_mode_flag=$(CLOCK_MODE_FLAG) 
 ACIA_FLAG=-Dacia_tx_irq=$(ACIA_TX_IRQ) 
 BUILD_FLAG=-Ddb6502
+MISC_FLAG=$(MISC_DEFINE)
 
 CC65_FLAGS=$(CPU_FLAG) $(ARCH_FLAG) $(CLOCK_FLAG) $(ACIA_FLAG) -O
-CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG) $(ACIA_FLAG) $(BUILD_FLAG)
+CA65_FLAGS=$(CPU_FLAG) $(CLOCK_FLAG) $(ACIA_FLAG) $(BUILD_FLAG) $(MISC_FLAG)
 LD65_FLAGS=
 AR65_FLAGS=r
 
@@ -114,8 +115,12 @@ COMMON_SOURCES=syscalls.s    \
 							 via_utils.s     \
 							 vdp.s           \
 							 vdp_text_mode.s \
+							 vdp_game.s  	 \
 							 sn76489.s       \
 							 midi.s          \
+							 spi_sd.s        \
+							 fat32.s		 \
+							 gamepad.s       \
 							 tty.s           \
 							 parse.s         \
 							 menu.s

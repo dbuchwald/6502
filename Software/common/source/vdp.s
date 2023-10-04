@@ -1,8 +1,7 @@
     .include "vdp_const.inc"
     .include "vdp_macro.inc"
     .include "zeropage.inc"
-    .include "blink.inc"
-
+    
     .import __VDP_START__
     
     .export VDP_REG
@@ -10,19 +9,20 @@
 
     .export VDP_TEXT_PATTERNS_START
     .export VDP_TEXT_PATTERNS_END
+    .export VDP_PATTERN_TABLE_BASE
+    .export VDP_COLOR_TABLE_BASE
 
     .export vdp_init_text_mode
+    .export vdp_init_graphics1_mode
     .export vdp_initialize_text_pattern_table
     .export vdp_clear_screen
     .export vdp_enable_display
+    .export vdp_fill_color
+    .export vdp_hide_sprites
+    .export vdp_set_border_color
 
     .export vdp_vram_write_buffer
     .export vdp_vram_read_buffer
-
-
-  ; TODO how to manage addresses defined by our config?
-VDP_PATTERN_TABLE_BASE = $0800
-VDP_NAME_TABLE_BASE = $0000
 
 VDP_REG = __VDP_START__ + VDP_REGISTER_OFFSET
 VDP_VRAM = __VDP_START__ + VDP_VRAM_OFFSET
@@ -164,8 +164,16 @@ VDP_TEXT_PATTERNS_START:
   .byte $A8,$50,$A8,$50,$A8,$50,$A8,$00 ; checkerboard
 VDP_TEXT_PATTERNS_END:
 
+
+  ; TODO how to manage addresses defined by our config?
+VDP_PATTERN_TABLE_BASE = $0800
+VDP_NAME_TABLE_BASE = $0000
+VDP_COLOR_TABLE_BASE = $0400
+VDP_SPRITE_ATTRIBUTE_TABLE_BASE = $0500
+VDP_SPRITE_PATTERN_TABLE_BASE = $1000
+
 vdp_text_mode_register_inits:
-vdp_text_mode_register_0: .byte VDP_REG0_MODE_BIT_M3_DISABLE | VDP_REG_0_GRAPHICS_MODE_II_DISABLE
+vdp_text_mode_register_0: .byte VDP_REG0_EXTERNAL_VDP_DISABLE | VDP_REG_0_GRAPHICS_MODE_II_DISABLE
 vdp_text_mode_register_1: .byte VDP_REG1_RAM_16K | VDP_REG1_TEXT_MODE_ENABLE | VDP_REG1_SCREEN_BLANK
 vdp_text_mode_register_2: .byte VDP_REG2_NAME_TABLE_BASE_0000
 vdp_text_mode_register_3: .byte VDP_REG3_COLOR_TABLE_BASE_0D00
@@ -174,6 +182,17 @@ vdp_text_mode_register_5: .byte VDP_REG5_SPRITE_ATTRIBUTE_TABLE_BASE_0000
 vdp_text_mode_register_6: .byte VDP_REG6_SPRITE_PATTERN_TABLE_BASE_0000
 vdp_text_mode_register_7: .byte (VDP_REG7_FOREGROUND_COLOR_MASK & VDP_COLOR_WHITE) | ( VDP_REG7_BACKGROUND_COLOR_MASK & VDP_COLOR_DARK_BLUE)
 vdp_text_mode_register_inits_end:
+
+vdp_graphics1_mode_register_inits:
+vdp_graphics1_mode_register_0: .byte VDP_REG0_EXTERNAL_VDP_DISABLE | VDP_REG_0_GRAPHICS_MODE_II_DISABLE
+vdp_graphics1_mode_register_1: .byte VDP_REG1_RAM_16K | VDP_REG1_GRAPHICS_MODE_I_ENABLE | VDP_REG1_SCREEN_BLANK | VDP_REG1_INTERRUPT_ENABLE | VDP_REG_1_SPRITE_SIZE_16x16 |VDP_REG_1_SPRITE_MAG_1X
+vdp_graphics1_mode_register_2: .byte VDP_REG2_NAME_TABLE_BASE_0000
+vdp_graphics1_mode_register_3: .byte VDP_REG3_COLOR_TABLE_BASE_0400
+vdp_graphics1_mode_register_4: .byte VDP_REG4_PATTERN_TABLE_BASE_0800
+vdp_graphics1_mode_register_5: .byte VDP_REG5_SPRITE_ATTRIBUTE_TABLE_BASE_0500
+vdp_graphics1_mode_register_6: .byte VDP_REG6_SPRITE_PATTERN_TABLE_BASE_1000
+vdp_graphics1_mode_register_7: .byte (VDP_REG7_FOREGROUND_COLOR_MASK & VDP_COLOR_BLACK) | ( VDP_REG7_BACKGROUND_COLOR_MASK & VDP_COLOR_CYAN)
+vdp_graphics1_mode_register_inits_end:
 
   .code
 ;------------------------------------------------------------------------------
@@ -187,20 +206,56 @@ vdp_init_text_mode:
   phx
 
   ldx #0
-vdp_reg_reset_loop:
+@vdp_reg_reset_loop:
 
   ; Write init value  
   lda vdp_text_mode_register_inits,x
   sta VDP_REG
 
+  ; Mirror Option Control 1
+  cpx #1
+  bne @not_option_reg
+  sta vdp_option_control_1
+  
   ; Write the register #  
+@not_option_reg:
   txa
   ora #VDP_REGISTER_SELECT
   sta VDP_REG
  
   inx
   cpx #(vdp_text_mode_register_inits_end - vdp_text_mode_register_inits)
-  bne vdp_reg_reset_loop
+  bne @vdp_reg_reset_loop
+
+  plx
+  pla
+  rts
+
+
+vdp_init_graphics1_mode:
+  pha
+  phx
+
+  ldx #0
+@vdp_reg_reset_loop:
+  ; Write init value  
+  lda vdp_graphics1_mode_register_inits,x
+  sta VDP_REG
+
+  ; Mirror Option Control 1
+  cpx #1
+  bne @not_option_reg
+  sta vdp_option_control_1
+  
+  ; Write the register #  
+@not_option_reg:
+  txa
+  ora #VDP_REGISTER_SELECT
+  sta VDP_REG
+ 
+  inx
+  cpx #(vdp_graphics1_mode_register_inits_end - vdp_graphics1_mode_register_inits)
+  bne @vdp_reg_reset_loop
 
   plx
   pla
@@ -212,36 +267,44 @@ vdp_reg_reset_loop:
 ; TODO: Parameterize the table address
 ;
 ;------------------------------------------------------------------------------
-  vdp_initialize_text_pattern_table:
+vdp_initialize_text_pattern_table:
     pha
     phx
 
-    vdp_set_vram_addr VDP_PATTERN_TABLE_BASE  
-    
-    lda #<VDP_TEXT_PATTERNS_START
-    sta vdp_vram_address
-    lda #>VDP_TEXT_PATTERNS_START
-    sta vdp_vram_address+1
-vdp_pattern_text_table_loop:
-    lda (vdp_vram_address)
-    sta VDP_VRAM
+    load_pattern_table VDP_TEXT_PATTERNS_START, VDP_TEXT_PATTERNS_END
 
-    lda vdp_vram_address
-    clc
-    adc #1
-    sta vdp_vram_address
-    lda #0
-    adc vdp_vram_address+1
-    sta vdp_vram_address+1
-    cmp #>VDP_TEXT_PATTERNS_END
-    bne vdp_pattern_text_table_loop
-    lda vdp_vram_address
-    cmp #<VDP_TEXT_PATTERNS_END
-    bne vdp_pattern_text_table_loop
+    ; vdp_set_vram_addr VDP_PATTERN_TABLE_BASE  
+    
+    ; lda #<VDP_TEXT_PATTERNS_START
+    ; sta vdp_vram_address
+    ; lda #>VDP_TEXT_PATTERNS_START
+    ; sta vdp_vram_address+1
+;     vdp_set_src_addr VDP_TEXT_PATTERNS_START
+
+; vdp_pattern_text_table_loop:
+;     lda (vdp_vram_address)
+;     sta VDP_VRAM
+
+;     lda vdp_vram_address
+;     clc
+;     adc #1
+;     sta vdp_vram_address
+;     lda #0
+;     adc vdp_vram_address+1
+;     sta vdp_vram_address+1
+;     cmp #>VDP_TEXT_PATTERNS_END
+;     bne vdp_pattern_text_table_loop
+;     lda vdp_vram_address
+;     cmp #<VDP_TEXT_PATTERNS_END
+;     bne vdp_pattern_text_table_loop
   
+
+
     plx
     pla
     rts
+
+
 
 
 ;------------------------------------------------------------------------------
@@ -277,17 +340,124 @@ vdp_name_table_loop:
 
 ;------------------------------------------------------------------------------
 ;
+; Fill Color Table 
+; Load color table with constant color bytes
+; Acc = Color to Load, fg|bg
+;
+;------------------------------------------------------------------------------
+vdp_fill_color:
+  
+  phx
+
+  ldx #<VDP_COLOR_TABLE_BASE
+  stx VDP_REG    
+  ldx #>VDP_COLOR_TABLE_BASE | VDP_WRITE_VRAM_SELECT
+  stx VDP_REG 
+  ldx #$1F
+  
+:
+  sta VDP_VRAM
+  dex
+  bne :-
+
+  plx
+  rts
+
+; ACC is the desired boarder color
+vdp_set_border_color:
+  pha
+  sta VDP_REG
+  lda #VDP_REGISTER_7
+  sta VDP_REG
+  pla
+  rts
+
+
+
+  vdp_initialize_sprite_pattern_table:
+    pha
+    phx
+
+    vdp_set_vram_addr VDP_SPRITE_PATTERN_TABLE_BASE  
+    
+    lda #<VDP_TEXT_PATTERNS_START
+    sta vdp_vram_address
+    lda #>VDP_TEXT_PATTERNS_START
+    sta vdp_vram_address+1
+:
+    lda (vdp_vram_address)
+    sta VDP_VRAM
+
+    lda vdp_vram_address
+    clc
+    adc #1
+    sta vdp_vram_address
+    lda #0
+    adc vdp_vram_address+1
+    sta vdp_vram_address+1
+    cmp #>VDP_TEXT_PATTERNS_END
+    bne :-
+    lda vdp_vram_address
+    cmp #<VDP_TEXT_PATTERNS_END
+    bne :-
+  
+    plx
+    pla
+    rts
+
+
+;------------------------------------------------------------------------------
+;
+; Hide Sprites
+;
+; Puts the sprites at the top and off the left edge of the screen
+;
+;------------------------------------------------------------------------------
+vdp_hide_sprites:
+
+  phx
+  phy
+  pha
+
+  jsr vdp_initialize_sprite_pattern_table
+
+  vdp_set_vram_addr VDP_SPRITE_ATTRIBUTE_TABLE_BASE
+
+  ldx #$20
+
+  lda #$00
+  ldy #$80
+
+:
+  sta VDP_VRAM
+  sta VDP_VRAM
+  sta VDP_VRAM
+  sty VDP_VRAM
+
+  dex
+  bne :-
+
+  pla
+  ply
+  plx 
+
+  rts
+
+
+
+;------------------------------------------------------------------------------
+;
 ; Enable Display
 ;
 ;------------------------------------------------------------------------------
 vdp_enable_display:
   pha
 
-  lda vdp_text_mode_register_1
+  lda vdp_option_control_1
   ora #VDP_REG1_SCREEN_ACTIVE
   sta VDP_REG
 
-  lda #(VDP_REGISTER_SELECT | VDP_REGISTER_1)
+  lda #VDP_REGISTER_1
   sta VDP_REG
   
   pla
@@ -397,4 +567,11 @@ no_writechar_carry:
   ply
   pla
   rts
+
+
+
+
 .endscope
+
+
+

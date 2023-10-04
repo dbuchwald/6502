@@ -43,12 +43,14 @@ init:
       jsr sn76489_low_beep
       
       ;lda #(VIA_ACR_T2_CONT_NO_PB7)
-      lda #VIA_ACR_T1_CONT_SQUARE_PB7
-      sta VIA2_ACR
+      lda #VIA_ACR_T1_CONT_NO_PB7
+      ;sta VIA2_ACR
+      sta VIA1_ACR
 
       lda #(VIA_IER_CLEAR_FLAGS | $7F)
       lda #(VIA_IER_SET_FLAGS | VIA_IER_TIMER1_FLAG)
-      sta VIA2_IER
+      ;sta VIA2_IER
+      sta VIA1_IER
 
 
       lda #100
@@ -79,9 +81,11 @@ init:
       ; e.g. $A2C = 2604 us/tick
       ; 
       lda #$2C
-      sta VIA2_T1CL
+      ;sta VIA2_T1CL
+      sta VIA1_T1CL
       lda #$08 ; was $08
-      sta VIA2_T1CH
+      ;sta VIA2_T1CH
+      sta VIA1_T1CH
       cli
 
       lda #(BLINK_LED_ON)
@@ -92,7 +96,8 @@ program_loop:
 
 irq_handler:
       pha
-      lda VIA2_IFR
+      ;lda VIA2_IFR
+      lda VIA1_IFR
       bpl @not_via2
 
       and #VIA_IFR_TIME_OUT_T1
@@ -119,7 +124,8 @@ irq_handler:
 @midi_update_done:
 @not_midi_event:
       lda #VIA_IFR_TIME_OUT_T1      ; clear the T1 interrupt
-      sta VIA2_IFR
+      ;sta VIA2_IFR
+      sta VIA1_IFR
 @not_midi_tick:
 @not_via2:
       pla

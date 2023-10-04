@@ -10,6 +10,7 @@
       .export _keyboard_is_connected
       .export _keyboard_is_data_available
       .export _keyboard_read_char
+      .export poll_for_keypress
 
 KEYBOARD_NOT_CONNECTED     = $00
 KEYBOARD_CONNECTED         = $01
@@ -49,7 +50,7 @@ _keyboard_init:
       ; Enable read handshake
       ora #(VIA_PCR_CA1_INTERRUPT_NEGATIVE | VIA_PCR_CA2_OUTPUT_PULSE | VIA_PCR_CB1_INTERRUPT_NEGATIVE | VIA_PCR_CB2_OUTPUT_HIGH)
       sta VIA1_PCR
-      ; Enable interrupt from VIA2 on CA1 (Data ready)
+      ; Enable interrupt from VIA1 on CA1 (Data ready)
       lda #(VIA_IER_SET_FLAGS | VIA_IER_CA1_FLAG)
       sta VIA1_IER
       ; Restore state of A register
@@ -59,8 +60,19 @@ _keyboard_init:
 ; TENTATIVE C COMPLIANT
 ; Writes data to keyboard buffer and updates pointers
 ; All registers preserved
+poll_for_keypress:
+      pha
+      lda VIA1_IFR
+      and #VIA_IFR_CA1_ACTIVE_EDGE
+      beq kb_handling_done
+      bra _has_keypress_ready
+
 _handle_keyboard_irq:
       pha
+
+_has_keypress_ready:
+
+      .scope
       ; Read code from keyboard controller
       lda VIA1_PORTA
       ; Handle connection signal
@@ -92,25 +104,28 @@ _handle_keyboard_irq:
       ; Restore X register
       plx
       ; Handling completed
-      bra @handling_done
+      bra kb_handling_done
       ; Store keyboard flag
 @keyboard_connected:
       lda #$80
       sta keyboard_conn
       ; Handling completed
-      bra @handling_done
+      bra kb_handling_done
       ; Store keyboard flag
 @keyboard_disconnected:
       stz keyboard_conn
-      bra @handling_done
+      bra kb_handling_done
 @system_break_request:
       lda #$80
       sta system_break_flag
-@handling_done:
-      ; Restore A register
+
+      .endscope
+
+
+kb_handling_done:
       pla
-      ; Done, return
       rts
+
 
 ; POSITIVE C COMPLIANT - return value in A
 ; Returns connection status in A

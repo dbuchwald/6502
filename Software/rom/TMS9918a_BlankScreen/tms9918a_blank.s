@@ -63,14 +63,14 @@ init:
 
 
 
- ;    jsr _blink_init
+     jsr _blink_init
 
     ldx #0
 
 end_loop:
- ;     lda #01
- ;     jsr _delay_sec
-;      jsr _strobe_led
+;      lda #01
+;      jsr _delay_sec
+    jsr _strobe_led
 
       txa
       sta VDP_REG

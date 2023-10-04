@@ -3,6 +3,7 @@
         .import _tty_init
         .import _tty_read_line
         .import tty_read_line
+        .import tty_read_byte
         .import _tty_write
         .import _tty_writeln
         .import _tty_write_hex
@@ -103,8 +104,10 @@
         pla
         .endmacro
 
+; These should be ".export XXX"
 TTY_CONFIG_INPUT_SERIAL   = %00000001
 TTY_CONFIG_INPUT_KEYBOARD = %00000010
 TTY_CONFIG_OUTPUT_SERIAL  = %00000100
 TTY_CONFIG_OUTPUT_LCD     = %00001000
 TTY_CONFIG_OUTPUT_VDP     = %00010000     
+TTY_CONFIG_INPUT_POLLING  = %10000000  ; If set, use polling instead of interrupts for keyboard

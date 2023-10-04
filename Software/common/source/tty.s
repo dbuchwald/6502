@@ -10,6 +10,7 @@
         .export _tty_init
         .export _tty_read_line
         .export tty_read_line
+        .export tty_read_byte
         .export _tty_write
         .export _tty_writeln
         .export _tty_write_hex
@@ -21,7 +22,8 @@ TTY_CONFIG_INPUT_SERIAL   = %00000001
 TTY_CONFIG_INPUT_KEYBOARD = %00000010
 TTY_CONFIG_OUTPUT_SERIAL  = %00000100
 TTY_CONFIG_OUTPUT_LCD     = %00001000
-TTY_CONFIG_OUTPUT_VDP     = %00010000      
+TTY_CONFIG_OUTPUT_VDP     = %00010000 
+TTY_CONFIG_INPUT_POLLING  = %10000000  ; If set, use polling instead of interrupts for keyboard     
 
 ENTER                   = $0d
 BACKSPACE               = $08
@@ -73,7 +75,7 @@ tty_read_line:
 @read_char_loop:
         ; Read one characted from serial (blocks until read)
         jsr tty_read_byte
-        cmp #(ENTER)
+        cmp #ENTER
         bne @not_enter
         ; disable cursor display
         jsr tty_disable_cursor
@@ -88,8 +90,9 @@ tty_read_line:
         bne @not_backspace
 @backspace:
         ; check if we are at the beginning of the buffer - if so, ignore
+        lda #$00
         cpy #$00
-        beq @read_char_loop
+        beq @clean_buffer_loop
         ; decrease pointer
         dey
         ; clean buffer entry
@@ -163,6 +166,7 @@ _tty_writeln:
 ; INTERNAL
 ; Reads data from enabled input channers
 tty_read_byte:
+        .scope
         lda tty_config
         and #(TTY_CONFIG_INPUT_SERIAL)
         ; Serial input disabled
@@ -178,17 +182,26 @@ tty_read_byte:
         lda tty_config
         and #(TTY_CONFIG_INPUT_KEYBOARD)
         ; keyboard input disabled
-        beq @skip_keyboard
+        beq skip_keyboard
+
+        lda tty_config
+        and #TTY_CONFIG_INPUT_POLLING
+        beq not_polling
+
+        jsr poll_for_keypress
+
+not_polling:
         jsr _keyboard_is_data_available
         cmp #(KEYBOARD_NO_DATA_AVAILABLE)
         ; no data available, skip
-        beq @skip_keyboard
+        beq skip_keyboard
         ; read and send back
         jsr _keyboard_read_char
         rts
-@skip_keyboard:
+skip_keyboard:
         ; nothing found yet, keep polling
         bra tty_read_byte
+        .endscope
 
 ; INTERNAL
 ; Assumes input in A, sends to proper channels
@@ -390,7 +403,7 @@ tty_enable_cursor:
         and #TTY_CONFIG_OUTPUT_VDP
         bne @skip_vdp
 
-        ; jsr vdp_enble_cursor
+        ;jsr vdp_enble_cursor
 
 @skip_vdp:
         pla

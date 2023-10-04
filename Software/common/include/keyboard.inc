@@ -3,6 +3,7 @@
       .import _keyboard_is_connected
       .import _keyboard_is_data_available
       .import _keyboard_read_char
+      .import poll_for_keypress
 
 KEY_SPACE        = $20
 KEY_ENTER        = $0d

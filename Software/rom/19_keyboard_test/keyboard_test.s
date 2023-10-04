@@ -16,6 +16,11 @@ init:
       ; Init stack
       ldx #$ff
       txs
+
+      ; Disable VIA2 if available
+      lda #(VIA_IER_SET_FLAGS)
+      sta VIA2_IER
+
       ; Init LCD
       jsr _lcd_init
       ; Wait a moment

@@ -11,15 +11,19 @@
 
 init:
 irq_init:
-      lda #(VIA_ACR_T1_CONT_NO_PB7)
-      sta VIA2_ACR
-      lda #(VIA_IER_SET_FLAGS | VIA_IER_TIMER1_FLAG)
-      sta VIA2_IER
+      lda #$01
+      sta VIA1_DDRB
 
-      lda #$30
-      sta VIA2_T1CL
+
+      lda #(VIA_ACR_T1_CONT_NO_PB7)
+      sta VIA1_ACR
+      lda #(VIA_IER_SET_FLAGS | VIA_IER_TIMER1_FLAG)
+      sta VIA1_IER
+
+      lda #$60
+      sta VIA1_T1CL
       lda #$00
-      sta VIA2_T1CH
+      sta VIA1_T1CH
       cli
 
 program_loop:
@@ -27,6 +31,12 @@ program_loop:
 
 irq_handler:
       pha
-      lda VIA2_T1CL
+      lda VIA1_T1CL
+
+      lda #$01
+      sta VIA1_PORTB
+      lda #$00
+      sta VIA1_PORTB
+
       pla
       rti

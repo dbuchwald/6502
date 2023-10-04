@@ -30,7 +30,13 @@
 .globalzp vdp_buffer_address 
 .globalzp vdp_vram_address
 .globalzp vdp_char_count
+.globalzp vdp_option_control_1
 .globalzp sn76489_freq_lsn
 .globalzp sn76489_freq_msb
 .globalzp midi_tick_countdown
 .globalzp next_midi_event
+.globalzp vdp_page_status
+.globalzp sd_address
+.globalzp sd_currentsector
+.globalzp fat32_variables
+.globalzp wozmon_zp  

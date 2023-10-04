@@ -1,0 +1,8 @@
+.import __GAMEPAD_START__
+
+.export GAMEPAD1
+.export GAMEPAD2
+
+
+GAMEPAD1  = __GAMEPAD_START__
+GAMEPAD2  = __GAMEPAD_START__ + 1

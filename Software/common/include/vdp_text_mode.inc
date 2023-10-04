@@ -1,4 +1,5 @@
     .import vdp_text_init
+    .import vdp_graphics1_init
     .import vdp_scroll_line
     .import vdp_out_char
     .import vdp_write_char
